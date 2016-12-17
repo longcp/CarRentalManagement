@@ -20,11 +20,12 @@ private:
 
     // 菜单栏
     QMenu       *mSystemSettingMenu;
-    QMenu       *mInformationMenu;
     QMenu       *mRentalManagementMenu;
     QMenu       *mFinanceManagementMenu;
     QMenu       *mStatisticalReportMenu;
     QMenu       *mAboutMenu;
+    QMenu       *mUploadPictureMenu;
+    QMenu       *mUserManagermentMenu;
 };
 
 #endif // MAINWINDOW_H
