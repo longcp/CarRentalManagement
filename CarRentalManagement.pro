@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CarRentalManagement
 TEMPLATE = app
 
+INCLUDEPATH += ui/
+INCLUDEPATH += utils/
 
 SOURCES += main.cpp\
         ui\mainwindow.cpp
@@ -18,3 +20,6 @@ SOURCES += main.cpp\
 HEADERS  += ui\mainwindow.h
 
 FORMS    += ui\mainwindow.ui
+
+RESOURCES += \
+    icon.qrc

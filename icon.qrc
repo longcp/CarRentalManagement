@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/menu">
+        <file>icon/exit.png</file>
+        <file>icon/client.png</file>
+        <file>icon/pump_64.ico</file>
+        <file>icon/contract_64.ico</file>
+        <file>icon/car_break_rules_64.ico</file>
+        <file>icon/tools.ico</file>
+        <file>icon/Ford_Heavy_Wreck_Truck_128.ico</file>
+    </qresource>
+</RCC>
