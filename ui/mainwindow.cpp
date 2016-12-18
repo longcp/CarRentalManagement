@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <clientmanagermentwidget.h>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    mClientWidget = new ClientManagermentWidget();
 
     // 菜单栏
     mMenuSystemSetting  = ui->menuBar->addMenu(tr("系统设置"));
@@ -54,8 +56,12 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * @brief 退出系统
      */
-    connect(mActExitSystem,    SIGNAL(triggered()),
-            this, SLOT(exit_system()));
+    connect(mActExitSystem, SIGNAL(triggered()),
+            this, SLOT(exitSystem()));
+    connect(mActClient, SIGNAL(triggered()),
+            this, SLOT(openClientWidget()));
+    connect(mActCarIllegal, SIGNAL(triggered()),
+            mClientWidget, SLOT(openClientWidgetSlot()));
 }
 
 MainWindow::~MainWindow()
@@ -82,8 +88,15 @@ MainWindow::closeEvent(QCloseEvent *event)
 }
 
 void
-MainWindow::exit_system()
+MainWindow::exitSystem()
 {
     QCloseEvent *event;
     closeEvent(event);
+}
+
+void
+MainWindow::openClientWidget()
+{
+    ALOGD("MainWindow::openClientWidget enter");
+    ui->mainTabWidget->addTab(mClientWidget, tr("客户"));
 }

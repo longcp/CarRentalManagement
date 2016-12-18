@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class ClientManagermentWidget;
+
 namespace Ui {
 class MainWindow;
 }
@@ -19,12 +21,18 @@ private slots:
     /**
      * @brief:退出系统
      */
-    void        exit_system();
+    void        exitSystem();
     /**
      * @brief 窗口关闭事件
      * @param event
      */
     void        closeEvent(QCloseEvent *event);
+    /**
+     * @brief 打开客户管理窗口
+     */
+    void        openClientWidget();
+signals:
+
 private:
     Ui::MainWindow *ui;
 
@@ -49,6 +57,9 @@ private:
     QAction     *mActReceivable;
     QAction     *mActReceipt;
     QAction     *mActRevenueAndExpenditure;
+
+    // widgets
+    ClientManagermentWidget *mClientWidget;
 };
 
 #endif // MAINWINDOW_H
