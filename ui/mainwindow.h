@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 class ClientManagermentWidget;
+class QWidget;
 
 namespace Ui {
 class MainWindow;
@@ -60,6 +61,9 @@ private:
 
     // widgets
     ClientManagermentWidget *mClientWidget;
+
+    // 用于管理各个tabwidget的list
+    QList<QWidget *>        mOpenTabList;
 };
 
 #endif // MAINWINDOW_H

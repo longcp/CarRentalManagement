@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <clientmanagermentwidget.h>
+#include <QList>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -14,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     mClientWidget = new ClientManagermentWidget();
+
+    // 插入首页，首页一直存在
+    mOpenTabList.insert(0, ui->homePageTab);
 
     // 菜单栏
     mMenuSystemSetting  = ui->menuBar->addMenu(tr("系统设置"));
@@ -60,8 +64,6 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(exitSystem()));
     connect(mActClient, SIGNAL(triggered()),
             this, SLOT(openClientWidget()));
-    connect(mActCarIllegal, SIGNAL(triggered()),
-            mClientWidget, SLOT(openClientWidgetSlot()));
 }
 
 MainWindow::~MainWindow()
@@ -98,5 +100,17 @@ void
 MainWindow::openClientWidget()
 {
     ALOGD("MainWindow::openClientWidget enter");
+    if (mOpenTabList.isEmpty())
+        return;
+
+    int size = mOpenTabList.size();
+    int index = mOpenTabList.indexOf(mClientWidget);
+
+    if (index >= 0) {
+        ui->mainTabWidget->setCurrentIndex(index);
+        return;
+    }
+    mOpenTabList.insert(size, mClientWidget);
     ui->mainTabWidget->addTab(mClientWidget, tr("客户"));
+    ui->mainTabWidget->setCurrentIndex(size);
 }

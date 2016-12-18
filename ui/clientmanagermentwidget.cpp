@@ -1,6 +1,7 @@
 #include "clientmanagermentwidget.h"
 #include "ui_clientmanagermentwidget.h"
 #include <QToolBar>
+#include <QTableWidget>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -10,9 +11,21 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     ui(new Ui::ClientManagermentWidget)
 {
     ui->setupUi(this);
+    QStringList clientWidgetHeader;
+    clientWidgetHeader << "客户编号" << "客户名称" << "地址"
+                       << "联系电话" << "传真" << "联系人"
+                       << "结账方式" << "月结日" << "工程款额"
+                       << "已付款额" << "余额" << "备注";
+    mClientWidget = new QTableWidget(3, clientWidgetHeader.length());
+    mClientWidget->setHorizontalHeaderLabels(clientWidgetHeader);
+    mClientWidget->setItem(0,1,new QTableWidgetItem("Jan"));
+    mClientWidget->setItem(1,1,new QTableWidgetItem("Feb"));
+    mClientWidget->setItem(2,1,new QTableWidgetItem("Mar"));
+//    mClientWidget->rowCount();
+//    mClientWidget->insertRow(xxx);
 
     mToolBar = new QToolBar(tr("clientToolBar"), this);
-    mToolBar->setStyleSheet("background-color: rgb(255,197,49);color:rgb(0,0,0);");
+    mToolBar->setStyleSheet("background-color: rgb(234,234,234);color:rgb(0,0,0);");
     mToolBar->setLayoutDirection(Qt::LeftToRight);
     mToolBar->setIconSize(QSize(24,24));
     mToolBar->setOrientation(Qt::Horizontal);
@@ -27,54 +40,28 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     mToolBar->setInputMethodHints(Qt::ImhNone);
     mToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
 
-    QAction *actionFrontView    = new QAction(QIcon("images\3D\front view.ico"),tr("前视图"), this);
-    QAction *actionRearView     = new QAction(QIcon("images\3D\rear view.ico"),tr("后视图"), this);
-    QAction *actionLeftView     = new QAction(QIcon("images\3D\left view.ico"),tr("左视图"), this);
-    QAction *actionRightView    = new QAction(QIcon("images\3D\right view.ico"),tr("右视图"), this);
-    QAction *actionTopView      = new QAction(QIcon("images\3D\top view.ico"),tr("俯视图"), this);
-    QAction *actionBottomView   = new QAction(QIcon("images\3D\bottom view.ico"),tr("仰视图"), this);
+    mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
+                          tr("增加"), this);
+    mActEdit= new QAction(QIcon(":/menu/icon/edit_64.ico"),
+                          tr("修改"), this);
+    mActDelete = new QAction(QIcon(":/menu/icon/delete_64.ico"),
+                             tr("删除"), this);
+    mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
+                             tr("查询"), this);
+    mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
+                              tr("打印"), this);
 
-    QAction *actionSWView       = new QAction(QIcon("images\3D\sw iso.ico"),tr("西南轴测图"), this);
-    QAction *actionNWView       = new QAction(QIcon("images\3D\nw iso.ico"),tr("西北轴测图"), this);
-    QAction *actionSEView       = new QAction(QIcon("images\3D\se iso.ico"),tr("东南轴测图"), this);
-    QAction *actionNEView       = new QAction(QIcon("images\3D\ne iso.ico"),tr("东北轴测图"), this);
+    mToolBar->addAction(mActAdd);
+    mToolBar->addAction(mActDelete);
+    mToolBar->addAction(mActEdit);
+    mToolBar->addAction(mActSearch);
+    mToolBar->addAction(mActPrinter);
 
-    QAction *actionZoomAll      = new QAction(QIcon("images\3D\zoomAll.png"),tr("全局缩放"), this);
-    QAction *actionZoomIn       = new QAction(QIcon("images\3D\zoomIn.png"),tr("放大"), this);
-    QAction *actionZoomOut      = new QAction(QIcon("images\3D\zoomOut.png"),tr("缩小"), this);
-    QAction *actionZoomTwoPoint = new QAction(QIcon("images\3D\zoomTwoPoint.png"),tr("局部缩放"), this);
-    QAction *actionMove         = new QAction(QIcon("images\3D\cursor_drag_arrow.png"),tr("移动"), this);
-    QAction *actionPLTopen      = new QAction(QIcon("images\3D\plt.png"),tr("打开plt文件"), this);
-    //    QAction *actionNEView = new QAction(QIcon("images\3D\rotateCCW"),tr("旋转"), this);
-    mToolBar->addAction(actionFrontView);
-    mToolBar->addAction(actionRearView);
-    mToolBar->addAction(actionLeftView);
-    mToolBar->addAction(actionRightView);
-    mToolBar->addAction(actionTopView);
-    mToolBar->addAction(actionBottomView);
-    mToolBar->addSeparator();
-    mToolBar->addAction(actionSWView);
-    mToolBar->addAction(actionNWView);
-    mToolBar->addAction(actionSEView);
-    mToolBar->addAction(actionNEView);
-    mToolBar->addSeparator();
-    mToolBar->addAction(actionZoomAll);
-    mToolBar->addAction(actionZoomIn);
-    mToolBar->addAction(actionZoomOut);
-    mToolBar->addAction(actionZoomTwoPoint);
-    mToolBar->addAction(actionMove);
-    mToolBar->addAction(actionPLTopen);
     ui->clientVerticalLayout->addWidget(mToolBar);
+    ui->clientVerticalLayout->addWidget(mClientWidget);
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
 {
     delete ui;
-}
-
-void
-ClientManagermentWidget::openClientWidgetSlot()
-{
-    ALOGD("ClientManagermentWidget::openClientWidgetSlot enter\n");
-    this->show();
 }

@@ -8,5 +8,10 @@
         <file>icon/tools.ico</file>
         <file>icon/Ford_Heavy_Wreck_Truck_128.ico</file>
         <file>F:/entertainment/picture/360wallpaper/292250.jpg</file>
+        <file>icon/add_64.ico</file>
+        <file>icon/delete_64.ico</file>
+        <file>icon/edit_64.ico</file>
+        <file>icon/printer_64.ico</file>
+        <file>icon/search_64.ico</file>
     </qresource>
 </RCC>

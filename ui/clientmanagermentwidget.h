@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class QToolBar;
+class QTableWidget;
 
 namespace Ui {
 class ClientManagermentWidget;
@@ -18,14 +19,18 @@ public:
     ~ClientManagermentWidget();
 
 private slots:
-    /**
-     * @brief 打开窗口
-     */
-    void            openClientWidgetSlot();
 
 private:
     Ui::ClientManagermentWidget *ui;
     QToolBar        *mToolBar;
+    QTableWidget    *mClientWidget;
+
+    // 工具栏动作
+    QAction         *mActAdd;
+    QAction         *mActDelete;
+    QAction         *mActEdit;
+    QAction         *mActSearch;
+    QAction         *mActPrinter;
 };
 
 #endif // CLIENTMANAGERMENTWIDGET_H
