@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <clientmanagermentwidget.h>
+#include <carmanagerment.h>
 #include <QList>
 //#include <Tlhelp32.h>
 
@@ -14,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    mCarWidget = new CarManagerment();
     mClientWidget = new ClientManagermentWidget();
 
     // 插入首页，首页一直存在
@@ -64,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(exitSystem()));
     connect(mActClient, SIGNAL(triggered()),
             this, SLOT(openClientWidget()));
+    connect(mActCarfile, SIGNAL(triggered()),
+            this, SLOT(openCarWidget()));
 }
 
 MainWindow::~MainWindow()
@@ -112,5 +116,24 @@ MainWindow::openClientWidget()
     }
     mOpenTabList.insert(size, mClientWidget);
     ui->mainTabWidget->addTab(mClientWidget, tr("客户"));
+    ui->mainTabWidget->setCurrentIndex(size);
+}
+
+void
+MainWindow::openCarWidget()
+{
+    ALOGD("MainWindow::openCarWidget enter");
+    if (mOpenTabList.isEmpty())
+        return;
+
+    int size = mOpenTabList.size();
+    int index = mOpenTabList.indexOf(mCarWidget);
+
+    if (index >= 0) {
+        ui->mainTabWidget->setCurrentIndex(index);
+        return;
+    }
+    mOpenTabList.insert(size, mCarWidget);
+    ui->mainTabWidget->addTab(mCarWidget, tr("车辆档案"));
     ui->mainTabWidget->setCurrentIndex(size);
 }

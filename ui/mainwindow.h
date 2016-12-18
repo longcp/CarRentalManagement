@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 class ClientManagermentWidget;
+class CarManagerment;
 class QWidget;
 
 namespace Ui {
@@ -32,6 +33,10 @@ private slots:
      * @brief 打开客户管理窗口
      */
     void        openClientWidget();
+    /**
+     * @brief 打开车辆管理窗口
+     */
+    void        openCarWidget();
 signals:
 
 private:
@@ -61,6 +66,7 @@ private:
 
     // widgets
     ClientManagermentWidget *mClientWidget;
+    CarManagerment          *mCarWidget;
 
     // 用于管理各个tabwidget的list
     QList<QWidget *>        mOpenTabList;
