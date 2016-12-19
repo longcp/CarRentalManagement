@@ -1,11 +1,11 @@
-#include "carmanagerment.h"
+#include "carmanagermentwidget.h"
 #include "ui_carmanagerment.h"
 #include <QTableWidget>
 #include <QToolBar>
 
-CarManagerment::CarManagerment(QWidget *parent) :
+CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CarManagerment)
+    ui(new Ui::CarManagermentWidget)
 {
     ui->setupUi(this);
     this->setWindowTitle("车辆档案");
@@ -69,7 +69,7 @@ CarManagerment::CarManagerment(QWidget *parent) :
     ui->mainVerticalLayout->addWidget(mCarWidget);
 }
 
-CarManagerment::~CarManagerment()
+CarManagermentWidget::~CarManagermentWidget()
 {
     delete ui;
 }

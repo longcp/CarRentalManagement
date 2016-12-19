@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 class ClientManagermentWidget;
-class CarManagerment;
+class CarManagermentWidget;
 class QWidget;
 
 namespace Ui {
@@ -76,7 +76,7 @@ private:
 
     // widgets
     ClientManagermentWidget *mClientWidget;
-    CarManagerment          *mCarWidget;
+    CarManagermentWidget    *mCarWidget;
 
     // 用于管理各个tabwidget的list
     QList<QWidget *>        mOpenTabList;

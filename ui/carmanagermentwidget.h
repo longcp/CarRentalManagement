@@ -6,19 +6,19 @@ class QToolBar;
 class QTableWidget;
 
 namespace Ui {
-class CarManagerment;
+class CarManagermentWidget;
 }
 
-class CarManagerment : public QWidget
+class CarManagermentWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CarManagerment(QWidget *parent = 0);
-    ~CarManagerment();
+    explicit CarManagermentWidget(QWidget *parent = 0);
+    ~CarManagermentWidget();
 
 private:
-    Ui::CarManagerment *ui;
+    Ui::CarManagermentWidget *ui;
     QToolBar        *mToolBar;
     QTableWidget    *mCarWidget;
 

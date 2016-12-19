@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <clientmanagermentwidget.h>
-#include <carmanagerment.h>
+#include <carmanagermentwidget.h>
 #include <QList>
 #include <QToolButton>
 //#include <Tlhelp32.h>
@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    mCarWidget = new CarManagerment();
+    mCarWidget = new CarManagermentWidget();
     mClientWidget = new ClientManagermentWidget();
 
     // 插入首页，首页一直存在
