@@ -4,6 +4,7 @@
 #include <QCloseEvent>
 #include <clientmanagermentwidget.h>
 #include <carmanagermentwidget.h>
+#include <rentaldocumentwindow.h>
 #include <QList>
 #include <QToolButton>
 //#include <Tlhelp32.h>
@@ -18,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     mCarWidget = new CarManagermentWidget();
     mClientWidget = new ClientManagermentWidget();
+    mRentalDocWindow = new RentalDocumentWindow();
 
     // 插入首页，首页一直存在
     mOpenTabList.insert(0, ui->homePageTab);
@@ -86,6 +88,11 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     connect(mActCarfile, SIGNAL(triggered()),
             this, SLOT(openCarWidget()));
+    /**
+     * @brief 打开泵送确认单窗口
+     */
+    connect(mActPump, SIGNAL(triggered()),
+            this, SLOT(openRentalDocWidget()));
     /**
      * @brief tab关闭事件
      */
@@ -163,6 +170,25 @@ MainWindow::openCarWidget()
     }
     mOpenTabList.insert(size, mCarWidget);
     ui->mainTabWidget->addTab(mCarWidget, tr("车辆档案"));
+    ui->mainTabWidget->setCurrentIndex(size);
+}
+
+void
+MainWindow::openRentalDocWidget()
+{
+    ALOGD("MainWindow::openCarWidget enter");
+    if (mOpenTabList.isEmpty())
+        return;
+
+    int size = mOpenTabList.size();
+    int index = mOpenTabList.indexOf(mRentalDocWindow);
+
+    if (index >= 0) {
+        ui->mainTabWidget->setCurrentIndex(index);
+        return;
+    }
+    mOpenTabList.insert(size, mRentalDocWindow);
+    ui->mainTabWidget->addTab(mRentalDocWindow, tr("泵送签证单"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 

@@ -17,15 +17,18 @@ INCLUDEPATH += utils/
 SOURCES += main.cpp\
         ui\mainwindow.cpp \
     ui/clientmanagermentwidget.cpp \
-    ui/carmanagermentwidget.cpp
+    ui/carmanagermentwidget.cpp \
+    ui/rentaldocumentwindow.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/clientmanagermentwidget.h \
-    ui/carmanagermentwidget.h
+    ui/carmanagermentwidget.h \
+    ui/rentaldocumentwindow.h
 
 FORMS    += ui\mainwindow.ui \
     ui/clientmanagermentwidget.ui \
-    ui/carmanagermentwidget.ui
+    ui/carmanagermentwidget.ui \
+    ui/rentaldocumentwindow.ui
 
 RESOURCES += \
     icon.qrc
