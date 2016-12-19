@@ -13,5 +13,6 @@
         <file>icon/edit_64.ico</file>
         <file>icon/printer_64.ico</file>
         <file>icon/search_64.ico</file>
+        <file>icon/close_64.ico</file>
     </qresource>
 </RCC>

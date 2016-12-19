@@ -5,6 +5,7 @@
 #include <clientmanagermentwidget.h>
 #include <carmanagerment.h>
 #include <QList>
+#include <QToolButton>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -58,16 +59,43 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addAction(mActCarIllegal);
     ui->mainToolBar->addSeparator();
 
+    // tabwidget
+    // 设置Tab标签的右上角的关闭按钮
+    QToolButton *closeTabButton = new QToolButton(ui->mainTabWidget);
+    closeTabButton->setAutoRaise(true);
+    closeTabButton->setCursor(Qt::ArrowCursor);
+    closeTabButton->setIcon(QIcon(":/menu/icon/close_64.ico"));
+    closeTabButton->setToolTip("关闭当前Tab页");
+    ui->mainTabWidget->setCornerWidget(closeTabButton,
+                                       Qt::TopRightCorner);
+    ui->mainTabWidget->setTabsClosable(true);
+
     /********** signals and slots *********/
     /**
      * @brief 退出系统
      */
     connect(mActExitSystem, SIGNAL(triggered()),
             this, SLOT(exitSystem()));
+    /**
+     * @brief 打开客户资料窗口
+     */
     connect(mActClient, SIGNAL(triggered()),
             this, SLOT(openClientWidget()));
+    /**
+     * @brief 打开车辆档案窗口
+     */
     connect(mActCarfile, SIGNAL(triggered()),
             this, SLOT(openCarWidget()));
+    /**
+     * @brief tab关闭事件
+     */
+    connect(ui->mainTabWidget, SIGNAL(tabCloseRequested(int)),
+            this, SLOT(removeTab(int)));
+    /**
+     * @brief 关闭当前页
+     */
+    connect(closeTabButton, SIGNAL(clicked()),
+            this, SLOT(removeCurTab()));
 }
 
 MainWindow::~MainWindow()
@@ -115,7 +143,7 @@ MainWindow::openClientWidget()
         return;
     }
     mOpenTabList.insert(size, mClientWidget);
-    ui->mainTabWidget->addTab(mClientWidget, tr("客户"));
+    ui->mainTabWidget->addTab(mClientWidget, tr("客户资料"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -136,4 +164,39 @@ MainWindow::openCarWidget()
     mOpenTabList.insert(size, mCarWidget);
     ui->mainTabWidget->addTab(mCarWidget, tr("车辆档案"));
     ui->mainTabWidget->setCurrentIndex(size);
+}
+
+void
+MainWindow::removeTab(int index)
+{
+    ALOGD("index = %d", index);
+    if (index == 0)
+        return;
+
+    mOpenTabList.removeAt(index);
+    ui->mainTabWidget->removeTab(index);
+}
+
+void
+MainWindow::removeCurTab()
+{
+    int index = ui->mainTabWidget->currentIndex();
+    if (index == 0)
+        return;
+
+    mOpenTabList.removeAt(index);
+    QWidget *widget = ui->mainTabWidget->widget(index);
+    ui->mainTabWidget->removeTab(index);
+    widget->close();
+}
+
+void
+MainWindow::on_mainTabWidget_currentChanged(int index)
+{
+    ALOGD("%s, cur tab index = %d", __FUNCTION__, index);
+    if (index == 0) {
+        // 主页
+    } else {
+        // 其他页
+    }
 }

@@ -37,6 +37,16 @@ private slots:
      * @brief 打开车辆管理窗口
      */
     void        openCarWidget();
+    /**
+     * @brief 关闭指定tab
+     */
+    void        removeTab(int);
+    /**
+     * @brief 关闭当前页
+     */
+    void        removeCurTab();
+    void        on_mainTabWidget_currentChanged(int index);
+
 signals:
 
 private:

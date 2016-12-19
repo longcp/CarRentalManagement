@@ -11,6 +11,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     ui(new Ui::ClientManagermentWidget)
 {
     ui->setupUi(this);
+    this->setWindowTitle("客户资料");
     QStringList clientWidgetHeader;
     clientWidgetHeader << "客户编号" << "客户名称" << "地址"
                        << "联系电话" << "传真" << "联系人"

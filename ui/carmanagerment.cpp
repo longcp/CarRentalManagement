@@ -8,6 +8,7 @@ CarManagerment::CarManagerment(QWidget *parent) :
     ui(new Ui::CarManagerment)
 {
     ui->setupUi(this);
+    this->setWindowTitle("车辆档案");
     QStringList clientWidgetHeader;
     clientWidgetHeader << "车号" << "泵式" << "已泵送方量数"
                        << "已泵送台班数" << "已行驶公里数" << "产品品牌"
