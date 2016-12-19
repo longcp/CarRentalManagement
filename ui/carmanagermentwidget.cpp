@@ -46,7 +46,7 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     mToolBar->setFocusPolicy(Qt::NoFocus);
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
     mToolBar->setInputMethodHints(Qt::ImhNone);
-    mToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);

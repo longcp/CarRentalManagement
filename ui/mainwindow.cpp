@@ -7,6 +7,7 @@
 #include <rentaldocumentwindow.h>
 #include <QList>
 #include <QToolButton>
+#include <QTabWidget>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -17,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->mainTabWidget->setTabIcon(0, QIcon(":/menu/icon/home_64.ico"));
+
+    // 子tab
     mCarWidget = new CarManagermentWidget();
     mClientWidget = new ClientManagermentWidget();
     mRentalDocWindow = new RentalDocumentWindow();
@@ -51,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent) :
                 tr("违章记录"));
 
     // 工具栏
+    ui->mainToolBar->setMovable(false);
+    ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);                                // 工具栏不可拖动
     ui->mainToolBar->addSeparator();
     ui->mainToolBar->addAction(mActClient);
     ui->mainToolBar->addAction(mActContract);
@@ -150,7 +156,9 @@ MainWindow::openClientWidget()
         return;
     }
     mOpenTabList.insert(size, mClientWidget);
-    ui->mainTabWidget->addTab(mClientWidget, tr("客户资料"));
+    ui->mainTabWidget->addTab(mClientWidget,
+                              QIcon(":/menu/icon/client.png"),
+                              tr("客户资料"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -169,7 +177,9 @@ MainWindow::openCarWidget()
         return;
     }
     mOpenTabList.insert(size, mCarWidget);
-    ui->mainTabWidget->addTab(mCarWidget, tr("车辆档案"));
+    ui->mainTabWidget->addTab(mCarWidget,
+                              QIcon(":/menu/icon/Ford_Heavy_Wreck_Truck_128.ico"),
+                              tr("车辆档案"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -188,7 +198,9 @@ MainWindow::openRentalDocWidget()
         return;
     }
     mOpenTabList.insert(size, mRentalDocWindow);
-    ui->mainTabWidget->addTab(mRentalDocWindow, tr("泵送签证单"));
+    ui->mainTabWidget->addTab(mRentalDocWindow,
+                              QIcon(":/menu/icon/pump_64.ico"),
+                              tr("泵送签证单"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 

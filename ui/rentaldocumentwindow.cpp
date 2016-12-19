@@ -27,7 +27,7 @@ RentalDocumentWindow::RentalDocumentWindow(QWidget *parent) :
 
     mToolBar = new QToolBar(tr("clientToolBar"), this);
     mToolBar->setStyleSheet("background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    mToolBar->setLayoutDirection(Qt::LeftToRight);
+    mToolBar->setLayoutDirection(Qt::LayoutDirectionAuto);
     mToolBar->setIconSize(QSize(24,24));
     mToolBar->setOrientation(Qt::Horizontal);
     mToolBar->setAllowedAreas(Qt::AllToolBarAreas);
@@ -39,7 +39,7 @@ RentalDocumentWindow::RentalDocumentWindow(QWidget *parent) :
     mToolBar->setFocusPolicy(Qt::NoFocus);
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
     mToolBar->setInputMethodHints(Qt::ImhNone);
-    mToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
