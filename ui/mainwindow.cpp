@@ -104,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * @brief 打开泵送确认单窗口
      */
-    connect(mActCarIllegal, SIGNAL(triggered()),
+    connect(mActPump, SIGNAL(triggered()),
             this, SLOT(openRentalDocWidget()));
     /**
      * @brief tab关闭事件

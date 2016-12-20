@@ -58,12 +58,18 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
                              tr("查询"), this);
     mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
                               tr("打印"), this);
+    mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
+                              tr("导出"), this);
+    mActImport = new QAction(QIcon(":/menu/icon/import_64.ico"),
+                              tr("导入"), this);
 
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActPrinter);
+    mToolBar->addAction(mActExport);
+    mToolBar->addAction(mActImport);
 
     ui->mainVerticalLayout->addWidget(mToolBar);
     ui->mainVerticalLayout->addWidget(mCarWidget);

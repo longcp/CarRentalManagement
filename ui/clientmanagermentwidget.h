@@ -31,6 +31,8 @@ private:
     QAction         *mActEdit;
     QAction         *mActSearch;
     QAction         *mActPrinter;
+    QAction         *mActExport;
+    QAction         *mActImport;
 };
 
 #endif // CLIENTMANAGERMENTWIDGET_H

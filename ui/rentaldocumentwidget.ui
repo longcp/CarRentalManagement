@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>827</width>
-    <height>655</height>
+    <width>891</width>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="mainVerticalLayout" stretch="0,0,0,0,1">
+  <layout class="QVBoxLayout" name="mainVerticalLayout" stretch="0,0,1">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -63,17 +63,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line">
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="statusWidget" native="true">
+    <widget class="QFrame" name="statusFrame">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -86,7 +76,13 @@
        <height>30</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="statusHorizonLayout">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="statusHorizontalLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -103,7 +99,9 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget" native="true"/>
+       <widget class="QWidget" name="widget" native="true">
+        <zorder>radioWidget</zorder>
+       </widget>
       </item>
       <item>
        <widget class="QWidget" name="radioWidget" native="true">
@@ -158,13 +156,6 @@
        <widget class="QWidget" name="widget_3" native="true"/>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
     </widget>
    </item>
    <item>

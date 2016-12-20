@@ -28,6 +28,8 @@ private:
     QAction         *mActEdit;
     QAction         *mActSearch;
     QAction         *mActPrinter;
+    QAction         *mActExport;
+    QAction         *mActImport;
 };
 
 #endif // CARMANAGERMENT_H

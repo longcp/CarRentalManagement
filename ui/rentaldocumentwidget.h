@@ -27,6 +27,8 @@ private:
     QAction         *mActEdit;
     QAction         *mActSearch;
     QAction         *mActPrinter;
+    QAction         *mActExport;
+    QAction         *mActImport;
 };
 
 #endif // RENTALDOCUMENTWIDGET_H

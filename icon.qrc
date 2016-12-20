@@ -15,5 +15,7 @@
         <file>icon/search_64.ico</file>
         <file>icon/close_64.ico</file>
         <file>icon/home_64.ico</file>
+        <file>icon/export_64.ico</file>
+        <file>icon/import_64.ico</file>
     </qresource>
 </RCC>
