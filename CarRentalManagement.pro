@@ -18,17 +18,20 @@ SOURCES += main.cpp\
         ui\mainwindow.cpp \
     ui/clientmanagermentwidget.cpp \
     ui/carmanagermentwidget.cpp \
-    ui/rentaldocumentwindow.cpp
+    ui/rentaldocumentwindow.cpp \
+    ui/rentaldocumentwidget.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/clientmanagermentwidget.h \
     ui/carmanagermentwidget.h \
-    ui/rentaldocumentwindow.h
+    ui/rentaldocumentwindow.h \
+    ui/rentaldocumentwidget.h
 
 FORMS    += ui\mainwindow.ui \
     ui/clientmanagermentwidget.ui \
     ui/carmanagermentwidget.ui \
-    ui/rentaldocumentwindow.ui
+    ui/rentaldocumentwindow.ui \
+    ui/rentaldocumentwidget.ui
 
 RESOURCES += \
     icon.qrc

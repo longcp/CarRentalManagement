@@ -5,6 +5,7 @@
 #include <clientmanagermentwidget.h>
 #include <carmanagermentwidget.h>
 #include <rentaldocumentwindow.h>
+#include <rentaldocumentwidget.h>
 #include <QList>
 #include <QToolButton>
 #include <QTabWidget>
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mCarWidget = new CarManagermentWidget();
     mClientWidget = new ClientManagermentWidget();
     mRentalDocWindow = new RentalDocumentWindow();
+    mRentalDocWidget = new RentalDocumentWidget();
 
     // 插入首页，首页一直存在
     mOpenTabList.insert(0, ui->homePageTab);
@@ -97,7 +99,12 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * @brief 打开泵送确认单窗口
      */
-    connect(mActPump, SIGNAL(triggered()),
+//    connect(mActPump, SIGNAL(triggered()),
+//            this, SLOT(openRentalDocWindow()));
+    /**
+     * @brief 打开泵送确认单窗口
+     */
+    connect(mActCarIllegal, SIGNAL(triggered()),
             this, SLOT(openRentalDocWidget()));
     /**
      * @brief tab关闭事件
@@ -184,7 +191,7 @@ MainWindow::openCarWidget()
 }
 
 void
-MainWindow::openRentalDocWidget()
+MainWindow::openRentalDocWindow()
 {
     ALOGD("MainWindow::openCarWidget enter");
     if (mOpenTabList.isEmpty())
@@ -199,6 +206,27 @@ MainWindow::openRentalDocWidget()
     }
     mOpenTabList.insert(size, mRentalDocWindow);
     ui->mainTabWidget->addTab(mRentalDocWindow,
+                              QIcon(":/menu/icon/pump_64.ico"),
+                              tr("泵送签证单"));
+    ui->mainTabWidget->setCurrentIndex(size);
+}
+
+void
+MainWindow::openRentalDocWidget()
+{
+    ALOGD("MainWindow::openCarWidget enter");
+    if (mOpenTabList.isEmpty())
+        return;
+
+    int size = mOpenTabList.size();
+    int index = mOpenTabList.indexOf(mRentalDocWidget);
+
+    if (index >= 0) {
+        ui->mainTabWidget->setCurrentIndex(index);
+        return;
+    }
+    mOpenTabList.insert(size, mRentalDocWidget);
+    ui->mainTabWidget->addTab(mRentalDocWidget,
                               QIcon(":/menu/icon/pump_64.ico"),
                               tr("泵送签证单"));
     ui->mainTabWidget->setCurrentIndex(size);
