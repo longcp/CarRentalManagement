@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class QToolBar;
+
 namespace Ui {
 class ReceivableWidget;
 }
@@ -17,6 +19,16 @@ public:
 
 private:
     Ui::ReceivableWidget *ui;
+    QToolBar        *mToolBar;
+
+    // 工具栏动作
+    QAction         *mActAdd;
+    QAction         *mActDelete;
+    QAction         *mActEdit;
+    QAction         *mActSearch;
+    QAction         *mActPrinter;
+    QAction         *mActExport;
+    QAction         *mActImport;
 };
 
 #endif // RECEIVABLEWIDGET_H

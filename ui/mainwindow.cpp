@@ -6,6 +6,7 @@
 #include <carmanagermentwidget.h>
 #include <rentaldocumentwindow.h>
 #include <rentaldocumentwidget.h>
+#include <receivablewidget.h>
 #include <QList>
 #include <QToolButton>
 #include <QTabWidget>
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mClientWidget = new ClientManagermentWidget();
     mRentalDocWindow = new RentalDocumentWindow();
     mRentalDocWidget = new RentalDocumentWidget();
+    mReceivableWidget= new ReceivableWidget();
 
     // 插入首页，首页一直存在
     mOpenTabList.insert(0, ui->homePageTab);
@@ -35,9 +37,9 @@ MainWindow::MainWindow(QWidget *parent) :
     mMenuRentalManagement   = ui->menuBar->addMenu(tr("租赁管理"));
     mMenuCarManagement  = ui->menuBar->addMenu(tr("车辆管理"));
     mMenuFinanceManagement  = ui->menuBar->addMenu(tr("财务统计"));
-    mMenuStatisticalReport  = ui->menuBar->addMenu(tr("统计报表"));
+//    mMenuStatisticalReport  = ui->menuBar->addMenu(tr("统计报表"));
     mMenuUploadPicture  = ui->menuBar->addMenu(tr("上传图片"));
-    mMenuUserManagerment    =ui->menuBar->addMenu(tr("用户管理"));
+    mMenuUserManagerment    = ui->menuBar->addMenu(tr("用户管理"));
     mMenuAbout = ui->menuBar->addMenu(tr("关于"));
     mActExitSystem = mMenuSystemSetting->addAction(
                 QIcon(":/menu/icon/exit.png"), tr("退出系统"));
@@ -55,6 +57,12 @@ MainWindow::MainWindow(QWidget *parent) :
     mActCarIllegal = mMenuCarManagement->addAction(
                 QIcon(":/menu/icon/car_break_rules_64.ico"),
                 tr("违章记录"));
+    mActReceivable = mMenuFinanceManagement->addAction(
+                QIcon(":/menu/icon/custom-reports256.png"),
+                tr("应收"));
+    mActReceipt = mMenuFinanceManagement->addAction(
+                QIcon(":/menu/icon/calculator_64.ico"),
+                tr("收款"));
 
     // 工具栏
     ui->mainToolBar->setMovable(false);
@@ -68,6 +76,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addAction(mActCarMaintenance);
     ui->mainToolBar->addAction(mActCarIllegal);
     ui->mainToolBar->addSeparator();
+    ui->mainToolBar->addAction(mActReceivable);
+    ui->mainToolBar->addAction(mActReceipt);
 
     // tabwidget
     // 设置Tab标签的右上角的关闭按钮
@@ -106,6 +116,11 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     connect(mActPump, SIGNAL(triggered()),
             this, SLOT(openRentalDocWidget()));
+    /**
+     * @brief 打开泵送确认单窗口
+     */
+    connect(mActReceivable, SIGNAL(triggered()),
+            this, SLOT(openReceivableWidget()));
     /**
      * @brief tab关闭事件
      */
@@ -229,6 +244,27 @@ MainWindow::openRentalDocWidget()
     ui->mainTabWidget->addTab(mRentalDocWidget,
                               QIcon(":/menu/icon/pump_64.ico"),
                               tr("泵送签证单"));
+    ui->mainTabWidget->setCurrentIndex(size);
+}
+
+void
+MainWindow::openReceivableWidget()
+{
+    ALOGD("MainWindow::openCarWidget enter");
+    if (mOpenTabList.isEmpty())
+        return;
+
+    int size = mOpenTabList.size();
+    int index = mOpenTabList.indexOf(mReceivableWidget);
+
+    if (index >= 0) {
+        ui->mainTabWidget->setCurrentIndex(index);
+        return;
+    }
+    mOpenTabList.insert(size, mReceivableWidget);
+    ui->mainTabWidget->addTab(mReceivableWidget,
+                              QIcon(":/menu/icon/custom-reports256.png"),
+                              tr("应收"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 

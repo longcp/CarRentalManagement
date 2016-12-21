@@ -101,17 +101,20 @@
       <item>
        <widget class="QWidget" name="chooseTopWidget" native="true">
         <layout class="QHBoxLayout" name="chooseUpHorizonLayout">
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QLabel" name="fromLabel">
            <property name="minimumSize">
             <size>
-             <width>30</width>
+             <width>20</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>30</width>
+             <width>20</width>
              <height>16777215</height>
             </size>
            </property>
@@ -143,13 +146,13 @@
           <widget class="QLabel" name="toLabel">
            <property name="minimumSize">
             <size>
-             <width>30</width>
+             <width>20</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>30</width>
+             <width>20</width>
              <height>16777215</height>
             </size>
            </property>
@@ -181,6 +184,9 @@
            <property name="text">
             <string>合同号:</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -203,10 +209,29 @@
            <property name="text">
             <string>客户名称:</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QComboBox" name="clientNameComboBox"/>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>10</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item>
           <widget class="QFrame" name="clientTypeFrame">
@@ -278,6 +303,9 @@
       <item>
        <widget class="QWidget" name="chooseBottomWidget" native="true">
         <layout class="QHBoxLayout" name="chooseBottomHorizontalLayout">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QLabel" name="label">
            <property name="maximumSize">
@@ -298,7 +326,7 @@
           <widget class="QLineEdit" name="docNumLineEdit">
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>16777215</width>
              <height>16777215</height>
             </size>
            </property>
@@ -331,25 +359,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_3">
-           <property name="maximumSize">
-            <size>
-             <width>60</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>泵送方式:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="pumpTypeComboBox"/>
-         </item>
-         <item>
           <widget class="QLabel" name="label_4">
            <property name="maximumSize">
             <size>
@@ -374,6 +383,25 @@
             </size>
            </property>
           </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>泵送方式:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="pumpTypeComboBox"/>
          </item>
          <item>
           <widget class="QLabel" name="carNumLabel">
@@ -408,6 +436,22 @@
           </widget>
          </item>
          <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>15</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QCheckBox" name="receivableCheckBox">
            <property name="text">
             <string>应收大于零</string>
@@ -421,7 +465,296 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="mainTableWidget"/>
+    <widget class="QTabWidget" name="summaryTableWidget">
+     <property name="tabPosition">
+      <enum>QTabWidget::South</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="detailTab">
+      <attribute name="title">
+       <string>应收明细</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="detailHorizonLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTableWidget" name="detailTableWidget">
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>日期</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>签证单号</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>客户名称</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>业务员</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>车号</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>泵式</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>混凝土公司</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>方量单价</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>台班单价</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>泵送方量</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>泵送台班</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>泵送台班时间</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>补油费</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>送管费</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>过路费</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>总金额</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>其他费用</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>已收金额</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>应收金额</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>工程名称</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>工程地址</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>浇注部位</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>收款人</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>备注</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>联系人</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>联系电话</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>合同号</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="summaryTab">
+      <attribute name="title">
+       <string>应收汇总</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="summaryHorizonLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTableWidget" name="mainTableWidget">
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>合同号</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>客户名称</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>泵送方量</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>泵送台班</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>补油费</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>送管费</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>过路费</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>其他费用</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>总金额</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>已收金额</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>应收金额</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
