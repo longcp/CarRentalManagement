@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ReceivableWidget</class>
- <widget class="QWidget" name="ReceivableWidget">
+ <class>ReceiptWidget</class>
+ <widget class="QWidget" name="ReceiptWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -465,295 +465,152 @@
     </widget>
    </item>
    <item>
-    <widget class="QTabWidget" name="summaryTableWidget">
-     <property name="tabPosition">
-      <enum>QTabWidget::South</enum>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="detailTab">
-      <attribute name="title">
-       <string>应收明细</string>
-      </attribute>
-      <layout class="QHBoxLayout" name="detailHorizonLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QTableWidget" name="detailTableWidget">
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string>日期</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>签证单号</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>客户名称</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>业务员</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>车号</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>泵式</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>混泥土公司</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>方量单价</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>台班单价</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>泵送方量</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>泵送台班</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>泵送台班时间</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>补油费</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>送管费</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>过路费</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>总金额</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>其他费用</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>已收金额</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>应收金额</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>工程名称</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>工程地址</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>浇注部位</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>收款人</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>备注</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>联系人</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>联系电话</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>合同号</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="summaryTab">
-      <attribute name="title">
-       <string>应收汇总</string>
-      </attribute>
-      <layout class="QHBoxLayout" name="summaryHorizonLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QTableWidget" name="mainTableWidget">
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string>合同号</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>客户名称</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>泵送方量</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>泵送台班</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>补油费</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>送管费</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>过路费</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>其他费用</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>总金额</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>已收金额</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>应收金额</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+    <widget class="QTableWidget" name="detailTableWidget">
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>日期</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>单号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>合同号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>客户名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>车号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>泵式</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>方量单价</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>台班单价</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>泵送方量</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>泵送台班</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>补油费</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>送管费</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>过路费</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>总金额</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>已收金额</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>应收金额</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>工程名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>工程地址</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>浇注部位</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>签证单号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>进场时间</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>出场时间</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>混泥土公司</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>业务员</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>备注</string>
+      </property>
+     </column>
     </widget>
    </item>
   </layout>

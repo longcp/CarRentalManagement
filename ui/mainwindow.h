@@ -8,6 +8,7 @@ class CarManagermentWidget;
 class RentalDocumentWindow;
 class RentalDocumentWidget;
 class ReceivableWidget;
+class ReceiptWidget;
 class QWidget;
 
 namespace Ui {
@@ -53,6 +54,10 @@ private slots:
      */
     void        openReceivableWidget();
     /**
+     * @brief 打开合同收款窗口
+     */
+    void        openReceiptWidget();
+    /**
      * @brief 关闭指定tab
      */
     void        removeTab(int);
@@ -95,6 +100,7 @@ private:
     RentalDocumentWindow    *mRentalDocWindow;
     RentalDocumentWidget    *mRentalDocWidget;
     ReceivableWidget        *mReceivableWidget;
+    ReceiptWidget           *mReceiptWidget;
 
     // 用于管理各个tabwidget的list
     QList<QWidget *>        mOpenTabList;

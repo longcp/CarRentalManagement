@@ -7,6 +7,7 @@
 #include <rentaldocumentwindow.h>
 #include <rentaldocumentwidget.h>
 #include <receivablewidget.h>
+#include <receiptwidget.h>
 #include <QList>
 #include <QToolButton>
 #include <QTabWidget>
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // 子tab
     mCarWidget = new CarManagermentWidget();
     mClientWidget = new ClientManagermentWidget();
+    mReceiptWidget= new ReceiptWidget();
     mRentalDocWindow = new RentalDocumentWindow();
     mRentalDocWidget = new RentalDocumentWidget();
     mReceivableWidget= new ReceivableWidget();
@@ -117,10 +119,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mActPump, SIGNAL(triggered()),
             this, SLOT(openRentalDocWidget()));
     /**
-     * @brief 打开泵送确认单窗口
+     * @brief 打开应收窗口
      */
     connect(mActReceivable, SIGNAL(triggered()),
             this, SLOT(openReceivableWidget()));
+    /**
+     * @brief 打开合同收款窗口
+     */
+    connect(mActReceipt, SIGNAL(triggered()),
+            this, SLOT(openReceiptWidget()));
     /**
      * @brief tab关闭事件
      */
@@ -265,6 +272,27 @@ MainWindow::openReceivableWidget()
     ui->mainTabWidget->addTab(mReceivableWidget,
                               QIcon(":/menu/icon/custom-reports256.png"),
                               tr("应收"));
+    ui->mainTabWidget->setCurrentIndex(size);
+}
+
+void
+MainWindow::openReceiptWidget()
+{
+    ALOGD("MainWindow::openCarWidget enter");
+    if (mOpenTabList.isEmpty())
+        return;
+
+    int size = mOpenTabList.size();
+    int index = mOpenTabList.indexOf(mReceiptWidget);
+
+    if (index >= 0) {
+        ui->mainTabWidget->setCurrentIndex(index);
+        return;
+    }
+    mOpenTabList.insert(size, mReceiptWidget);
+    ui->mainTabWidget->addTab(mReceiptWidget,
+                              QIcon(":/menu/icon/calculator_64.ico"),
+                              tr("收款"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
