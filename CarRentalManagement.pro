@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     ui/rentaldocumentwindow.cpp \
     ui/rentaldocumentwidget.cpp \
     ui/receivablewidget.cpp \
-    ui/receiptwidget.cpp
+    ui/receiptwidget.cpp \
+    ui/contractwidget.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/clientmanagermentwidget.h \
@@ -29,7 +30,8 @@ HEADERS  += ui\mainwindow.h \
     ui/rentaldocumentwindow.h \
     ui/rentaldocumentwidget.h \
     ui/receivablewidget.h \
-    ui/receiptwidget.h
+    ui/receiptwidget.h \
+    ui/contractwidget.h
 
 FORMS    += ui\mainwindow.ui \
     ui/clientmanagermentwidget.ui \
@@ -37,7 +39,8 @@ FORMS    += ui\mainwindow.ui \
     ui/rentaldocumentwindow.ui \
     ui/rentaldocumentwidget.ui \
     ui/receivablewidget.ui \
-    ui/receiptwidget.ui
+    ui/receiptwidget.ui \
+    ui/contractwidget.ui
 
 RESOURCES += \
     icon.qrc

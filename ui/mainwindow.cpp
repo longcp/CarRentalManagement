@@ -8,6 +8,7 @@
 #include <rentaldocumentwidget.h>
 #include <receivablewidget.h>
 #include <receiptwidget.h>
+#include <contractwidget.h>
 #include <QList>
 #include <QToolButton>
 #include <QTabWidget>
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mCarWidget = new CarManagermentWidget();
     mClientWidget = new ClientManagermentWidget();
     mReceiptWidget= new ReceiptWidget();
+    mContractWidget = new ContractWidget();
     mRentalDocWindow = new RentalDocumentWindow();
     mRentalDocWidget = new RentalDocumentWidget();
     mReceivableWidget= new ReceivableWidget();
@@ -129,6 +131,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mActReceipt, SIGNAL(triggered()),
             this, SLOT(openReceiptWidget()));
     /**
+     * @brief 打开租赁合同窗口
+     */
+    connect(mActContract, SIGNAL(triggered()),
+            this, SLOT(openContractWidget()));
+    /**
      * @brief tab关闭事件
      */
     connect(ui->mainTabWidget, SIGNAL(tabCloseRequested(int)),
@@ -173,7 +180,6 @@ MainWindow::exitSystem()
 void
 MainWindow::openClientWidget()
 {
-    ALOGD("MainWindow::openClientWidget enter");
     if (mOpenTabList.isEmpty())
         return;
 
@@ -194,7 +200,6 @@ MainWindow::openClientWidget()
 void
 MainWindow::openCarWidget()
 {
-    ALOGD("MainWindow::openCarWidget enter");
     if (mOpenTabList.isEmpty())
         return;
 
@@ -215,7 +220,6 @@ MainWindow::openCarWidget()
 void
 MainWindow::openRentalDocWindow()
 {
-    ALOGD("MainWindow::openCarWidget enter");
     if (mOpenTabList.isEmpty())
         return;
 
@@ -236,7 +240,6 @@ MainWindow::openRentalDocWindow()
 void
 MainWindow::openRentalDocWidget()
 {
-    ALOGD("MainWindow::openCarWidget enter");
     if (mOpenTabList.isEmpty())
         return;
 
@@ -257,7 +260,6 @@ MainWindow::openRentalDocWidget()
 void
 MainWindow::openReceivableWidget()
 {
-    ALOGD("MainWindow::openCarWidget enter");
     if (mOpenTabList.isEmpty())
         return;
 
@@ -278,7 +280,6 @@ MainWindow::openReceivableWidget()
 void
 MainWindow::openReceiptWidget()
 {
-    ALOGD("MainWindow::openCarWidget enter");
     if (mOpenTabList.isEmpty())
         return;
 
@@ -293,6 +294,26 @@ MainWindow::openReceiptWidget()
     ui->mainTabWidget->addTab(mReceiptWidget,
                               QIcon(":/menu/icon/calculator_64.ico"),
                               tr("收款"));
+    ui->mainTabWidget->setCurrentIndex(size);
+}
+
+void
+MainWindow::openContractWidget()
+{
+    if (mOpenTabList.isEmpty())
+        return;
+
+    int size = mOpenTabList.size();
+    int index = mOpenTabList.indexOf(mContractWidget);
+
+    if (index >= 0) {
+        ui->mainTabWidget->setCurrentIndex(index);
+        return;
+    }
+    mOpenTabList.insert(size, mContractWidget);
+    ui->mainTabWidget->addTab(mContractWidget,
+                              QIcon(":/menu/icon/contract_64.ico"),
+                              tr("租赁合同"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
