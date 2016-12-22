@@ -19,5 +19,11 @@
         <file>icon/import_64.ico</file>
         <file>icon/calculator_64.ico</file>
         <file>icon/custom-reports256.png</file>
+        <file>icon/arrow_left_64.ico</file>
+        <file>icon/arrow_right_64.ico</file>
+        <file>icon/cancel_64.ico</file>
+        <file>icon/exit_out_64.ico</file>
+        <file>icon/ok_64.ico</file>
+        <file>icon/save_64.ico</file>
     </qresource>
 </RCC>

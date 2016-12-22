@@ -64,7 +64,6 @@ RentalDocumentWindow::RentalDocumentWindow(QWidget *parent) :
     mToolBar->addAction(mActExport);
     mToolBar->addAction(mActImport);
 
-
     ui->centralVerticalLayout->addWidget(mToolBar);
     ui->centralVerticalLayout->addWidget(mRentalDocWidget);
 }

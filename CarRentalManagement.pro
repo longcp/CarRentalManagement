@@ -12,35 +12,43 @@ TARGET = CarRentalManagement
 TEMPLATE = app
 
 INCLUDEPATH += ui/
+INCLUDEPATH += ui/first_level/
+INCLUDEPATH += ui/second_level/
 INCLUDEPATH += utils/
 
 SOURCES += main.cpp\
         ui\mainwindow.cpp \
-    ui/clientmanagermentwidget.cpp \
-    ui/carmanagermentwidget.cpp \
-    ui/rentaldocumentwindow.cpp \
-    ui/rentaldocumentwidget.cpp \
-    ui/receivablewidget.cpp \
-    ui/receiptwidget.cpp \
-    ui/contractwidget.cpp
+    ui/first_level/clientmanagermentwidget.cpp \
+    ui/first_level/carmanagermentwidget.cpp \
+    ui/first_level/rentaldocumentwindow.cpp \
+    ui/first_level/rentaldocumentwidget.cpp \
+    ui/first_level/receivablewidget.cpp \
+    ui/first_level/receiptwidget.cpp \
+    ui/first_level/contractwidget.cpp \
+    ui/second_level/clienteditwindow.cpp \
+    ui/second_level/clienteditdialog.cpp
 
 HEADERS  += ui\mainwindow.h \
-    ui/clientmanagermentwidget.h \
-    ui/carmanagermentwidget.h \
-    ui/rentaldocumentwindow.h \
-    ui/rentaldocumentwidget.h \
-    ui/receivablewidget.h \
-    ui/receiptwidget.h \
-    ui/contractwidget.h
+    ui/first_level/clientmanagermentwidget.h \
+    ui/first_level/carmanagermentwidget.h \
+    ui/first_level/rentaldocumentwindow.h \
+    ui/first_level/rentaldocumentwidget.h \
+    ui/first_level/receivablewidget.h \
+    ui/first_level/receiptwidget.h \
+    ui/first_level/contractwidget.h \
+    ui/second_level/clienteditwindow.h \
+    ui/second_level/clienteditdialog.h
 
 FORMS    += ui\mainwindow.ui \
-    ui/clientmanagermentwidget.ui \
-    ui/carmanagermentwidget.ui \
-    ui/rentaldocumentwindow.ui \
-    ui/rentaldocumentwidget.ui \
-    ui/receivablewidget.ui \
-    ui/receiptwidget.ui \
-    ui/contractwidget.ui
+    ui/first_level/clientmanagermentwidget.ui \
+    ui/first_level/carmanagermentwidget.ui \
+    ui/first_level/rentaldocumentwindow.ui \
+    ui/first_level/rentaldocumentwidget.ui \
+    ui/first_level/receivablewidget.ui \
+    ui/first_level/receiptwidget.ui \
+    ui/first_level/contractwidget.ui \
+    ui/second_level/clienteditwindow.ui \
+    ui/second_level/clienteditdialog.ui
 
 RESOURCES += \
     icon.qrc

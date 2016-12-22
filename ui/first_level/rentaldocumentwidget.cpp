@@ -53,7 +53,6 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     mToolBar->addAction(mActExport);
     mToolBar->addAction(mActImport);
 
-
     ui->toolBarHorizonLayout->addWidget(mToolBar);
 }
 

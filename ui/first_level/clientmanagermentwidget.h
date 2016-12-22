@@ -5,6 +5,7 @@
 
 class QToolBar;
 class QTableWidget;
+class ClientEditDialog;
 
 namespace Ui {
 class ClientManagermentWidget;
@@ -19,11 +20,17 @@ public:
     ~ClientManagermentWidget();
 
 private slots:
+    void            cellDoubleClickedSlot(int a,int b);
+
+signals:
+    void            openClientEditDialogSignal();
 
 private:
     Ui::ClientManagermentWidget *ui;
     QToolBar        *mToolBar;
     QTableWidget    *mClientWidget;
+    // 编辑客户资料窗口
+    ClientEditDialog    *mClientEditDialog;
 
     // 工具栏动作
     QAction         *mActAdd;

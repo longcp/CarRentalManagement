@@ -1,17 +1,15 @@
-#include "contractwidget.h"
-#include "ui_contractwidget.h"
+#include "receiptwidget.h"
+#include "ui_receiptwidget.h"
 #include <QToolBar>
 
-ContractWidget::ContractWidget(QWidget *parent) :
+ReceiptWidget::ReceiptWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ContractWidget)
+    ui(new Ui::ReceiptWidget)
 {
     ui->setupUi(this);
-//    ui->chooseWidget->setStyleSheet(
-//                "background-color: rgb(240,240,240);color:rgb(0,0,0);");
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    this->setWindowTitle("应收账款");
+    this->setWindowTitle("合同收款");
 
     mToolBar = new QToolBar(tr("clientToolBar"), this);
     mToolBar->setStyleSheet(
@@ -53,11 +51,10 @@ ContractWidget::ContractWidget(QWidget *parent) :
     mToolBar->addAction(mActExport);
     mToolBar->addAction(mActImport);
 
-
-    ui->toolBarHorizonLayout->addWidget(mToolBar);
+    ui->toolBarVerticalLayout->addWidget(mToolBar);
 }
 
-ContractWidget::~ContractWidget()
+ReceiptWidget::~ReceiptWidget()
 {
     delete ui;
 }

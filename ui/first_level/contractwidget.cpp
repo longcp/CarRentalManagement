@@ -1,33 +1,22 @@
-#include "clientmanagermentwidget.h"
-#include "ui_clientmanagermentwidget.h"
+#include "contractwidget.h"
+#include "ui_contractwidget.h"
 #include <QToolBar>
-#include <QTableWidget>
 
-#define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
-#include "utils/Log.h"
-
-ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
+ContractWidget::ContractWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ClientManagermentWidget)
+    ui(new Ui::ContractWidget)
 {
     ui->setupUi(this);
-    this->setWindowTitle("客户资料");
-    QStringList clientWidgetHeader;
-    clientWidgetHeader << "客户编号" << "客户名称" << "地址"
-                       << "联系电话" << "传真" << "联系人"
-                       << "结账方式" << "月结日" << "工程款额"
-                       << "已付款额" << "余额" << "备注";
-    mClientWidget = new QTableWidget(3, clientWidgetHeader.length());
-    mClientWidget->setHorizontalHeaderLabels(clientWidgetHeader);
-    mClientWidget->setItem(0,1,new QTableWidgetItem("Jan"));
-    mClientWidget->setItem(1,1,new QTableWidgetItem("Feb"));
-    mClientWidget->setItem(2,1,new QTableWidgetItem("Mar"));
-//    mClientWidget->rowCount();
-//    mClientWidget->insertRow(xxx);
+//    ui->chooseWidget->setStyleSheet(
+//                "background-color: rgb(240,240,240);color:rgb(0,0,0);");
+    ui->toolBarWidget->setStyleSheet(
+                "background-color: rgb(234,234,234);color:rgb(0,0,0);");
+    this->setWindowTitle("应收账款");
 
     mToolBar = new QToolBar(tr("clientToolBar"), this);
-    mToolBar->setStyleSheet("background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    mToolBar->setLayoutDirection(Qt::LeftToRight);
+    mToolBar->setStyleSheet(
+                "background-color: rgb(234,234,234);color:rgb(0,0,0);");
+    mToolBar->setLayoutDirection(Qt::LayoutDirectionAuto);
     mToolBar->setIconSize(QSize(24,24));
     mToolBar->setOrientation(Qt::Horizontal);
     mToolBar->setAllowedAreas(Qt::AllToolBarAreas);
@@ -64,12 +53,10 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActExport);
     mToolBar->addAction(mActImport);
 
-
-    ui->clientVerticalLayout->addWidget(mToolBar);
-    ui->clientVerticalLayout->addWidget(mClientWidget);
+    ui->toolBarHorizonLayout->addWidget(mToolBar);
 }
 
-ClientManagermentWidget::~ClientManagermentWidget()
+ContractWidget::~ContractWidget()
 {
     delete ui;
 }

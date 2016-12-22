@@ -53,7 +53,6 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
     mToolBar->addAction(mActExport);
     mToolBar->addAction(mActImport);
 
-
     ui->toolBarVerticalLayout->addWidget(mToolBar);
 }
 
