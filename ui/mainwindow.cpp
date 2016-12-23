@@ -4,7 +4,6 @@
 #include <QCloseEvent>
 #include <clientmanagermentwidget.h>
 #include <carmanagermentwidget.h>
-#include <rentaldocumentwindow.h>
 #include <rentaldocumentwidget.h>
 #include <receivablewidget.h>
 #include <receiptwidget.h>
@@ -29,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
     mClientWidget = new ClientManagermentWidget();
     mReceiptWidget= new ReceiptWidget();
     mContractWidget = new ContractWidget();
-    mRentalDocWindow = new RentalDocumentWindow();
     mRentalDocWidget = new RentalDocumentWidget();
     mReceivableWidget= new ReceivableWidget();
 
@@ -214,26 +212,6 @@ MainWindow::openCarWidget()
     ui->mainTabWidget->addTab(mCarWidget,
                               QIcon(":/menu/icon/Ford_Heavy_Wreck_Truck_128.ico"),
                               tr("车辆档案"));
-    ui->mainTabWidget->setCurrentIndex(size);
-}
-
-void
-MainWindow::openRentalDocWindow()
-{
-    if (mOpenTabList.isEmpty())
-        return;
-
-    int size = mOpenTabList.size();
-    int index = mOpenTabList.indexOf(mRentalDocWindow);
-
-    if (index >= 0) {
-        ui->mainTabWidget->setCurrentIndex(index);
-        return;
-    }
-    mOpenTabList.insert(size, mRentalDocWindow);
-    ui->mainTabWidget->addTab(mRentalDocWindow,
-                              QIcon(":/menu/icon/pump_64.ico"),
-                              tr("泵送签证单"));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 

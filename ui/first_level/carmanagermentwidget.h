@@ -18,9 +18,13 @@ public:
     ~CarManagermentWidget();
 
 private:
+    /**
+     * @brief 配置toolbar
+     */
+    void            configToolBar();
+
     Ui::CarManagermentWidget *ui;
     QToolBar        *mToolBar;
-    QTableWidget    *mCarWidget;
 
     // 工具栏动作
     QAction         *mActAdd;

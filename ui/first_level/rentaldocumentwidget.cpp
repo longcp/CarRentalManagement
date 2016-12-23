@@ -13,7 +13,53 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("泵送签证单");
 
-    mToolBar = new QToolBar(tr("clientToolBar"), this);
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->docTableWidget->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->docTableWidget->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->docTableWidget->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
+                          tr("增加"), this);
+    mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
+                          tr("修改"), this);
+    mActDelete = new QAction(QIcon(":/menu/icon/delete_64.ico"),
+                             tr("删除"), this);
+    mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
+                             tr("查询"), this);
+    mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
+                              tr("导出"), this);
+    mActImport = new QAction(QIcon(":/menu/icon/import_64.ico"),
+                              tr("导入"), this);
+    mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
+                              tr("打印"), this);
+
+    mToolBar = new QToolBar(tr("rentalDocToolBar"), this);
+    this->configToolBar();
+    mToolBar->addAction(mActAdd);
+    mToolBar->addAction(mActDelete);
+    mToolBar->addAction(mActEdit);
+    mToolBar->addAction(mActSearch);
+    mToolBar->addAction(mActPrinter);
+    mToolBar->addAction(mActExport);
+    mToolBar->addAction(mActImport);
+
+    ui->toolBarHorizonLayout->addWidget(mToolBar);
+}
+
+RentalDocumentWidget::~RentalDocumentWidget()
+{
+    delete ui;
+}
+
+void
+RentalDocumentWidget::configToolBar()
+{
+    if (!mToolBar)
+        return;
+
     mToolBar->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     mToolBar->setLayoutDirection(Qt::LayoutDirectionAuto);
@@ -29,34 +75,4 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
     mToolBar->setInputMethodHints(Qt::ImhNone);
     mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-    mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
-                          tr("增加"), this);
-    mActEdit= new QAction(QIcon(":/menu/icon/edit_64.ico"),
-                          tr("修改"), this);
-    mActDelete = new QAction(QIcon(":/menu/icon/delete_64.ico"),
-                             tr("删除"), this);
-    mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
-                             tr("查询"), this);
-    mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
-                              tr("打印"), this);
-    mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
-                              tr("导出"), this);
-    mActImport = new QAction(QIcon(":/menu/icon/import_64.ico"),
-                              tr("导入"), this);
-
-    mToolBar->addAction(mActAdd);
-    mToolBar->addAction(mActDelete);
-    mToolBar->addAction(mActEdit);
-    mToolBar->addAction(mActSearch);
-    mToolBar->addAction(mActPrinter);
-    mToolBar->addAction(mActExport);
-    mToolBar->addAction(mActImport);
-
-    ui->toolBarHorizonLayout->addWidget(mToolBar);
-}
-
-RentalDocumentWidget::~RentalDocumentWidget()
-{
-    delete ui;
 }

@@ -188,7 +188,7 @@
            </column>
            <column>
             <property name="text">
-             <string>新建列</string>
+             <string>结构/层数</string>
             </property>
            </column>
            <column>
@@ -213,7 +213,7 @@
            </column>
            <column>
             <property name="text">
-             <string>新建列</string>
+             <string>含税</string>
             </property>
            </column>
            <column>
@@ -234,7 +234,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QTableWidget" name="prictTableWidget">
+          <widget class="QTableWidget" name="priceTableWidget">
            <row>
             <property name="text">
              <string>新建行</string>
@@ -262,12 +262,12 @@
            </row>
            <column>
             <property name="text">
-             <string>新建列</string>
+             <string>泵式</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>泵式</string>
+             <string>方量价格</string>
             </property>
            </column>
            <column>
@@ -282,7 +282,7 @@
            </column>
            <column>
             <property name="text">
-             <string>新建列</string>
+             <string>4小时内台班价格</string>
             </property>
            </column>
            <column>

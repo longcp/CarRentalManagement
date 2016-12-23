@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>837</width>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,6 +29,263 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
+   <item>
+    <widget class="QWidget" name="toolBarWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>55</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>55</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="toolBarHorizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="carTableWidget">
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>车号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>泵式</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>已泵送方量数</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>已泵送台班数</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>已行驶公里数</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>产品品牌</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>底盘品牌</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>行驶证发证日期</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>专用油卡号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>车架号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>车辆识别号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>产品型号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>保险卡号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>发动机号</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>车身价</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>发动机额定功率(KW)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>最大理论输送量(m3/h)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>最大理论输出压力(MPA)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>外形尺寸</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>臂架垂直长度M</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>臂架水平长度M</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>整车总质量(KG)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>整车装备质量(KG)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>生厂日期</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>出厂编码</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>是否购买交险</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>交险费</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>保险公司(交险)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>购买日期(交险)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>是否购买商险</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>保险公司(商险)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>购买日期(商险)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>年费</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>车船费</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>年审日期</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>操作员(1)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>操作员(2)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>操作员(3)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>操作员(4)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>操作员(5)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>备注</string>
+      </property>
+     </column>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

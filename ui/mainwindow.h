@@ -5,7 +5,6 @@
 
 class ClientManagermentWidget;
 class CarManagermentWidget;
-class RentalDocumentWindow;
 class RentalDocumentWidget;
 class ReceivableWidget;
 class ReceiptWidget;
@@ -42,10 +41,6 @@ private slots:
      * @brief 打开车辆管理窗口
      */
     void        openCarWidget();
-    /**
-     * @brief 打开泵送确认单窗口
-     */
-    void        openRentalDocWindow();
     /**
      * @brief 打开泵送确认单窗口
      */
@@ -102,7 +97,6 @@ private:
     // widgets
     ClientManagermentWidget *mClientWidget;
     CarManagermentWidget    *mCarWidget;
-    RentalDocumentWindow    *mRentalDocWindow;
     RentalDocumentWidget    *mRentalDocWidget;
     ReceivableWidget        *mReceivableWidget;
     ReceiptWidget           *mReceiptWidget;

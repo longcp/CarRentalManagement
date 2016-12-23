@@ -20,34 +20,28 @@ SOURCES += main.cpp\
         ui\mainwindow.cpp \
     ui/first_level/clientmanagermentwidget.cpp \
     ui/first_level/carmanagermentwidget.cpp \
-    ui/first_level/rentaldocumentwindow.cpp \
     ui/first_level/rentaldocumentwidget.cpp \
     ui/first_level/receivablewidget.cpp \
     ui/first_level/receiptwidget.cpp \
     ui/first_level/contractwidget.cpp \
-    ui/second_level/clienteditwindow.cpp \
     ui/second_level/clienteditdialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/first_level/clientmanagermentwidget.h \
     ui/first_level/carmanagermentwidget.h \
-    ui/first_level/rentaldocumentwindow.h \
     ui/first_level/rentaldocumentwidget.h \
     ui/first_level/receivablewidget.h \
     ui/first_level/receiptwidget.h \
     ui/first_level/contractwidget.h \
-    ui/second_level/clienteditwindow.h \
     ui/second_level/clienteditdialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/first_level/clientmanagermentwidget.ui \
     ui/first_level/carmanagermentwidget.ui \
-    ui/first_level/rentaldocumentwindow.ui \
     ui/first_level/rentaldocumentwidget.ui \
     ui/first_level/receivablewidget.ui \
     ui/first_level/receiptwidget.ui \
     ui/first_level/contractwidget.ui \
-    ui/second_level/clienteditwindow.ui \
     ui/second_level/clienteditdialog.ui
 
 RESOURCES += \

@@ -18,6 +18,11 @@ public:
     ~ContractWidget();
 
 private:
+    /**
+     * @brief 配置工具栏
+     */
+    void            configToolBar();
+
     Ui::ContractWidget *ui;
     QToolBar        *mToolBar;
 

@@ -18,6 +18,11 @@ public:
     ~ReceivableWidget();
 
 private:
+    /**
+     * @brief 配置工具栏
+     */
+    void            configToolBar();
+
     Ui::ReceivableWidget *ui;
     QToolBar        *mToolBar;
 

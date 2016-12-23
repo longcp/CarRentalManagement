@@ -18,6 +18,10 @@ public:
     ~ReceiptWidget();
 
 private:
+    /**
+     * @brief 配置工具栏
+     */
+    void            configToolBar();
     Ui::ReceiptWidget *ui;
     QToolBar        *mToolBar;
 

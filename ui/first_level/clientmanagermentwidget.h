@@ -26,9 +26,14 @@ signals:
     void            openClientEditDialogSignal();
 
 private:
+    /**
+     * @brief 配置工具栏
+     */
+    void            configToolBar();
+
     Ui::ClientManagermentWidget *ui;
     QToolBar        *mToolBar;
-    QTableWidget    *mClientWidget;
+
     // 编辑客户资料窗口
     ClientEditDialog    *mClientEditDialog;
 

@@ -18,6 +18,11 @@ public:
     ~RentalDocumentWidget();
 
 private:
+    /**
+     * @brief 配置工具栏
+     */
+    void            configToolBar();
+
     Ui::RentalDocumentWidget *ui;
     QToolBar        *mToolBar;
 
