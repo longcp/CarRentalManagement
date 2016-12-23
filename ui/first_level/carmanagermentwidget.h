@@ -4,6 +4,7 @@
 #include <QWidget>
 class QToolBar;
 class QTableWidget;
+class CarEditDialog;
 
 namespace Ui {
 class CarManagermentWidget;
@@ -17,6 +18,12 @@ public:
     explicit CarManagermentWidget(QWidget *parent = 0);
     ~CarManagermentWidget();
 
+private slots:
+    void            cellDoubleClickedSlot(int a,int b);
+
+signals:
+    void            openCarEditDialogSignal();
+
 private:
     /**
      * @brief 配置toolbar
@@ -25,6 +32,9 @@ private:
 
     Ui::CarManagermentWidget *ui;
     QToolBar        *mToolBar;
+
+    // 编辑车辆档案窗口
+    CarEditDialog    *mCarEditDialog;
 
     // 工具栏动作
     QAction         *mActAdd;

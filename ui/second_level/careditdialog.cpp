@@ -1,18 +1,18 @@
-#include "clienteditdialog.h"
-#include "ui_clienteditdialog.h"
+#include "careditdialog.h"
+#include "ui_careditdialog.h"
 #include <QToolBar>
 
-ClientEditDialog::ClientEditDialog(QWidget *parent) :
+CarEditDialog::CarEditDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ClientEditDialog)
+    ui(new Ui::CarEditDialog)
 {
     ui->setupUi(this);
     this->setWindowFlags(this->windowFlags()
                          &~Qt::WindowMaximizeButtonHint);               //去掉最大化按钮
-    ui->toolBarFrame->setStyleSheet(
+    ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("客户资料");
-    this->setFixedSize(800, 600);
+    this->setFixedSize(1000, 800);
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("新增"), this);
@@ -42,22 +42,22 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
     mToolBar->addAction(mActCancel);
     mToolBar->addAction(mActExit);
 
-    ui->toolBarVerticalLayout->addWidget(mToolBar);
+    ui->toolBarHorizontalLayout->addWidget(mToolBar);
 }
 
-ClientEditDialog::~ClientEditDialog()
+CarEditDialog::~CarEditDialog()
 {
     delete ui;
 }
 
 void
-ClientEditDialog::openClientEditDialogSlot()
+CarEditDialog::openCarEditDialogSlot()
 {
     this->exec();
 }
 
 void
-ClientEditDialog::configToolBar()
+CarEditDialog::configToolBar()
 {
     if (!mToolBar)
         return;

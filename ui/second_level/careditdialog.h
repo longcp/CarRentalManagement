@@ -1,34 +1,34 @@
-#ifndef CLIENTEDITDIALOG_H
-#define CLIENTEDITDIALOG_H
+#ifndef CAREDITDIALOG_H
+#define CAREDITDIALOG_H
 
 #include <QDialog>
 
 class QToolBar;
 
 namespace Ui {
-class ClientEditDialog;
+class CarEditDialog;
 }
 
-class ClientEditDialog : public QDialog
+class CarEditDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit ClientEditDialog(QWidget *parent = 0);
-    ~ClientEditDialog();
+    explicit CarEditDialog(QWidget *parent = 0);
+    ~CarEditDialog();
 
 private slots:
     /**
      * @brief 打开窗口
      */
-    void            openClientEditDialogSlot();
+    void            openCarEditDialogSlot();
 
 private:
     /**
      * @brief 配置工具栏
      */
     void            configToolBar();
-    Ui::ClientEditDialog *ui;
+    Ui::CarEditDialog *ui;
     // 工具栏
     QToolBar        *mToolBar;
 
@@ -43,4 +43,4 @@ private:
     QAction         *mActCancel;
 };
 
-#endif // CLIENTEDITDIALOG_H
+#endif // CAREDITDIALOG_H

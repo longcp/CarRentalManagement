@@ -2,6 +2,10 @@
 #include "ui_carmanagermentwidget.h"
 #include <QTableWidget>
 #include <QToolBar>
+#include <careditdialog.h>
+
+#define LOG_TAG                 "CAR_MANAGERMENT_WIDGET"
+#include "utils/Log.h"
 
 CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     QWidget(parent),
@@ -9,6 +13,8 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("车辆档案");
+
+    mCarEditDialog = new CarEditDialog();
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
     ui->carTableWidget->setEditTriggers(
@@ -47,6 +53,17 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActImport);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+
+    /**
+     * @brief 单元格双击事件
+     */
+    connect(ui->carTableWidget, SIGNAL(cellDoubleClicked(int,int)),
+            this, SLOT(cellDoubleClickedSlot(int,int)));
+    /**
+     * @brief 单元格双击事件
+     */
+    connect(this, SIGNAL(openCarEditDialogSignal()),
+            mCarEditDialog, SLOT(openCarEditDialogSlot()));
 }
 
 CarManagermentWidget::~CarManagermentWidget()
@@ -74,4 +91,11 @@ CarManagermentWidget::configToolBar()
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
     mToolBar->setInputMethodHints(Qt::ImhNone);
     mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+}
+
+void
+CarManagermentWidget::cellDoubleClickedSlot(int a,int b)
+{
+    ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
+    emit openCarEditDialogSignal();
 }
