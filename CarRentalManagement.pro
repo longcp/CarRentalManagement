@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     ui/first_level/receiptwidget.cpp \
     ui/first_level/contractwidget.cpp \
     ui/second_level/clienteditdialog.cpp \
-    ui/second_level/careditdialog.cpp
+    ui/second_level/careditdialog.cpp \
+    ui/second_level/receipteditdialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/first_level/clientmanagermentwidget.h \
@@ -35,7 +36,8 @@ HEADERS  += ui\mainwindow.h \
     ui/first_level/receiptwidget.h \
     ui/first_level/contractwidget.h \
     ui/second_level/clienteditdialog.h \
-    ui/second_level/careditdialog.h
+    ui/second_level/careditdialog.h \
+    ui/second_level/receipteditdialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/first_level/clientmanagermentwidget.ui \
@@ -45,7 +47,8 @@ FORMS    += ui\mainwindow.ui \
     ui/first_level/receiptwidget.ui \
     ui/first_level/contractwidget.ui \
     ui/second_level/clienteditdialog.ui \
-    ui/second_level/careditdialog.ui
+    ui/second_level/careditdialog.ui \
+    ui/second_level/receipteditdialog.ui
 
 RESOURCES += \
     icon.qrc

@@ -1,6 +1,10 @@
 #include "receiptwidget.h"
 #include "ui_receiptwidget.h"
 #include <QToolBar>
+#include <receipteditdialog.h>
+
+#define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
+#include "utils/Log.h"
 
 ReceiptWidget::ReceiptWidget(QWidget *parent) :
     QWidget(parent),
@@ -10,6 +14,8 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("合同收款");
+
+    mReceiptEditDialog = new ReceiptEditDialog();
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
     ui->detailTableWidget->setEditTriggers(
@@ -45,6 +51,17 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
     mToolBar->addAction(mActImport);
 
     ui->toolBarVerticalLayout->addWidget(mToolBar);
+
+    /**
+     * @brief 单元格双击事件
+     */
+    connect(ui->detailTableWidget, SIGNAL(cellDoubleClicked(int,int)),
+            this, SLOT(cellDoubleClickedSlot(int,int)));
+    /**
+     * @brief 单元格双击事件
+     */
+    connect(this, SIGNAL(openReceiptEditDialogSignal()),
+            mReceiptEditDialog, SLOT(openReceiptEditDialogSlot()));
 }
 
 ReceiptWidget::~ReceiptWidget()
@@ -73,4 +90,11 @@ ReceiptWidget::configToolBar()
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
     mToolBar->setInputMethodHints(Qt::ImhNone);
     mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+}
+
+void
+ReceiptWidget::cellDoubleClickedSlot(int a,int b)
+{
+    ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
+    emit openReceiptEditDialogSignal();
 }

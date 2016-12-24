@@ -52,7 +52,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActExport);
     mToolBar->addAction(mActImport);
 
-    ui->clientVerticalLayout->addWidget(mToolBar);
+    ui->toolBarHorizontalLayout->addWidget(mToolBar);
 
     /**
      * @brief 单元格双击事件

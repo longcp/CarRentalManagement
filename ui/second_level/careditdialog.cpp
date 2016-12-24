@@ -11,7 +11,7 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
                          &~Qt::WindowMaximizeButtonHint);               //去掉最大化按钮
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    this->setWindowTitle("客户资料");
+    this->setWindowTitle("车辆档案");
     this->setFixedSize(1000, 800);
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
