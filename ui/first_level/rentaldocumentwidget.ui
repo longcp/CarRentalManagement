@@ -43,7 +43,7 @@
        <height>55</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="toolBarHorizonLayout" stretch="">
+     <layout class="QHBoxLayout" name="toolBarHorizonLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -99,9 +99,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget" native="true">
-        <zorder>radioWidget</zorder>
-       </widget>
+       <widget class="QWidget" name="widget" native="true"/>
       </item>
       <item>
        <widget class="QWidget" name="radioWidget" native="true">
@@ -231,7 +229,57 @@
         </row>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>承租单位</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>工程名称</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>施工部位</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>泵式</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>混凝土标号</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>车牌型号</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>施工日期</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>进场时间</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>离场时间</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>工作时长</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>泵送方量(m3)</string>
          </property>
         </column>
         <column>
@@ -241,42 +289,42 @@
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>开工燃油</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>工程总价</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>现场负责人</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>负责人联系电话</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>当班司机1</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>当班司机2</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>当班司机3</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>备注</string>
          </property>
         </column>
        </widget>
