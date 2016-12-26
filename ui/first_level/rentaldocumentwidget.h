@@ -4,6 +4,7 @@
 #include <QWidget>
 class QToolBar;
 class QTableWidget;
+class RentalDocumentEditDialog;
 
 namespace Ui {
 class RentalDocumentWidget;
@@ -17,6 +18,12 @@ public:
     explicit RentalDocumentWidget(QWidget *parent = 0);
     ~RentalDocumentWidget();
 
+private slots:
+    void            cellDoubleClickedSlot(int a,int b);
+
+signals:
+    void            openRentalEditDialogSignal();
+
 private:
     /**
      * @brief 配置工具栏
@@ -25,6 +32,7 @@ private:
 
     Ui::RentalDocumentWidget *ui;
     QToolBar        *mToolBar;
+    RentalDocumentEditDialog    *mRentalDocEditDialog;
 
     // 工具栏动作
     QAction         *mActAdd;

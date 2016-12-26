@@ -229,7 +229,7 @@
         </row>
         <column>
          <property name="text">
-          <string>承租单位</string>
+          <string>承租单位/客户</string>
          </property>
         </column>
         <column>
@@ -239,17 +239,12 @@
         </column>
         <column>
          <property name="text">
-          <string>施工部位</string>
+          <string>工程地址</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>泵式</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>混凝土标号</string>
+          <string>日期</string>
          </property>
         </column>
         <column>
@@ -259,7 +254,27 @@
         </column>
         <column>
          <property name="text">
-          <string>施工日期</string>
+          <string>泵式</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>施工部位</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>混凝土标号</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>开工燃油</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>收工燃油</string>
          </property>
         </column>
         <column>
@@ -284,12 +299,17 @@
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>方量单价(元)</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>开工燃油</string>
+          <string>泵送台班数</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>台班单价(元)</string>
          </property>
         </column>
         <column>
@@ -320,6 +340,11 @@
         <column>
          <property name="text">
           <string>当班司机3</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>签单号</string>
          </property>
         </column>
         <column>

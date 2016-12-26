@@ -1,6 +1,10 @@
 #include "rentaldocumentwidget.h"
 #include "ui_rentaldocumentwidget.h"
+#include "rentaldocumenteditdialog.h"
 #include <QToolBar>
+
+#define LOG_TAG                 "RENTAL_DOC_WIDGET"
+#include "utils/Log.h"
 
 RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     QWidget(parent),
@@ -12,6 +16,8 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     ui->toolbarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("泵送签证单");
+
+    mRentalDocEditDialog = new RentalDocumentEditDialog();
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
     ui->docTableWidget->setEditTriggers(
@@ -47,6 +53,17 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     mToolBar->addAction(mActImport);
 
     ui->toolBarHorizonLayout->addWidget(mToolBar);
+
+    /**
+     * @brief 单元格双击事件
+     */
+    connect(ui->docTableWidget, SIGNAL(cellDoubleClicked(int,int)),
+            this, SLOT(cellDoubleClickedSlot(int,int)));
+    /**
+     * @brief 单元格双击事件
+     */
+    connect(this, SIGNAL(openRentalEditDialogSignal()),
+            mRentalDocEditDialog, SLOT(openRentalDocEditDialogSlot()));
 }
 
 RentalDocumentWidget::~RentalDocumentWidget()
@@ -75,4 +92,11 @@ RentalDocumentWidget::configToolBar()
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
     mToolBar->setInputMethodHints(Qt::ImhNone);
     mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+}
+
+void
+RentalDocumentWidget::cellDoubleClickedSlot(int a,int b)
+{
+    ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
+    emit openRentalEditDialogSignal();
 }
