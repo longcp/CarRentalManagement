@@ -24,6 +24,10 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     ui->clientTableWidget->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
+    ui->typeWidget->setStyleSheet("background-color: rgb(234,234,234);color:rgb(0,0,0);");
+    //隐藏行表头
+    ui->clientTableWidget->verticalHeader()->setVisible(false);
+
 //    ui->clientTableWidget->rowCount();
 //    ui->clientTableWidget->insertRow(xxx);
 

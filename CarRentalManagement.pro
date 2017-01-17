@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     ui/second_level/clienteditdialog.cpp \
     ui/second_level/careditdialog.cpp \
     ui/second_level/receipteditdialog.cpp \
-    ui/second_level/rentaldocumenteditdialog.cpp
+    ui/second_level/rentaldocumenteditdialog.cpp \
+    common/client.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/first_level/clientmanagermentwidget.h \
@@ -39,7 +40,8 @@ HEADERS  += ui\mainwindow.h \
     ui/second_level/clienteditdialog.h \
     ui/second_level/careditdialog.h \
     ui/second_level/receipteditdialog.h \
-    ui/second_level/rentaldocumenteditdialog.h
+    ui/second_level/rentaldocumenteditdialog.h \
+    common/client.h
 
 FORMS    += ui\mainwindow.ui \
     ui/first_level/clientmanagermentwidget.ui \
