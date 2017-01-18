@@ -24,9 +24,18 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     ui->clientTableWidget->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    ui->typeWidget->setStyleSheet("background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    //隐藏行表头
-    ui->clientTableWidget->verticalHeader()->setVisible(false);
+    ui->typeWidget->setStyleSheet("background-color: "
+                                  "rgb(234,234,234);color:rgb(0,0,0);");
+
+    ui->clientTableWidget->verticalHeader()->setVisible(false);         //隐藏行表头
+    ui->clientTableWidget->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->clientTableWidget->setAlternatingRowColors(true);
+    ui->clientTableWidget->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
 //    ui->clientTableWidget->rowCount();
 //    ui->clientTableWidget->insertRow(xxx);
@@ -64,7 +73,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     connect(ui->clientTableWidget, SIGNAL(cellDoubleClicked(int,int)),
             this, SLOT(cellDoubleClickedSlot(int,int)));
     /**
-     * @brief 单元格双击事件
+     * @brief 打开编辑窗口
      */
     connect(this, SIGNAL(openClientEditDialogSignal()),
             mClientEditDialog, SLOT(openClientEditDialogSlot()));

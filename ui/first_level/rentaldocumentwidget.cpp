@@ -19,6 +19,9 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
 
     mRentalDocEditDialog = new RentalDocumentEditDialog();
 
+    //隐藏行表头
+    ui->docTableWidget->verticalHeader()->setVisible(false);
+
     //设置单元格不可编辑,单击选中一行且只能选中一行
     ui->docTableWidget->setEditTriggers(
                 QAbstractItemView::NoEditTriggers);

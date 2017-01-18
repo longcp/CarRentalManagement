@@ -238,11 +238,6 @@
           <string>客户类型:</string>
          </property>
         </widget>
-        <zorder>label_3</zorder>
-        <zorder>clientTypeTotalRadioButton</zorder>
-        <zorder>temporaryRadioButton</zorder>
-        <zorder>contractRadioButton</zorder>
-        <zorder>label_3</zorder>
        </widget>
       </item>
      </layout>
@@ -250,6 +245,26 @@
    </item>
    <item>
     <widget class="QTableWidget" name="clientTableWidget">
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>新建行</string>
+      </property>
+     </row>
      <row>
       <property name="text">
        <string>新建行</string>
@@ -359,6 +374,20 @@
       </item>
       <item>
        <widget class="QLineEdit" name="lineEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="prevBtn">
+        <property name="text">
+         <string>上一个</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="nextBtn">
+        <property name="text">
+         <string>下一个</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

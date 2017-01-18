@@ -11,6 +11,9 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("应收账款");
 
+    //隐藏行表头
+    ui->detailTableWidget->verticalHeader()->setVisible(false);
+
     //设置单元格不可编辑,单击选中一行且只能选中一行
     ui->detailTableWidget->setEditTriggers(
                 QAbstractItemView::NoEditTriggers);

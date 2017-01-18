@@ -24,6 +24,8 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     ui->carTableWidget->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
+    //隐藏行表头
+    ui->carTableWidget->verticalHeader()->setVisible(false);
 //    ui->carTableWidget->rowCount();
 //    ui->carTableWidget->insertRow(xxx);
 
