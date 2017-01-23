@@ -54,8 +54,8 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
     /**
      * @brief 保存
      */
-    connect(mActSave, SIGNAL(toggled(bool)),
-            this, SIGNAL(saveEvent()));
+    connect(mActSave, SIGNAL(triggered(bool)),
+            this, SLOT(saveEvent()));
     /**
      * @brief 退出
      */

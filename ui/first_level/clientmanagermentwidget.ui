@@ -63,7 +63,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="typeWidget" native="true">
+    <widget class="QFrame" name="typeWidget">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -75,6 +75,12 @@
        <width>16777215</width>
        <height>40</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
@@ -241,6 +247,9 @@
        </widget>
       </item>
      </layout>
+     <zorder>frame</zorder>
+     <zorder>frame</zorder>
+     <zorder>frame_2</zorder>
     </widget>
    </item>
    <item>

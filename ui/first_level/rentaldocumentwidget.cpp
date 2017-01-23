@@ -89,7 +89,6 @@ RentalDocumentWidget::configToolBar()
     mToolBar->setFloatable(true);
     mToolBar->setMovable(true);
     mToolBar->setEnabled(true);
-    mToolBar->setGeometry(0, 0, 0, 0);
     mToolBar->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Fixed);
     mToolBar->setFocusPolicy(Qt::NoFocus);
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
