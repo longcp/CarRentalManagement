@@ -21,9 +21,10 @@ public:
 
 private slots:
     void            cellDoubleClickedSlot(int a,int b);
+    void            addClientSlot();
 
 signals:
-    void            openClientEditDialogSignal();
+    void            openClientEditDialogSignal(bool isAddClient);
 
 private:
     /**

@@ -91,7 +91,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="clientNumLineEdit">
         <property name="minimumSize">
          <size>
           <width>300</width>
@@ -126,7 +126,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="clientNameLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -154,7 +154,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_3"/>
+       <widget class="QLineEdit" name="addressLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -182,7 +182,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_4">
+       <widget class="QLineEdit" name="telLineEdit">
         <property name="minimumSize">
          <size>
           <width>300</width>
@@ -217,7 +217,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_5"/>
+       <widget class="QLineEdit" name="faxLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -245,7 +245,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_6">
+       <widget class="QLineEdit" name="contractLineEdit">
         <property name="minimumSize">
          <size>
           <width>300</width>
@@ -280,7 +280,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_7"/>
+       <widget class="QLineEdit" name="emailLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -312,7 +312,7 @@
        <string>付款方式:</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="radioButton_3">
+     <widget class="QRadioButton" name="cashRadioButton">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -325,7 +325,7 @@
        <string>现金</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="radioButton_4">
+     <widget class="QRadioButton" name="monthlyRadioButton">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -338,7 +338,7 @@
        <string>月结</string>
       </property>
      </widget>
-     <widget class="QSpinBox" name="spinBox">
+     <widget class="QSpinBox" name="monthlySpinBox">
       <property name="geometry">
        <rect>
         <x>290</x>
@@ -396,13 +396,10 @@
         <property name="text">
          <string>备注:</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit"/>
+       <widget class="QTextEdit" name="remarksFxtEdit"/>
       </item>
      </layout>
     </widget>
@@ -433,7 +430,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_8">
+       <widget class="QLineEdit" name="paidLineEdit">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -468,7 +465,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_9">
+       <widget class="QLineEdit" name="amountLineEdit">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -491,7 +488,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_10"/>
+       <widget class="QLineEdit" name="balanceLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -519,7 +516,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_11">
+       <widget class="QLineEdit" name="createDateLineEdit">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -554,7 +551,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_12">
+       <widget class="QLineEdit" name="createPeopleLineEdit">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -607,14 +604,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton">
+          <widget class="QRadioButton" name="contractRadioButton">
            <property name="text">
             <string>合同客户</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_2">
+          <widget class="QRadioButton" name="temporaryRadioButton">
            <property name="text">
             <string>临时客户</string>
            </property>
@@ -637,6 +634,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="label_14">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 0, 0);</string>
+        </property>
         <property name="text">
          <string>           说明：余额=0表示不相欠，为负数表示客户账上还有余额，为正数表示应收款额。</string>
         </property>

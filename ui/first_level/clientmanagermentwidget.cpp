@@ -75,8 +75,13 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     /**
      * @brief 打开编辑窗口
      */
-    connect(this, SIGNAL(openClientEditDialogSignal()),
-            mClientEditDialog, SLOT(openClientEditDialogSlot()));
+    connect(this, SIGNAL(openClientEditDialogSignal(bool)),
+            mClientEditDialog, SLOT(openClientEditDialogSlot(bool)));
+    /**
+     * @brief 增加条目
+     */
+    connect(mActAdd, SIGNAL(triggered()),
+            this, SLOT(addClientSlot()));
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
@@ -110,5 +115,11 @@ void
 ClientManagermentWidget::cellDoubleClickedSlot(int a,int b)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
-    emit openClientEditDialogSignal();
+    emit openClientEditDialogSignal(false);
+}
+
+void
+ClientManagermentWidget::addClientSlot()
+{
+    emit openClientEditDialogSignal(true);
 }
