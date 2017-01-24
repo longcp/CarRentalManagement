@@ -49,6 +49,10 @@ private slots:
 
 private:
     /**
+     * @brief 初始化界面
+     */
+    void            initView();
+    /**
      * @brief 配置工具栏
      */
     void            configToolBar();

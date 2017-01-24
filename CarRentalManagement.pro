@@ -15,6 +15,7 @@ INCLUDEPATH += ui/
 INCLUDEPATH += ui/first_level/
 INCLUDEPATH += ui/second_level/
 INCLUDEPATH += utils/
+INCLUDEPATH += common/
 
 SOURCES += main.cpp\
         ui\mainwindow.cpp \
@@ -28,7 +29,8 @@ SOURCES += main.cpp\
     ui/second_level/careditdialog.cpp \
     ui/second_level/receipteditdialog.cpp \
     ui/second_level/rentaldocumenteditdialog.cpp \
-    common/client.cpp
+    common/client.cpp \
+    common/regularexpression.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/first_level/clientmanagermentwidget.h \
@@ -41,7 +43,8 @@ HEADERS  += ui\mainwindow.h \
     ui/second_level/careditdialog.h \
     ui/second_level/receipteditdialog.h \
     ui/second_level/rentaldocumenteditdialog.h \
-    common/client.h
+    common/client.h \
+    common/regularexpression.h
 
 FORMS    += ui\mainwindow.ui \
     ui/first_level/clientmanagermentwidget.ui \

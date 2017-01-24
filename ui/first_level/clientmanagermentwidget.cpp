@@ -12,30 +12,9 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     ui(new Ui::ClientManagermentWidget)
 {
     ui->setupUi(this);
-    this->setWindowTitle("客户资料");
 
+    initView();
     mClientEditDialog = new ClientEditDialog();
-
-    //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->clientTableWidget->setEditTriggers(
-                QAbstractItemView::NoEditTriggers);
-    ui->clientTableWidget->setSelectionBehavior(
-                QAbstractItemView::SelectRows);
-    ui->clientTableWidget->setSelectionMode(
-                QAbstractItemView::SingleSelection);
-
-    ui->typeWidget->setStyleSheet("background-color: "
-                                  "rgb(234,234,234);color:rgb(0,0,0);");
-
-    ui->clientTableWidget->verticalHeader()->setVisible(false);         //隐藏行表头
-    ui->clientTableWidget->horizontalHeader()->setStyleSheet(
-                "QHeaderView::section{"
-                "background-color:rgb(234, 234, 234)}");                //表头颜色
-
-    ui->clientTableWidget->setAlternatingRowColors(true);
-    ui->clientTableWidget->setStyleSheet(
-                "QTableWidget{background-color:rgb(250, 250, 250);"
-                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
 //    ui->clientTableWidget->rowCount();
 //    ui->clientTableWidget->insertRow(xxx);
@@ -87,6 +66,33 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
 ClientManagermentWidget::~ClientManagermentWidget()
 {
     delete ui;
+}
+
+void
+ClientManagermentWidget::initView()
+{
+    this->setWindowTitle("客户资料");
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->clientTableWidget->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->clientTableWidget->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->clientTableWidget->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->typeWidget->setStyleSheet("background-color: "
+                                  "rgb(234,234,234);color:rgb(0,0,0);");
+
+    ui->clientTableWidget->verticalHeader()->setVisible(false);         //隐藏行表头
+    ui->clientTableWidget->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->clientTableWidget->setAlternatingRowColors(true);
+    ui->clientTableWidget->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 }
 
 void

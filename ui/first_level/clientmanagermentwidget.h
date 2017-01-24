@@ -31,6 +31,10 @@ private:
      * @brief 配置工具栏
      */
     void            configToolBar();
+    /**
+     * @brief 初始化界面
+     */
+    void            initView();
 
     Ui::ClientManagermentWidget *ui;
     QToolBar        *mToolBar;

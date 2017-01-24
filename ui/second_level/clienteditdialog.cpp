@@ -2,6 +2,7 @@
 #include "ui_clienteditdialog.h"
 #include <QToolBar>
 #include <QMessageBox>
+#include <regularexpression.h>
 
 #define LOG_TAG                 "CLIENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -11,12 +12,7 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
     ui(new Ui::ClientEditDialog)
 {
     ui->setupUi(this);
-    this->setWindowFlags(this->windowFlags()
-                         &~Qt::WindowMaximizeButtonHint);               //去掉最大化按钮
-    ui->toolBarFrame->setStyleSheet(
-                "background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    this->setWindowTitle("客户资料");
-    this->setFixedSize(800, 600);
+    initView();
 
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
                           tr("保存"), this);
@@ -76,6 +72,53 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
 ClientEditDialog::~ClientEditDialog()
 {
     delete ui;
+}
+
+void
+ClientEditDialog::initView()
+{
+    this->setWindowFlags(this->windowFlags()
+                         &~Qt::WindowMaximizeButtonHint);               //去掉最大化按钮
+    ui->toolBarFrame->setStyleSheet(
+                "background-color: rgb(234,234,234);color:rgb(0,0,0);");
+    this->setWindowTitle("客户资料");
+    this->setFixedSize(800, 600);
+
+    /* 输入长度限制 */
+    ui->clientNumLineEdit->setMaxLength(16);
+    ui->telLineEdit->setMaxLength(11);
+    ui->faxLineEdit->setMaxLength(11);
+    ui->paidLineEdit->setMaxLength(16);
+    ui->emailLineEdit->setMaxLength(64);
+    ui->amountLineEdit->setMaxLength(16);
+    ui->addressLineEdit->setMaxLength(64);
+    ui->balanceLineEdit->setMaxLength(16);
+    ui->contractLineEdit->setMaxLength(16);
+    ui->clientNameLineEdit->setMaxLength(16);
+    ui->createPeopleLineEdit->setMaxLength(16);
+
+    /* 输入格式限制 */
+    QValidator *letterAndValidator = new QRegExpValidator(
+                                        RegularExpression::getLetterAndNumRegExp(),
+                                        this);                          //英文字母+数字
+    ui->clientNumLineEdit->setValidator(letterAndValidator);
+
+    QValidator *emailValidator = new QRegExpValidator(
+                                        RegularExpression::getEmailRegExp(),
+                                        this);                          //email
+    ui->emailLineEdit->setValidator(emailValidator);
+
+    QValidator *nameValidator = new QRegExpValidator(
+                                        RegularExpression::getNameRegExp(),
+                                        this);                          //英文字母+数字+中文
+    ui->clientNameLineEdit->setValidator(nameValidator);
+    ui->addressLineEdit->setValidator(nameValidator);
+    ui->contractLineEdit->setValidator(nameValidator);
+
+    QValidator *telValidator = new QRegExpValidator(
+                                        RegularExpression::getTelRegExp(),
+                                        this);                          //手机+固话+传真
+    ui->telLineEdit->setValidator(telValidator);
 }
 
 void

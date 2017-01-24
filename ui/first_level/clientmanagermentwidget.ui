@@ -248,47 +248,11 @@
       </item>
      </layout>
      <zorder>frame</zorder>
-     <zorder>frame</zorder>
      <zorder>frame_2</zorder>
     </widget>
    </item>
    <item>
     <widget class="QTableWidget" name="clientTableWidget">
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
      <column>
       <property name="text">
        <string>客户编号</string>
