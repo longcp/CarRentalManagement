@@ -23,7 +23,7 @@ public:
     ~ClientManagermentWidget();
 
 private slots:
-    void            cellDoubleClickedSlot(int a,int b);
+    void            cellDoubleClickedSlot(const QModelIndex &index);
     void            addClientSlot();
     void            addClientItemSlot(Client &client);
 

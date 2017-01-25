@@ -54,8 +54,8 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     /**
      * @brief 单元格双击事件
      */
-    connect(ui->clientTableView, SIGNAL(cellDoubleClicked(int,int)),
-            this, SLOT(cellDoubleClickedSlot(int,int)));
+    connect(ui->clientTableView, SIGNAL(doubleClicked(const QModelIndex &)),
+            this, SLOT(cellDoubleClickedSlot(const QModelIndex &)));
     /**
      * @brief 打开编辑窗口
      */
@@ -140,9 +140,9 @@ ClientManagermentWidget::configToolBar()
 }
 
 void
-ClientManagermentWidget::cellDoubleClickedSlot(int a,int b)
+ClientManagermentWidget::cellDoubleClickedSlot(const QModelIndex & index)
 {
-    ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
+    ALOGD("%s, a = %d, b = %d", __FUNCTION__, index.column(), index.row());
 //    emit openClientEditDialogSignal(OpenType::SHOWITEM);
 }
 
@@ -177,20 +177,36 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
           client.monthly, client.clienttype);
 #endif
 
-    QStandardItem* num       = new QStandardItem(client.number);
-    QStandardItem* clientype = new QStandardItem(client.getClientTypeStr(client.clienttype));
-    QStandardItem* name     = new QStandardItem(client.name);
-    QStandardItem* addr       = new QStandardItem(client.address);
-    QStandardItem* telephone       = new QStandardItem(client.telephone);
-    QStandardItem* fax     = new QStandardItem(client.fax);
-    QStandardItem* contract     = new QStandardItem(client.contract);
-    QStandardItem* paytype     = new QStandardItem(client.getPayTypeStr(client.paytype));
-    QStandardItem* monthly     = new QStandardItem(client.monthly);
+    QStandardItem* num
+            = new QStandardItem(client.number);
+    QStandardItem* clientype
+            = new QStandardItem(client.getClientTypeStr(client.clienttype));
+    QStandardItem* name
+            = new QStandardItem(client.name);
+    QStandardItem* addr
+            = new QStandardItem(client.address);
+    QStandardItem* telephone
+            = new QStandardItem(client.telephone);
+    QStandardItem* fax
+            = new QStandardItem(client.fax);
+    QStandardItem* contract
+            = new QStandardItem(client.contract);
+    QStandardItem* paytype
+            = new QStandardItem(client.getPayTypeStr(client.paytype));
+    QStandardItem* monthly
+            = new QStandardItem(QString::number(client.monthly));
+    QStandardItem* amount
+            = new QStandardItem(QString("%1").arg(client.amount));
+    QStandardItem* paid
+            = new QStandardItem(QString("%1").arg(client.paid));
+    QStandardItem* balance
+            = new QStandardItem(QString("%1").arg(client.amount - client.paid));
+    QStandardItem* remarks
+            = new QStandardItem(client.remarks);
 
     QList<QStandardItem*> items;
     items << num << clientype << name << addr << telephone
-          << fax << contract << paytype << monthly;
-    //    mModel->appendRow(items);
-    //插入表第一行
+          << fax << contract << paytype << monthly
+          << amount << paid << balance << remarks;
     mModel->appendRow(items);
 }

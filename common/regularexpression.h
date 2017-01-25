@@ -27,7 +27,7 @@ public:
      * @brief 名字规则
      */
     static const QRegExp getNameRegExp() {
-        QRegExp nameRegExp("[a-zA-Z0-9\w\u4E00-\u9FA5()]+$");               //名字规则
+        QRegExp nameRegExp("[a-zA-Z0-9\w\u4E00-\u9FA5()]+$");
         return nameRegExp;
     }
     /**
@@ -41,7 +41,8 @@ public:
      * @brief 金额
      */
     static const QRegExp getMoneyRegExp() {
-        QRegExp moneyRegExp("^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$");
+        QRegExp moneyRegExp("^[0-9]+(.[0-9]+)?$");
+//        QRegExp moneyRegExp("^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$");
         return moneyRegExp;
     }
 

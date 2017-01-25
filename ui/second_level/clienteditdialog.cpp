@@ -91,9 +91,9 @@ ClientEditDialog::initView()
     ui->clientNumLineEdit->setMaxLength(16);
     ui->telLineEdit->setMaxLength(11);
     ui->faxLineEdit->setMaxLength(11);
-    ui->paidLineEdit->setMaxLength(16);
+    ui->paidLineEdit->setMaxLength(32);
     ui->emailLineEdit->setMaxLength(64);
-    ui->amountLineEdit->setMaxLength(16);
+    ui->amountLineEdit->setMaxLength(32);
     ui->addressLineEdit->setMaxLength(64);
     ui->balanceLineEdit->setMaxLength(16);
     ui->contractLineEdit->setMaxLength(16);
@@ -301,19 +301,21 @@ ClientEditDialog::saveAndExitEvent()
                              QMessageBox::Ok);
     }
 
+    bool ok;
     Client client;
-    client.name = ui->clientNameLineEdit->text();
-    client.number = ui->clientNumLineEdit->text();
+    client.name     = ui->clientNameLineEdit->text();
+    client.number   = ui->clientNumLineEdit->text();
     client.telephone = ui->telLineEdit->text();
-    client.address = ui->addressLineEdit->text();
-    client.email = ui->emailLineEdit->text();
-    client.fax = ui->faxLineEdit->text();
+    client.address  = ui->addressLineEdit->text();
+    client.email    = ui->emailLineEdit->text();
+    client.fax      = ui->faxLineEdit->text();
     client.contract = ui->contractLineEdit->text();
-    client.remarks = ui->remarksFxtEdit->toPlainText();
-    client.creator = ui->createPeopleLineEdit->text();
+    client.remarks  = ui->remarksFxtEdit->toPlainText();
+    client.creator  = ui->createPeopleLineEdit->text();
     client.createDate = QDate::fromString(
                 ui->createDateEdit->text(), "yyyy-MM-dd");
-    bool ok;
+    client.amount   = ui->amountLineEdit->text().toFloat(&ok);
+    client.paid     = ui->paidLineEdit->text().toFloat(&ok);
     client.monthly = ui->monthlySpinBox->text().toInt(&ok, 10);
     if (ui->cashRadioButton->isChecked())
         client.paytype = Client::CASH;
