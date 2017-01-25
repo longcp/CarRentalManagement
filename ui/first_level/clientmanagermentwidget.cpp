@@ -18,13 +18,11 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     ui->setupUi(this);
 
     mClientEditDialog = new ClientEditDialog();
-    mModel = new WarnModel(0, mColumnCount);
-//    ui->clientTableWidget->setModel(mModel);
 
     initView();
 
-//    ui->clientTableWidget->rowCount();
-//    ui->clientTableWidget->insertRow(xxx);
+//    ui->clientTableView->rowCount();
+//    ui->clientTableView->insertRow(xxx);
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
@@ -56,7 +54,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     /**
      * @brief 单元格双击事件
      */
-    connect(ui->clientTableWidget, SIGNAL(cellDoubleClicked(int,int)),
+    connect(ui->clientTableView, SIGNAL(cellDoubleClicked(int,int)),
             this, SLOT(cellDoubleClickedSlot(int,int)));
     /**
      * @brief 打开编辑窗口
@@ -86,24 +84,36 @@ ClientManagermentWidget::initView()
 {
     this->setWindowTitle("客户资料");
 
+    //设置首行标题
+    QStringList          headerList;
+    headerList << "客户编号" << "客户类型" << "客户名称" << "地址"
+               << "联系电话" << "传真" << "联系人"
+               << "结账方式" << "月结日" << "工程款额"
+               << "已付款额" << "余额" << "备注";
+
+    mModel = new WarnModel(0, headerList.size());
+    ui->clientTableView->setModel(mModel);
+    mModel->setHorizontalHeaderLabels(headerList);
+
+
     //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->clientTableWidget->setEditTriggers(
+    ui->clientTableView->setEditTriggers(
                 QAbstractItemView::NoEditTriggers);
-    ui->clientTableWidget->setSelectionBehavior(
+    ui->clientTableView->setSelectionBehavior(
                 QAbstractItemView::SelectRows);
-    ui->clientTableWidget->setSelectionMode(
+    ui->clientTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
     ui->typeWidget->setStyleSheet("background-color: "
                                   "rgb(234,234,234);color:rgb(0,0,0);");
 
-    ui->clientTableWidget->verticalHeader()->setVisible(false);         //隐藏行表头
-    ui->clientTableWidget->horizontalHeader()->setStyleSheet(
+    ui->clientTableView->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->clientTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
 
-    ui->clientTableWidget->setAlternatingRowColors(true);
-    ui->clientTableWidget->setStyleSheet(
+    ui->clientTableView->setAlternatingRowColors(true);
+    ui->clientTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 }
@@ -167,20 +177,20 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
           client.monthly, client.clienttype);
 #endif
 
-//    QStandardItem* num       = new QStandardItem(client.number);
-//    QStandardItem* clientype = new QStandardItem(client.getClientTypeStr(client.clienttype));
-//    QStandardItem* name     = new QStandardItem(client.name);
-//    QStandardItem* addr       = new QStandardItem(client.address);
-//    QStandardItem* telephone       = new QStandardItem(client.telephone);
-//    QStandardItem* fax     = new QStandardItem(client.fax);
-//    QStandardItem* contract     = new QStandardItem(client.contract);
-//    QStandardItem* paytype     = new QStandardItem(client.getPayTypeStr(client.paytype));
-//    QStandardItem* monthly     = new QStandardItem(client.monthly);
+    QStandardItem* num       = new QStandardItem(client.number);
+    QStandardItem* clientype = new QStandardItem(client.getClientTypeStr(client.clienttype));
+    QStandardItem* name     = new QStandardItem(client.name);
+    QStandardItem* addr       = new QStandardItem(client.address);
+    QStandardItem* telephone       = new QStandardItem(client.telephone);
+    QStandardItem* fax     = new QStandardItem(client.fax);
+    QStandardItem* contract     = new QStandardItem(client.contract);
+    QStandardItem* paytype     = new QStandardItem(client.getPayTypeStr(client.paytype));
+    QStandardItem* monthly     = new QStandardItem(client.monthly);
 
-//    QList<QStandardItem*> items;
-//    items << num << clientype << name << addr << telephone
-//          << fax << contract << paytype << monthly;
-//    //    mModel->appendRow(items);
-//    //插入表第一行
-//    ui->clientTableWidget->insertRow(items);
+    QList<QStandardItem*> items;
+    items << num << clientype << name << addr << telephone
+          << fax << contract << paytype << monthly;
+    //    mModel->appendRow(items);
+    //插入表第一行
+    mModel->appendRow(items);
 }
