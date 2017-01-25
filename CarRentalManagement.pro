@@ -44,7 +44,9 @@ HEADERS  += ui\mainwindow.h \
     ui/second_level/receipteditdialog.h \
     ui/second_level/rentaldocumenteditdialog.h \
     common/client.h \
-    common/regularexpression.h
+    common/regularexpression.h \
+    common/datatype.h \
+    common/warnmodel.h
 
 FORMS    += ui\mainwindow.ui \
     ui/first_level/clientmanagermentwidget.ui \

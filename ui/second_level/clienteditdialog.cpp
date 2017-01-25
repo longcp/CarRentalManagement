@@ -3,6 +3,9 @@
 #include <QToolBar>
 #include <QMessageBox>
 #include <regularexpression.h>
+#include <client.h>
+#include <datatype.h>
+#include <QDebug>
 
 #define LOG_TAG                 "CLIENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -114,23 +117,38 @@ ClientEditDialog::initView()
     ui->clientNameLineEdit->setValidator(nameValidator);
     ui->addressLineEdit->setValidator(nameValidator);
     ui->contractLineEdit->setValidator(nameValidator);
+    ui->createPeopleLineEdit->setValidator(nameValidator);
 
     QValidator *telValidator = new QRegExpValidator(
                                         RegularExpression::getTelRegExp(),
                                         this);                          //手机+固话+传真
     ui->telLineEdit->setValidator(telValidator);
+    ui->faxLineEdit->setValidator(telValidator);
+
+    QValidator *moneyValidator = new QRegExpValidator(
+                                        RegularExpression::getMoneyRegExp(),
+                                        this);                          //金额
+    ui->paidLineEdit->setValidator(moneyValidator);
+    ui->amountLineEdit->setValidator(moneyValidator);
+    ui->balanceLineEdit->setValidator(moneyValidator);
 }
 
 void
-ClientEditDialog::openClientEditDialogSlot(bool isAddClient)
+ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
+                                           const Client & client)
 {
-    if (isAddClient) {
+    if (opentype == OpenType::CREATEITEM) {
+        //以创建条目方式打开
         mActSave->setDisabled(true);
         mActEdit->setDisabled(true);
         mActPrev->setDisabled(true);
         mActNext->setDisabled(true);
         mActCancel->setDisabled(true);
+        ui->monthlyRadioButton->setChecked(true);
+        ui->temporaryRadioButton->setChecked(true);
+        ui->createDateEdit->setDate(QDate::currentDate());
     } else {
+        //以查看内容方式打开
         mActSave->setEnabled(true);
         mActPrev->setEnabled(true);
         mActNext->setEnabled(true);
@@ -138,7 +156,7 @@ ClientEditDialog::openClientEditDialogSlot(bool isAddClient)
         resetView();
     }
 
-    mIsAddClient = isAddClient;
+    mOpenType = opentype;
     this->exec();
 }
 
@@ -157,7 +175,6 @@ ClientEditDialog::configToolBar()
     mToolBar->setFloatable(true);
     mToolBar->setMovable(true);
     mToolBar->setEnabled(true);
-    mToolBar->setGeometry(0, 0, 0, 0);
     mToolBar->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Fixed);
     mToolBar->setFocusPolicy(Qt::NoFocus);
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
@@ -191,9 +208,9 @@ void
 ClientEditDialog::closeDialog()
 {
     ALOGD("closeDialog...");
-    if (this->mIsAddClient) {
+    if (mOpenType == CREATEITEM) {
         // 添加条目
-        ALOGD("mIsAddClient");
+        ALOGD("CREATEITEM");
     } else if (isModified()) {
         // 有内容发生修改
         ALOGD("isModified");
@@ -242,7 +259,7 @@ ClientEditDialog::cleanContent()
     ui->contractLineEdit->setText("");
     ui->clientNumLineEdit->setText("");
     ui->clientNameLineEdit->setText("");
-    ui->createDateLineEdit->setText("");
+//    ui->createDateEdit->setDate("");
     ui->createPeopleLineEdit->setText("");
 }
 
@@ -263,7 +280,6 @@ ClientEditDialog::isModified()
             ui->clientNumLineEdit->isModified() ||
             ui->clientNameLineEdit->isModified() ||
             ui->monthlyRadioButton->isWindowModified() ||
-            ui->createDateLineEdit->isModified() ||
             ui->contractRadioButton->isWindowModified() ||
             ui->temporaryRadioButton->isWindowModified() ||
             ui->createPeopleLineEdit->isWindowModified()) {
@@ -277,7 +293,65 @@ ClientEditDialog::isModified()
 void
 ClientEditDialog::saveAndExitEvent()
 {
-    //saveChange();
+    if (ui->clientNumLineEdit->text().isEmpty() ||
+            ui->clientNameLineEdit->text().isEmpty()) {
+        QMessageBox::warning(this, tr("温馨提示"),
+                             tr("客户编号与客户名称不能为空！\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+    }
+
+    Client client;
+    client.name = ui->clientNameLineEdit->text();
+    client.number = ui->clientNumLineEdit->text();
+    client.telephone = ui->telLineEdit->text();
+    client.address = ui->addressLineEdit->text();
+    client.email = ui->emailLineEdit->text();
+    client.fax = ui->faxLineEdit->text();
+    client.contract = ui->contractLineEdit->text();
+    client.remarks = ui->remarksFxtEdit->toPlainText();
+    client.creator = ui->createPeopleLineEdit->text();
+    client.createDate = QDate::fromString(
+                ui->createDateEdit->text(), "yyyy-MM-dd");
+    bool ok;
+    client.monthly = ui->monthlySpinBox->text().toInt(&ok, 10);
+    if (ui->cashRadioButton->isChecked())
+        client.paytype = Client::CASH;
+    else
+        client.paytype = Client::MONTHLY;
+
+    if (ui->contractRadioButton->isChecked())
+        client.clienttype = Client::CONTACT;
+    else
+        client.clienttype = Client::TEMPORARY;
+
+    ALOGD("name = %s, number = %s, telephone = %s, \n"
+          "address = %s, email = %s, fax = %s, \n"
+          "contract = %s, remarks = %s, creator = %s, \n"
+          "createDate = %s, paytype = %d, monthly = %d, \n"
+          "clienttype = %d\n",
+          client.name.toStdString().data(),
+          client.number.toStdString().data(),
+          client.telephone.toStdString().data(),
+          client.address.toStdString().data(),
+          client.email.toStdString().data(),
+          client.fax.toStdString().data(),
+          client.contract.toStdString().data(),
+          client.remarks.toStdString().data(),
+          client.creator.toStdString().data(),
+          client.createDate.toString("yyyy-MM-dd").toStdString().data(),
+          client.paytype,
+          client.monthly, client.clienttype);
+
+//    if (插入数据库成功)
+//    saveChange();
+
+    addClientItemSignal(client);
+    QMessageBox::information(this, tr("温馨提示"),
+                            tr("添加成功\n"),
+                            QMessageBox::Ok,
+                            QMessageBox::Ok);
+    closeDialog();
 }
 
 void
@@ -332,8 +406,8 @@ ClientEditDialog::setMode(bool mode)
     ui->remarksFxtEdit->setEnabled(mode);
     ui->paidLineEdit->setEnabled(mode);
     ui->amountLineEdit->setEnabled(mode);
-    ui->balanceLineEdit->setEnabled(mode);
-    ui->createDateLineEdit->setEnabled(mode);
+//    ui->balanceLineEdit->setEnabled(mode);
+    ui->createDateEdit->setEnabled(mode);
     ui->createPeopleLineEdit->setEnabled(mode);
     ui->contractRadioButton->setEnabled(mode);
     ui->temporaryRadioButton->setEnabled(mode);

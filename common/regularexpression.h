@@ -34,8 +34,15 @@ public:
      * @brief 手机固话传真
      */
     static const QRegExp getTelRegExp() {
-        QRegExp telRegExp("\d{3,4}-)?\d{7,8})$|^((1[0-9][0-9]\d{8}$");      //手机固话传真
+        QRegExp telRegExp("[0-9]+$");      //手机固话传真
         return telRegExp;
+    }
+    /**
+     * @brief 金额
+     */
+    static const QRegExp getMoneyRegExp() {
+        QRegExp moneyRegExp("^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$");
+        return moneyRegExp;
     }
 
 signals:

@@ -2,8 +2,11 @@
 #define CLIENTEDITDIALOG_H
 
 #include <QDialog>
+#include <datatype.h>
+#include <datatype.h>
 
 class QToolBar;
+class Client;
 
 namespace Ui {
 class ClientEditDialog;
@@ -17,11 +20,15 @@ public:
     explicit ClientEditDialog(QWidget *parent = 0);
     ~ClientEditDialog();
 
+signals:
+    void            addClientItemSignal(Client &client);
+
 private slots:
     /**
      * @brief 打开窗口
      */
-    void            openClientEditDialogSlot(bool isAddClient);
+    void            openClientEditDialogSlot(OpenType opentype,
+                                             const Client &client);
     /**
      * @brief 关闭窗口
      */
@@ -103,7 +110,7 @@ private:
     QAction         *mActNext;
     QAction         *mActCancel;
 
-    bool            mIsAddClient;                                       //是否已添加客户模式打开
+    OpenType        mOpenType;                                          //是否已添加客户模式打开
     bool            mIsInternalClose;                                   //是否内部关闭
 };
 

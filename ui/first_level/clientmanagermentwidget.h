@@ -2,10 +2,13 @@
 #define CLIENTMANAGERMENTWIDGET_H
 
 #include <QWidget>
+#include <datatype.h>
 
 class QToolBar;
 class QTableWidget;
 class ClientEditDialog;
+class Client;
+class WarnModel;
 
 namespace Ui {
 class ClientManagermentWidget;
@@ -22,9 +25,11 @@ public:
 private slots:
     void            cellDoubleClickedSlot(int a,int b);
     void            addClientSlot();
+    void            addClientItemSlot(Client &client);
 
 signals:
-    void            openClientEditDialogSignal(bool isAddClient);
+    void            openClientEditDialogSignal(OpenType type,
+                                               const Client &client);
 
 private:
     /**
@@ -50,6 +55,9 @@ private:
     QAction         *mActPrinter;
     QAction         *mActExport;
     QAction         *mActImport;
+    WarnModel       *mModel;
+
+    const static int      mColumnCount = 9;
 };
 
 #endif // CLIENTMANAGERMENTWIDGET_H

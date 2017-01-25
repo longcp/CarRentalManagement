@@ -3,6 +3,10 @@
 #include <QToolBar>
 #include <QTableWidget>
 #include <clienteditdialog.h>
+#include <client.h>
+#include <datatype.h>
+#include <QStandardItem>
+#include <warnmodel.h>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -13,8 +17,11 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    initView();
     mClientEditDialog = new ClientEditDialog();
+    mModel = new WarnModel(0, mColumnCount);
+//    ui->clientTableWidget->setModel(mModel);
+
+    initView();
 
 //    ui->clientTableWidget->rowCount();
 //    ui->clientTableWidget->insertRow(xxx);
@@ -54,13 +61,19 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     /**
      * @brief 打开编辑窗口
      */
-    connect(this, SIGNAL(openClientEditDialogSignal(bool)),
-            mClientEditDialog, SLOT(openClientEditDialogSlot(bool)));
+    connect(this, SIGNAL(openClientEditDialogSignal(OpenType, const Client &)),
+            mClientEditDialog,
+            SLOT(openClientEditDialogSlot(OpenType, const Client &)));
     /**
-     * @brief 增加条目
+     * @brief 打开编辑窗口
      */
     connect(mActAdd, SIGNAL(triggered()),
             this, SLOT(addClientSlot()));
+    /**
+     * @brief 增加条目
+     */
+    connect(mClientEditDialog, SIGNAL(addClientItemSignal(Client &)),
+            this, SLOT(addClientItemSlot(Client&)));
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
@@ -120,11 +133,54 @@ void
 ClientManagermentWidget::cellDoubleClickedSlot(int a,int b)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
-    emit openClientEditDialogSignal(false);
+//    emit openClientEditDialogSignal(OpenType::SHOWITEM);
 }
 
 void
 ClientManagermentWidget::addClientSlot()
 {
-    emit openClientEditDialogSignal(true);
+    Client client;
+    emit openClientEditDialogSignal(CREATEITEM, client);
+}
+
+void
+ClientManagermentWidget::addClientItemSlot(Client &client)
+{
+    ALOGD("ClientManagermentWidget enter!\n");
+#if 0
+    ALOGD("name = %s, number = %s, telephone = %s, \n"
+          "address = %s, email = %s, fax = %s, \n"
+          "contract = %s, remarks = %s, creator = %s, \n"
+          "createDate = %s, paytype = %d, monthly = %d, \n"
+          "clienttype = %d\n",
+          client.name.toStdString().data(),
+          client.number.toStdString().data(),
+          client.telephone.toStdString().data(),
+          client.address.toStdString().data(),
+          client.email.toStdString().data(),
+          client.fax.toStdString().data(),
+          client.contract.toStdString().data(),
+          client.remarks.toStdString().data(),
+          client.creator.toStdString().data(),
+          client.createDate.toString("yyyy-MM-dd").toStdString().data(),
+          client.paytype,
+          client.monthly, client.clienttype);
+#endif
+
+//    QStandardItem* num       = new QStandardItem(client.number);
+//    QStandardItem* clientype = new QStandardItem(client.getClientTypeStr(client.clienttype));
+//    QStandardItem* name     = new QStandardItem(client.name);
+//    QStandardItem* addr       = new QStandardItem(client.address);
+//    QStandardItem* telephone       = new QStandardItem(client.telephone);
+//    QStandardItem* fax     = new QStandardItem(client.fax);
+//    QStandardItem* contract     = new QStandardItem(client.contract);
+//    QStandardItem* paytype     = new QStandardItem(client.getPayTypeStr(client.paytype));
+//    QStandardItem* monthly     = new QStandardItem(client.monthly);
+
+//    QList<QStandardItem*> items;
+//    items << num << clientype << name << addr << telephone
+//          << fax << contract << paytype << monthly;
+//    //    mModel->appendRow(items);
+//    //插入表第一行
+//    ui->clientTableWidget->insertRow(items);
 }
