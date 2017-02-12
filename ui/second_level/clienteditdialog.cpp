@@ -6,6 +6,7 @@
 #include <client.h>
 #include <datatype.h>
 #include <QDebug>
+#include "database/database.h"
 
 #define LOG_TAG                 "CLIENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -15,6 +16,8 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
     ui(new Ui::ClientEditDialog)
 {
     ui->setupUi(this);
+    mDb = DataBase::getInstance();
+
     initView();
 
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
@@ -299,6 +302,7 @@ ClientEditDialog::saveAndExitEvent()
                              tr("客户编号与客户名称不能为空！\n"),
                              QMessageBox::Ok,
                              QMessageBox::Ok);
+        return;
     }
 
     bool ok;
@@ -345,7 +349,8 @@ ClientEditDialog::saveAndExitEvent()
           client.paytype,
           client.monthly, client.clienttype);
 
-//    if (插入数据库成功)
+    if (!mDb->insertClientTable(client))
+        ALOGE("insertClientTable failed!");
 //    saveChange();
 
     addClientItemSignal(client);

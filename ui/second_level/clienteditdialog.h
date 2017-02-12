@@ -7,6 +7,7 @@
 
 class QToolBar;
 class Client;
+class DataBase;
 
 namespace Ui {
 class ClientEditDialog;
@@ -110,6 +111,7 @@ private:
     QAction         *mActNext;
     QAction         *mActCancel;
 
+    DataBase*       mDb;
     OpenType        mOpenType;                                          //是否已添加客户模式打开
     bool            mIsInternalClose;                                   //是否内部关闭
 };

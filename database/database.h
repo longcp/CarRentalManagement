@@ -3,9 +3,16 @@
 
 #include <QtSql/QSqlDatabase>
 
-//#define DEBUG_VERSION
-#define DB_PATH_SUFFIX  "./dataBase/ElecProtectManager.db"
+#define DEBUG_VERSION
+
+//#ifdef DEBUG_VERSION
+//#define
+#define DB_PATH_SUFFIX  "./dataBase/CarRentalManagement.db"
 #define DB_NAME         "carrentalmanagement"
+
+class QMutex;
+class Client;
+template <class Key, class T> class QMap;
 
 class DataBase
 {
@@ -14,14 +21,21 @@ public:
     ~DataBase();
     static DataBase*    mInstance;
     static DataBase*    getInstance();
-    QSqlQuery*          getDataBaseQuery();
+
+    // client 表
+    int                 insertClientTable(Client &client);
 
 private:
     bool                openDataBase();
     bool                closeDataBase();
-    QSqlDatabase        mDb;
-    QSqlDatabase        mutex;
-    QString             mDbPath;
+    QSqlQuery*          getDataBaseQuery();
+
+    QSqlDatabase            mDb;
+    QMutex*                 pmMutex;
+    QMap<int, QSqlQuery*>*  pmQuery;
+
+    int                     mId;
+    QString                 mDbPath;
 };
 
 #endif // DATABASE_H
