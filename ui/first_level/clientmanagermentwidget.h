@@ -9,7 +9,7 @@ class QTableWidget;
 class ClientEditDialog;
 class Client;
 class DataBase;
-class WarnModel;
+class TableModel;
 
 namespace Ui {
 class ClientManagermentWidget;
@@ -57,7 +57,7 @@ private:
     QAction         *mActExport;
     QAction         *mActImport;
     DataBase        *mDb;
-    WarnModel       *mModel;
+    TableModel       *mModel;
 
     const static int      mColumnCount = 9;
 };

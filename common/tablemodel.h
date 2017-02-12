@@ -1,17 +1,17 @@
-#ifndef WARNMODEL_H
-#define WARNMODEL_H
+#ifndef TABLEMODEL_H
+#define TABLEMODEL_H
 
 #include <QStandardItemModel>
 
 /**
- * @brief The WarnModel class:委托，设置居中显示
+ * @brief The TableModel class:委托，设置居中显示
  */
-class WarnModel : public QStandardItemModel
+class TableModel : public QStandardItemModel
 {
     Q_OBJECT
 public:
-    WarnModel(QObject *parent=NULL) : QStandardItemModel(parent) { }
-    WarnModel(int row, int column, QObject *parent=NULL)
+    TableModel(QObject *parent=NULL) : QStandardItemModel(parent) { }
+    TableModel(int row, int column, QObject *parent=NULL)
         : QStandardItemModel(row, column, parent) { }
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const
     {
@@ -21,4 +21,4 @@ public:
     }
 };
 
-#endif // WARNMODEL_H
+#endif // TABLEMODEL_H

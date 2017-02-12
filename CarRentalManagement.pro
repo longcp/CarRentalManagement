@@ -49,8 +49,8 @@ HEADERS  += ui\mainwindow.h \
     common/client.h \
     common/regularexpression.h \
     common/datatype.h \
-    common/warnmodel.h \
-    database/database.h
+    database/database.h \
+    common/tablemodel.h
 
 FORMS    += ui\mainwindow.ui \
     ui/first_level/clientmanagermentwidget.ui \

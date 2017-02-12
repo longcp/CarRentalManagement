@@ -7,7 +7,7 @@
 #include <datatype.h>
 #include <QStandardItem>
 #include <database/database.h>
-#include <warnmodel.h>
+#include <tablemodel.h>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -93,7 +93,7 @@ ClientManagermentWidget::initView()
                << "结账方式" << "月结日" << "工程款额"
                << "已付款额" << "余额" << "备注";
 
-    mModel = new WarnModel(0, headerList.size());
+    mModel = new TableModel(0, headerList.size());
     ui->clientTableView->setModel(mModel);
     mModel->setHorizontalHeaderLabels(headerList);
 
