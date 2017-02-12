@@ -6,6 +6,7 @@
 #include <client.h>
 #include <datatype.h>
 #include <QStandardItem>
+#include <database/database.h>
 #include <warnmodel.h>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
@@ -17,6 +18,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    mDb = DataBase::getInstance();
     mClientEditDialog = new ClientEditDialog();
 
     initView();

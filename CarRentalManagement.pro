@@ -5,6 +5,8 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += sql
+QT	 += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +32,8 @@ SOURCES += main.cpp\
     ui/second_level/receipteditdialog.cpp \
     ui/second_level/rentaldocumenteditdialog.cpp \
     common/client.cpp \
-    common/regularexpression.cpp
+    common/regularexpression.cpp \
+    database/database.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/first_level/clientmanagermentwidget.h \
@@ -46,7 +49,8 @@ HEADERS  += ui\mainwindow.h \
     common/client.h \
     common/regularexpression.h \
     common/datatype.h \
-    common/warnmodel.h
+    common/warnmodel.h \
+    database/database.h
 
 FORMS    += ui\mainwindow.ui \
     ui/first_level/clientmanagermentwidget.ui \

@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QTextCodec>
+#include "database/database.h"
+
+DataBase* DataBase::mInstance = NULL;
 
 int main(int argc, char *argv[])
 {

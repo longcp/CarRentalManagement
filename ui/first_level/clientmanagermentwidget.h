@@ -8,6 +8,7 @@ class QToolBar;
 class QTableWidget;
 class ClientEditDialog;
 class Client;
+class DataBase;
 class WarnModel;
 
 namespace Ui {
@@ -55,6 +56,7 @@ private:
     QAction         *mActPrinter;
     QAction         *mActExport;
     QAction         *mActImport;
+    DataBase        *mDb;
     WarnModel       *mModel;
 
     const static int      mColumnCount = 9;
