@@ -41,6 +41,10 @@ private:
      * @brief 初始化界面
      */
     void            initView();
+    /**
+     * @brief 初始化表，插入已有数据
+     */
+    void            initTableView();
 
     Ui::ClientManagermentWidget *ui;
     QToolBar        *mToolBar;

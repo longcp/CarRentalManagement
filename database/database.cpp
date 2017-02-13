@@ -220,6 +220,50 @@ DataBase::getClientInNumber(QString clientNum, Client &client)
 }
 
 int
+DataBase::getAllClientData(QList<Client > &clients)
+{
+    Client client;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM client");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM client!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        client.name = query->value(0).toString();
+        client.number = query->value(1).toString();
+        client.telephone = query->value(2).toString();
+        client.address = query->value(3).toString();
+        client.email = query->value(4).toString();
+        client.fax = query->value(5).toString();
+        client.contract = query->value(6).toString();
+        client.remarks = query->value(7).toString();
+        client.creator = query->value(8).toString();
+        client.paytype = query->value(9).toInt() ?
+                    Client::CASH : Client::MONTHLY;
+        client.clienttype = query->value(10).toInt() ?
+                    Client::CONTACT : Client::TEMPORARY;
+        client.createDate = QDate::fromString(query->value(11)
+                                              .toString(), "yyyy-MM-dd");
+        client.monthly = query->value(12).toInt();
+        client.amount = query->value(13).toFloat();
+        client.paid = query->value(14).toFloat();
+
+        clients->push_back(client);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
 DataBase::updateClientTableItem(Client &client)
 {
     QMutexLocker locker(pmMutex);

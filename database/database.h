@@ -27,7 +27,9 @@ public:
 
     // client 表
     int                 insertClientTable(Client &client);
-    int                 getClientInNumber(QString clientNum, Client &client);
+    int                 getClientInNumber(QString clientNum,
+                                          Client &client);
+    int                 getAllClientData(QList<Client> &clients);
     int                 updateClientTableItem(Client &client);
     int                 clearClientTable();
     bool                isClientExist(Client &client);
