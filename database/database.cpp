@@ -10,13 +10,15 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
+#include <QDate>
 
 #define LOG_TAG                         "DATABASE"
 #include "utils/Log.h"
 
 DataBase::DataBase() :
     pmMutex(new QMutex(QMutex::Recursive)),
-    pmQuery(new QMap<int, QSqlQuery*>)
+    pmQuery(new QMap<int, QSqlQuery*>),
+    errorno(0)
 {
     mDbPath = QDir::currentPath().append("/").append(DB_PATH_SUFFIX);
     openDataBase();
@@ -122,6 +124,7 @@ DataBase::isClientExist(Client &client)
     if (!query->exec()) {
         ALOGE("exec [SELECT * FROM client WHERE number=%s] failed!",
               client.number.toStdString().data());
+        errorno = SELECT_DATABASE_FAIL;
         return false;
     }
 
@@ -173,6 +176,50 @@ DataBase::insertClientTable(Client &client)
 }
 
 int
+DataBase::getClientInNumber(QString clientNum, Client &client)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM client WHERE number=?");
+    query->addBindValue(clientNum);
+    if (!query->exec()) {
+        ALOGE("[%s]: select client table failed!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    if (query->next()) {
+        client.name = query->value(0).toString();
+        client.number = query->value(1).toString();
+        client.telephone = query->value(2).toString();
+        client.address = query->value(3).toString();
+        client.email = query->value(4).toString();
+        client.fax = query->value(5).toString();
+        client.contract = query->value(6).toString();
+        client.remarks = query->value(7).toString();
+        client.creator = query->value(8).toString();
+        client.paytype = query->value(9).toInt() ?
+                    Client::CASH : Client::MONTHLY;
+        client.clienttype = query->value(10).toInt() ?
+                    Client::CONTACT : Client::TEMPORARY;
+        client.createDate = QDate::fromString(query->value(11)
+                                              .toString(), "yyyy-MM-dd");
+        client.monthly = query->value(12).toInt();
+        client.amount = query->value(13).toFloat();
+        client.paid = query->value(14).toFloat();
+
+        return SUCCESS;
+    }
+
+    return DATABASE_ITEM_NOT_EXIST;
+}
+
+int
 DataBase::updateClientTableItem(Client &client)
 {
     QMutexLocker locker(pmMutex);
@@ -215,6 +262,7 @@ DataBase::updateClientTableItem(Client &client)
     query->addBindValue(client.number);
     if (!query->exec()) {
         ALOGE("updateClientTableItem fail");
+        errorno = UPDATE_CLIENT_ITEM_FAIL;
         return UPDATE_CLIENT_ITEM_FAIL;
     }
 
@@ -234,9 +282,41 @@ DataBase::clearClientTable()
     query->prepare("DELETE FROM client;");
     if (!query->exec()) {
         ALOGE("clearClientTable fail!");
+        errorno = DELETE_TABLE_FAIL;
         return DELETE_TABLE_FAIL;
     }
 
     ALOGV("clearClientTable success!");
     return SUCCESS;
+}
+
+QString
+DataBase::lastError()
+{
+    switch(errorno) {
+    case GET_DATABASE_FAIL:
+        return "GET_DATABASE_FAIL";
+
+    case INSERT_CLIENT_TABLE_FAIL:
+        return "INSERT_CLIENT_TABLE_FAIL";
+
+    case DELETE_TABLE_FAIL:
+        return "DELETE_TABLE_FAIL";
+
+    case DATABASE_ITEM_EXIST:
+        return "DATABASE_ITEM_EXIST";
+
+    case SELECT_DATABASE_FAIL:
+        return "SELECT_DATABASE_FAIL";
+
+    case UPDATE_CLIENT_ITEM_FAIL:
+        return "UPDATE_CLIENT_ITEM_FAIL";
+
+    case OK:
+    default:
+        return "Ok";
+        break;
+    }
+
+    return "Ok";
 }

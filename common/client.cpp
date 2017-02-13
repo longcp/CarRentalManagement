@@ -10,6 +10,24 @@ Client::~Client()
 
 }
 
+const Client::ClientType
+Client::getClientType(QString type)
+{
+    if (type == "临时")
+        return TEMPORARY;
+    else
+        return CONTACT;
+}
+
+const Client::PayType
+Client::getPayType(QString type)
+{
+    if (type == "月结")
+        return MONTHLY;
+    else
+        return CASH;
+}
+
 QString
 Client::getClientTypeStr(ClientType type)
 {

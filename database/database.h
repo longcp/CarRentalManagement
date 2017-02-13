@@ -22,8 +22,12 @@ public:
     static DataBase*    mInstance;
     static DataBase*    getInstance();
 
+    int                 errorno;
+    QString             lastError();
+
     // client 表
     int                 insertClientTable(Client &client);
+    int                 getClientInNumber(QString clientNum, Client &client);
     int                 updateClientTableItem(Client &client);
     int                 clearClientTable();
     bool                isClientExist(Client &client);

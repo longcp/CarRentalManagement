@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDate>
+#include "datatype.h"
 
 class Client : public QObject
 {
@@ -10,8 +11,8 @@ class Client : public QObject
 public:
     explicit Client(QObject *parent = 0);
     ~Client();
-    enum    PayType {CASH, MONTHLY};                                    // 结账方式
-    enum    ClientType {CONTACT, TEMPORARY};                            // 客户类型
+    enum PayType {CASH, MONTHLY};                                    // 结账方式
+    enum ClientType {CONTACT, TEMPORARY};                            // 客户类型
 
     /**
      * 获取余额
@@ -25,6 +26,14 @@ public:
      * @brief enum转字符串
      */
     QString     getPayTypeStr(PayType type);
+    /**
+     * @brief 字符串转ClientType
+     */
+    const static ClientType  getClientType(QString type);
+    /**
+     * @brief 字符串转PayType
+     */
+    const static PayType     getPayType(QString type);
 
 
     QString     name;

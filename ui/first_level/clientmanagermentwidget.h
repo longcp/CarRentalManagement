@@ -30,7 +30,7 @@ private slots:
 
 signals:
     void            openClientEditDialogSignal(OpenType type,
-                                               const Client &client);
+                                               Client &client);
 
 private:
     /**
@@ -57,7 +57,8 @@ private:
     QAction         *mActExport;
     QAction         *mActImport;
     DataBase        *mDb;
-    TableModel       *mModel;
+    TableModel      *mModel;
+    int             lastShowRow;
 
     const static int      mColumnCount = 9;
 };

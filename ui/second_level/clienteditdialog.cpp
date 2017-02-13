@@ -138,8 +138,9 @@ ClientEditDialog::initView()
 
 void
 ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
-                                           const Client & client)
+                                           Client & client)
 {
+    mOpenType = opentype;
     if (opentype == OpenType::CREATEITEM) {
         //以创建条目方式打开
         mActSave->setDisabled(true);
@@ -155,11 +156,44 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
         mActSave->setEnabled(true);
         mActPrev->setEnabled(true);
         mActNext->setEnabled(true);
+        ui->clientNumLineEdit->setDisabled(true);
         setViewMode();                                                  //默认为查看模式
-        resetView();
+
+        ui->clientNameLineEdit->setText(client.name);
+        ui->clientNumLineEdit->setText(client.number);
+        ui->telLineEdit->setText(client.telephone);
+        ui->faxLineEdit->setText(client.fax);
+        ui->addressLineEdit->setText(client.address);
+        ui->contractLineEdit->setText(client.contract);
+        ui->emailLineEdit->setText(client.email);
+        ui->createDateEdit->setDate(client.createDate);
+        ui->createPeopleLineEdit->setText(client.creator);
+        ui->remarksFxtEdit->setText(client.remarks);
+        ui->amountLineEdit->setText(QString::number(client.amount));
+        ui->paidLineEdit->setText(QString::number(client.paid));
+        ui->balanceLineEdit->setText(QString::number(client.amount - client.paid));
+        ui->monthlySpinBox->setValue(client.monthly);
+        if (client.paytype == Client::CASH) {
+            ALOGD("%s, client.paytype == CASH", __FUNCTION__);
+            ui->cashRadioButton->setChecked(true);
+            ui->monthlyRadioButton->setChecked(false);
+        } else if (client.paytype == Client::MONTHLY) {
+            ALOGD("%s, client.paytype == MONTHLY", __FUNCTION__);
+            ui->cashRadioButton->setChecked(false);
+            ui->monthlyRadioButton->setChecked(true);
+        }
+        if (client.clienttype == Client::CONTACT) {
+            ALOGD("%s, client.clienttype == CONTACT", __FUNCTION__);
+            ui->contractRadioButton->setChecked(true);
+            ui->temporaryRadioButton->setChecked(false);
+        } else if (client.clienttype == Client::TEMPORARY) {
+            ALOGD("%s, client.clienttype == TEMPORARY", __FUNCTION__);
+            ui->contractRadioButton->setChecked(false);
+            ui->temporaryRadioButton->setChecked(true);
+        }
+//        resetView();
     }
 
-    mOpenType = opentype;
     this->exec();
 }
 
@@ -362,11 +396,11 @@ ClientEditDialog::saveAndExitEvent()
                                      QMessageBox::Ok,
                                      QMessageBox::Ok);
         } else {
-            QMessageBox::information(this,
-                                     tr("温馨提示"),
-                                     tr("添加失败!未知错误.\n"),
-                                     QMessageBox::Ok,
-                                     QMessageBox::Ok);
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("添加失败!未知错误.\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
             return;
         }
     } else {
@@ -379,11 +413,11 @@ ClientEditDialog::saveAndExitEvent()
                                      QMessageBox::Ok,
                                      QMessageBox::Ok);
         } else {
-            QMessageBox::information(this,
-                                     tr("温馨提示"),
-                                     tr("保存失败!未知错误.\n"),
-                                     QMessageBox::Ok,
-                                     QMessageBox::Ok);
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("保存失败!未知错误.\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
             return;
         }
     }

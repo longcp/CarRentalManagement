@@ -8,6 +8,7 @@
 #include <QStandardItem>
 #include <database/database.h>
 #include <tablemodel.h>
+#include <QMessageBox>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -61,9 +62,9 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     /**
      * @brief 打开编辑窗口
      */
-    connect(this, SIGNAL(openClientEditDialogSignal(OpenType, const Client &)),
+    connect(this, SIGNAL(openClientEditDialogSignal(OpenType, Client &)),
             mClientEditDialog,
-            SLOT(openClientEditDialogSlot(OpenType, const Client &)));
+            SLOT(openClientEditDialogSlot(OpenType, Client &)));
     /**
      * @brief 打开编辑窗口
      */
@@ -145,7 +146,60 @@ void
 ClientManagermentWidget::cellDoubleClickedSlot(const QModelIndex & index)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__, index.column(), index.row());
-//    emit openClientEditDialogSignal(OpenType::SHOWITEM);
+    int ret;
+    lastShowRow = index.row();
+//    bool ok;
+//    Client client;
+//    client.number = ui->clientTableView->model()
+//            ->index(lastShowRow, 0).data().toString();
+//    client.clienttype = Client::getClientType(ui->clientTableView->model()
+//            ->index(lastShowRow, 1).data().toString());
+//    client.name = ui->clientTableView->model()
+//            ->index(lastShowRow, 2).data().toString();
+//    client.address = ui->clientTableView->model()
+//            ->index(lastShowRow, 3).data().toString();
+//    client.telephone = ui->clientTableView->model()
+//            ->index(lastShowRow, 4).data().toString();
+//    client.fax = ui->clientTableView->model()
+//            ->index(lastShowRow, 5).data().toString();
+//    client.contract = ui->clientTableView->model()
+//            ->index(lastShowRow, 6).data().toString();
+//    client.paytype = Client::getPayType(ui->clientTableView->model()
+//            ->index(lastShowRow, 7).data().toString());
+//    client.monthly = ui->clientTableView->model()
+//            ->index(lastShowRow, 8).data().toString().toInt(&ok, 10);
+//    client.amount = ui->clientTableView->model()
+//            ->index(lastShowRow, 9).data().toString().toFloat(&ok);
+//    client.paid = ui->clientTableView->model()
+//            ->index(lastShowRow, 10).data().toString().toFloat(&ok);
+    QString clientNum = ui->clientTableView->model()
+            ->index(lastShowRow, 0).data().toString();
+    Client client;
+    if (mDb->getClientInNumber(clientNum, client)) {
+        ALOGE("getClientInNumber failed, sql err = %s", mDb->lastError());
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("未知错误,无法查看该项.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+        return;
+    }
+    ALOGD("name = %s, number = %s, telephone = %s, \n"
+          "address = %s, email = %s, fax = %s, \n"
+          "contract = %s, remarks = %s, \n"
+          "paytype = %d, monthly = %d, \n"
+          "clienttype = %d\n",
+          client.name.toStdString().data(),
+          client.number.toStdString().data(),
+          client.telephone.toStdString().data(),
+          client.address.toStdString().data(),
+          client.email.toStdString().data(),
+          client.fax.toStdString().data(),
+          client.contract.toStdString().data(),
+          client.remarks.toStdString().data(),
+          client.paytype,
+          client.monthly, client.clienttype);
+    emit openClientEditDialogSignal(SHOWITEM, client);
 }
 
 void

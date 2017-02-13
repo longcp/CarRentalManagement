@@ -29,7 +29,7 @@ private slots:
      * @brief 打开窗口
      */
     void            openClientEditDialogSlot(OpenType opentype,
-                                             const Client &client);
+                                             Client &client);
     /**
      * @brief 关闭窗口
      */
