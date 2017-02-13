@@ -296,6 +296,8 @@ ClientEditDialog::isModified()
 void
 ClientEditDialog::saveAndExitEvent()
 {
+    int ret;
+
     if (ui->clientNumLineEdit->text().isEmpty() ||
             ui->clientNameLineEdit->text().isEmpty()) {
         QMessageBox::warning(this, tr("温馨提示"),
@@ -349,16 +351,44 @@ ClientEditDialog::saveAndExitEvent()
           client.paytype,
           client.monthly, client.clienttype);
 
-    if (mDb->insertClientTable(client))
-        ALOGE("insertClientTable failed!");
+    if (mOpenType == CREATEITEM) {
+        // 添加条目
+        ret = mDb->insertClientTable(client);
+        if (!ret) {
+            addClientItemSignal(client);
+            QMessageBox::information(this,
+                                     tr("温馨提示"),
+                                     tr("添加成功.\n"),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+        } else {
+            QMessageBox::information(this,
+                                     tr("温馨提示"),
+                                     tr("添加失败!未知错误.\n"),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+            return;
+        }
+    } else {
+        // 编辑条目
+        ret = mDb->updateClientTableItem(client);
+        if (!ret) {
+            QMessageBox::information(this,
+                                     tr("温馨提示"),
+                                     tr("保存成功.\n"),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+        } else {
+            QMessageBox::information(this,
+                                     tr("温馨提示"),
+                                     tr("保存失败!未知错误.\n"),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+            return;
+        }
+    }
 //    saveChange();
 
-    addClientItemSignal(client);
-    QMessageBox::information(this,
-                             tr("温馨提示"),
-                             tr("添加成功\n"),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
     closeDialog();
 }
 
@@ -419,4 +449,10 @@ ClientEditDialog::setMode(bool mode)
     ui->createPeopleLineEdit->setEnabled(mode);
     ui->contractRadioButton->setEnabled(mode);
     ui->temporaryRadioButton->setEnabled(mode);
+}
+
+bool
+ClientEditDialog::isClientExist(Client &client)
+{
+   return mDb->isClientExist(client);
 }

@@ -24,7 +24,9 @@ public:
 
     // client 表
     int                 insertClientTable(Client &client);
+    int                 updateClientTableItem(Client &client);
     int                 clearClientTable();
+    bool                isClientExist(Client &client);
 
 private:
     bool                openDataBase();

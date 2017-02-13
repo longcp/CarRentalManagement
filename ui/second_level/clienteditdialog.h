@@ -96,6 +96,10 @@ private:
      * @brief 设置查看模式
      */
     void            setViewMode();
+    /**
+     * @brief 客户是否存在
+     */
+    bool            isClientExist(Client &client);
 
     Ui::ClientEditDialog *ui;
     // 工具栏

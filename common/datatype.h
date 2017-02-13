@@ -6,6 +6,9 @@
 #define GET_DATABASE_FAIL           (-1001)
 #define INSERT_CLIENT_TABLE_FAIL    (-1002)
 #define DELETE_TABLE_FAIL           (-1003)
+#define DATABASE_ITEM_EXIST         (-1004)
+#define SELECT_DATABASE_FAIL        (-1005)
+#define UPDATE_CLIENT_ITEM_FAIL     (-1006)
 
 enum OpenType{CREATEITEM=0, SHOWITEM};
 

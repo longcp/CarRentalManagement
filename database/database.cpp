@@ -107,6 +107,30 @@ DataBase::getDataBaseQuery()
     return query;
 }
 
+bool
+DataBase::isClientExist(Client &client)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM client WHERE number=?");
+    query->addBindValue(client.number);
+    if (!query->exec()) {
+        ALOGE("exec [SELECT * FROM client WHERE number=%s] failed!",
+              client.number.toStdString().data());
+        return false;
+    }
+
+    if (!query->next())
+        return false;
+
+    return true;
+}
+
 int
 DataBase::insertClientTable(Client &client)
 {
@@ -143,6 +167,55 @@ DataBase::insertClientTable(Client &client)
     if (!query->exec()) {
         ALOGE("insertClientTable failed!");
         return INSERT_CLIENT_TABLE_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::updateClientTableItem(Client &client)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("UPDATE client "
+                   "SET name=?, "
+                   "telephone=?, "
+                   "address=?, "
+                   "email=?, "
+                   "fax=?, "
+                   "contract=?, "
+                   "remarks=?, "
+                   "creator=?, "
+                   "paytype=?, "
+                   "clienttype=?, "
+                   "createDate=?, "
+                   "monthly=?, "
+                   "amount=?, "
+                   "paid=? "
+                   "WHERE number=?;");
+    query->addBindValue(client.name);
+    query->addBindValue(client.telephone);
+    query->addBindValue(client.address);
+    query->addBindValue(client.email);
+    query->addBindValue(client.fax);
+    query->addBindValue(client.contract);
+    query->addBindValue(client.remarks);
+    query->addBindValue(client.creator);
+    query->addBindValue(client.paytype);
+    query->addBindValue(client.clienttype);
+    query->addBindValue(client.createDate);
+    query->addBindValue(client.monthly);
+    query->addBindValue(client.amount);
+    query->addBindValue(client.paid);
+    query->addBindValue(client.number);
+    if (!query->exec()) {
+        ALOGE("updateClientTableItem fail");
+        return UPDATE_CLIENT_ITEM_FAIL;
     }
 
     return SUCCESS;
