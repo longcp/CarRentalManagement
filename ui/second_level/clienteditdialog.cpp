@@ -349,15 +349,16 @@ ClientEditDialog::saveAndExitEvent()
           client.paytype,
           client.monthly, client.clienttype);
 
-    if (!mDb->insertClientTable(client))
+    if (mDb->insertClientTable(client))
         ALOGE("insertClientTable failed!");
 //    saveChange();
 
     addClientItemSignal(client);
-    QMessageBox::information(this, tr("温馨提示"),
-                            tr("添加成功\n"),
-                            QMessageBox::Ok,
-                            QMessageBox::Ok);
+    QMessageBox::information(this,
+                             tr("温馨提示"),
+                             tr("添加成功\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
     closeDialog();
 }
 

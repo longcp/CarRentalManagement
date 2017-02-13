@@ -39,6 +39,7 @@ DataBase::getInstance()
 bool
 DataBase::openDataBase()
 {
+    ALOGD("mDbPath = %s", mDbPath.toStdString().data());
     if (!QFile::exists(mDbPath)) {
         qDebug()<< "database" << mDbPath << " is not existed!";
         if (!QFile::copy(mDbPath, mDbPath)) {
@@ -109,25 +110,6 @@ DataBase::getDataBaseQuery()
 int
 DataBase::insertClientTable(Client &client)
 {
-    ALOGD("-----------------------------------\n"
-          "name = %s, number = %s, telephone = %s, \n"
-          "address = %s, email = %s, fax = %s, \n"
-          "contract = %s, remarks = %s, creator = %s, \n"
-          "createDate = %s, paytype = %d, monthly = %d, \n"
-          "clienttype = %d\n",
-          client.name.toStdString().data(),
-          client.number.toStdString().data(),
-          client.telephone.toStdString().data(),
-          client.address.toStdString().data(),
-          client.email.toStdString().data(),
-          client.fax.toStdString().data(),
-          client.contract.toStdString().data(),
-          client.remarks.toStdString().data(),
-          client.creator.toStdString().data(),
-          client.createDate.toString("yyyy-MM-dd").toStdString().data(),
-          client.paytype,
-          client.monthly, client.clienttype);
-
     QMutexLocker locker(pmMutex);
 
     QSqlQuery *query = getDataBaseQuery();
@@ -135,41 +117,53 @@ DataBase::insertClientTable(Client &client)
         exit GET_DATABASE_FAIL;
 
     query->finish();
-    query->prepare("INSERT INTO client VALUES(:name, :number, :telephone, :address, :email, :fax, :contract, :remarks, :creator, :paytype, :clienttype, :createDate, :monthly, :amount, :paid)");
-//    query->bindValue(":name", client.name);
-//    query->bindValue(":number", client.number);
-//    query->bindValue(":telephone", client.telephone);
-//    query->bindValue(":address", client.address);
-//    query->bindValue(":email", client.email);
-//    query->bindValue(":fax", client.fax);
-//    query->bindValue(":contract", client.contract);
-//    query->bindValue(":remarks", client.remarks);
-//    query->bindValue(":creator", client.creator);
-//    query->bindValue(":paytype", client.paytype);
-//    query->bindValue(":clienttype", client.clienttype);
-//    query->bindValue(":createDate", client.createDate.toString("yyyy-MM-dd"));
-//    query->bindValue(":monthly", client.monthly);
-//    query->bindValue(":amount", client.amount);
-//    query->bindValue(":paid", client.paid);
-    query->bindValue(":name", "client.name");
-    query->bindValue(":number", "client.number");
-    query->bindValue(":telephone", "client.telephone");
-    query->bindValue(":address", "client.address");
-    query->bindValue(":email", "client.email");
-    query->bindValue(":fax", "client.fax");
-    query->bindValue(":contract", "client.contract");
-    query->bindValue(":remarks", "client.remarks");
-    query->bindValue(":creator", "client.creator");
-    query->bindValue(":paytype", 1);
-    query->bindValue(":clienttype", 2);
-    query->bindValue(":createDate", "2017-02-13");
-    query->bindValue(":monthly", 3);
-    query->bindValue(":amount", 4.56);
-    query->bindValue(":paid", 7.89);
+    query->prepare("INSERT INTO client "
+                   "VALUES(:name, :number, :telephone, "
+                   ":address, :email, :fax, :contract, "
+                   ":remarks, :creator, :paytype, "
+                   ":clienttype, :createDate, :monthly, "
+                   ":amount, :paid)");
+    query->bindValue(":name", client.name);
+    query->bindValue(":number", client.number);
+    query->bindValue(":telephone", client.telephone);
+    query->bindValue(":address", client.address);
+    query->bindValue(":email", client.email);
+    query->bindValue(":fax", client.fax);
+    query->bindValue(":contract", client.contract);
+    query->bindValue(":remarks", client.remarks);
+    query->bindValue(":creator", client.creator);
+    query->bindValue(":paytype", client.paytype);
+    query->bindValue(":clienttype", client.clienttype);
+    query->bindValue(":createDate", client
+                     .createDate.toString("yyyy-MM-dd"));
+    query->bindValue(":monthly", client.monthly);
+    query->bindValue(":amount", client.amount);
+    query->bindValue(":paid", client.paid);
+
     if (!query->exec()) {
         ALOGE("insertClientTable failed!");
         return INSERT_CLIENT_TABLE_FAIL;
     }
 
+    return SUCCESS;
+}
+
+int
+DataBase::clearClientTable()
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    //删除操作
+    query->finish();
+    query->prepare("DELETE FROM client;");
+    if (!query->exec()) {
+        ALOGE("clearClientTable fail!");
+        return DELETE_TABLE_FAIL;
+    }
+
+    ALOGV("clearClientTable success!");
     return SUCCESS;
 }
