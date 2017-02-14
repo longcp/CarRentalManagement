@@ -23,6 +23,7 @@ public:
 
 signals:
     void            addClientItemSignal(Client &client);
+    void            updateClientItemSignal(Client &client);
 
 private slots:
     /**
@@ -108,6 +109,10 @@ private:
      * @brief
      */
     void            setOriginClient(Client &client);
+    /**
+     * @brief 保存界面数据到client
+     */
+    void            saveUiContent(Client &client);
 
     Ui::ClientEditDialog *ui;
     // 工具栏

@@ -144,7 +144,6 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
     mOpenType = opentype;
     if (opentype == OpenType::CREATEITEM) {
         //以创建条目方式打开
-        mActSave->setDisabled(true);
         mActEdit->setDisabled(true);
         mActPrev->setDisabled(true);
         mActNext->setDisabled(true);
@@ -153,6 +152,7 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
         ui->temporaryRadioButton->setChecked(true);
         ui->createDateEdit->setDate(QDate::currentDate());
         setEditMode();                                                  //编辑模式
+        mActSave->setDisabled(true);
     } else {
         //以查看内容方式打开
         mActSave->setEnabled(true);
@@ -461,10 +461,50 @@ ClientEditDialog::saveAndExitEvent()
 }
 
 void
+ClientEditDialog::saveUiContent(Client &client)
+{
+    bool ok;
+    client.name     = ui->clientNameLineEdit->text();
+    client.number   = ui->clientNumLineEdit->text();
+    client.telephone = ui->telLineEdit->text();
+    client.address  = ui->addressLineEdit->text();
+    client.email    = ui->emailLineEdit->text();
+    client.fax      = ui->faxLineEdit->text();
+    client.contract = ui->contractLineEdit->text();
+    client.remarks  = ui->remarksFxtEdit->toPlainText();
+    client.creator  = ui->createPeopleLineEdit->text();
+    client.createDate = QDate::fromString(
+                ui->createDateEdit->text(), "yyyy-MM-dd");
+    client.amount   = ui->amountLineEdit->text().toFloat(&ok);
+    client.paid     = ui->paidLineEdit->text().toFloat(&ok);
+    client.monthly = ui->monthlySpinBox->text().toInt(&ok, 10);
+    if (ui->cashRadioButton->isChecked())
+        client.paytype = Client::CASH;
+    else
+        client.paytype = Client::MONTHLY;
+
+    if (ui->contractRadioButton->isChecked())
+        client.clienttype = Client::CONTACT;
+    else
+        client.clienttype = Client::TEMPORARY;
+}
+
+void
 ClientEditDialog::saveEvent()
 {
-    // TODO 先插入数据库
-    resetView();
+    Client client;
+
+    saveUiContent(client);
+    if (!mDb->updateClientTableItem(client)) {
+        resetView();
+        updateClientItemSignal(client);
+    } else {
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("保存失败!未知错误.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+    }
 }
 
 void
@@ -487,6 +527,7 @@ ClientEditDialog::setEditMode()
 {
     mActEdit->setDisabled(true);
     mActCancel->setEnabled(true);
+    mActSave->setEnabled(true);
     setMode(true);
 }
 
@@ -495,6 +536,7 @@ ClientEditDialog::setViewMode()
 {
     mActCancel->setDisabled(true);
     mActEdit->setEnabled(true);
+    mActSave->setDisabled(true);
     setMode(false);
 }
 

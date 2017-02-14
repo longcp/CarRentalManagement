@@ -75,6 +75,11 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
      */
     connect(mClientEditDialog, SIGNAL(addClientItemSignal(Client &)),
             this, SLOT(addClientItemSlot(Client&)));
+    /**
+     * @brief 更新条目
+     */
+    connect(mClientEditDialog, SIGNAL(updateClientItemSignal(Client &)),
+            this, SLOT(updateClientItemSlog(Client &)));
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
@@ -232,25 +237,6 @@ void
 ClientManagermentWidget::addClientItemSlot(Client &client)
 {
     ALOGD("ClientManagermentWidget enter!\n");
-#if 0
-    ALOGD("name = %s, number = %s, telephone = %s, \n"
-          "address = %s, email = %s, fax = %s, \n"
-          "contract = %s, remarks = %s, creator = %s, \n"
-          "createDate = %s, paytype = %d, monthly = %d, \n"
-          "clienttype = %d\n",
-          client.name.toStdString().data(),
-          client.number.toStdString().data(),
-          client.telephone.toStdString().data(),
-          client.address.toStdString().data(),
-          client.email.toStdString().data(),
-          client.fax.toStdString().data(),
-          client.contract.toStdString().data(),
-          client.remarks.toStdString().data(),
-          client.creator.toStdString().data(),
-          client.createDate.toString("yyyy-MM-dd").toStdString().data(),
-          client.paytype,
-          client.monthly, client.clienttype);
-#endif
 
     QStandardItem* num
             = new QStandardItem(client.number);
@@ -284,4 +270,49 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
           << fax << contract << paytype << monthly
           << amount << paid << balance << remarks;
     mModel->appendRow(items);
+}
+
+void
+ClientManagermentWidget::updateClientItemSlog(Client &client)
+{
+    ALOGD("%s enter", __FUNCTION__);
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 0),
+                client.number);
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 1),
+                client.getClientTypeStr(client.clienttype));
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 2),
+                client.name);
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 3),
+                client.address);
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 4),
+                client.telephone);
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 5),
+                client.fax);
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 6),
+                client.contract);
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 7),
+                client.getPayTypeStr(client.paytype));
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 8),
+                QString::number(client.monthly));
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 9),
+                QString("%1").arg(client.amount));
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 10),
+                QString("%1").arg(client.paid));
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 11),
+                QString("%1").arg(client.amount - client.paid));
+    ui->clientTableView->model()->setData(
+                ui->clientTableView->model()->index(lastShowRow, 12),
+                client.remarks);
 }
