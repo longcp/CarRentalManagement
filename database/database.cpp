@@ -220,7 +220,36 @@ DataBase::getClientInNumber(QString clientNum, Client &client)
 }
 
 int
-DataBase::getAllClientData(QList<Client > &clients)
+DataBase::getAllClientsNumber(QList<QString> &numbers)
+{
+    ALOGD("getAllClientsNumber enter");
+    QString number;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM client");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM client!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        number = query->value(1).toString();
+        numbers.push_back(number);                              //插入list
+    }
+
+    ALOGD("getAllClientsNumber SUCCESS");
+    return SUCCESS;
+}
+
+#if 0
+int
+DataBase::getAllClientData(QList<Client> &clients)
 {
     Client client;
 
@@ -257,12 +286,12 @@ DataBase::getAllClientData(QList<Client > &clients)
         client.amount = query->value(13).toFloat();
         client.paid = query->value(14).toFloat();
 
-        clients->push_back(client);                              //插入list
+        clients.push_back(client);                              //插入list
     }
 
     return SUCCESS;
 }
-
+#endif
 int
 DataBase::updateClientTableItem(Client &client)
 {

@@ -14,6 +14,26 @@ public:
     enum PayType {CASH, MONTHLY};                                    // 结账方式
     enum ClientType {CONTACT, TEMPORARY};                            // 客户类型
 
+#if 0
+    Client& operator=(const Client& c) {
+        name = c.name;
+        number = c.number;
+        telephone = c.telephone;
+        address = c.address;
+        email = c.email;
+        fax = c.fax;
+        contract = c.contract;
+        remarks = c.remarks;
+        creator = c.creator;
+        clienttype = c.clienttype;
+        paytype = c.paytype;
+        createDate = c.createDate;
+        monthly = c.monthly;
+        amount = c.amount;
+        paid = c.paid;
+        return *this;
+    }
+#endif
     /**
      * 获取余额
      */
@@ -29,11 +49,11 @@ public:
     /**
      * @brief 字符串转ClientType
      */
-    const static ClientType  getClientType(QString type);
+    ClientType  getClientType(QString type);
     /**
      * @brief 字符串转PayType
      */
-    const static PayType     getPayType(QString type);
+    PayType     getPayType(QString type);
 
 
     QString     name;

@@ -29,6 +29,7 @@ public:
     int                 insertClientTable(Client &client);
     int                 getClientInNumber(QString clientNum,
                                           Client &client);
+    int                 getAllClientsNumber(QList<QString> &numbers);
     int                 getAllClientData(QList<Client> &clients);
     int                 updateClientTableItem(Client &client);
     int                 clearClientTable();

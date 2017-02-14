@@ -10,7 +10,7 @@ Client::~Client()
 
 }
 
-const Client::ClientType
+Client::ClientType
 Client::getClientType(QString type)
 {
     if (type == "临时")
@@ -19,8 +19,7 @@ Client::getClientType(QString type)
         return CONTACT;
 }
 
-const Client::PayType
-Client::getPayType(QString type)
+Client::PayType Client::getPayType(QString type)
 {
     if (type == "月结")
         return MONTHLY;

@@ -126,19 +126,39 @@ ClientManagermentWidget::initView()
 void
 ClientManagermentWidget::initTableView()
 {
+    int i, size;
+    QList<QString>numbers;
+    QString number;
+    Client client;
+
+    // FIXME:暂未解决下面if 0里的fixme问题，暂时采用这用方式初始化，后续要优化过来
+    if (!mDb->getAllClientsNumber(numbers)) {
+        size = numbers.size();
+        for (i = 0; i < size; i++) {
+            if (!mDb->getClientInNumber(numbers.at(i), client))
+                addClientItemSlot(client);
+        }
+    }
+#if 0
+    // FIXME:
     int i, ret, size;
     QList<Client>clients;
+    QList<Client>::iterator c;
     Client client;
 
     ret = mDb->getAllClientData(clients);
     if (!ret) {
         size = clients.size();
         for (i = 0; i < size; i++) {
-//            client = clients.at(i);
-            addClientItemSlot(clients.at(i));
+            client = clients.operator [](i);
+            addClientItemSlot(client);
         }
+//        for (c = clients.begin(); c != clients.end(); c++) {
+//            client = *c;
+//            addClientItemSlot(client);
+//        }
     }
-
+#endif
 }
 
 void
@@ -167,7 +187,6 @@ ClientManagermentWidget::cellDoubleClickedSlot(const QModelIndex & index)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__, index.column(), index.row());
 
-    int ret;
     Client client;
     lastShowRow = index.row();
 
