@@ -17,6 +17,7 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     mDb = DataBase::getInstance();
+    mOriginClient = new Client();
 
     initView();
 
@@ -151,6 +152,7 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
         ui->monthlyRadioButton->setChecked(true);
         ui->temporaryRadioButton->setChecked(true);
         ui->createDateEdit->setDate(QDate::currentDate());
+        setEditMode();                                                  //编辑模式
     } else {
         //以查看内容方式打开
         mActSave->setEnabled(true);
@@ -158,40 +160,8 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
         mActNext->setEnabled(true);
         ui->clientNumLineEdit->setDisabled(true);
         setViewMode();                                                  //默认为查看模式
-
-        ui->clientNameLineEdit->setText(client.name);
-        ui->clientNumLineEdit->setText(client.number);
-        ui->telLineEdit->setText(client.telephone);
-        ui->faxLineEdit->setText(client.fax);
-        ui->addressLineEdit->setText(client.address);
-        ui->contractLineEdit->setText(client.contract);
-        ui->emailLineEdit->setText(client.email);
-        ui->createDateEdit->setDate(client.createDate);
-        ui->createPeopleLineEdit->setText(client.creator);
-        ui->remarksFxtEdit->setText(client.remarks);
-        ui->amountLineEdit->setText(QString::number(client.amount));
-        ui->paidLineEdit->setText(QString::number(client.paid));
-        ui->balanceLineEdit->setText(QString::number(client.amount - client.paid));
-        ui->monthlySpinBox->setValue(client.monthly);
-        if (client.paytype == Client::CASH) {
-            ALOGD("%s, client.paytype == CASH", __FUNCTION__);
-            ui->cashRadioButton->setChecked(true);
-            ui->monthlyRadioButton->setChecked(false);
-        } else if (client.paytype == Client::MONTHLY) {
-            ALOGD("%s, client.paytype == MONTHLY", __FUNCTION__);
-            ui->cashRadioButton->setChecked(false);
-            ui->monthlyRadioButton->setChecked(true);
-        }
-        if (client.clienttype == Client::CONTACT) {
-            ALOGD("%s, client.clienttype == CONTACT", __FUNCTION__);
-            ui->contractRadioButton->setChecked(true);
-            ui->temporaryRadioButton->setChecked(false);
-        } else if (client.clienttype == Client::TEMPORARY) {
-            ALOGD("%s, client.clienttype == TEMPORARY", __FUNCTION__);
-            ui->contractRadioButton->setChecked(false);
-            ui->temporaryRadioButton->setChecked(true);
-        }
-//        resetView();
+        setOriginClient(client);
+        setView(client);
     }
 
     this->exec();
@@ -226,9 +196,73 @@ ClientEditDialog::initParam()
 }
 
 void
+ClientEditDialog::setOriginClient(Client &client)
+{
+    ALOGD("%s", __FUNCTION__);
+    mOriginClient->name = client.name;
+    mOriginClient->number = client.number;
+    mOriginClient->telephone = client.telephone;
+    mOriginClient->address = client.address;
+    mOriginClient->email = client.email;
+    mOriginClient->fax = client.fax;
+    mOriginClient->contract = client.contract;
+    mOriginClient->remarks = client.remarks;
+    mOriginClient->creator = client.creator;
+    mOriginClient->clienttype = client.clienttype;
+    mOriginClient->paytype = client.paytype;
+    mOriginClient->createDate = client.createDate;
+    mOriginClient->monthly = client.monthly;
+    mOriginClient->amount = client.amount;
+    mOriginClient->paid = client.paid;
+}
+
+void
+ClientEditDialog::setView(Client &client)
+{
+    ui->clientNameLineEdit->setText(client.name);
+    ui->clientNumLineEdit->setText(client.number);
+    ui->telLineEdit->setText(client.telephone);
+    ui->faxLineEdit->setText(client.fax);
+    ui->addressLineEdit->setText(client.address);
+    ui->contractLineEdit->setText(client.contract);
+    ui->emailLineEdit->setText(client.email);
+    ui->createDateEdit->setDate(client.createDate);
+    ui->createPeopleLineEdit->setText(client.creator);
+    ui->remarksFxtEdit->setText(client.remarks);
+    ui->amountLineEdit->setText(QString::number(client.amount));
+    ui->paidLineEdit->setText(QString::number(client.paid));
+    ui->balanceLineEdit->setText(QString::number(client.amount
+                                                 - client.paid));
+    ui->monthlySpinBox->setValue(client.monthly);
+    if (client.paytype == Client::CASH) {
+        ALOGD("%s, client.paytype == CASH", __FUNCTION__);
+        ui->cashRadioButton->setChecked(true);
+        ui->monthlyRadioButton->setChecked(false);
+    } else if (client.paytype == Client::MONTHLY) {
+        ALOGD("%s, client.paytype == MONTHLY", __FUNCTION__);
+        ui->cashRadioButton->setChecked(false);
+        ui->monthlyRadioButton->setChecked(true);
+    }
+    if (client.clienttype == Client::CONTACT) {
+        ALOGD("%s, client.clienttype == CONTACT", __FUNCTION__);
+        ui->contractRadioButton->setChecked(true);
+        ui->temporaryRadioButton->setChecked(false);
+    } else if (client.clienttype == Client::TEMPORARY) {
+        ALOGD("%s, client.clienttype == TEMPORARY", __FUNCTION__);
+        ui->contractRadioButton->setChecked(false);
+        ui->temporaryRadioButton->setChecked(true);
+    }
+}
+
+void
 ClientEditDialog::resetView()
 {
+    if (!isModified()) {
+        ALOGD("%s, !isModified()", __FUNCTION__);
+        return;
+    }
 
+    setView(*mOriginClient);
 }
 
 void
@@ -409,7 +443,7 @@ ClientEditDialog::saveAndExitEvent()
         if (!ret) {
             QMessageBox::information(this,
                                      tr("温馨提示"),
-                                     tr("保存成功.\n"),
+                                     tr("已保存.\n"),
                                      QMessageBox::Ok,
                                      QMessageBox::Ok);
         } else {
@@ -437,6 +471,8 @@ void
 ClientEditDialog::editEvent()
 {
     setEditMode();
+    // 已存在客户，其客户编号不可再编辑
+    ui->clientNumLineEdit->setDisabled(true);
 }
 
 void

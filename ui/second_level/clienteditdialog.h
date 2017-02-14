@@ -85,6 +85,10 @@ private:
      */
     void            initParam();
     /**
+     * @brief 设置界面内容
+     */
+    void            setView(Client &client);
+    /**
      * @brief 重置界面相关内容
      */
     void            resetView();
@@ -100,6 +104,10 @@ private:
      * @brief 客户是否存在
      */
     bool            isClientExist(Client &client);
+    /**
+     * @brief
+     */
+    void            setOriginClient(Client &client);
 
     Ui::ClientEditDialog *ui;
     // 工具栏
@@ -115,6 +123,7 @@ private:
     QAction         *mActNext;
     QAction         *mActCancel;
 
+    Client*         mOriginClient;
     DataBase*       mDb;
     OpenType        mOpenType;                                          //是否已添加客户模式打开
     bool            mIsInternalClose;                                   //是否内部关闭
