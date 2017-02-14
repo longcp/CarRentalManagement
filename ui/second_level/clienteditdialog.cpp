@@ -269,10 +269,10 @@ void
 ClientEditDialog::closeEvent(QCloseEvent *event)
 {
     ALOGD("closeEvent");
-    if (!mIsInternalClose) {
+//    if (!mIsInternalClose) {
         mIsInternalClose = false;
         closeDialog();
-    }
+//    }
 }
 
 void
@@ -291,28 +291,20 @@ ClientEditDialog::closeDialog()
                                        QMessageBox::No |
                                        QMessageBox::Cancel,
                                        QMessageBox::Yes);
-        switch(ret) {
-            case QMessageBox::Yes:
-                ALOGD("save");
-                break;
-            case QMessageBox::No:
-                ALOGD("Discard");
-                break;
-            case QMessageBox::Cancel:
-                ALOGD("Cancel");
-                break;
-            default:
-                break;
-        }
+        if (ret == QMessageBox::Yes)
+            saveEvent();
+        else
+            return;
     }
     clean();
     mIsInternalClose = true;
-    this->close();
+//    this->close();
 }
 
 void
 ClientEditDialog::clean()
 {
+    ALOGD("%s enter.", __FUNCTION__);
     cleanContent();
 }
 
@@ -375,32 +367,12 @@ ClientEditDialog::saveAndExitEvent()
         return;
     }
 
-    bool ok;
+    if (!isModified())
+        // 内容没变化，直接退出
+        closeDialog();
+
     Client client;
-    client.name     = ui->clientNameLineEdit->text();
-    client.number   = ui->clientNumLineEdit->text();
-    client.telephone = ui->telLineEdit->text();
-    client.address  = ui->addressLineEdit->text();
-    client.email    = ui->emailLineEdit->text();
-    client.fax      = ui->faxLineEdit->text();
-    client.contract = ui->contractLineEdit->text();
-    client.remarks  = ui->remarksFxtEdit->toPlainText();
-    client.creator  = ui->createPeopleLineEdit->text();
-    client.createDate = QDate::fromString(
-                ui->createDateEdit->text(), "yyyy-MM-dd");
-    client.amount   = ui->amountLineEdit->text().toFloat(&ok);
-    client.paid     = ui->paidLineEdit->text().toFloat(&ok);
-    client.monthly = ui->monthlySpinBox->text().toInt(&ok, 10);
-    if (ui->cashRadioButton->isChecked())
-        client.paytype = Client::CASH;
-    else
-        client.paytype = Client::MONTHLY;
-
-    if (ui->contractRadioButton->isChecked())
-        client.clienttype = Client::CONTACT;
-    else
-        client.clienttype = Client::TEMPORARY;
-
+    saveUiContent(client);
     ALOGD("name = %s, number = %s, telephone = %s, \n"
           "address = %s, email = %s, fax = %s, \n"
           "contract = %s, remarks = %s, creator = %s, \n"
