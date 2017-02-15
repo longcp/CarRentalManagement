@@ -92,6 +92,10 @@ private:
     /**
      * @brief 重置界面相关内容
      */
+    void            resetView(Client &client);
+    /**
+     * @brief 重置界面相关内容
+     */
     void            resetView();
     /**
      * @brief 设置编辑模式

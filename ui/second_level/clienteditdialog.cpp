@@ -255,6 +255,13 @@ ClientEditDialog::setView(Client &client)
 }
 
 void
+ClientEditDialog::resetView(Client &client)
+{
+    setOriginClient(client);
+    resetView();
+}
+
+void
 ClientEditDialog::resetView()
 {
     if (!isModified()) {
@@ -269,16 +276,6 @@ void
 ClientEditDialog::closeEvent(QCloseEvent *event)
 {
     ALOGD("closeEvent");
-//    if (!mIsInternalClose) {
-        mIsInternalClose = false;
-        closeDialog();
-//    }
-}
-
-void
-ClientEditDialog::closeDialog()
-{
-    ALOGD("closeDialog...");
     if (mOpenType == CREATEITEM) {
         // 添加条目
         ALOGD("CREATEITEM");
@@ -297,8 +294,13 @@ ClientEditDialog::closeDialog()
             return;
     }
     clean();
-    mIsInternalClose = true;
-//    this->close();
+}
+
+void
+ClientEditDialog::closeDialog()
+{
+    ALOGD("closeDialog...");
+    this->close();
 }
 
 void
@@ -367,9 +369,11 @@ ClientEditDialog::saveAndExitEvent()
         return;
     }
 
-    if (!isModified())
+    if (!isModified()) {
         // 内容没变化，直接退出
         closeDialog();
+        return;
+    }
 
     Client client;
     saveUiContent(client);
@@ -395,6 +399,7 @@ ClientEditDialog::saveAndExitEvent()
         // 添加条目
         ret = mDb->insertClientTable(client);
         if (!ret) {
+            resetView(client);
             addClientItemSignal(client);
             QMessageBox::information(this,
                                      tr("温馨提示"),
@@ -412,12 +417,15 @@ ClientEditDialog::saveAndExitEvent()
     } else {
         // 编辑条目
         ret = mDb->updateClientTableItem(client);
+        updateClientItemSignal(client);
         if (!ret) {
-            QMessageBox::information(this,
-                                     tr("温馨提示"),
-                                     tr("已保存.\n"),
-                                     QMessageBox::Ok,
-                                     QMessageBox::Ok);
+            ret = QMessageBox::information(this,
+                                           tr("温馨提示"),
+                                           tr("已保存.\n"),
+                                           QMessageBox::Ok,
+                                           QMessageBox::Ok);
+//            if (ret == QMessageBox::Ok)
+//                clean();
         } else {
             QMessageBox::critical(this,
                                   tr("温馨提示"),
@@ -427,9 +435,8 @@ ClientEditDialog::saveAndExitEvent()
             return;
         }
     }
-//    saveChange();
 
-    closeDialog();
+    this->close();
 }
 
 void
@@ -468,7 +475,7 @@ ClientEditDialog::saveEvent()
 
     saveUiContent(client);
     if (!mDb->updateClientTableItem(client)) {
-        resetView();
+        resetView(client);
         updateClientItemSignal(client);
     } else {
         QMessageBox::critical(this,
