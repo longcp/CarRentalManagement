@@ -11,6 +11,7 @@
 #define DATABASE_ITEM_NOT_EXIST     (-1004)
 #define SELECT_DATABASE_FAIL        (-1006)
 #define UPDATE_CLIENT_ITEM_FAIL     (-1007)
+#define DELETE_CLIENT_ITEM_FAIL     (-1008)
 
 enum OpenType{CREATEITEM=0, SHOWITEM};
 

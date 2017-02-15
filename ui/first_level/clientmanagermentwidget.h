@@ -25,9 +25,11 @@ public:
 
 private slots:
     void            cellDoubleClickedSlot(const QModelIndex &index);
+    void            cellClickedSlot(const QModelIndex &index);
     void            addClientSlot();
     void            addClientItemSlot(Client &client);
     void            updateClientItemSlog(Client &client);
+    void            deleteClientItemSlog();
 
 signals:
     void            openClientEditDialogSignal(OpenType type,
@@ -63,6 +65,7 @@ private:
     QAction         *mActImport;
     DataBase        *mDb;
     TableModel      *mModel;
+    int             curRow;
     int             lastShowRow;
 
     const static int      mColumnCount = 9;

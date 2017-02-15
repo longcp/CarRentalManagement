@@ -234,7 +234,7 @@ DataBase::getAllClientsNumber(QList<QString> &numbers)
     query->finish();
     query->prepare("SELECT * FROM client");
     if (!query->exec()) {
-        ALOGE("SELECT * FROM client!");
+        ALOGE("SELECT * FROM client failed!");
         return SELECT_DATABASE_FAIL;
     }
 
@@ -244,6 +244,26 @@ DataBase::getAllClientsNumber(QList<QString> &numbers)
     }
 
     ALOGD("getAllClientsNumber SUCCESS");
+    return SUCCESS;
+}
+
+int
+DataBase::deleteClientInNumber(QString clientNum)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM client WHERE number=?");
+    query->addBindValue(clientNum);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM client failed!", __FUNCTION__);
+        return DELETE_CLIENT_ITEM_FAIL;
+    }
+
     return SUCCESS;
 }
 

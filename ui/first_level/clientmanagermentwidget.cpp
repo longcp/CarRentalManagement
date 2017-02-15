@@ -15,6 +15,7 @@
 
 ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     QWidget(parent),
+    curRow(-1),
     ui(new Ui::ClientManagermentWidget)
 {
     ui->setupUi(this);
@@ -60,6 +61,11 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     connect(ui->clientTableView, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(cellDoubleClickedSlot(const QModelIndex &)));
     /**
+     * @brief 单元格单击事件
+     */
+    connect(ui->clientTableView, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(cellClickedSlot(const QModelIndex&)));
+    /**
      * @brief 打开编辑窗口
      */
     connect(this, SIGNAL(openClientEditDialogSignal(OpenType, Client &)),
@@ -80,6 +86,11 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
      */
     connect(mClientEditDialog, SIGNAL(updateClientItemSignal(Client &)),
             this, SLOT(updateClientItemSlog(Client &)));
+    /**
+     * @brief 删除条目
+     */
+    connect(mActDelete, SIGNAL(triggered()),
+            this, SLOT(deleteClientItemSlog()));
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
@@ -194,6 +205,7 @@ ClientManagermentWidget::cellDoubleClickedSlot(const QModelIndex & index)
 
     Client client;
     lastShowRow = index.row();
+    curRow = index.row();
 
     QString clientNum = ui->clientTableView->model()
             ->index(lastShowRow, 0).data().toString();
@@ -224,6 +236,12 @@ ClientManagermentWidget::cellDoubleClickedSlot(const QModelIndex & index)
           client.monthly, client.clienttype);
 #endif
     emit openClientEditDialogSignal(SHOWITEM, client);
+}
+
+void
+ClientManagermentWidget::cellClickedSlot(const QModelIndex &index)
+{
+    curRow = index.row();
 }
 
 void
@@ -315,4 +333,33 @@ ClientManagermentWidget::updateClientItemSlog(Client &client)
     ui->clientTableView->model()->setData(
                 ui->clientTableView->model()->index(lastShowRow, 12),
                 client.remarks);
+}
+
+void
+ClientManagermentWidget::deleteClientItemSlog()
+{
+    if (curRow < 0) {
+        QMessageBox::information(this,
+                                 tr("温馨提示"),
+                                 tr("请选择要删除条目.\n"),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    int ret = QMessageBox::warning(this,
+                                   tr("温馨提示"),
+                                   tr("确定要删除该条目吗？.\n"),
+                                   QMessageBox::Yes |
+                                   QMessageBox::No,
+                                   QMessageBox::No);
+    if (ret == QMessageBox::No)
+        return;
+
+    QString number = "";
+    number = ui->clientTableView->model()->index(curRow, 0).data().toString();
+    if (!mDb->deleteClientInNumber(number)) {
+        ALOGD("%s, delete ok", __FUNCTION__);
+        ui->clientTableView->model()->removeRow(curRow);
+    }
 }

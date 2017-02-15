@@ -34,6 +34,7 @@ public:
     int                 updateClientTableItem(Client &client);
     int                 clearClientTable();
     bool                isClientExist(Client &client);
+    int                 deleteClientInNumber(QString clientNum);
 
 private:
     bool                openDataBase();
