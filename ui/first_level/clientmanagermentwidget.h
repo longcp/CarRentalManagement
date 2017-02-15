@@ -30,6 +30,7 @@ private slots:
     void            addClientItemSlot(Client &client);
     void            updateClientItemSlog(Client &client);
     void            deleteClientItemSlog();
+    void            editClientItemSlog();
 
 signals:
     void            openClientEditDialogSignal(OpenType type,
@@ -48,6 +49,10 @@ private:
      * @brief 初始化表，插入已有数据
      */
     void            initTableView();
+    /**
+     * @brief ui
+     */
+    void            editRowEvent(int row);
 
     Ui::ClientManagermentWidget *ui;
     QToolBar        *mToolBar;

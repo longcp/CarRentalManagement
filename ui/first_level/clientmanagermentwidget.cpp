@@ -25,8 +25,8 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
 
     initView();
 
-//    ui->clientTableView->rowCount();
-//    ui->clientTableView->insertRow(xxx);
+    //    ui->clientTableView->rowCount();
+    //    ui->clientTableView->insertRow(xxx);
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
@@ -37,11 +37,11 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
-                              tr("导出"), this);
-//    mActImport = new QAction(QIcon(":/menu/icon/import_64.ico"),
-//                              tr("导入"), this);
-//    mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
-//                              tr("打印"), this);
+                             tr("导出"), this);
+    //    mActImport = new QAction(QIcon(":/menu/icon/import_64.ico"),
+    //                              tr("导入"), this);
+    //    mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
+    //                              tr("打印"), this);
 
     mToolBar = new QToolBar(tr("clientToolBar"), this);
     this->configToolBar();
@@ -49,9 +49,9 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
-//    mToolBar->addAction(mActPrinter);
+    //    mToolBar->addAction(mActPrinter);
     mToolBar->addAction(mActExport);
-//    mToolBar->addAction(mActImport);
+    //    mToolBar->addAction(mActImport);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
 
@@ -91,6 +91,12 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
      */
     connect(mActDelete, SIGNAL(triggered()),
             this, SLOT(deleteClientItemSlog()));
+    /**
+     * @brief 编辑条目
+     */
+    connect(mActEdit, SIGNAL(triggered()),
+            this, SLOT(editClientItemSlog()));
+
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
@@ -169,10 +175,10 @@ ClientManagermentWidget::initTableView()
             client = clients.operator [](i);
             addClientItemSlot(client);
         }
-//        for (c = clients.begin(); c != clients.end(); c++) {
-//            client = *c;
-//            addClientItemSlot(client);
-//        }
+        //        for (c = clients.begin(); c != clients.end(); c++) {
+        //            client = *c;
+        //            addClientItemSlot(client);
+        //        }
     }
 #endif
 }
@@ -202,13 +208,15 @@ void
 ClientManagermentWidget::cellDoubleClickedSlot(const QModelIndex & index)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__, index.column(), index.row());
+    editRowEvent(index.row());
+}
 
+void
+ClientManagermentWidget::editRowEvent(int row)
+{
     Client client;
-    lastShowRow = index.row();
-    curRow = index.row();
-
     QString clientNum = ui->clientTableView->model()
-            ->index(lastShowRow, 0).data().toString();
+            ->index(curRow, 0).data().toString();
     if (mDb->getClientInNumber(clientNum, client)) {
         ALOGE("getClientInNumber failed, sql err = %s", mDb->lastError());
         QMessageBox::critical(this,
@@ -295,43 +303,43 @@ ClientManagermentWidget::updateClientItemSlog(Client &client)
 {
     ALOGD("%s enter", __FUNCTION__);
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 0),
+                ui->clientTableView->model()->index(curRow, 0),
                 client.number);
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 1),
+                ui->clientTableView->model()->index(curRow, 1),
                 client.getClientTypeStr(client.clienttype));
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 2),
+                ui->clientTableView->model()->index(curRow, 2),
                 client.name);
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 3),
+                ui->clientTableView->model()->index(curRow, 3),
                 client.address);
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 4),
+                ui->clientTableView->model()->index(curRow, 4),
                 client.telephone);
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 5),
+                ui->clientTableView->model()->index(curRow, 5),
                 client.fax);
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 6),
+                ui->clientTableView->model()->index(curRow, 6),
                 client.contract);
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 7),
+                ui->clientTableView->model()->index(curRow, 7),
                 client.getPayTypeStr(client.paytype));
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 8),
+                ui->clientTableView->model()->index(curRow, 8),
                 QString::number(client.monthly));
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 9),
+                ui->clientTableView->model()->index(curRow, 9),
                 QString("%1").arg(client.amount));
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 10),
+                ui->clientTableView->model()->index(curRow, 10),
                 QString("%1").arg(client.paid));
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 11),
+                ui->clientTableView->model()->index(curRow, 11),
                 QString("%1").arg(client.amount - client.paid));
     ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(lastShowRow, 12),
+                ui->clientTableView->model()->index(curRow, 12),
                 client.remarks);
 }
 
@@ -362,4 +370,19 @@ ClientManagermentWidget::deleteClientItemSlog()
         ALOGD("%s, delete ok", __FUNCTION__);
         ui->clientTableView->model()->removeRow(curRow);
     }
+}
+
+void
+ClientManagermentWidget::editClientItemSlog()
+{
+    if (curRow < 0) {
+        QMessageBox::information(this,
+                                 tr("温馨提示"),
+                                 tr("请选择要编辑条目.\n"),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    editRowEvent(curRow);
 }
