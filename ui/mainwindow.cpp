@@ -44,21 +44,26 @@ MainWindow::MainWindow(QWidget *parent) :
     mMenuUserManagerment    = ui->menuBar->addMenu(tr("用户管理"));
     mMenuAbout = ui->menuBar->addMenu(tr("关于"));
     mActExitSystem = mMenuSystemSetting->addAction(
-                QIcon(":/menu/icon/exit.png"), tr("退出系统"));
+                QIcon(":/menu/icon/exit.png"),
+                tr("退出系统"));
     mActClient = mMenuRentalManagement->addAction(
-                QIcon(":/menu/icon/client.png"), tr("客户资料"));
+                QIcon(":/menu/icon/client.png"),
+                tr("客户资料"));
     mActContract = mMenuRentalManagement->addAction(
-                QIcon(":/menu/icon/contract_64.ico"), tr("租赁合同"));
+                QIcon(":/menu/icon/contract_64.ico"),
+                tr("租赁合同"));
     mActPump = mMenuRentalManagement->addAction(
-                QIcon(":/menu/icon/pump_64.ico"), tr("泵送"));
+                QIcon(":/menu/icon/pump_64.ico"),
+                tr("泵送"));
     mActCarfile = mMenuCarManagement->addAction(
                 QIcon(":/menu/icon/Ford_Heavy_Wreck_Truck_128.ico"),
                 tr("车辆档案"));
-    mActCarMaintenance = mMenuCarManagement->addAction(
-                QIcon(":/menu/icon/tools.ico"), tr("维修记录"));
-    mActCarIllegal = mMenuCarManagement->addAction(
-                QIcon(":/menu/icon/car_break_rules_64.ico"),
-                tr("违章记录"));
+//    mActCarMaintenance = mMenuCarManagement->addAction(
+//                QIcon(":/menu/icon/tools.ico"),
+//                tr("维修记录"));
+//    mActCarIllegal = mMenuCarManagement->addAction(
+//                QIcon(":/menu/icon/car_break_rules_64.ico"),
+//                tr("违章记录"));
     mActReceivable = mMenuFinanceManagement->addAction(
                 QIcon(":/menu/icon/custom-reports256.png"),
                 tr("应收"));
@@ -75,8 +80,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addAction(mActPump);
     ui->mainToolBar->addSeparator();
     ui->mainToolBar->addAction(mActCarfile);
-    ui->mainToolBar->addAction(mActCarMaintenance);
-    ui->mainToolBar->addAction(mActCarIllegal);
+//    ui->mainToolBar->addAction(mActCarMaintenance);
+//    ui->mainToolBar->addAction(mActCarIllegal);
     ui->mainToolBar->addSeparator();
     ui->mainToolBar->addAction(mActReceivable);
     ui->mainToolBar->addAction(mActReceipt);
