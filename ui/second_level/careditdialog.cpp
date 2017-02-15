@@ -1,6 +1,7 @@
 #include "careditdialog.h"
 #include "ui_careditdialog.h"
 #include <QToolBar>
+#include <car.h>
 
 CarEditDialog::CarEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -51,7 +52,7 @@ CarEditDialog::~CarEditDialog()
 }
 
 void
-CarEditDialog::openCarEditDialogSlot()
+CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
 {
     this->exec();
 }

@@ -3,6 +3,9 @@
 #include <QTableWidget>
 #include <QToolBar>
 #include <careditdialog.h>
+#include <tablemodel.h>
+#include <car.h>
+#include <datatype.h>
 
 #define LOG_TAG                 "CAR_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -14,21 +17,9 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("车辆档案");
 
+    initView();
+
     mCarEditDialog = new CarEditDialog();
-
-    //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->carTableWidget->setEditTriggers(
-                QAbstractItemView::NoEditTriggers);
-    ui->carTableWidget->setSelectionBehavior(
-                QAbstractItemView::SelectRows);
-    ui->carTableWidget->setSelectionMode(
-                QAbstractItemView::SingleSelection);
-
-    //隐藏行表头
-    ui->carTableWidget->verticalHeader()->setVisible(false);
-//    ui->carTableWidget->rowCount();
-//    ui->carTableWidget->insertRow(xxx);
-
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
     mActEdit= new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -39,10 +30,6 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
                               tr("导出"), this);
-    mActImport = new QAction(QIcon(":/menu/icon/import_64.ico"),
-                              tr("导入"), this);
-    mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
-                              tr("打印"), this);
 
     mToolBar = new QToolBar(tr("carToolBar"), this);
     this->configToolBar();
@@ -50,27 +37,76 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
-    mToolBar->addAction(mActPrinter);
     mToolBar->addAction(mActExport);
-    mToolBar->addAction(mActImport);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
 
     /**
      * @brief 单元格双击事件
      */
-    connect(ui->carTableWidget, SIGNAL(cellDoubleClicked(int,int)),
-            this, SLOT(cellDoubleClickedSlot(int,int)));
+    connect(ui->carTableView, SIGNAL(doubleClicked(const QModelIndex &)),
+            this, SLOT(cellDoubleClickedSlot(const QModelIndex &)));
     /**
      * @brief 单元格双击事件
      */
-    connect(this, SIGNAL(openCarEditDialogSignal()),
-            mCarEditDialog, SLOT(openCarEditDialogSlot()));
+    connect(this, SIGNAL(openCarEditDialogSignal(OpenType, Car&)),
+            mCarEditDialog, SLOT(openCarEditDialogSlot(OpenType, Car&)));
+    /**
+     * @brief 打开编辑窗口
+     */
+    connect(mActAdd, SIGNAL(triggered()),
+            this, SLOT(addCarSlot()));
 }
 
 CarManagermentWidget::~CarManagermentWidget()
 {
     delete ui;
+}
+
+void
+CarManagermentWidget::initView()
+{
+    this->setWindowTitle("车辆资料");
+
+    //设置首行标题
+    QStringList headerList;
+    headerList << "车号" << "泵式" << "已泵送方量数" << "已泵送台班数"
+               << "已行驶公里数" << "产品品牌" << "底盘品牌"
+               << "行驶证发证日期" << "专用油卡号" << "车架号"
+               << "车辆识别号" << "产品型号" << "保险卡号"
+               << "发动机号" << "车身价" << "发动机额定功率(KW)"
+               << "最大理论输送量(m3/h)" << "最大理论输出压力(MPA)" << "外形尺寸"
+               << "臂架垂直长度(M)" << "臂架水平长度(M)"
+               << "整车总质量(KG)" << "整车装备质量(KG)"
+               << "生产日期" << "出厂日期" << "出厂编码"
+               << "是否购买保险" << "交险费" << "保险公司(交险)"
+               << "购买日期(交险)" << "是否购买商险"
+               << "商险费" << "保险公司(商险)"
+               << "购买日期(商险)" << "年费" << "车船费"
+               << "年审日期" << "操作员(1)" << "操作员(2)"
+               << "操作员(3)" << "操作员(4)" << "操作员(5)" << "备注";
+
+    mModel = new TableModel(0, headerList.size());
+    ui->carTableView->setModel(mModel);
+    mModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->carTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->carTableView->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->carTableView->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->carTableView->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->carTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");             //表头颜色
+
+    ui->carTableView->setAlternatingRowColors(true);
+    ui->carTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");  //设置间隔行颜色变化
 }
 
 void
@@ -95,8 +131,15 @@ CarManagermentWidget::configToolBar()
 }
 
 void
-CarManagermentWidget::cellDoubleClickedSlot(int a,int b)
+CarManagermentWidget::addCarSlot()
 {
-    ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
-    emit openCarEditDialogSignal();
+    Car car;
+    emit openCarEditDialogSignal(CREATEITEM, car);
+}
+
+void
+CarManagermentWidget::cellDoubleClickedSlot(const QModelIndex &)
+{
+    Car car;
+//    emit openCarEditDialogSignal(CREATEITEM, car);
 }

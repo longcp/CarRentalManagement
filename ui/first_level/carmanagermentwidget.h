@@ -2,9 +2,13 @@
 #define CARMANAGERMENT_H
 
 #include <QWidget>
+#include <datatype.h>
+
 class QToolBar;
 class QTableWidget;
 class CarEditDialog;
+class TableModel;
+class Car;
 
 namespace Ui {
 class CarManagermentWidget;
@@ -19,16 +23,22 @@ public:
     ~CarManagermentWidget();
 
 private slots:
-    void            cellDoubleClickedSlot(int a,int b);
+    void            cellDoubleClickedSlot(const QModelIndex &);
+    void            addCarSlot();
 
 signals:
-    void            openCarEditDialogSignal();
+    void            openCarEditDialogSignal(OpenType type,
+                                            Car &car);
 
 private:
     /**
      * @brief 配置toolbar
      */
     void            configToolBar();
+    /**
+     * @brief 初始化界面
+     */
+    void            initView();
 
     Ui::CarManagermentWidget *ui;
     QToolBar        *mToolBar;
@@ -44,6 +54,8 @@ private:
     QAction         *mActPrinter;
     QAction         *mActExport;
     QAction         *mActImport;
+
+    TableModel*     mModel;
 };
 
 #endif // CARMANAGERMENT_H

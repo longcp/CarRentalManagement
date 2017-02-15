@@ -2,8 +2,10 @@
 #define CAREDITDIALOG_H
 
 #include <QDialog>
+#include <datatype.h>
 
 class QToolBar;
+class Car;
 
 namespace Ui {
 class CarEditDialog;
@@ -21,7 +23,8 @@ private slots:
     /**
      * @brief 打开窗口
      */
-    void            openCarEditDialogSlot();
+    void            openCarEditDialogSlot(OpenType type,
+                                          Car &car);
 
 private:
     /**

@@ -25,9 +25,6 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
 
     initView();
 
-    //    ui->clientTableView->rowCount();
-    //    ui->clientTableView->insertRow(xxx);
-
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
     mActEdit= new QAction(QIcon(":/menu/icon/edit_64.ico"),

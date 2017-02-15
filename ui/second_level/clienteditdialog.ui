@@ -103,6 +103,9 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 85, 255);</string>
+           </property>
            <property name="text">
             <string>客户编号:*</string>
            </property>
@@ -137,6 +140,9 @@
              <width>60</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 85, 255);</string>
            </property>
            <property name="text">
             <string>客户名称:*</string>
@@ -189,7 +195,7 @@
          <item>
           <widget class="QLabel" name="label_20">
            <property name="styleSheet">
-            <string notr="true">color: rgb(0, 0, 255);</string>
+            <string notr="true">color: rgb(0, 85, 255);</string>
            </property>
            <property name="text">
             <string> (已存在的客户，其客户编号不可再次编辑.)</string>

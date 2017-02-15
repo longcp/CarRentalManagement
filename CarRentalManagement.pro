@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     ui/second_level/rentaldocumenteditdialog.cpp \
     common/client.cpp \
     common/regularexpression.cpp \
-    database/database.cpp
+    database/database.cpp \
+    common/car.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/first_level/clientmanagermentwidget.h \
@@ -50,7 +51,8 @@ HEADERS  += ui\mainwindow.h \
     common/regularexpression.h \
     common/datatype.h \
     database/database.h \
-    common/tablemodel.h
+    common/tablemodel.h \
+    common/car.h
 
 FORMS    += ui\mainwindow.ui \
     ui/first_level/clientmanagermentwidget.ui \
