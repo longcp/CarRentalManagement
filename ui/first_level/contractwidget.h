@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class QToolBar;
+class TableModel;
 
 namespace Ui {
 class ContractWidget;
@@ -22,6 +23,18 @@ private:
      * @brief 配置工具栏
      */
     void            configToolBar();
+    /**
+     * @brief 初始化界面
+     */
+    void            initView();
+    /**
+     * @brief 初始化合同表格式
+     */
+    void            initContractTableview();
+    /**
+     * @brief 初始化价格表格式
+     */
+    void            initPriceTableview();
 
     Ui::ContractWidget *ui;
     QToolBar        *mToolBar;
@@ -34,6 +47,9 @@ private:
     QAction         *mActPrinter;
     QAction         *mActExport;
     QAction         *mActImport;
+
+    TableModel*     mContractModel;
+    TableModel*     mPriceModel;
 };
 
 #endif // CONTRACTWIDGET_H
