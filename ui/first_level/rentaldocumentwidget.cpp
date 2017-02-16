@@ -2,6 +2,7 @@
 #include "ui_rentaldocumentwidget.h"
 #include "rentaldocumenteditdialog.h"
 #include <QToolBar>
+#include <tablemodel.h>
 
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
@@ -19,16 +20,7 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
 
     mRentalDocEditDialog = new RentalDocumentEditDialog();
 
-    //隐藏行表头
-    ui->docTableWidget->verticalHeader()->setVisible(false);
-
-    //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->docTableWidget->setEditTriggers(
-                QAbstractItemView::NoEditTriggers);
-    ui->docTableWidget->setSelectionBehavior(
-                QAbstractItemView::SelectRows);
-    ui->docTableWidget->setSelectionMode(
-                QAbstractItemView::SingleSelection);
+    initView();
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
@@ -40,10 +32,6 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
                               tr("导出"), this);
-    mActImport = new QAction(QIcon(":/menu/icon/import_64.ico"),
-                              tr("导入"), this);
-    mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
-                              tr("打印"), this);
 
     mToolBar = new QToolBar(tr("rentalDocToolBar"), this);
     this->configToolBar();
@@ -51,17 +39,15 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
-    mToolBar->addAction(mActPrinter);
     mToolBar->addAction(mActExport);
-    mToolBar->addAction(mActImport);
 
     ui->toolBarHorizonLayout->addWidget(mToolBar);
 
     /**
      * @brief 单元格双击事件
      */
-    connect(ui->docTableWidget, SIGNAL(cellDoubleClicked(int,int)),
-            this, SLOT(cellDoubleClickedSlot(int,int)));
+//    connect(ui->docTableview, SIGNAL(cellDoubleClicked(int,int)),
+//            this, SLOT(cellDoubleClickedSlot(int,int)));
     /**
      * @brief 单元格双击事件
      */
@@ -101,4 +87,42 @@ RentalDocumentWidget::cellDoubleClickedSlot(int a,int b)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
     emit openRentalEditDialogSignal();
+}
+
+void
+RentalDocumentWidget::initView()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "承租单位/客户" << "工程名称" << "工程地址"
+               << "日期" << "车牌型号" << "泵式" << "施工部位"
+               << "混凝土标号" << "开工燃油" << "收工燃油"
+               << "进场时间" << "工作时长" << "泵送方量(m3)"
+               << "方量单价(元)" << "泵送台班数" << "台板价格(元)"
+               << "现场负责人" << "负责人联系电话" << "当班司机1"
+               << "当班司机2" << "当班司机3" << "签单号" << "备注";
+
+    mModel = new TableModel(0, headerList.size());
+    ui->docTableview->setModel(mModel);
+    mModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->docTableview->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->docTableview->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->docTableview->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->docTableview->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->docTableview->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->docTableview->setAlternatingRowColors(true);
+    ui->docTableview->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+//    initTableView();
 }

@@ -5,6 +5,7 @@
 class QToolBar;
 class QTableWidget;
 class RentalDocumentEditDialog;
+class TableModel;
 
 namespace Ui {
 class RentalDocumentWidget;
@@ -29,6 +30,10 @@ private:
      * @brief 配置工具栏
      */
     void            configToolBar();
+    /**
+     * @brief 初始化界面
+     */
+    void            initView();
 
     Ui::RentalDocumentWidget *ui;
     QToolBar        *mToolBar;
@@ -42,6 +47,8 @@ private:
     QAction         *mActPrinter;
     QAction         *mActExport;
     QAction         *mActImport;
+
+    TableModel*      mModel;
 };
 
 #endif // RENTALDOCUMENTWIDGET_H
