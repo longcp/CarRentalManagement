@@ -2,6 +2,7 @@
 #include "ui_careditdialog.h"
 #include <QToolBar>
 #include <car.h>
+#include <tablemodel.h>
 
 CarEditDialog::CarEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -10,13 +11,8 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(this->windowFlags()
                          &~Qt::WindowMaximizeButtonHint);               //去掉最大化按钮
-    ui->toolBarWidget->setStyleSheet(
-                "background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    this->setWindowTitle("车辆档案");
-    this->setFixedSize(1000, 800);
+    initView();
 
-    mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
-                          tr("新增"), this);
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
                           tr("保存"), this);
     mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -26,18 +22,17 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     mActNext = new QAction(QIcon(":/menu/icon/arrow_right_64.ico"),
                           tr("下一条"), this);
     mActExit = new QAction(QIcon(":/menu/icon/exit_out_64.ico"),
-                          tr("取消"), this);
+                          tr("退出"), this);
     mActCancel = new QAction(QIcon(":/menu/icon/cancel_64.ico"),
                           tr("取消"), this);
     mActSaveExit = new QAction(QIcon(":/menu/icon/ok_64.ico"),
                           tr("保存退出"), this);
 
-    mToolBar = new QToolBar(tr("clientEditToolBar"), this);
+    mToolBar = new QToolBar(tr("carEditToolBar"), this);
     this->configToolBar();
     mToolBar->addAction(mActSaveExit);
     mToolBar->addAction(mActSave);
     mToolBar->addAction(mActEdit);
-    mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActPrev);
     mToolBar->addAction(mActNext);
     mToolBar->addAction(mActCancel);
@@ -77,4 +72,138 @@ CarEditDialog::configToolBar()
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
     mToolBar->setInputMethodHints(Qt::ImhNone);
     mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+}
+
+void
+CarEditDialog::initView()
+{
+    ui->toolBarWidget->setStyleSheet(
+                "background-color: rgb(234,234,234);color:rgb(0,0,0);");
+    this->setWindowTitle("车辆档案");
+    this->setFixedSize(1000, 800);
+    initProjectTableview();
+    initAnnualTableview();
+    initBusinessTableview();
+    initPaymentTableview();
+}
+
+void
+CarEditDialog::initProjectTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "日期" << "合同号" << "客户编号"
+               << "客户名称" << "工程款额" << "备注" << "录单";
+
+    mProjectModel = new TableModel(0, headerList.size());
+    ui->projectTableView->setModel(mProjectModel);
+    mProjectModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->projectTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->projectTableView->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->projectTableView->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->projectTableView->verticalHeader()->setVisible(false);          //隐藏行表头
+    ui->projectTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->projectTableView->setAlternatingRowColors(true);
+    ui->projectTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+}
+
+void
+CarEditDialog::initAnnualTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "日期" << "年费" << "车船费" << "备注";
+
+    mAnnualModel = new TableModel(0, headerList.size());
+    ui->annualTableview->setModel(mAnnualModel);
+    mAnnualModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->annualTableview->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->annualTableview->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->annualTableview->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->annualTableview->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->annualTableview->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->annualTableview->setAlternatingRowColors(true);
+    ui->annualTableview->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+}
+
+void
+CarEditDialog::initBusinessTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "日期" << "保险费用" << "保险公司" << "备注";
+
+    mBusinessModel = new TableModel(0, headerList.size());
+    ui->businessTableView->setModel(mBusinessModel);
+    mBusinessModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->businessTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->businessTableView->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->businessTableView->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->businessTableView->verticalHeader()->setVisible(false);         //隐藏行表头
+    ui->businessTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->businessTableView->setAlternatingRowColors(true);
+    ui->businessTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+}
+
+void
+CarEditDialog::initPaymentTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "日期" << "保险费用" << "保险公司" << "备注";
+
+    mPaymentModel = new TableModel(0, headerList.size());
+    ui->paymentTableView->setModel(mPaymentModel);
+    mPaymentModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->paymentTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->paymentTableView->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->paymentTableView->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->paymentTableView->verticalHeader()->setVisible(false);          //隐藏行表头
+    ui->paymentTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->paymentTableView->setAlternatingRowColors(true);
+    ui->paymentTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 }

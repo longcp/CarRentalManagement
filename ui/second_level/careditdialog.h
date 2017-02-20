@@ -6,6 +6,7 @@
 
 class QToolBar;
 class Car;
+class TableModel;
 
 namespace Ui {
 class CarEditDialog;
@@ -27,10 +28,28 @@ private slots:
                                           Car &car);
 
 private:
+    void            initView();
     /**
      * @brief 配置工具栏
      */
     void            configToolBar();
+    /**
+     * @brief initProjectTableView
+     */
+    void            initProjectTableview();
+    /**
+     * @brief initAnnualTableview
+     */
+    void            initAnnualTableview();
+    /**
+     * @brief initPaymentTableview
+     */
+    void            initPaymentTableview();
+    /**
+     * @brief initBusinessTableview
+     */
+    void            initBusinessTableview();
+
     Ui::CarEditDialog *ui;
     // 工具栏
     QToolBar        *mToolBar;
@@ -44,6 +63,11 @@ private:
     QAction         *mActPrev;
     QAction         *mActNext;
     QAction         *mActCancel;
+
+    TableModel*     mProjectModel;
+    TableModel*     mAnnualModel;
+    TableModel*     mBusinessModel;
+    TableModel*     mPaymentModel;
 };
 
 #endif // CAREDITDIALOG_H

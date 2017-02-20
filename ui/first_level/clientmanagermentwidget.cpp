@@ -35,10 +35,6 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
                              tr("导出"), this);
-    //    mActImport = new QAction(QIcon(":/menu/icon/import_64.ico"),
-    //                              tr("导入"), this);
-    //    mActPrinter = new QAction(QIcon(":/menu/icon/printer_64.ico"),
-    //                              tr("打印"), this);
 
     mToolBar = new QToolBar(tr("clientToolBar"), this);
     this->configToolBar();
@@ -46,9 +42,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
-    //    mToolBar->addAction(mActPrinter);
     mToolBar->addAction(mActExport);
-    //    mToolBar->addAction(mActImport);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
 

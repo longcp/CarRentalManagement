@@ -56,12 +56,14 @@ public:
     class ProjectRecord {
     public:
         ProjectRecord(QDate date,
+                      QString contractNum,
                       QString clientNum,
                       QString clientName,
                       float amount,
                       QString remarks,
                       QString number) {
             this->date = date;
+            this->contractNum = contractNum;
             this->clientNum = clientNum;
             this->clientName = clientName;
             this->amount = amount;
@@ -70,6 +72,7 @@ public:
         }
 
         QDate date;
+        QString contractNum;
         QString clientNum;
         QString clientName;
         float amount;
