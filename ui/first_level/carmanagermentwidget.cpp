@@ -138,7 +138,7 @@ CarManagermentWidget::addCarSlot()
 }
 
 void
-CarManagermentWidget::cellDoubleClickedSlot(const QModelIndex &)
+CarManagermentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 {
     Car car;
 //    emit openCarEditDialogSignal(CREATEITEM, car);

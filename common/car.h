@@ -17,6 +17,66 @@ public:
                    TYPE_60M,
                    TYPE_CAR_PUMP};
 
+    class InsuranceRecord {
+    public:
+        InsuranceRecord(QDate date,
+                        float fee,
+                        QString company,
+                        QString remarks) {
+            this->date = date;
+            this->fee = fee;
+            this->company = company;
+            this->remarks = remarks;
+        }
+
+        QDate date;
+        float fee;
+        QString company;
+        QString remarks;
+    };
+
+    class AnnualFeeRecord {
+    public:
+        AnnualFeeRecord(QDate date,
+                        float annualFee,
+                        float travelExpenses,
+                        QString remarks) {
+            this->date = date;
+            this->annualFee = annualFee;
+            this->travelExpenses = travelExpenses;
+            this->remarks = remarks;
+        }
+
+        QDate date;
+        float annualFee;
+        float travelExpenses;
+        QString remarks;
+    };
+
+    class ProjectRecord {
+    public:
+        ProjectRecord(QDate date,
+                      QString clientNum,
+                      QString clientName,
+                      float amount,
+                      QString remarks,
+                      QString number) {
+            this->date = date;
+            this->clientNum = clientNum;
+            this->clientName = clientName;
+            this->amount = amount;
+            this->remarks = remarks;
+            this->number = number;
+        }
+
+        QDate date;
+        QString clientNum;
+        QString clientName;
+        float amount;
+        QString remarks;
+        QString number;
+    };
+
 signals:
 
 public slots:

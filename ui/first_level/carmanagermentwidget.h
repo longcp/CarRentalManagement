@@ -23,7 +23,7 @@ public:
     ~CarManagermentWidget();
 
 private slots:
-    void            cellDoubleClickedSlot(const QModelIndex &);
+    void            cellDoubleClickedSlot(const QModelIndex &index);
     void            addCarSlot();
 
 signals:

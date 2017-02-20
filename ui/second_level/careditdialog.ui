@@ -415,7 +415,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_2">
+           <widget class="QDateEdit" name="dateEdit">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1952,7 +1952,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_33">
+           <widget class="QDateEdit" name="dateEdit_2">
             <property name="minimumSize">
              <size>
               <width>120</width>
@@ -2132,7 +2132,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_3">
+           <widget class="QDateEdit" name="dateEdit_3">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -2290,7 +2290,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_38">
+           <widget class="QDateEdit" name="dateEdit_4">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -2420,7 +2420,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_41">
+           <widget class="QDateEdit" name="dateEdit_5">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -2490,7 +2490,7 @@
              <enum>QTabWidget::West</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="annualTab">
              <attribute name="title">
