@@ -89,11 +89,11 @@ private:
     QString         owner;
     PumpType        pumptype;
     float           pumpedSquare;
-    float           pumpedTime;
+    float           pumpedTimes;
     float           milage;
     QString         carBrand;
     QString         chassisBrand;
-    QDate           DrivingLicenseDate;
+    QDate           drivingLicenseDate;
     QString         fuelCarNumber;
     QString         frameNumber;
     QString         identificationNumber;

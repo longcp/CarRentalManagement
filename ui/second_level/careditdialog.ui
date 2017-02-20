@@ -68,7 +68,7 @@
       <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="baseInfoTab">
       <attribute name="title">
@@ -131,7 +131,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="numLE">
             <property name="minimumSize">
              <size>
               <width>160</width>
@@ -169,7 +169,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_2">
+           <widget class="QLineEdit" name="ownerLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -207,7 +207,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_3">
+           <widget class="QLineEdit" name="bankAccountLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -248,7 +248,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox">
+           <widget class="QComboBox" name="pumpTypeCbBox">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -304,7 +304,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_4">
+           <widget class="QLineEdit" name="numberLE">
             <property name="minimumSize">
              <size>
               <width>160</width>
@@ -342,7 +342,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_5">
+           <widget class="QLineEdit" name="carBrandLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -380,7 +380,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_6">
+           <widget class="QLineEdit" name="chassisBrandLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -415,7 +415,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QDateEdit" name="dateEdit">
+           <widget class="QDateEdit" name="drivingLicenseDateDE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -471,7 +471,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_7">
+           <widget class="QLineEdit" name="fuelCarNumberLE">
             <property name="minimumSize">
              <size>
               <width>160</width>
@@ -509,7 +509,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_8">
+           <widget class="QLineEdit" name="frameNumberLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -547,7 +547,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_9">
+           <widget class="QLineEdit" name="identificationNumberLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -585,7 +585,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_10">
+           <widget class="QLineEdit" name="engineNumberLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -638,7 +638,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_11">
+           <widget class="QLineEdit" name="worthLE">
             <property name="minimumSize">
              <size>
               <width>160</width>
@@ -676,7 +676,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_12">
+           <widget class="QLineEdit" name="insuranceCardNumberLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -714,7 +714,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_13">
+           <widget class="QLineEdit" name="factoryCodeLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -752,7 +752,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_14">
+           <widget class="QLineEdit" name="productNumberLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -827,7 +827,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_15">
+           <widget class="QLineEdit" name="enginePowerLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -865,7 +865,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_16">
+           <widget class="QLineEdit" name="maxDeliverySizesLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -956,7 +956,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_17">
+           <widget class="QLineEdit" name="maxOutputPressureLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -994,7 +994,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_18">
+           <widget class="QLineEdit" name="dimensionsLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1085,7 +1085,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_19">
+           <widget class="QLineEdit" name="boomVerticalLenLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1123,7 +1123,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_20">
+           <widget class="QLineEdit" name="boomHorizontalLenLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1214,7 +1214,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_21">
+           <widget class="QLineEdit" name="totalWeightLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1252,7 +1252,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_22">
+           <widget class="QLineEdit" name="equipmentWeightLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1343,7 +1343,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_23">
+           <widget class="QLineEdit" name="productionDateLE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1381,7 +1381,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_24">
+           <widget class="QLineEdit" name="operator1LE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1472,7 +1472,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_25">
+           <widget class="QLineEdit" name="operator2LE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1510,7 +1510,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_26">
+           <widget class="QLineEdit" name="operator3LE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1601,7 +1601,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_27">
+           <widget class="QLineEdit" name="operator4LE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1639,7 +1639,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_28">
+           <widget class="QLineEdit" name="operator5LE">
             <property name="minimumSize">
              <size>
               <width>180</width>
@@ -1736,7 +1736,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="textEdit">
+           <widget class="QTextEdit" name="remarksTextEdit">
             <property name="minimumSize">
              <size>
               <width>520</width>
@@ -1799,7 +1799,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_29">
+           <widget class="QLineEdit" name="pumpedSquareLE">
             <property name="minimumSize">
              <size>
               <width>120</width>
@@ -1825,7 +1825,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_30">
+           <widget class="QLineEdit" name="pumpedTimesLE">
             <property name="minimumSize">
              <size>
               <width>120</width>
@@ -1851,7 +1851,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_31">
+           <widget class="QLineEdit" name="milageLE">
             <property name="minimumSize">
              <size>
               <width>120</width>
@@ -1926,7 +1926,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_32">
+           <widget class="QLineEdit" name="creatorLE">
             <property name="minimumSize">
              <size>
               <width>120</width>
@@ -1952,7 +1952,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QDateEdit" name="dateEdit_2">
+           <widget class="QDateEdit" name="createDateLE">
             <property name="minimumSize">
              <size>
               <width>120</width>
@@ -2030,7 +2030,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="isBuyInsuranceCbBox">
             <property name="text">
              <string>是否购买保险</string>
             </property>
@@ -2074,7 +2074,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_34">
+           <widget class="QLineEdit" name="insuranceFeeLE">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -2106,7 +2106,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_35">
+           <widget class="QLineEdit" name="insuranceCompanyLE">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -2138,7 +2138,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QDateEdit" name="dateEdit_3">
+           <widget class="QDateEdit" name="feeInsuranceDateDE">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -2194,7 +2194,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QCheckBox" name="checkBox_2">
+           <widget class="QCheckBox" name="isBuyBusinessInsuranceCbBox">
             <property name="text">
              <string>是否购买商险</string>
             </property>
@@ -2238,7 +2238,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_36">
+           <widget class="QLineEdit" name="businessInsuranceFeeLE">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -2270,7 +2270,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_37">
+           <widget class="QLineEdit" name="businessInsuranceCompanyLE">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -2302,7 +2302,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QDateEdit" name="dateEdit_4">
+           <widget class="QDateEdit" name="feeBusinessInsuranceDateDE">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -2371,7 +2371,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_39">
+           <widget class="QLineEdit" name="annualFeeLE">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -2403,7 +2403,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_40">
+           <widget class="QLineEdit" name="travelExpensesLE">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -2435,7 +2435,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QDateEdit" name="dateEdit_5">
+           <widget class="QDateEdit" name="annualReviewDateDE">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -2508,7 +2508,7 @@
              <enum>QTabWidget::Triangular</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <property name="usesScrollButtons">
              <bool>false</bool>
