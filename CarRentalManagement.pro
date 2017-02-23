@@ -14,39 +14,39 @@ TARGET = CarRentalManagement
 TEMPLATE = app
 
 INCLUDEPATH += ui/
-INCLUDEPATH += ui/first_level/
-INCLUDEPATH += ui/second_level/
+INCLUDEPATH += ui/tabwidget/
+INCLUDEPATH += ui/dialog/
 INCLUDEPATH += utils/
 INCLUDEPATH += common/
 
 SOURCES += main.cpp\
         ui\mainwindow.cpp \
-    ui/first_level/clientmanagermentwidget.cpp \
-    ui/first_level/carmanagermentwidget.cpp \
-    ui/first_level/rentaldocumentwidget.cpp \
-    ui/first_level/receivablewidget.cpp \
-    ui/first_level/receiptwidget.cpp \
-    ui/first_level/contractwidget.cpp \
-    ui/second_level/clienteditdialog.cpp \
-    ui/second_level/careditdialog.cpp \
-    ui/second_level/receipteditdialog.cpp \
-    ui/second_level/rentaldocumenteditdialog.cpp \
+    ui/tabwidget/clientmanagermentwidget.cpp \
+    ui/tabwidget/carmanagermentwidget.cpp \
+    ui/tabwidget/rentaldocumentwidget.cpp \
+    ui/tabwidget/receivablewidget.cpp \
+    ui/tabwidget/receiptwidget.cpp \
+    ui/tabwidget/contractwidget.cpp \
+    ui/dialog/clienteditdialog.cpp \
+    ui/dialog/careditdialog.cpp \
+    ui/dialog/receipteditdialog.cpp \
+    ui/dialog/rentaldocumenteditdialog.cpp \
     common/client.cpp \
     common/regularexpression.cpp \
     database/database.cpp \
     common/car.cpp
 
 HEADERS  += ui\mainwindow.h \
-    ui/first_level/clientmanagermentwidget.h \
-    ui/first_level/carmanagermentwidget.h \
-    ui/first_level/rentaldocumentwidget.h \
-    ui/first_level/receivablewidget.h \
-    ui/first_level/receiptwidget.h \
-    ui/first_level/contractwidget.h \
-    ui/second_level/clienteditdialog.h \
-    ui/second_level/careditdialog.h \
-    ui/second_level/receipteditdialog.h \
-    ui/second_level/rentaldocumenteditdialog.h \
+    ui/tabwidget/clientmanagermentwidget.h \
+    ui/tabwidget/carmanagermentwidget.h \
+    ui/tabwidget/rentaldocumentwidget.h \
+    ui/tabwidget/receivablewidget.h \
+    ui/tabwidget/receiptwidget.h \
+    ui/tabwidget/contractwidget.h \
+    ui/dialog/clienteditdialog.h \
+    ui/dialog/careditdialog.h \
+    ui/dialog/receipteditdialog.h \
+    ui/dialog/rentaldocumenteditdialog.h \
     common/client.h \
     common/regularexpression.h \
     common/datatype.h \
@@ -55,16 +55,16 @@ HEADERS  += ui\mainwindow.h \
     common/car.h
 
 FORMS    += ui\mainwindow.ui \
-    ui/first_level/clientmanagermentwidget.ui \
-    ui/first_level/carmanagermentwidget.ui \
-    ui/first_level/rentaldocumentwidget.ui \
-    ui/first_level/receivablewidget.ui \
-    ui/first_level/receiptwidget.ui \
-    ui/first_level/contractwidget.ui \
-    ui/second_level/clienteditdialog.ui \
-    ui/second_level/careditdialog.ui \
-    ui/second_level/receipteditdialog.ui \
-    ui/second_level/rentaldocumenteditdialog.ui
+    ui/tabwidget/clientmanagermentwidget.ui \
+    ui/tabwidget/carmanagermentwidget.ui \
+    ui/tabwidget/rentaldocumentwidget.ui \
+    ui/tabwidget/receivablewidget.ui \
+    ui/tabwidget/receiptwidget.ui \
+    ui/tabwidget/contractwidget.ui \
+    ui/dialog/clienteditdialog.ui \
+    ui/dialog/careditdialog.ui \
+    ui/dialog/receipteditdialog.ui \
+    ui/dialog/rentaldocumenteditdialog.ui
 
 RESOURCES += \
     icon.qrc

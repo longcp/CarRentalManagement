@@ -64,7 +64,7 @@
         <item>
          <widget class="QWidget" name="homePageWidget" native="true">
           <property name="styleSheet">
-           <string notr="true">border-image: url(:/menu/F:/entertainment/picture/360wallpaper/298238.jpg);</string>
+           <string notr="true">border-image: url(:/menu/icon/maintab_background.png);</string>
           </property>
          </widget>
         </item>
