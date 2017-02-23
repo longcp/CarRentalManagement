@@ -13,58 +13,54 @@ Client::~Client()
 Client::ClientType
 Client::getClientType(QString type)
 {
-    if (type == "临时")
+    if (type == CLIENT_TYPE_TEMPORARY_STR)
         return TEMPORARY;
-    else
+    else if (type == CLIENT_TYPE_CONTRACT_STR)
         return CONTACT;
+
+    return UNKNOWN_CLIENTTYPE;
 }
 
 Client::PayType Client::getPayType(QString type)
 {
-    if (type == "月结")
+    if (type == PAY_TYPE_MONTHLY_STR)
         return MONTHLY;
-    else
+    else if (type == PAY_TYPE_CASH_STR)
         return CASH;
+    else
+        return UNKNOWN_PAYTYPE;
 }
 
 QString
 Client::getClientTypeStr(ClientType type)
 {
-    QString ret = "临时";
-
     switch (type) {
         case CONTACT:
-            ret = "合同";
-            break;
+           return CLIENT_TYPE_CONTRACT_STR;
 
         case TEMPORARY:
-            ret = "临时";
-            break;
+            return CLIENT_TYPE_TEMPORARY_STR;
 
         default:
             break;
     }
 
-    return ret;
+    return "";
 }
 
 QString
 Client::getPayTypeStr(PayType type)
 {
-    QString ret = "月结";
-
     switch (type) {
         case CASH:
-            ret = "现金";
-            break;
+            return PAY_TYPE_CASH_STR;
 
         case MONTHLY:
-            ret = "月结";
-            break;
+            return PAY_TYPE_MONTHLY_STR;
 
         default:
             break;
     }
 
-    return ret;
+    return "";
 }

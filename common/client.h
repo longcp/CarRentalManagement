@@ -5,14 +5,19 @@
 #include <QDate>
 #include "datatype.h"
 
+#define PAY_TYPE_MONTHLY_STR    "月结"
+#define PAY_TYPE_CASH_STR       "现金"
+#define CLIENT_TYPE_CONTRACT_STR    "合同"
+#define CLIENT_TYPE_TEMPORARY_STR   "临时"
+
 class Client : public QObject
 {
     Q_OBJECT
 public:
     explicit Client(QObject *parent = 0);
     ~Client();
-    enum PayType {CASH, MONTHLY};                                    // 结账方式
-    enum ClientType {CONTACT, TEMPORARY};                            // 客户类型
+    enum PayType {CASH, MONTHLY, UNKNOWN_PAYTYPE};                                    // 结账方式
+    enum ClientType {CONTACT, TEMPORARY, UNKNOWN_CLIENTTYPE};                            // 客户类型
 
 #if 0
     Client& operator=(const Client& c) {
