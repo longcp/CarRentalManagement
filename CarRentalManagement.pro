@@ -16,6 +16,7 @@ TEMPLATE = app
 INCLUDEPATH += ui/
 INCLUDEPATH += ui/tabwidget/
 INCLUDEPATH += ui/dialog/
+INCLUDEPATH += ui/dialog/user/
 INCLUDEPATH += utils/
 INCLUDEPATH += common/
 
@@ -34,7 +35,8 @@ SOURCES += main.cpp\
     common/client.cpp \
     common/regularexpression.cpp \
     database/database.cpp \
-    common/car.cpp
+    common/car.cpp \
+    ui/dialog/user/login.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -52,7 +54,8 @@ HEADERS  += ui\mainwindow.h \
     common/datatype.h \
     database/database.h \
     common/tablemodel.h \
-    common/car.h
+    common/car.h \
+    ui/dialog/user/login.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -64,7 +67,8 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/clienteditdialog.ui \
     ui/dialog/careditdialog.ui \
     ui/dialog/receipteditdialog.ui \
-    ui/dialog/rentaldocumenteditdialog.ui
+    ui/dialog/rentaldocumenteditdialog.ui \
+    ui/dialog/user/login.ui
 
 RESOURCES += \
     icon.qrc

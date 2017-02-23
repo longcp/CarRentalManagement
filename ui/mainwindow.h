@@ -10,6 +10,7 @@ class ReceivableWidget;
 class ReceiptWidget;
 class ContractWidget;
 class QWidget;
+class Login;
 
 namespace Ui {
 class MainWindow;
@@ -101,6 +102,9 @@ private:
     ReceivableWidget        *mReceivableWidget;
     ReceiptWidget           *mReceiptWidget;
     ContractWidget          *mContractWidget;
+
+    // dialog
+    Login                   *mLogin;
 
     // 用于管理各个tabwidget的list
     QList<QWidget *>        mOpenTabList;

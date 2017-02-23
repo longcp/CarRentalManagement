@@ -11,6 +11,7 @@
 #include <QList>
 #include <QToolButton>
 #include <QTabWidget>
+#include <login.h>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -22,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->mainTabWidget->setTabIcon(0, QIcon(":/menu/icon/home_64.ico"));
+
+    mLogin = new Login();
+    mLogin->exec();
 
     // 子tab
     mCarWidget = new CarManagermentWidget();
