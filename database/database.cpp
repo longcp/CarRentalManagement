@@ -206,7 +206,7 @@ DataBase::getClientInNumber(QString clientNum, Client &client)
         client.paytype = query->value(9).toInt() ?
                     Client::CASH : Client::MONTHLY;
         client.clienttype = query->value(10).toInt() ?
-                    Client::CONTACT : Client::TEMPORARY;
+                    Client::CONTRACT : Client::TEMPORARY;
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), "yyyy-MM-dd");
         client.monthly = query->value(12).toInt();
@@ -299,7 +299,7 @@ DataBase::getAllClientData(QList<Client> &clients)
         client.paytype = query->value(9).toInt() ?
                     Client::CASH : Client::MONTHLY;
         client.clienttype = query->value(10).toInt() ?
-                    Client::CONTACT : Client::TEMPORARY;
+                    Client::CONTRACT : Client::TEMPORARY;
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), "yyyy-MM-dd");
         client.monthly = query->value(12).toInt();

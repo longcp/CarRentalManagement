@@ -16,7 +16,7 @@ Client::getClientType(QString type)
     if (type == CLIENT_TYPE_TEMPORARY_STR)
         return TEMPORARY;
     else if (type == CLIENT_TYPE_CONTRACT_STR)
-        return CONTACT;
+        return CONTRACT;
 
     return UNKNOWN_CLIENTTYPE;
 }
@@ -35,7 +35,7 @@ QString
 Client::getClientTypeStr(ClientType type)
 {
     switch (type) {
-        case CONTACT:
+        case CONTRACT:
            return CLIENT_TYPE_CONTRACT_STR;
 
         case TEMPORARY:

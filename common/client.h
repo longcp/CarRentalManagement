@@ -17,7 +17,7 @@ public:
     explicit Client(QObject *parent = 0);
     ~Client();
     enum PayType {CASH, MONTHLY, UNKNOWN_PAYTYPE};                                    // 结账方式
-    enum ClientType {CONTACT, TEMPORARY, UNKNOWN_CLIENTTYPE};                            // 客户类型
+    enum ClientType {CONTRACT, TEMPORARY, UNKNOWN_CLIENTTYPE};                            // 客户类型
 
 #if 0
     Client& operator=(const Client& c) {

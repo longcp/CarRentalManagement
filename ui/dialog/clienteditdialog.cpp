@@ -243,8 +243,8 @@ ClientEditDialog::setView(Client &client)
         ui->cashRadioButton->setChecked(false);
         ui->monthlyRadioButton->setChecked(true);
     }
-    if (client.clienttype == Client::CONTACT) {
-        ALOGD("%s, client.clienttype == CONTACT", __FUNCTION__);
+    if (client.clienttype == Client::CONTRACT) {
+        ALOGD("%s, client.clienttype == CONTRACT", __FUNCTION__);
         ui->contractRadioButton->setChecked(true);
         ui->temporaryRadioButton->setChecked(false);
     } else if (client.clienttype == Client::TEMPORARY) {
@@ -463,7 +463,7 @@ ClientEditDialog::saveUiContent(Client &client)
         client.paytype = Client::MONTHLY;
 
     if (ui->contractRadioButton->isChecked())
-        client.clienttype = Client::CONTACT;
+        client.clienttype = Client::CONTRACT;
     else
         client.clienttype = Client::TEMPORARY;
 }
