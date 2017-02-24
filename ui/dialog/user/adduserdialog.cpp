@@ -27,6 +27,7 @@ AddUserDialog::AddUserDialog(QWidget *parent) :
                 new QRegExpValidator(passwardRegx,
                                      ui->ensurePasswardLEdit));
     ui->ensurePasswardLEdit->setMaxLength(12);
+    ui->uNameLEdit->setFocus();
 
     mDb = DataBase::getInstance();
 }

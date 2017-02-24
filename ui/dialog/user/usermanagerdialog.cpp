@@ -15,6 +15,8 @@
 #define USER_NAME_COLUMN        0
 #define USER_RIGHT_COLUMN       1
 
+#define ADMIN_USER_NAME                 "admin"
+
 UserManagerDialog::UserManagerDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UserManagerDialog)
@@ -165,10 +167,9 @@ UserManagerDialog::on_delUserBtn_clicked()
         }
         modelIndex = modelList[0];
         uName = modelIndex.data().toString();
-        ret = mDb->getUserCount();
-        if (ret == 1) {
-            //最后一个用户无法删除
-            msgBox.setText("最后一个用户无法删除");
+        if (uName == ADMIN_USER_NAME) {
+            //admin用户无法删除
+            msgBox.setText("admin用户无法删除");
             msgBox.setStandardButtons(QMessageBox::Yes);
             msgBox.setButtonText(QMessageBox::Yes, "确定");
             msgBox.setIcon(QMessageBox::Information);
@@ -185,6 +186,11 @@ UserManagerDialog::on_delUserBtn_clicked()
                 msgBox.exec();
             }
         }
+    } else {
+        QMessageBox::critical(this, tr("温馨提示"),
+                             tr("请选择要删除的用户.\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
     }
 }
 
@@ -201,6 +207,11 @@ UserManagerDialog::on_modifyBtn_clicked()
         mCurrentRow = modelList[0].row();
         uName = modelIndex.data().toString();
         emit openMdifyPasswardWindowSignal(uName);
+    } else {
+        QMessageBox::critical(this, tr("温馨提示"),
+                             tr("请选择要修改的用户.\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
     }
 }
 

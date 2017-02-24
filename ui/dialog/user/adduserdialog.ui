@@ -138,7 +138,7 @@ QPushButton:pressed {
     <string notr="true">font: 10pt &quot;宋体&quot;;</string>
    </property>
    <property name="text">
-    <string>(6-12位英文与数字组合)</string>
+    <string>(1-12位字符)</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="userRightCBbox">

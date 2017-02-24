@@ -42,7 +42,6 @@ DataBase::getInstance()
 bool
 DataBase::openDataBase()
 {
-    ALOGD("mDbPath = %s", mDbPath.toStdString().data());
     if (!QFile::exists(mDbPath)) {
         qDebug()<< "database" << mDbPath << " is not existed!";
         if (!QFile::copy(mDbPath, mDbPath)) {

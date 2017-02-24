@@ -34,6 +34,7 @@ ModifyPasswardDialog::ModifyPasswardDialog(QWidget *parent) :
                 new QRegExpValidator(passwardRegx,
                                      ui->ensurePasswardLEdit));
     ui->ensurePasswardLEdit->setMaxLength(12);
+    ui->oldPasswardLEdit->setFocus();
 
     mDb = DataBase::getInstance();
 }
