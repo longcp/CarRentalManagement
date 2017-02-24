@@ -1,10 +1,10 @@
-#ifndef USERMANAGER_H
-#define USERMANAGER_H
+#ifndef USERMANAGERDIALOG_H
+#define USERMANAGERDIALOG_H
 
 #include <QDialog>
 #include "dataType.h"
 
-class AddUser;
+class AddUserDialog;
 class DataBase;
 class ModifyPassward;
 class TableModel;
@@ -51,10 +51,10 @@ private slots:
     void                 on_modifyBtn_clicked();
 
     /**
-     * @brief table_view_append_row:更新用户列表
+     * @brief appendRow:更新用户列表
      * @param uName
      */
-    void                 table_view_append_row(QString uName);
+    void                 appendRow(QString uName);
 
     /**
      * @brief update_table_content:更新表内容
@@ -67,9 +67,9 @@ private slots:
 signals:
 
     /**
-     * @brief open_addUser_window_signal:打开添加用户窗口
+     * @brief openAddUserWindowSignal:打开添加用户窗口
      */
-    void                 open_addUser_window_signal();
+    void                 openAddUserWindowSignal();
 
     /**
      * @brief open_modify_passward_window:打开修改密码窗口
@@ -89,21 +89,9 @@ private:
      */
     void                 initView();
 
-    /**
-     * @brief send_del_user_record:发送操作记录
-     * @param userName
-     */
-    void                 send_del_user_record(QString userName);
-
-    /**
-     * @brief send_oper_record:发送操作记录
-     * @param content
-     */
-    void                 send_oper_record(QString content);
-
     int                  mCurrentRow;                                   //当前选中行
     QStringList          mHeaderList;                                   //表头
-    AddUser             *mAddUser;                                      //添加用户
+    AddUserDialog       *mAddUserDialog;                                //添加用户
     ModifyPasswardDialog      *mModifyPasswardDialog;                   //修改密码
     DataBase            *mDb;
     TableModel          *mModel;
@@ -113,4 +101,4 @@ private:
     Ui::UserManagerDialog     *ui;
 };
 
-#endif // USERMANAGER_H
+#endif // USERMANAGERDIALOG_H

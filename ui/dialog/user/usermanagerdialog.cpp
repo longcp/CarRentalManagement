@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include "tablemodel.h"
 #include "database/database.h"
-//#include "adduser.h"
+#include "adduserdialog.h"
 #include "modifypasswarddialog.h"
 #include <user.h>
 
@@ -26,7 +26,7 @@ UserManagerDialog::UserManagerDialog(QWidget *parent) :
     this->setFixedSize(500, 220);                                       //禁止窗口伸缩
 
     mDb       = DataBase::getInstance();
-//    mAddUser = new AddUser();
+    mAddUserDialog = new AddUserDialog();
     mModifyPasswardDialog = new ModifyPasswardDialog();
 
     //初始化告警界面
@@ -43,26 +43,21 @@ UserManagerDialog::UserManagerDialog(QWidget *parent) :
     ui->userInfoTableview->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->userInfoTableview->setSelectionMode(QAbstractItemView::SingleSelection);
 
-#if 0
     /**
      * 访问网管板超时，弹出提示窗口
      */
-    connect(this,    SIGNAL(open_addUser_window_signal()),
-            mAddUser, SLOT(open_addUser_window()));
-
+    connect(this,    SIGNAL(openAddUserWindowSignal()),
+            mAddUserDialog, SLOT(openWindow()));
     /**
      * 添加用户成功，列表更新
      */
-    connect(mAddUser,    SIGNAL(addr_user_success_signal(QString)),
-            this, SLOT(table_view_append_row(QString)));
-
-#endif
+    connect(mAddUserDialog, SIGNAL(addrUserSuccessSignal(QString)),
+            this, SLOT(appendRow(QString)));
     /**
      * 打开修改密码窗口
      */
     connect(this,    SIGNAL(openMdifyPasswardWindowSignal(QString)),
             mModifyPasswardDialog, SLOT(openWindow(QString)));
-
     /**
      * 用户修改密码成功，列表更新
      */
@@ -141,13 +136,12 @@ UserManagerDialog::on_closeBtn_clicked()
 void
 UserManagerDialog::on_addUserBtn_clicked()
 {
-//    emit open_addUser_window_signal();
+    emit openAddUserWindowSignal();
 }
 
 void
 UserManagerDialog::on_delUserBtn_clicked()
 {
-#if 0
     int ret;
     int currentRow;
     QModelIndex modelIndex;
@@ -162,7 +156,8 @@ UserManagerDialog::on_delUserBtn_clicked()
     msgBox.setButtonText(QMessageBox::Yes, "确定");
     msgBox.setButtonText(QMessageBox::Cancel, "取消");
 
-    QModelIndexList modelList = ui->userInfoTableview->selectionModel()->selectedRows();
+    QModelIndexList modelList
+            = ui->userInfoTableview->selectionModel()->selectedRows();
     if (modelList.size() != 0) {
         ret = msgBox.exec();
         if (ret == QMessageBox::Cancel) {
@@ -170,7 +165,7 @@ UserManagerDialog::on_delUserBtn_clicked()
         }
         modelIndex = modelList[0];
         uName = modelIndex.data().toString();
-        ret = mDb->get_user_count();
+        ret = mDb->getUserCount();
         if (ret == 1) {
             //最后一个用户无法删除
             msgBox.setText("最后一个用户无法删除");
@@ -179,11 +174,10 @@ UserManagerDialog::on_delUserBtn_clicked()
             msgBox.setIcon(QMessageBox::Information);
             msgBox.exec();
         } else {
-            ret = mDb->delete_user_table_data(uName);                       //数据库删除条目
+            ret = mDb->deleteUserTabledata(uName);                          //数据库删除条目
             if (!ret) {
                 currentRow = modelList[0].row();
                 mModel->takeRow(currentRow);                                //删除该行数据
-                send_del_user_record(uName);
                 msgBox.setText("用户已删除");
                 msgBox.setStandardButtons(QMessageBox::Yes);
                 msgBox.setButtonText(QMessageBox::Yes, "确定");
@@ -192,7 +186,6 @@ UserManagerDialog::on_delUserBtn_clicked()
             }
         }
     }
-#endif
 }
 
 void
@@ -212,25 +205,18 @@ UserManagerDialog::on_modifyBtn_clicked()
 }
 
 void
-UserManagerDialog::table_view_append_row(QString uName)
+UserManagerDialog::appendRow(QString uName)
 {
-#if 0
-    int ret;
-    USER_INFO userInfo;
+    User user;
 
-    ret = mDb->get_user_table_data(&userInfo, uName);
-    if (!ret) {
-        QStandardItem *nameItem     = new QStandardItem(userInfo.name);
-        QString rightStr = GET_RIGHT_STR(userInfo.rightLevel);
-        QStandardItem *rightItem    =  new QStandardItem(rightStr);
+    if (!mDb->getUserTableData(user, uName)) {
+        QStandardItem *nameItem = new QStandardItem(user.name);
+        QString rightStr = user.getUserRightStr(user.right);
+        QStandardItem *rightItem =  new QStandardItem(rightStr);
         QList<QStandardItem*> items;
         items << nameItem << rightItem;
         mModel->appendRow(items);                                   //插入条目表中
     }
-
-    QString content = "添加用户: " + uName;
-    send_oper_record(content);
-#endif
 }
 
 void
@@ -241,17 +227,4 @@ UserManagerDialog::updateTableContent(User &user)
                                                     .getUserRightStr(user.right));
     mModel->setItem(mCurrentRow, USER_NAME_COLUMN, nameItem);
     mModel->setItem(mCurrentRow, USER_RIGHT_COLUMN, rightItem);
-}
-
-void
-UserManagerDialog::send_del_user_record(QString userName)
-{
-    QString content = "删除用户: " + userName;
-//    emit add_user_operRec_signal(OPERATE_TYPE_USERINFO, content);
-}
-
-void
-UserManagerDialog::send_oper_record(QString content)
-{
-//    emit add_user_operRec_signal(OPERATE_TYPE_USERINFO, content);
 }

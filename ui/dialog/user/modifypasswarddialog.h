@@ -1,5 +1,5 @@
-#ifndef MODIFYPASSWARD_H
-#define MODIFYPASSWARD_H
+#ifndef MODIFYPASSWARDDIALOG_H
+#define MODIFYPASSWARDDIALOG_H
 
 #include <QDialog>
 #include "dataType.h"
@@ -49,4 +49,4 @@ private:
     Ui::ModifyPasswardDialog *ui;
 };
 
-#endif // MODIFYPASSWARD_H
+#endif // MODIFYPASSWARDDIALOG_H
