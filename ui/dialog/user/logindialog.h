@@ -8,16 +8,16 @@ class User;
 class Client;
 
 namespace Ui {
-class Login;
+class LoginDialog;
 }
 
-class Login : public QDialog
+class LoginDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit            Login(QWidget *parent = 0);
-    ~Login();
+    explicit            LoginDialog(QWidget *parent = 0);
+    ~LoginDialog();
 
 private slots:
     /**
@@ -76,7 +76,7 @@ private:
     QPoint              dragPosition;
     DataBase            *mDb;
     QTimer              *mTimer;
-    Ui::Login           *ui;
+    Ui::LoginDialog     *ui;
 };
 
 #endif // LOGIN_H

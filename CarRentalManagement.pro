@@ -36,8 +36,8 @@ SOURCES += main.cpp\
     common/regularexpression.cpp \
     database/database.cpp \
     common/car.cpp \
-    ui/dialog/user/login.cpp \
-    common/user.cpp
+    common/user.cpp \
+    ui/dialog/user/logindialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -56,8 +56,8 @@ HEADERS  += ui\mainwindow.h \
     database/database.h \
     common/tablemodel.h \
     common/car.h \
-    ui/dialog/user/login.h \
-    common/user.h
+    common/user.h \
+    ui/dialog/user/logindialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -70,7 +70,7 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/careditdialog.ui \
     ui/dialog/receipteditdialog.ui \
     ui/dialog/rentaldocumenteditdialog.ui \
-    ui/dialog/user/login.ui
+    ui/dialog/user/logindialog.ui
 
 RESOURCES += \
     icon.qrc

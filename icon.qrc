@@ -25,5 +25,6 @@
         <file>icon/ok_64.ico</file>
         <file>icon/save_64.ico</file>
         <file>icon/maintab_background.png</file>
+        <file>icon/user_64.ico</file>
     </qresource>
 </RCC>

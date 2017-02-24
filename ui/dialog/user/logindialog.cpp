@@ -1,5 +1,5 @@
-#include "login.h"
-#include "ui_login.h"
+#include "logindialog.h"
+#include "ui_logindialog.h"
 #include <QMessageBox>
 #include <QTimer>
 #include <QMouseEvent>
@@ -15,9 +15,9 @@
 #define LOG_TAG                         "LOGIN  "
 #include "utils/Log.h"
 
-Login::Login(QWidget *parent) :
+LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Login)
+    ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
     this->setWindowTitle("用户登陆");
@@ -49,13 +49,13 @@ Login::Login(QWidget *parent) :
     ui->userNameLEdit->setFocus();
 }
 
-Login::~Login()
+LoginDialog::~LoginDialog()
 {
     delete ui;
 }
 
 void
-Login::on_loginBtn_clicked()
+LoginDialog::on_loginBtn_clicked()
 {
     QString uName;
     QString passward;
@@ -119,14 +119,14 @@ Login::on_loginBtn_clicked()
 }
 
 void
-Login::closeEvent(QCloseEvent *event)
+LoginDialog::closeEvent(QCloseEvent *event)
 {
     //关闭软件
     exit(0);
 }
 
 void
-Login::keyPressEvent(QKeyEvent * event)
+LoginDialog::keyPressEvent(QKeyEvent * event)
 {
     if (event->key() == Qt::Key_Enter
             || event->key() == Qt::Key_Return) {
@@ -137,13 +137,13 @@ Login::keyPressEvent(QKeyEvent * event)
 }
 
 void
-Login::reject()
+LoginDialog::reject()
 {
     //不做任何操作，防止按下ESC按键直接跳过登录框
 }
 
 void
-Login::mousePressEvent(QMouseEvent *event)
+LoginDialog::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         mDrag = true;
@@ -153,7 +153,7 @@ Login::mousePressEvent(QMouseEvent *event)
 }
 
 void
-Login::mouseMoveEvent(QMouseEvent *event)
+LoginDialog::mouseMoveEvent(QMouseEvent *event)
 {
     if (mDrag && (event->buttons() && Qt::LeftButton)) {
         move(event->globalPos() - dragPosition);
@@ -162,26 +162,26 @@ Login::mouseMoveEvent(QMouseEvent *event)
 }
 
 void
-Login::mouseReleaseEvent(QMouseEvent *)
+LoginDialog::mouseReleaseEvent(QMouseEvent *)
 {
     mDrag = false;
 }
 
 void
-Login::on_minimumBtn_clicked()
+LoginDialog::on_minimumBtn_clicked()
 {
     this->showMinimized();
 }
 
 void
-Login::on_closeBtn_clicked()
+LoginDialog::on_closeBtn_clicked()
 {
     exit(0);
 }
 
 //绘制实现窗体阴影
 void
-Login::paintEvent(QPaintEvent *event)
+LoginDialog::paintEvent(QPaintEvent *event)
 {
     QPainterPath path;
     path.setFillRule(Qt::WindingFill);

@@ -11,7 +11,7 @@
 #include <QList>
 #include <QToolButton>
 #include <QTabWidget>
-#include <login.h>
+#include <logindialog.h>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -24,15 +24,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->mainTabWidget->setTabIcon(0, QIcon(":/menu/icon/home_64.ico"));
 
-    mLogin = new Login();
+    mLoginDialog = new LoginDialog();
 
     /**
      * @brief 用户登陆
      */
-    connect(mLogin, SIGNAL(userLoginSignal(QString)),
+    connect(mLoginDialog, SIGNAL(userLoginSignal(QString)),
             this, SLOT(userLoginSlot(QString)));
 
-    mLogin->exec();
+    mLoginDialog->exec();
 
     // 子tab
     mCarWidget = new CarManagermentWidget();
@@ -69,18 +69,15 @@ MainWindow::MainWindow(QWidget *parent) :
     mActCarfile = mMenuCarManagement->addAction(
                 QIcon(":/menu/icon/Ford_Heavy_Wreck_Truck_128.ico"),
                 tr("车辆档案"));
-//    mActCarMaintenance = mMenuCarManagement->addAction(
-//                QIcon(":/menu/icon/tools.ico"),
-//                tr("维修记录"));
-//    mActCarIllegal = mMenuCarManagement->addAction(
-//                QIcon(":/menu/icon/car_break_rules_64.ico"),
-//                tr("违章记录"));
     mActReceivable = mMenuFinanceManagement->addAction(
                 QIcon(":/menu/icon/custom-reports256.png"),
                 tr("应收"));
     mActReceipt = mMenuFinanceManagement->addAction(
                 QIcon(":/menu/icon/calculator_64.ico"),
                 tr("收款"));
+    mActUserManager = mMenuUserManagerment->addAction(
+                QIcon(":/menu/icon/user_64.ico"),
+                tr("用户管理"));
 
     // 工具栏
     ui->mainToolBar->setMovable(false);
@@ -96,6 +93,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addSeparator();
     ui->mainToolBar->addAction(mActReceivable);
     ui->mainToolBar->addAction(mActReceipt);
+    ui->mainToolBar->addAction(mActUserManager);
 
     // tabwidget
     // 设置Tab标签的右上角的关闭按钮
