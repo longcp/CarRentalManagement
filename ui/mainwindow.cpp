@@ -12,6 +12,7 @@
 #include <QToolButton>
 #include <QTabWidget>
 #include <logindialog.h>
+#include <usermanagerdialog.h>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainTabWidget->setTabIcon(0, QIcon(":/menu/icon/home_64.ico"));
 
     mLoginDialog = new LoginDialog();
+    mUserManagerDialog = new UserManagerDialog();
 
     /**
      * @brief 用户登陆
@@ -147,6 +149,11 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     connect(mActContract, SIGNAL(triggered()),
             this, SLOT(openContractWidget()));
+    /**
+     * @brief 打开用户管理窗口
+     */
+    connect(mActUserManager, SIGNAL(triggered()),
+            mUserManagerDialog, SLOT(openWindow()));
     /**
      * @brief tab关闭事件
      */

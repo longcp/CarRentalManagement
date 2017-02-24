@@ -409,6 +409,121 @@ DataBase::getUserTableData(User &user, QString name)
     return SUCCESS;
 }
 
+int
+DataBase::deleteUserTabledata(QString uName)
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    //删除操作
+    query->finish();
+    query->prepare("DELETE FROM user WHERE user_Name=?");
+    query->addBindValue(uName);
+    if (!query->exec()) {
+        ALOGE("delete user table data fail!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertUserTable(User &user)
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    //插入操作
+    query->finish();
+    query->prepare("INSERT INTO user VALUES(:user_Name, :user_Passward, :right_level)");
+    query->bindValue(":user_Name",      user.name);
+    query->bindValue(":user_Passward",  user.passward);
+    query->bindValue(":right_level",    user.right);
+    if (!query->exec()) {
+        ALOGE("insert to user table fail!");
+        return INSERT_USER_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::updateUserTableData(User &user)
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    query->finish();
+    query->prepare("UPDATE user SET user_Passward=? WHERE user_Name=?;");
+    query->addBindValue(user.passward);
+    query->addBindValue(user.name);
+    if (!query->exec()) {
+        ALOGE("select user table fail!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllUserTableData(QList<User> &users)
+{
+    User user;
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    query->finish();
+    query->prepare("SELECT * FROM user");
+    if (!query->exec()) {
+        ALOGE("select user table fail!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        user.name = query->value(0).toString();
+        user.passward = query->value(1).toString();
+        user.right = query->value(2).toInt() ?
+                    UserRight::RIGHT_NORMAL : UserRight::RIGHT_ROOT;
+
+        users.push_back(user);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getUserCount()
+{
+    int count = 0;
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    query->finish();
+    query->prepare("SELECT * FROM user");
+    if (!query->exec()) {
+        ALOGE("select user table fail!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        count++;
+    }
+
+    return count;
+}
+
 QString
 DataBase::lastError()
 {

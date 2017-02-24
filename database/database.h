@@ -39,7 +39,12 @@ public:
     int                 deleteClientInNumber(QString clientNum);
 
     // user表
+    int                 insertUserTable(User &user);
+    int                 updateUserTableData(User &user);
     int                 getUserTableData(User &user, QString name);
+    int                 getAllUserTableData(QList<User> &users);
+    int                 getUserCount();
+    int                 deleteUserTabledata(QString uName);
 
 private:
     bool                openDataBase();

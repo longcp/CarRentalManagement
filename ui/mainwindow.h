@@ -11,6 +11,7 @@ class ReceiptWidget;
 class ContractWidget;
 class QWidget;
 class LoginDialog;
+class UserManagerDialog;
 
 namespace Ui {
 class MainWindow;
@@ -110,6 +111,7 @@ private:
 
     // dialog
     LoginDialog             *mLoginDialog;
+    UserManagerDialog       *mUserManagerDialog;
 
     // 用于管理各个tabwidget的list
     QList<QWidget *>        mOpenTabList;
