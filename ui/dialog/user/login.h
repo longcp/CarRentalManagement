@@ -44,7 +44,7 @@ signals:
      * @brief current_userInfo_signal
      * @param uName
      */
-    void                current_userInfo_signal(QString uName);
+    void                userLoginSignal(QString curUserName);
 
     /**
      * @brief add_operate_record_signal:添加操作记录

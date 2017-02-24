@@ -11,6 +11,7 @@
 #include <QSqlError>
 #include <QDebug>
 #include <QDate>
+#include <user.h>
 
 #define LOG_TAG                         "DATABASE"
 #include "utils/Log.h"
@@ -379,6 +380,32 @@ DataBase::clearClientTable()
     }
 
     ALOGV("clearClientTable success!");
+    return SUCCESS;
+}
+
+int
+DataBase::getUserTableData(User &user, QString name)
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    query->finish();
+    query->prepare("SELECT * FROM user WHERE user_Name=?");
+    query->addBindValue(name);
+    if (!query->exec()) {
+        ALOGE("select user table fail!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    if (query->next()) {
+        user.name      = query->value(0).toString();
+        user.passward  = query->value(1).toString();
+        user.right = query->value(2).toInt() ?
+                    UserRight::RIGHT_NORMAL : UserRight::RIGHT_ROOT;
+    }
+
     return SUCCESS;
 }
 

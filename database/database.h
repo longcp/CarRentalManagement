@@ -3,6 +3,8 @@
 
 #include <QtSql/QSqlDatabase>
 
+class User;
+
 #define DEBUG_VERSION
 
 //#ifdef DEBUG_VERSION
@@ -35,6 +37,9 @@ public:
     int                 clearClientTable();
     bool                isClientExist(Client &client);
     int                 deleteClientInNumber(QString clientNum);
+
+    // user表
+    int                 getUserTableData(User &user, QString name);
 
 private:
     bool                openDataBase();

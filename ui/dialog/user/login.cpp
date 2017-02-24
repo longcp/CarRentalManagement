@@ -46,6 +46,7 @@ Login::Login(QWidget *parent) :
                 new QRegExpValidator(passwardRegx,
                                      ui->passwardLEdit));
     ui->passwardLEdit->setMaxLength(12);
+    ui->userNameLEdit->setFocus();
 }
 
 Login::~Login()
@@ -56,11 +57,9 @@ Login::~Login()
 void
 Login::on_loginBtn_clicked()
 {
-    this->hide();
-#if 0
     QString uName;
     QString passward;
-    USER_INFO userInfo;
+    User user;
     int ret;
 
     uName = ui->userNameLEdit->text();
@@ -78,7 +77,7 @@ Login::on_loginBtn_clicked()
                                     QString("确 定"));
         errInfoMsgBox.exec();
     } else {
-        ret = mDb->get_user_table_data(&userInfo, uName);
+        ret = mDb->getUserTableData(user, uName);
         if (ret) {
             ui->userNameLEdit->clear();
             ui->passwardLEdit->clear();
@@ -90,7 +89,7 @@ Login::on_loginBtn_clicked()
                                            QString("确 定"));
             errunKnownMsgBox.exec();
         } else {
-            if (uName.compare(userInfo.name)) {
+            if (uName != user.name) {
                 ui->userNameLEdit->clear();
                 ui->passwardLEdit->clear();
                 QMessageBox errUnameMsgBox(QMessageBox::Critical,
@@ -100,7 +99,7 @@ Login::on_loginBtn_clicked()
                 errUnameMsgBox.setButtonText(QMessageBox::Ok,
                                              QString("确 定"));
                 errUnameMsgBox.exec();
-            } else if (passward.compare(userInfo.passward)) {
+            } else if (passward != user.passward) {
                 //密码不一致
                 ui->passwardLEdit->clear();
                 QMessageBox errPasswardMsgBox(QMessageBox::Critical,
@@ -113,11 +112,10 @@ Login::on_loginBtn_clicked()
             } else {
                 //成功登陆
                 this->hide();
-                emit current_userInfo_signal(userInfo.name);
+                emit userLoginSignal(user.name);
             }
         }
     }
-#endif
 }
 
 void

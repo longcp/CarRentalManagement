@@ -66,6 +66,10 @@ private slots:
      * @brief 关闭当前页
      */
     void        removeCurTab();
+    /**
+     * @brief 用户登录
+     */
+    void        userLoginSlot(QString curUserName);
     void        on_mainTabWidget_currentChanged(int index);
 
 signals:

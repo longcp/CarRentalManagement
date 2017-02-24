@@ -25,6 +25,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainTabWidget->setTabIcon(0, QIcon(":/menu/icon/home_64.ico"));
 
     mLogin = new Login();
+
+    /**
+     * @brief 用户登陆
+     */
+    connect(mLogin, SIGNAL(userLoginSignal(QString)),
+            this, SLOT(userLoginSlot(QString)));
+
     mLogin->exec();
 
     // 子tab
@@ -326,6 +333,13 @@ MainWindow::removeCurTab()
     QWidget *widget = ui->mainTabWidget->widget(index);
     ui->mainTabWidget->removeTab(index);
     widget->close();
+}
+
+void
+MainWindow::userLoginSlot(QString curUserName)
+{
+    // do something according to current user
+    ALOGD("%s enter.", __FUNCTION__);
 }
 
 void

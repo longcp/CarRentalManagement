@@ -25,9 +25,9 @@
 
 enum OpenType {CREATEITEM=0, SHOWITEM, UNKNOWN_OPENTYPE};
 
-enum UserRight {RIGHT_ROOT, RIGHT_NORMAL, UNKNOWN_RIGHT};
+enum UserRight {RIGHT_ROOT=0, RIGHT_NORMAL, UNKNOWN_RIGHT};
 
-enum PayType {CASH, MONTHLY, UNKNOWN_PAYTYPE};                                    // 结账方式
-enum ClientType {CONTRACT, TEMPORARY, UNKNOWN_CLIENTTYPE};
+enum PayType {CASH=0, MONTHLY, UNKNOWN_PAYTYPE};                                    // 结账方式
+enum ClientType {CONTRACT=0, TEMPORARY, UNKNOWN_CLIENTTYPE};
 
 #endif // DATATYPE_H
