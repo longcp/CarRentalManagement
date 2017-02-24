@@ -139,6 +139,7 @@ ClientManagermentWidget::initView()
 void
 ClientManagermentWidget::initTableView()
 {
+#if 0
     int i, size;
     QList<QString>numbers;
     QString number;
@@ -152,7 +153,8 @@ ClientManagermentWidget::initTableView()
                 addClientItemSlot(client);
         }
     }
-#if 0
+#endif
+#if 1
     // FIXME:
     int i, ret, size;
     QList<Client>clients;
@@ -163,7 +165,8 @@ ClientManagermentWidget::initTableView()
     if (!ret) {
         size = clients.size();
         for (i = 0; i < size; i++) {
-            client = clients.operator [](i);
+//            client = clients.operator [](i);
+            client = clients.at(i);
             addClientItemSlot(client);
         }
         //        for (c = clients.begin(); c != clients.end(); c++) {

@@ -204,9 +204,9 @@ DataBase::getClientInNumber(QString clientNum, Client &client)
         client.remarks = query->value(7).toString();
         client.creator = query->value(8).toString();
         client.paytype = query->value(9).toInt() ?
-                    Client::CASH : Client::MONTHLY;
+                    PayType::CASH : PayType::MONTHLY;
         client.clienttype = query->value(10).toInt() ?
-                    Client::CONTRACT : Client::TEMPORARY;
+                    ClientType::CONTRACT : ClientType::TEMPORARY;
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), "yyyy-MM-dd");
         client.monthly = query->value(12).toInt();
@@ -267,7 +267,7 @@ DataBase::deleteClientInNumber(QString clientNum)
     return SUCCESS;
 }
 
-#if 0
+#if 1
 int
 DataBase::getAllClientData(QList<Client> &clients)
 {
@@ -297,9 +297,9 @@ DataBase::getAllClientData(QList<Client> &clients)
         client.remarks = query->value(7).toString();
         client.creator = query->value(8).toString();
         client.paytype = query->value(9).toInt() ?
-                    Client::CASH : Client::MONTHLY;
+                    PayType::CASH : PayType::MONTHLY;
         client.clienttype = query->value(10).toInt() ?
-                    Client::CONTRACT : Client::TEMPORARY;
+                    ClientType::CONTRACT : ClientType::TEMPORARY;
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), "yyyy-MM-dd");
         client.monthly = query->value(12).toInt();

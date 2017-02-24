@@ -10,7 +10,7 @@ Client::~Client()
 
 }
 
-Client::ClientType
+ClientType
 Client::getClientType(QString type)
 {
     if (type == CLIENT_TYPE_TEMPORARY_STR)
@@ -21,7 +21,7 @@ Client::getClientType(QString type)
     return UNKNOWN_CLIENTTYPE;
 }
 
-Client::PayType Client::getPayType(QString type)
+PayType Client::getPayType(QString type)
 {
     if (type == PAY_TYPE_MONTHLY_STR)
         return MONTHLY;

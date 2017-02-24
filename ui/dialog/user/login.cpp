@@ -8,6 +8,9 @@
 #include <QPixmap>
 #include <QtMath>
 #include <database/database.h>
+#include <user.h>
+#include <datatype.h>
+#include <client.h>
 
 #define LOG_TAG                         "LOGIN  "
 #include "utils/Log.h"
@@ -43,6 +46,43 @@ Login::Login(QWidget *parent) :
                 new QRegExpValidator(passwardRegx,
                                      ui->passwardLEdit));
     ui->passwardLEdit->setMaxLength(12);
+
+    User u1("1111", "2222", UserRight::RIGHT_NORMAL);
+    QList<User> users;
+    User u2(u1);
+    User u3 = u1;
+    User u4 = u1;
+    users.push_back(u1);
+    users.push_back(u2);
+    users.push_back(u3);
+    users.push_back(u4);
+
+    User ua = users.at(1);
+    justatest(ua);
+
+    QList<Client> clients;
+    Client ca;
+    ca.name = "hahaha";
+    Client c1 = ca;
+    Client c2 = ca;
+    Client c3 = ca;
+    clients.push_back(c1);
+    clients.push_back(c2);
+    clients.push_back(c3);
+    Client cb = clients.at(1);
+    justatest2(cb);
+}
+
+void
+Login::justatest(User &user)
+{
+    ALOGD("user.name = %s", user.name.toStdString().data());
+}
+
+void
+Login::justatest2(Client &client)
+{
+    ALOGD("client.name = %s", client.name.toStdString().data());
 }
 
 Login::~Login()

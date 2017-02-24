@@ -234,20 +234,20 @@ ClientEditDialog::setView(Client &client)
     ui->balanceLineEdit->setText(QString::number(client.amount
                                                  - client.paid));
     ui->monthlySpinBox->setValue(client.monthly);
-    if (client.paytype == Client::CASH) {
+    if (client.paytype == PayType::CASH) {
         ALOGD("%s, client.paytype == CASH", __FUNCTION__);
         ui->cashRadioButton->setChecked(true);
         ui->monthlyRadioButton->setChecked(false);
-    } else if (client.paytype == Client::MONTHLY) {
+    } else if (client.paytype == PayType::MONTHLY) {
         ALOGD("%s, client.paytype == MONTHLY", __FUNCTION__);
         ui->cashRadioButton->setChecked(false);
         ui->monthlyRadioButton->setChecked(true);
     }
-    if (client.clienttype == Client::CONTRACT) {
+    if (client.clienttype == ClientType::CONTRACT) {
         ALOGD("%s, client.clienttype == CONTRACT", __FUNCTION__);
         ui->contractRadioButton->setChecked(true);
         ui->temporaryRadioButton->setChecked(false);
-    } else if (client.clienttype == Client::TEMPORARY) {
+    } else if (client.clienttype == ClientType::TEMPORARY) {
         ALOGD("%s, client.clienttype == TEMPORARY", __FUNCTION__);
         ui->contractRadioButton->setChecked(false);
         ui->temporaryRadioButton->setChecked(true);
@@ -458,14 +458,14 @@ ClientEditDialog::saveUiContent(Client &client)
     client.paid     = ui->paidLineEdit->text().toFloat(&ok);
     client.monthly = ui->monthlySpinBox->text().toInt(&ok, 10);
     if (ui->cashRadioButton->isChecked())
-        client.paytype = Client::CASH;
+        client.paytype = PayType::CASH;
     else
-        client.paytype = Client::MONTHLY;
+        client.paytype = PayType::MONTHLY;
 
     if (ui->contractRadioButton->isChecked())
-        client.clienttype = Client::CONTRACT;
+        client.clienttype = ClientType::CONTRACT;
     else
-        client.clienttype = Client::TEMPORARY;
+        client.clienttype = ClientType::TEMPORARY;
 }
 
 void

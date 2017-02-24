@@ -2,25 +2,31 @@
 #define USER_H
 
 #include <QObject>
-
-#define USER_RIGHT_ROOT_STR     "管理员"
-#define USER_RIGHT_NORMAL_STR   "普通用户"
+#include <datatype.h>
 
 class User : public QObject
 {
     Q_OBJECT
 public:
     explicit User(QObject *parent = 0);
-    enum UserRight {RIGHT_ROOT, RIGHT_NORMAL, UNKNOWN_RIGHT};
     User(QString name, QString passwd, UserRight right) {
         this->name = name;
         this->passward = passwd;
         this->right = right;
     }
 
-    QString name;
-    QString passward;
-    UserRight right;
+    User& operator=(const User& u) {
+        name = u.name;
+        passward = u.passward;
+        right = u.right;
+        return *this;
+    }
+
+    User(const User &u) {
+        name = u.name;
+        passward = u.passward;
+        right = u.right;
+    }
 
     QString getUserRightStr(UserRight right) {
         switch(right) {
@@ -43,6 +49,10 @@ public:
         else
             return UNKNOWN_RIGHT;
     }
+
+    QString name;
+    QString passward;
+    UserRight right;
 
 signals:
 
