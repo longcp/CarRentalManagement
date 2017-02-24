@@ -7,7 +7,9 @@
 //#include "adduser.h"
 #include "modifypasswarddialog.h"
 #include <user.h>
-#include "config.h"
+
+#define LOG_TAG                         "USERMANAGER"
+#include "utils/Log.h"
 
 #define USER_TABLE_COLUMN_COUNT 1
 #define USER_NAME_COLUMN        0
@@ -80,53 +82,54 @@ UserManagerDialog::openWindow()
 }
 
 void
-UserManagerDialog::set_window_with_user(QString userName)
+UserManagerDialog::setWindow(QString userName)
 {
-#if 0
-    int ret;
-    ret = mDb->get_user_table_data(&mCurUser, userName);
-    if (ret)
-        return;
-    init_userManager_window();                                          //初始化用户信息管理表
+    User user;
 
-    if (mCurUser.rightLevel >= RIGHT_ROOT) {
+    if (mDb->getUserTableData(user, userName))
+        return;
+
+    ALOGD("%s, name = %s, passwd = %s, right = %d",
+          __FUNCTION__,
+          user.name.toStdString().data(),
+          user.passward.toStdString().data(),
+          user.right);
+    mCurUserRight = user.right;
+    initView();                                                     //初始化用户信息管理表
+
+    if (user.right == UserRight::RIGHT_ROOT) {
         return;
     } else {
         ui->addUserBtn->setEnabled(false);
         ui->delUserBtn->setEnabled(false);
     }
-#endif
 }
 
 void
-UserManagerDialog::init_userManager_window()
+UserManagerDialog::initView()
 {
-#if 0
     int i;
     int ret;
     int size;
-    USER_INFO userInfo;
-    QList<USER_INFO>userInfoList;
+    User user;
+    QList<User>users;
 
-    ret = mDb->get_all_user_table_data(&userInfoList);
-    if ((!ret) && (!userInfoList.isEmpty())) {
-        size = userInfoList.size();
+    if (mCurUserRight != UserRight::RIGHT_ROOT)
+        return;
+
+    ret = mDb->getAllUserTableData(users);
+    if ((!ret) && (!users.isEmpty())) {
+        size = users.size();
         for (i = 0; i < size; i++) {
-            userInfo = userInfoList.at(i);
-            if ((userInfo.rightLevel >= RIGHT_ROOT) &&
-                    (mCurUser.rightLevel < RIGHT_ROOT)) {
-                continue;
-            }
-            QStandardItem *nameItem     =  new QStandardItem(userInfo.name);
-            QString rightStr = GET_RIGHT_STR(userInfo.rightLevel);
+            user = users.at(i);
+            QStandardItem *nameItem =  new QStandardItem(user.name);
+            QString rightStr = user.getUserRightStr(user.right);
             QStandardItem *rightItem    =  new QStandardItem(rightStr);
-//            QStandardItem *passwardItem =  new QStandardItem(userInfo.passward);
             QList<QStandardItem*> items;
             items << nameItem << rightItem ;
             mModel->appendRow(items);                                   //插入条目表中
         }
     }
-#endif
 }
 
 void
@@ -234,7 +237,8 @@ void
 UserManagerDialog::updateTableContent(User &user)
 {
     QStandardItem *nameItem     = new QStandardItem(user.name);
-    QStandardItem *rightItem    = new QStandardItem(user.right);
+    QStandardItem *rightItem    = new QStandardItem(user
+                                                    .getUserRightStr(user.right));
     mModel->setItem(mCurrentRow, USER_NAME_COLUMN, nameItem);
     mModel->setItem(mCurrentRow, USER_RIGHT_COLUMN, rightItem);
 }

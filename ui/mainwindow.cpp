@@ -33,6 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     connect(mLoginDialog, SIGNAL(userLoginSignal(QString)),
             this, SLOT(userLoginSlot(QString)));
+    /**
+     * @brief 根据用户权限初始化窗口
+     */
+    connect(mLoginDialog, SIGNAL(userLoginSignal(QString)),
+            mUserManagerDialog, SLOT(setWindow(QString)));
 
     mLoginDialog->exec();
 
@@ -52,9 +57,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mMenuRentalManagement   = ui->menuBar->addMenu(tr("租赁管理"));
     mMenuCarManagement  = ui->menuBar->addMenu(tr("车辆管理"));
     mMenuFinanceManagement  = ui->menuBar->addMenu(tr("财务统计"));
-//    mMenuStatisticalReport  = ui->menuBar->addMenu(tr("统计报表"));
     mMenuUploadPicture  = ui->menuBar->addMenu(tr("上传图片"));
-    mMenuUserManagerment    = ui->menuBar->addMenu(tr("用户管理"));
+    mMenuUserManagerment= ui->menuBar->addMenu(tr("用户管理"));
     mMenuAbout = ui->menuBar->addMenu(tr("关于"));
     mActExitSystem = mMenuSystemSetting->addAction(
                 QIcon(":/menu/icon/exit.png"),
@@ -90,8 +94,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addAction(mActPump);
     ui->mainToolBar->addSeparator();
     ui->mainToolBar->addAction(mActCarfile);
-//    ui->mainToolBar->addAction(mActCarMaintenance);
-//    ui->mainToolBar->addAction(mActCarIllegal);
     ui->mainToolBar->addSeparator();
     ui->mainToolBar->addAction(mActReceivable);
     ui->mainToolBar->addAction(mActReceipt);

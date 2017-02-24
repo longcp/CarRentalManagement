@@ -21,6 +21,7 @@ ModifyPasswardDialog::ModifyPasswardDialog(QWidget *parent) :
                 new QRegExpValidator(passwardRegx,
                                      ui->oldPasswardLEdit));
     ui->oldPasswardLEdit->setMaxLength(12);
+    ui->oldPasswardLEdit->setFocus();
 
     ui->newPasswardLEdit->setEchoMode(QLineEdit::Password);
     ui->newPasswardLEdit->setValidator(

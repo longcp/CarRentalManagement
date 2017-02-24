@@ -400,8 +400,8 @@ DataBase::getUserTableData(User &user, QString name)
     }
 
     if (query->next()) {
-        user.name      = query->value(0).toString();
-        user.passward  = query->value(1).toString();
+        user.name = query->value(0).toString();
+        user.passward = query->value(1).toString();
         user.right = query->value(2).toInt() ?
                     UserRight::RIGHT_NORMAL : UserRight::RIGHT_ROOT;
     }

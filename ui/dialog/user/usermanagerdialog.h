@@ -62,7 +62,7 @@ private slots:
      */
     void                 updateTableContent(User &user);
 
-    void                 set_window_with_user(QString userName);
+    void                 setWindow(QString userName);
 
 signals:
 
@@ -87,7 +87,7 @@ private:
     /**
      * @brief init_userManager_window:初始化窗口信息
      */
-    void                 init_userManager_window();
+    void                 initView();
 
     /**
      * @brief send_del_user_record:发送操作记录
@@ -107,6 +107,9 @@ private:
     ModifyPasswardDialog      *mModifyPasswardDialog;                   //修改密码
     DataBase            *mDb;
     TableModel          *mModel;
+
+    UserRight           mCurUserRight;
+
     Ui::UserManagerDialog     *ui;
 };
 
