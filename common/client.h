@@ -12,7 +12,6 @@ public:
     explicit Client(QObject *parent = 0);
     ~Client();                    // 客户类型
 
-#if 1
     Client& operator=(const Client& c) {
         name = c.name;
         number = c.number;
@@ -50,7 +49,6 @@ public:
         paid = c.paid;
     }
 
-#endif
     /**
      * 获取余额
      */

@@ -66,8 +66,6 @@ private:
     void                mouseReleaseEvent(QMouseEvent *);
 
     void                paintEvent(QPaintEvent *event);
-    void                justatest(User &user);
-    void                justatest2(Client &client);
 
     /**
      * @brief 重载ESC按键事件

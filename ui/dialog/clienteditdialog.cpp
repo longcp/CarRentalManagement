@@ -417,6 +417,7 @@ ClientEditDialog::saveAndExitEvent()
     } else {
         // 编辑条目
         ret = mDb->updateClientTableItem(client);
+        resetView(client);
         updateClientItemSignal(client);
         if (!ret) {
             ret = QMessageBox::information(this,

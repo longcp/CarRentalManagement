@@ -267,7 +267,6 @@ DataBase::deleteClientInNumber(QString clientNum)
     return SUCCESS;
 }
 
-#if 1
 int
 DataBase::getAllClientData(QList<Client> &clients)
 {
@@ -311,7 +310,7 @@ DataBase::getAllClientData(QList<Client> &clients)
 
     return SUCCESS;
 }
-#endif
+
 int
 DataBase::updateClientTableItem(Client &client)
 {

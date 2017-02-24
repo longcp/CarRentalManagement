@@ -139,23 +139,6 @@ ClientManagermentWidget::initView()
 void
 ClientManagermentWidget::initTableView()
 {
-#if 0
-    int i, size;
-    QList<QString>numbers;
-    QString number;
-    Client client;
-
-    // FIXME:暂未解决下面if 0里的fixme问题，暂时采用这用方式初始化，后续要优化过来
-    if (!mDb->getAllClientsNumber(numbers)) {
-        size = numbers.size();
-        for (i = 0; i < size; i++) {
-            if (!mDb->getClientInNumber(numbers.at(i), client))
-                addClientItemSlot(client);
-        }
-    }
-#endif
-#if 1
-    // FIXME:
     int i, ret, size;
     QList<Client>clients;
     QList<Client>::iterator c;
@@ -165,16 +148,10 @@ ClientManagermentWidget::initTableView()
     if (!ret) {
         size = clients.size();
         for (i = 0; i < size; i++) {
-//            client = clients.operator [](i);
             client = clients.at(i);
             addClientItemSlot(client);
         }
-        //        for (c = clients.begin(); c != clients.end(); c++) {
-        //            client = *c;
-        //            addClientItemSlot(client);
-        //        }
     }
-#endif
 }
 
 void
