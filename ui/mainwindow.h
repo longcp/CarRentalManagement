@@ -12,6 +12,7 @@ class ContractWidget;
 class QWidget;
 class LoginDialog;
 class UserManagerDialog;
+class VersionDialog;
 
 namespace Ui {
 class MainWindow;
@@ -89,6 +90,7 @@ private:
     QMenu       *mMenuUserManagerment;
 
     // action
+    QAction     *mActAbout;
     QAction     *mActExitSystem;
     QAction     *mActClient;
     QAction     *mActContract;
@@ -112,6 +114,7 @@ private:
     // dialog
     LoginDialog             *mLoginDialog;
     UserManagerDialog       *mUserManagerDialog;
+    VersionDialog           *mVersionDialog;
 
     // 用于管理各个tabwidget的list
     QList<QWidget *>        mOpenTabList;

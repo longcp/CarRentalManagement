@@ -13,6 +13,7 @@
 #include <QTabWidget>
 #include <logindialog.h>
 #include <usermanagerdialog.h>
+#include <versiondialog.h>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -20,13 +21,19 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    mLoginDialog(new LoginDialog()),
+    mUserManagerDialog(new UserManagerDialog()),
+    mCarWidget(new CarManagermentWidget()),
+    mClientWidget(new ClientManagermentWidget()),
+    mReceiptWidget(new ReceiptWidget()),
+    mContractWidget(new ContractWidget()),
+    mRentalDocWidget(new RentalDocumentWidget()),
+    mReceivableWidget(new ReceivableWidget()),
+    mVersionDialog(new VersionDialog()),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->mainTabWidget->setTabIcon(0, QIcon(":/menu/icon/home_64.ico"));
-
-    mLoginDialog = new LoginDialog();
-    mUserManagerDialog = new UserManagerDialog();
 
     /**
      * @brief 用户登陆
@@ -40,14 +47,6 @@ MainWindow::MainWindow(QWidget *parent) :
             mUserManagerDialog, SLOT(setWindow(QString)));
 
     mLoginDialog->exec();
-
-    // 子tab
-    mCarWidget = new CarManagermentWidget();
-    mClientWidget = new ClientManagermentWidget();
-    mReceiptWidget= new ReceiptWidget();
-    mContractWidget = new ContractWidget();
-    mRentalDocWidget = new RentalDocumentWidget();
-    mReceivableWidget= new ReceivableWidget();
 
     // 插入首页，首页一直存在
     mOpenTabList.insert(0, ui->homePageTab);
@@ -84,6 +83,9 @@ MainWindow::MainWindow(QWidget *parent) :
     mActUserManager = mMenuUserManagerment->addAction(
                 QIcon(":/menu/icon/user_64.ico"),
                 tr("用户管理"));
+    mActAbout = mMenuAbout->addAction(
+                QIcon(":/menu/icon/information_64.ico"),
+                tr("关于"));
 
     // 工具栏
     ui->mainToolBar->setMovable(false);
@@ -156,6 +158,11 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     connect(mActUserManager, SIGNAL(triggered()),
             mUserManagerDialog, SLOT(openWindow()));
+    /**
+     * @brief 打开关于窗口
+     */
+    connect(mActAbout, SIGNAL(triggered()),
+            mVersionDialog, SLOT(openWindow()));
     /**
      * @brief tab关闭事件
      */

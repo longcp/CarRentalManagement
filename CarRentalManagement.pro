@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     ui/dialog/user/logindialog.cpp \
     ui/dialog/user/usermanagerdialog.cpp \
     ui/dialog/user/modifypasswarddialog.cpp \
-    ui/dialog/user/adduserdialog.cpp
+    ui/dialog/user/adduserdialog.cpp \
+    ui/dialog/versiondialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -63,7 +64,8 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/user/logindialog.h \
     ui/dialog/user/usermanagerdialog.h \
     ui/dialog/user/modifypasswarddialog.h \
-    ui/dialog/user/adduserdialog.h
+    ui/dialog/user/adduserdialog.h \
+    ui/dialog/versiondialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -79,7 +81,8 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/user/logindialog.ui \
     ui/dialog/user/usermanagerdialog.ui \
     ui/dialog/user/modifypasswarddialog.ui \
-    ui/dialog/user/adduserdialog.ui
+    ui/dialog/user/adduserdialog.ui \
+    ui/dialog/versiondialog.ui
 
 RESOURCES += \
     icon.qrc
