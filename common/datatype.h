@@ -40,6 +40,8 @@ enum PumpType {TYPE_37M1,
                TYPE_CAR_PUMP};
 
 typedef struct InsuranceRecord {
+    QString number;
+    QString carNumber;
     QDate date;
     float fee;
     QString company;
@@ -47,6 +49,8 @@ typedef struct InsuranceRecord {
 }INSURANCE_RECORD;
 
 typedef struct AnnualFeeRecord {
+    QString number;
+    QString carNumber;
     QDate date;
     float annualFee;
     float travelExpenses;
@@ -54,13 +58,14 @@ typedef struct AnnualFeeRecord {
 }ANNUALFEE_RECORD;
 
 typedef struct ProjectRecord {
+    QString number;
+    QString carNumber;
     QDate date;
     QString contractNum;
     QString clientNum;
     QString clientName;
     float amount;
     QString remarks;
-    QString number;
 }PROJECT_RECORD;
 
 #endif // DATATYPE_H

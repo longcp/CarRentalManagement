@@ -133,41 +133,18 @@ public slots:
 private:
     QString         number;
     QString         owner;
-    PumpType        pumptype;
-    float           pumpedSquare;
-    float           pumpedTimes;
-    float           milage;
     QString         carBrand;
     QString         chassisBrand;
-    QDate           drivingLicenseDate;
     QString         fuelCarNumber;
     QString         frameNumber;
     QString         identificationNumber;
     QString         productNumber;
     QString         insuranceCardNumber;
     QString         engineNumber;
-    float           worth;
-    float           enginePower;
-    float           maxDeliverySizes;
-    float           maxOutputPressure;
     QString         dimensions;
-    float           boomVerticalLen;
-    float           boomHorizontalLen;
-    float           totalWeight;
-    float           equipmentWeight;
-    QDate           productionDate;
     QString         factoryCode;
-    bool            isBuyInsurance;
-    float           insuranceFee;
     QString         insuranceCompany;
-    QDate           feeInsuranceDate;
-    bool            isBuyBusinessInsurance;
-    float           businessInsuranceFee;
     QString         businessInsuranceCompany;
-    QDate           feeBusinessInsuranceDate;
-    float           annualFee;
-    float           travelExpenses;
-    QDate           annualReviewDate;
     QString         operator1;
     QString         operator2;
     QString         operator3;
@@ -175,11 +152,37 @@ private:
     QString         operator5;
     QString         remarks;
     QString         creator;
+
+    QDate           productionDate;
+    QDate           feeInsuranceDate;
+    QDate           drivingLicenseDate;
+    QDate           feeBusinessInsuranceDate;
+    QDate           annualReviewDate;
     QDate           createDate;
 
+    bool            isBuyInsurance;
+    bool            isBuyBusinessInsurance;
+
+    float           pumpedSquare;
+    float           pumpedTimes;
+    float           milage;
+    float           worth;
+    float           enginePower;
+    float           maxDeliverySizes;
+    float           maxOutputPressure;
+    float           boomVerticalLen;
+    float           boomHorizontalLen;
+    float           totalWeight;
+    float           equipmentWeight;
+    float           insuranceFee;
+    float           businessInsuranceFee;
+    float           annualFee;
+    float           travelExpenses;
+
+    PumpType        pumptype;
     QList<INSURANCE_RECORD> insuranceRecords;
     QList<ANNUALFEE_RECORD> annualFeeRecords;
-    QList<PROJECT_RECORD> projectRecords;
+    QList<PROJECT_RECORD>   projectRecords;
 };
 
 #endif // CAR_H
