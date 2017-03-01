@@ -44,14 +44,14 @@ typedef struct InsuranceRecord {
     float fee;
     QString company;
     QString remarks;
-}INSURANCERECORD;
+}INSURANCE_RECORD;
 
 typedef struct AnnualFeeRecord {
     QDate date;
     float annualFee;
     float travelExpenses;
     QString remarks;
-}ANNUALFEERECORD;
+}ANNUALFEE_RECORD;
 
 typedef struct ProjectRecord {
     QDate date;
@@ -61,6 +61,6 @@ typedef struct ProjectRecord {
     float amount;
     QString remarks;
     QString number;
-}PROJECTRECORD;
+}PROJECT_RECORD;
 
 #endif // DATATYPE_H
