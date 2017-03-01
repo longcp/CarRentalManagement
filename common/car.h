@@ -2,83 +2,13 @@
 #define CAR_H
 
 #include <QObject>
-
-#include <QDate>
+#include <datatype.h>
 
 class Car : public QObject
 {
     Q_OBJECT
 public:
     explicit Car(QObject *parent = 0);
-    enum PumpType {TYPE_37M1,
-                   TYPE_48M,
-                   TYPE_52M,
-                   TYPE_56M,
-                   TYPE_60M,
-                   TYPE_CAR_PUMP};
-
-    class InsuranceRecord {
-    public:
-        InsuranceRecord(QDate date,
-                        float fee,
-                        QString company,
-                        QString remarks) {
-            this->date = date;
-            this->fee = fee;
-            this->company = company;
-            this->remarks = remarks;
-        }
-
-        QDate date;
-        float fee;
-        QString company;
-        QString remarks;
-    };
-
-    class AnnualFeeRecord {
-    public:
-        AnnualFeeRecord(QDate date,
-                        float annualFee,
-                        float travelExpenses,
-                        QString remarks) {
-            this->date = date;
-            this->annualFee = annualFee;
-            this->travelExpenses = travelExpenses;
-            this->remarks = remarks;
-        }
-
-        QDate date;
-        float annualFee;
-        float travelExpenses;
-        QString remarks;
-    };
-
-    class ProjectRecord {
-    public:
-        ProjectRecord(QDate date,
-                      QString contractNum,
-                      QString clientNum,
-                      QString clientName,
-                      float amount,
-                      QString remarks,
-                      QString number) {
-            this->date = date;
-            this->contractNum = contractNum;
-            this->clientNum = clientNum;
-            this->clientName = clientName;
-            this->amount = amount;
-            this->remarks = remarks;
-            this->number = number;
-        }
-
-        QDate date;
-        QString contractNum;
-        QString clientNum;
-        QString clientName;
-        float amount;
-        QString remarks;
-        QString number;
-    };
 
 signals:
 
@@ -130,6 +60,10 @@ private:
     QString         remarks;
     QString         creator;
     QString         createDate;
+
+    QList<INSURANCE_RECORD> insuranceRecords;
+    QList<ANNUALFEE_RECORD> annualFeeRecords;
+    QList<PROJECT_RECORD> projectRecords;
 };
 
 #endif // CAR_H

@@ -2,6 +2,7 @@
 #define DATATYPE_H
 
 #include <QObject>
+#include <QDate>
 
 #define USER_RIGHT_ROOT_STR     "管理员"
 #define USER_RIGHT_NORMAL_STR   "普通用户"
@@ -30,5 +31,36 @@ enum UserRight {RIGHT_ROOT=0, RIGHT_NORMAL, UNKNOWN_RIGHT};
 
 enum PayType {CASH=0, MONTHLY, UNKNOWN_PAYTYPE};                                    // 结账方式
 enum ClientType {CONTRACT=0, TEMPORARY, UNKNOWN_CLIENTTYPE};
+
+enum PumpType {TYPE_37M1,
+               TYPE_48M,
+               TYPE_52M,
+               TYPE_56M,
+               TYPE_60M,
+               TYPE_CAR_PUMP};
+
+typedef struct InsuranceRecord {
+    QDate date;
+    float fee;
+    QString company;
+    QString remarks;
+}INSURANCERECORD;
+
+typedef struct AnnualFeeRecord {
+    QDate date;
+    float annualFee;
+    float travelExpenses;
+    QString remarks;
+}ANNUALFEERECORD;
+
+typedef struct ProjectRecord {
+    QDate date;
+    QString contractNum;
+    QString clientNum;
+    QString clientName;
+    float amount;
+    QString remarks;
+    QString number;
+}PROJECTRECORD;
 
 #endif // DATATYPE_H
