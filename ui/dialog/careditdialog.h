@@ -26,6 +26,9 @@ private slots:
      */
     void            openCarEditDialogSlot(OpenType type,
                                           Car &car);
+    void    updateSectionWidth(int logicalIndex, int /* oldSize */, int newSize);
+
+    void    updateAnnualTableviewScrollBar(int to);
 
 private:
     void            initView();
@@ -66,6 +69,7 @@ private:
 
     TableModel*     mProjectModel;
     TableModel*     mAnnualModel;
+    TableModel*     mAnnualSumModel;
     TableModel*     mBusinessModel;
     TableModel*     mPaymentModel;
 };

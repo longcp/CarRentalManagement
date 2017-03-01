@@ -3,6 +3,7 @@
 #include <QToolBar>
 #include <car.h>
 #include <tablemodel.h>
+#include <QDebug>
 
 CarEditDialog::CarEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -14,19 +15,19 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     initView();
 
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
-                          tr("保存"), this);
+                           tr("保存"), this);
     mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
-                          tr("修改"), this);
+                           tr("修改"), this);
     mActPrev = new QAction(QIcon(":/menu/icon/arrow_left_64.ico"),
-                          tr("上一条"), this);
+                           tr("上一条"), this);
     mActNext = new QAction(QIcon(":/menu/icon/arrow_right_64.ico"),
-                          tr("下一条"), this);
+                           tr("下一条"), this);
     mActExit = new QAction(QIcon(":/menu/icon/exit_out_64.ico"),
-                          tr("退出"), this);
+                           tr("退出"), this);
     mActCancel = new QAction(QIcon(":/menu/icon/cancel_64.ico"),
-                          tr("取消"), this);
+                             tr("取消"), this);
     mActSaveExit = new QAction(QIcon(":/menu/icon/ok_64.ico"),
-                          tr("保存退出"), this);
+                               tr("保存退出"), this);
 
     mToolBar = new QToolBar(tr("carEditToolBar"), this);
     this->configToolBar();
@@ -39,6 +40,18 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     mToolBar->addAction(mActExit);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+    connect(ui->annualTableview->horizontalHeader(),&QHeaderView::sectionResized, this,
+            &CarEditDialog::updateSectionWidth);
+    connect((QDialog*)ui->annualSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            this, SLOT(updateAnnualTableviewScrollBar(int)));
+
+//    connect(ui->annualSumTableView->horizontalScrollBar(), SIGNAL(&QAbstractSlider::valueChanged(int)),
+//            ui->annualTableview->horizontalScrollBar(), SLOT(&QAbstractSlider::setValue(int)));
+}
+
+void CarEditDialog::updateSectionWidth(int logicalIndex, int /* oldSize */, int newSize)
+{
+    ui->annualSumTableView->setColumnWidth(logicalIndex, newSize);
 }
 
 CarEditDialog::~CarEditDialog()
@@ -50,6 +63,12 @@ void
 CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
 {
     this->exec();
+}
+
+void
+CarEditDialog::updateAnnualTableviewScrollBar(int to)
+{
+    qDebug() << "to = " << to;
 }
 
 void
@@ -92,7 +111,7 @@ CarEditDialog::initProjectTableview()
 {
     //设置首行标题
     QStringList headerList;
-    headerList << "日期" << "合同号" << "客户编号"
+    headerList << "编号" << "日期" << "合同号" << "客户编号"
                << "客户名称" << "工程款额" << "备注" << "录单";
 
     mProjectModel = new TableModel(0, headerList.size());
@@ -123,7 +142,7 @@ CarEditDialog::initAnnualTableview()
 {
     //设置首行标题
     QStringList headerList;
-    headerList << "日期" << "年费" << "车船费" << "备注";
+    headerList << "编号" << "日期" << "年费" << "车船费" << "备注";
 
     mAnnualModel = new TableModel(0, headerList.size());
     ui->annualTableview->setModel(mAnnualModel);
@@ -138,6 +157,7 @@ CarEditDialog::initAnnualTableview()
                 QAbstractItemView::SingleSelection);
 
     ui->annualTableview->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->annualTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->annualTableview->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
@@ -146,6 +166,43 @@ CarEditDialog::initAnnualTableview()
     ui->annualTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    mAnnualSumModel = new TableModel(0, headerList.size());
+    ui->annualSumTableView->setModel(mAnnualSumModel);
+    mAnnualSumModel->setHorizontalHeaderLabels(headerList);
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->annualSumTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->annualSumTableView->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->annualSumTableView->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->annualSumTableView->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->annualSumTableView->horizontalHeader()->setVisible(false);         //隐藏列表头
+    ui->annualSumTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->annualSumTableView->setAlternatingRowColors(true);
+    ui->annualSumTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    QStandardItem* num
+            = new QStandardItem("合计");
+    QStandardItem* clientype
+            = new QStandardItem("100");
+    QStandardItem* paid
+            = new QStandardItem("100");
+    QStandardItem* balance
+            = new QStandardItem("100");
+    QStandardItem* remarks
+            = new QStandardItem("100");
+
+    QList<QStandardItem*> items;
+    items << num << clientype << paid << balance << remarks;
+    mAnnualSumModel->appendRow(items);
 }
 
 void
@@ -153,7 +210,7 @@ CarEditDialog::initBusinessTableview()
 {
     //设置首行标题
     QStringList headerList;
-    headerList << "日期" << "保险费用" << "保险公司" << "备注";
+    headerList << "编号" << "日期" << "保险费用" << "保险公司" << "备注";
 
     mBusinessModel = new TableModel(0, headerList.size());
     ui->businessTableView->setModel(mBusinessModel);
@@ -183,7 +240,7 @@ CarEditDialog::initPaymentTableview()
 {
     //设置首行标题
     QStringList headerList;
-    headerList << "日期" << "保险费用" << "保险公司" << "备注";
+    headerList << "编号" << "日期" << "保险费用" << "保险公司" << "备注";
 
     mPaymentModel = new TableModel(0, headerList.size());
     ui->paymentTableView->setModel(mPaymentModel);
