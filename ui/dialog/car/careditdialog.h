@@ -79,6 +79,20 @@ private:
      * @brief initProjectSumTableview
      */
     void            initProjectSumTableview();
+    /**
+     * @brief 设置编辑模式
+     */
+    void            setEditMode();
+    /**
+     * @brief 设置查看模式
+     */
+    void            setViewMode();
+    /**
+     * @brief 设置模式 编辑/查看
+     */
+    void            setMode(bool mode);
+
+    void            setPumpTypeView();
 
     Ui::CarEditDialog *ui;
     // 工具栏
@@ -102,6 +116,8 @@ private:
     TableModel*     mBusinessSumModel;
     TableModel*     mPaymentModel;
     TableModel*     mPaymentSumModel;
+
+    OpenType        mOpenType;
 };
 
 #endif // CAREDITDIALOG_H

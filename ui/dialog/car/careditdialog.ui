@@ -304,7 +304,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="numberLE">
+           <widget class="QLineEdit" name="carNumberLE">
             <property name="minimumSize">
              <size>
               <width>160</width>
@@ -1952,7 +1952,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QDateEdit" name="createDateLE">
+           <widget class="QDateEdit" name="createDateDE">
             <property name="minimumSize">
              <size>
               <width>120</width>
@@ -2039,7 +2039,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QTabWidget" name="tabWidget">
+           <widget class="QTabWidget" name="insuranceTabWidget">
             <property name="tabPosition">
              <enum>QTabWidget::West</enum>
             </property>
@@ -2047,7 +2047,7 @@
              <enum>QTabWidget::Triangular</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <property name="usesScrollButtons">
              <bool>false</bool>

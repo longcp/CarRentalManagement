@@ -126,6 +126,10 @@ public:
             projectRecords.push_back(c.projectRecords.at(i));
     }
 
+
+    QString         getPumpTypeStr(PumpType type);
+    PumpType        getPumpType(QString typeStr);
+
 signals:
 
 public slots:

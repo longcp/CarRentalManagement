@@ -5,6 +5,8 @@
 #include <tablemodel.h>
 #include <QDebug>
 
+//#define                         BAN_SECTION
+
 CarEditDialog::CarEditDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CarEditDialog)
@@ -108,6 +110,25 @@ CarEditDialog::~CarEditDialog()
 void
 CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
 {
+    mOpenType = type;
+    if (type == OpenType::CREATEITEM) {
+        mActEdit->setDisabled(true);
+        mActPrev->setDisabled(true);
+        mActNext->setDisabled(true);
+        mActCancel->setDisabled(true);
+        ui->drivingLicenseDateDE->setDate(QDate::currentDate());
+        ui->createDateDE->setDate(QDate::currentDate());
+        mActSave->setDisabled(true);
+        ui->pumpTypeCbBox->setCurrentIndex(0);
+    } else {
+        //已查看内容方式打开
+        mActSave->setEnabled(true);
+        mActPrev->setEnabled(true);
+        mActNext->setEnabled(true);
+        ui->numLE->setDisabled(true);
+    }
+    ui->mainTabWidget->setCurrentIndex(0);
+    ui->insuranceTabWidget->setCurrentIndex(0);
     this->exec();
 }
 
@@ -148,11 +169,23 @@ CarEditDialog::initView()
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("车辆档案");
-    this->setFixedSize(1030, 700);
+    this->setFixedSize(1000, 700);
+    setPumpTypeView();
     initProjectTableview();
     initAnnualTableview();
     initBusinessTableview();
     initPaymentTableview();
+}
+
+void
+CarEditDialog::setPumpTypeView()
+{
+    ui->pumpTypeCbBox->insertItem(0, PUMP_TYPE_37M1_STR);
+    ui->pumpTypeCbBox->insertItem(1, PUMP_TYPE_48M_STR);
+    ui->pumpTypeCbBox->insertItem(2, PUMP_TYPE_52M_STR);
+    ui->pumpTypeCbBox->insertItem(3, PUMP_TYPE_56M_STR);
+    ui->pumpTypeCbBox->insertItem(4, PUMP_TYPE_60M_STR);
+    ui->pumpTypeCbBox->insertItem(5, PUMP_TYPE_CAR_PUMP_STR);
 }
 
 void
@@ -176,22 +209,24 @@ CarEditDialog::initProjectTableview()
                 QAbstractItemView::SingleSelection);
 
     //列表头不可拖动，最后一列自适应剩余空间
-//    ui->projectTableView->horizontalHeader()
-//            ->setSectionResizeMode(0, QHeaderView::Fixed);
-//    ui->projectTableView->horizontalHeader()
-//            ->setSectionResizeMode(1, QHeaderView::Fixed);
-//    ui->projectTableView->horizontalHeader()
-//            ->setSectionResizeMode(2, QHeaderView::Fixed);
-//    ui->projectTableView->horizontalHeader()
-//            ->setSectionResizeMode(3, QHeaderView::Fixed);
-//    ui->projectTableView->horizontalHeader()
-//            ->setSectionResizeMode(4, QHeaderView::Fixed);
-//    ui->projectTableView->horizontalHeader()
-//            ->setSectionResizeMode(5, QHeaderView::Fixed);
-//    ui->projectTableView->horizontalHeader()
-//            ->setSectionResizeMode(6, QHeaderView::Fixed);
-//    ui->projectTableView->horizontalHeader()
-//            ->setSectionResizeMode(7, QHeaderView::Fixed);
+#ifdef BAN_SECTION
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(0, QHeaderView::Fixed);
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(1, QHeaderView::Fixed);
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(2, QHeaderView::Fixed);
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(3, QHeaderView::Fixed);
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(4, QHeaderView::Fixed);
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(5, QHeaderView::Fixed);
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(6, QHeaderView::Fixed);
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(7, QHeaderView::Fixed);
+#endif
     ui->projectTableView->horizontalHeader()
             ->setSectionResizeMode(7, QHeaderView::Stretch);
 
@@ -281,6 +316,7 @@ CarEditDialog::initAnnualTableview()
                 QAbstractItemView::SingleSelection);
 
     //列表头不可拖动，最后一列自适应剩余空间
+#ifdef BAN_SECTION
     ui->annualTableview->horizontalHeader()
             ->setSectionResizeMode(0, QHeaderView::Fixed);
     ui->annualTableview->horizontalHeader()
@@ -291,6 +327,7 @@ CarEditDialog::initAnnualTableview()
             ->setSectionResizeMode(3, QHeaderView::Fixed);
     ui->annualTableview->horizontalHeader()
             ->setSectionResizeMode(4, QHeaderView::Fixed);
+#endif
     ui->annualTableview->horizontalHeader()
             ->setSectionResizeMode(4, QHeaderView::Stretch);
     //    ui->annualTableview->setHorizontalScrollBarPolicy(
@@ -373,6 +410,7 @@ CarEditDialog::initBusinessTableview()
                 QAbstractItemView::SingleSelection);
 
     //列表头不可拖动，最后一列自适应剩余空间
+#ifdef BAN_SECTION
     ui->businessTableView->horizontalHeader()
             ->setSectionResizeMode(0, QHeaderView::Fixed);
     ui->businessTableView->horizontalHeader()
@@ -383,6 +421,7 @@ CarEditDialog::initBusinessTableview()
             ->setSectionResizeMode(3, QHeaderView::Fixed);
     ui->businessTableView->horizontalHeader()
             ->setSectionResizeMode(4, QHeaderView::Fixed);
+#endif
     ui->businessTableView->horizontalHeader()
             ->setSectionResizeMode(4, QHeaderView::Stretch);
 
@@ -465,6 +504,7 @@ CarEditDialog::initPaymentTableview()
                 QAbstractItemView::SingleSelection);
 
     //列表头不可拖动，最后一列自适应剩余空间
+#ifdef BAN_SECTION
     ui->paymentTableView->horizontalHeader()
             ->setSectionResizeMode(0, QHeaderView::Fixed);
     ui->paymentTableView->horizontalHeader()
@@ -475,6 +515,7 @@ CarEditDialog::initPaymentTableview()
             ->setSectionResizeMode(3, QHeaderView::Fixed);
     ui->paymentTableView->horizontalHeader()
             ->setSectionResizeMode(4, QHeaderView::Fixed);
+#endif
     ui->paymentTableView->horizontalHeader()
             ->setSectionResizeMode(4, QHeaderView::Stretch);
 
@@ -535,4 +576,29 @@ CarEditDialog::initPaymentSumTableview()
     QList<QStandardItem*> items;
     items << sum << a1 << a2 << a3 << a4;
     mPaymentSumModel->appendRow(items);
+}
+
+void
+CarEditDialog::setEditMode()
+{
+    mActEdit->setDisabled(true);
+    mActCancel->setEnabled(true);
+    mActSave->setEnabled(true);
+    setMode(true);
+}
+
+
+void
+CarEditDialog::setViewMode()
+{
+    mActCancel->setDisabled(true);
+    mActEdit->setEnabled(true);
+    mActSave->setDisabled(true);
+    setMode(false);
+}
+
+void
+CarEditDialog::setMode(bool mode)
+{
+
 }

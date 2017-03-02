@@ -12,6 +12,14 @@
 #define CLIENT_TYPE_CONTRACT_STR    "合同"
 #define CLIENT_TYPE_TEMPORARY_STR   "临时"
 
+#define PUMP_TYPE_37M1_STR      "37M1#"
+#define PUMP_TYPE_48M_STR       "48M"
+#define PUMP_TYPE_52M_STR       "52M"
+#define PUMP_TYPE_56M_STR       "56M"
+#define PUMP_TYPE_60M_STR       "60M"
+#define PUMP_TYPE_CAR_PUMP_STR  "车载泵"
+#define PUMP_TYPE_UNKNOWN_STR   "UNKNOWN_PUMPTYPE"
+
 // 错误号
 #define OK                          0
 #define SUCCESS                     0
@@ -37,7 +45,8 @@ enum PumpType {TYPE_37M1,
                TYPE_52M,
                TYPE_56M,
                TYPE_60M,
-               TYPE_CAR_PUMP};
+               TYPE_CAR_PUMP,
+               UNKNOWN_PUMPTYPE};
 
 typedef struct InsuranceRecord {
     QString number;
