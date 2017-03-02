@@ -5,6 +5,8 @@
 #include <careditdialog.h>
 #include <tablemodel.h>
 #include <car.h>
+#include <insurancedialog.h>
+#include <carannualdialog.h>
 #include <datatype.h>
 
 #define LOG_TAG                 "CAR_MANAGERMENT_WIDGET"
@@ -12,6 +14,9 @@
 
 CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     QWidget(parent),
+    mCarEditDialog(new CarEditDialog()),
+    mInsuranceDialog(new InsuranceDialog()),
+    mCarAnnualDialog(new CarAnnualDialog()),
     ui(new Ui::CarManagermentWidget)
 {
     ui->setupUi(this);
@@ -19,7 +24,6 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
 
     initView();
 
-    mCarEditDialog = new CarEditDialog();
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
     mActEdit= new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -30,6 +34,10 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
                               tr("导出"), this);
+    mActInsurance = new QAction(QIcon(":/menu/icon/insurance_add_64.ico"),
+                                tr("购买保险"), this);
+    mActAnnual = new QAction(QIcon(":/menu/icon/annual_64.ico"),
+                             tr("车辆年审"), this);
 
     mToolBar = new QToolBar(tr("carToolBar"), this);
     this->configToolBar();
@@ -38,6 +46,8 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
+    mToolBar->addAction(mActInsurance);
+    mToolBar->addAction(mActAnnual);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
 
@@ -56,6 +66,16 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
      */
     connect(mActAdd, SIGNAL(triggered()),
             this, SLOT(addCarSlot()));
+    /**
+     * @brief 打开购买保险窗口
+     */
+    connect(mActInsurance, SIGNAL(triggered()),
+            mInsuranceDialog, SLOT(openWindow()));
+    /**
+     * @brief 打开车辆年审窗口
+     */
+    connect(mActAnnual, SIGNAL(triggered()),
+            mCarAnnualDialog, SLOT(openWindow()));
 }
 
 CarManagermentWidget::~CarManagermentWidget()

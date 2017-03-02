@@ -27,5 +27,7 @@
         <file>icon/maintab_background.png</file>
         <file>icon/user_64.ico</file>
         <file>icon/information_64.ico</file>
+        <file>icon/annual_64.ico</file>
+        <file>icon/insurance_add_64.ico</file>
     </qresource>
 </RCC>

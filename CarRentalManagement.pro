@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     ui/tabwidget/receiptwidget.cpp \
     ui/tabwidget/contractwidget.cpp \
     ui/dialog/clienteditdialog.cpp \
-    ui/dialog/careditdialog.cpp \
     ui/dialog/receipteditdialog.cpp \
     ui/dialog/rentaldocumenteditdialog.cpp \
     common/client.cpp \
@@ -41,7 +40,10 @@ SOURCES += main.cpp\
     ui/dialog/user/usermanagerdialog.cpp \
     ui/dialog/user/modifypasswarddialog.cpp \
     ui/dialog/user/adduserdialog.cpp \
-    ui/dialog/versiondialog.cpp
+    ui/dialog/versiondialog.cpp \
+    ui/dialog/car/carannualdialog.cpp \
+    ui/dialog/car/careditdialog.cpp \
+    ui/dialog/car/insurancedialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -51,7 +53,6 @@ HEADERS  += ui\mainwindow.h \
     ui/tabwidget/receiptwidget.h \
     ui/tabwidget/contractwidget.h \
     ui/dialog/clienteditdialog.h \
-    ui/dialog/careditdialog.h \
     ui/dialog/receipteditdialog.h \
     ui/dialog/rentaldocumenteditdialog.h \
     common/client.h \
@@ -65,7 +66,10 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/user/usermanagerdialog.h \
     ui/dialog/user/modifypasswarddialog.h \
     ui/dialog/user/adduserdialog.h \
-    ui/dialog/versiondialog.h
+    ui/dialog/versiondialog.h \
+    ui/dialog/car/carannualdialog.h \
+    ui/dialog/car/careditdialog.h \
+    ui/dialog/car/insurancedialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -75,14 +79,16 @@ FORMS    += ui\mainwindow.ui \
     ui/tabwidget/receiptwidget.ui \
     ui/tabwidget/contractwidget.ui \
     ui/dialog/clienteditdialog.ui \
-    ui/dialog/careditdialog.ui \
     ui/dialog/receipteditdialog.ui \
     ui/dialog/rentaldocumenteditdialog.ui \
     ui/dialog/user/logindialog.ui \
     ui/dialog/user/usermanagerdialog.ui \
     ui/dialog/user/modifypasswarddialog.ui \
     ui/dialog/user/adduserdialog.ui \
-    ui/dialog/versiondialog.ui
+    ui/dialog/versiondialog.ui \
+    ui/dialog/car/carannualdialog.ui \
+    ui/dialog/car/careditdialog.ui \
+    ui/dialog/car/insurancedialog.ui
 
 RESOURCES += \
     icon.qrc

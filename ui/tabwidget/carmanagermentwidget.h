@@ -7,6 +7,8 @@
 class QToolBar;
 class QTableWidget;
 class CarEditDialog;
+class InsuranceDialog;
+class CarAnnualDialog;
 class TableModel;
 class Car;
 
@@ -45,6 +47,8 @@ private:
 
     // 编辑车辆档案窗口
     CarEditDialog    *mCarEditDialog;
+    InsuranceDialog  *mInsuranceDialog;
+    CarAnnualDialog  *mCarAnnualDialog;
 
     // 工具栏动作
     QAction         *mActAdd;
@@ -53,7 +57,8 @@ private:
     QAction         *mActSearch;
     QAction         *mActPrinter;
     QAction         *mActExport;
-    QAction         *mActImport;
+    QAction         *mActInsurance;
+    QAction         *mActAnnual;
 
     TableModel*     mModel;
 };
