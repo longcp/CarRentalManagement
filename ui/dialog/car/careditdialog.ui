@@ -1335,7 +1335,7 @@
              </size>
             </property>
             <property name="text">
-             <string>生厂日期:</string>
+             <string>生产日期:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1343,7 +1343,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="productionDateLE">
+           <widget class="QDateEdit" name="productDateEdit">
             <property name="minimumSize">
              <size>
               <width>180</width>

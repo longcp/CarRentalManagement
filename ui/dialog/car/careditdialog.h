@@ -93,6 +93,18 @@ private:
     void            setMode(bool mode);
 
     void            setPumpTypeView();
+    /**
+     * @brief setOriginCar
+     */
+    void            setOriginCar(Car &car);
+    /**
+     * @brief setView
+     */
+    void            setView(Car &car);
+    /**
+     * @brief getPumpTypePosition
+     */
+    int             getPumpTypePosition(PumpType type);
 
     Ui::CarEditDialog *ui;
     // 工具栏
@@ -118,6 +130,7 @@ private:
     TableModel*     mPaymentSumModel;
 
     OpenType        mOpenType;
+    Car*            mOriginCar;
 };
 
 #endif // CAREDITDIALOG_H

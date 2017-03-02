@@ -9,6 +9,7 @@
 
 CarEditDialog::CarEditDialog(QWidget *parent) :
     QDialog(parent),
+    mOriginCar(new Car()),
     ui(new Ui::CarEditDialog)
 {
     ui->setupUi(this);
@@ -120,12 +121,16 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         ui->createDateDE->setDate(QDate::currentDate());
         mActSave->setDisabled(true);
         ui->pumpTypeCbBox->setCurrentIndex(0);
+        setEditMode();
     } else {
         //已查看内容方式打开
         mActSave->setEnabled(true);
         mActPrev->setEnabled(true);
         mActNext->setEnabled(true);
         ui->numLE->setDisabled(true);
+        setViewMode();
+        setOriginCar(car);
+        setView(car);
     }
     ui->mainTabWidget->setCurrentIndex(0);
     ui->insuranceTabWidget->setCurrentIndex(0);
@@ -262,8 +267,8 @@ CarEditDialog::initProjectSumTableview()
     ui->projectSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-//    ui->projectSumTableView->setHorizontalScrollBarPolicy(
-//                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
+    //    ui->projectSumTableView->setHorizontalScrollBarPolicy(
+    //                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
     ui->projectSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
     ui->projectSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
     ui->projectSumTableView->horizontalHeader()->setStyleSheet(
@@ -362,8 +367,8 @@ CarEditDialog::initAnnualSumTableview()
     ui->annualSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-//    ui->annualSumTableView->setHorizontalScrollBarPolicy(
-//                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
+    //    ui->annualSumTableView->setHorizontalScrollBarPolicy(
+    //                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
     ui->annualSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
     ui->annualSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
     ui->annualSumTableView->horizontalHeader()->setStyleSheet(
@@ -456,8 +461,8 @@ CarEditDialog::initBusinessSumTableview()
     ui->businessSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-//    ui->businessSumTableView->setHorizontalScrollBarPolicy(
-//                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
+    //    ui->businessSumTableView->setHorizontalScrollBarPolicy(
+    //                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
     ui->businessSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
     ui->businessSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
     ui->businessSumTableView->horizontalHeader()->setStyleSheet(
@@ -550,8 +555,8 @@ CarEditDialog::initPaymentSumTableview()
     ui->paymentSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-//    ui->paymentSumTableView->setHorizontalScrollBarPolicy(
-//                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
+    //    ui->paymentSumTableView->setHorizontalScrollBarPolicy(
+    //                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
     ui->paymentSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
     ui->paymentSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
     ui->paymentSumTableView->horizontalHeader()->setStyleSheet(
@@ -600,5 +605,119 @@ CarEditDialog::setViewMode()
 void
 CarEditDialog::setMode(bool mode)
 {
+    ui->numLE->setEnabled(mode);
+    ui->ownerLE->setEnabled(mode);
+    ui->bankAccountLE->setEnabled(mode);
+    ui->pumpTypeCbBox->setEnabled(mode);
+    ui->carNumberLE->setEnabled(mode);
+    ui->carBrandLE->setEnabled(mode);
+    ui->chassisBrandLE->setEnabled(mode);
+    ui->drivingLicenseDateDE->setEnabled(mode);
+    ui->fuelCarNumberLE->setEnabled(mode);
+    ui->frameNumberLE->setEnabled(mode);
+    ui->identificationNumberLE->setEnabled(mode);
+    ui->engineNumberLE->setEnabled(mode);
+    ui->worthLE->setEnabled(mode);
+    ui->insuranceCardNumberLE->setEnabled(mode);
+    ui->factoryCodeLE->setEnabled(mode);
+    ui->productNumberLE->setEnabled(mode);
+    ui->enginePowerLE->setEnabled(mode);
+    ui->maxDeliverySizesLE->setEnabled(mode);
+    ui->maxOutputPressureLE->setEnabled(mode);
+    ui->dimensionsLE->setEnabled(mode);
+    ui->boomVerticalLenLE->setEnabled(mode);
+    ui->boomHorizontalLenLE->setEnabled(mode);
+    ui->totalWeightLE->setEnabled(mode);
+    ui->equipmentWeightLE->setEnabled(mode);
+    ui->productDateEdit->setEnabled(mode);
+    ui->operator1LE->setEnabled(mode);
+    ui->operator2LE->setEnabled(mode);
+    ui->operator3LE->setEnabled(mode);
+    ui->operator4LE->setEnabled(mode);
+    ui->operator5LE->setEnabled(mode);
+    ui->remarksTextEdit->setEnabled(mode);
+    ui->pumpedSquareLE->setEnabled(mode);
+    ui->pumpedTimesLE->setEnabled(mode);
+    ui->milageLE->setEnabled(mode);
+    ui->creatorLE->setEnabled(mode);
+    ui->createDateDE->setEnabled(mode);
+}
 
+void
+CarEditDialog::setOriginCar(Car &car)
+{
+    mOriginCar->copy(car, mOriginCar);
+}
+
+void
+CarEditDialog::setView(Car &car)
+{
+    ui->numLE->setText(car.number);
+    ui->ownerLE->setText(car.owner);
+    ui->bankAccountLE->setText(car.bankAccount);
+    ui->carNumberLE->setText(car.carNumber);
+    ui->carBrandLE->setText(car.carBrand);
+    ui->chassisBrandLE->setText(car.chassisBrand);
+    ui->fuelCarNumberLE->setText(car.fuelCarNumber);
+    ui->frameNumberLE->setText(car.frameNumber);
+    ui->identificationNumberLE->setText(car.identificationNumber);
+    ui->engineNumberLE->setText(car.engineNumber);
+    ui->insuranceCardNumberLE->setText(car.insuranceCardNumber);
+    ui->factoryCodeLE->setText(car.factoryCode);
+    ui->productNumberLE->setText(car.productNumber);
+    ui->dimensionsLE->setText(car.dimensions);
+    ui->operator1LE->setText(car.operator1);
+    ui->operator2LE->setText(car.operator2);
+    ui->operator3LE->setText(car.operator3);
+    ui->operator4LE->setText(car.operator4);
+    ui->operator5LE->setText(car.operator5);
+    ui->remarksTextEdit->setText(car.remarks);
+    ui->creatorLE->setText(car.creator);
+
+    ui->pumpedSquareLE->setText(QString::number(car.pumpedSquare));
+    ui->pumpedTimesLE->setText(QString::number(car.pumpedTimes));
+    ui->milageLE->setText(QString::number(car.milage));
+    ui->worthLE->setText(QString::number(car.worth));
+    ui->enginePowerLE->setText(QString::number(car.enginePower));
+    ui->maxDeliverySizesLE->setText(QString::number(car.maxDeliverySizes));
+    ui->maxOutputPressureLE->setText(QString::number(car.maxOutputPressure));
+    ui->boomVerticalLenLE->setText(QString::number(car.boomVerticalLen));
+    ui->boomHorizontalLenLE->setText(QString::number(car.boomHorizontalLen));
+    ui->totalWeightLE->setText(QString::number(car.totalWeight));
+    ui->equipmentWeightLE->setText(QString::number(car.equipmentWeight));
+
+    ui->drivingLicenseDateDE->setDate(car.drivingLicenseDate);
+    ui->productDateEdit->setDate(car.productionDate);
+    ui->createDateDE->setDate(car.createDate);
+    ui->pumpTypeCbBox->setCurrentIndex(getPumpTypePosition(car.pumptype));
+}
+
+int
+CarEditDialog::getPumpTypePosition(PumpType type)
+{
+
+    switch (type) {
+    case TYPE_37M1:
+       return 0;
+
+    case TYPE_48M:
+       return 1;
+
+    case TYPE_52M:
+       return 2;
+
+    case TYPE_56M:
+       return 3;
+
+    case TYPE_60M:
+       return 4;
+
+    case TYPE_CAR_PUMP:
+       return 5;
+
+    default:
+        break;
+    }
+
+    return 0;
 }
