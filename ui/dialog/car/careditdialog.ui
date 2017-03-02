@@ -2082,10 +2082,14 @@
                <number>0</number>
               </property>
               <property name="bottomMargin">
-               <number>5</number>
+               <number>0</number>
               </property>
               <item>
-               <widget class="QTableView" name="annualTableview"/>
+               <widget class="QTableView" name="annualTableview">
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>200</number>
+                </attribute>
+               </widget>
               </item>
               <item>
                <widget class="QTableView" name="annualSumTableView">
@@ -2095,6 +2099,9 @@
                   <height>40</height>
                  </size>
                 </property>
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>200</number>
+                </attribute>
                </widget>
               </item>
              </layout>
@@ -2103,7 +2110,7 @@
              <attribute name="title">
               <string>商险记录</string>
              </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_22">
+             <layout class="QVBoxLayout" name="verticalLayout_5">
               <property name="spacing">
                <number>0</number>
               </property>
@@ -2120,7 +2127,24 @@
                <number>0</number>
               </property>
               <item>
-               <widget class="QTableView" name="businessTableView"/>
+               <widget class="QTableView" name="businessTableView">
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>200</number>
+                </attribute>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTableView" name="businessSumTableView">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>200</number>
+                </attribute>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -2128,7 +2152,7 @@
              <attribute name="title">
               <string>交险记录</string>
              </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_23">
+             <layout class="QVBoxLayout" name="verticalLayout_6">
               <property name="spacing">
                <number>0</number>
               </property>
@@ -2145,7 +2169,24 @@
                <number>0</number>
               </property>
               <item>
-               <widget class="QTableView" name="paymentTableView"/>
+               <widget class="QTableView" name="paymentTableView">
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>200</number>
+                </attribute>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTableView" name="paymentSumTableView">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>200</number>
+                </attribute>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -2174,10 +2215,20 @@
         <number>0</number>
        </property>
        <property name="bottomMargin">
-        <number>0</number>
+        <number>5</number>
        </property>
        <item>
         <widget class="QTableView" name="projectTableView"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="projectSumTableView">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

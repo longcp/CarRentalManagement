@@ -17,6 +17,7 @@ INCLUDEPATH += ui/
 INCLUDEPATH += ui/tabwidget/
 INCLUDEPATH += ui/dialog/
 INCLUDEPATH += ui/dialog/user/
+INCLUDEPATH += ui/dialog/car/
 INCLUDEPATH += utils/
 INCLUDEPATH += common/
 

@@ -40,8 +40,27 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     mToolBar->addAction(mActExit);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+    /**
+     * @brief connect
+     */
     connect(ui->annualTableview->horizontalHeader(),&QHeaderView::sectionResized, this,
-            &CarEditDialog::updateSectionWidth);
+            &CarEditDialog::updateAnnualSumSectionWidth);
+    /**
+     * @brief connect
+     */
+    connect(ui->paymentTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
+            &CarEditDialog::updatePaymentSumSectionWidth);
+    /**
+     * @brief connect
+     */
+    connect(ui->projectTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
+            &CarEditDialog::updateProjectSumSectionWidth);
+    /**
+     * @brief connect
+     */
+    connect(ui->businessTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
+            &CarEditDialog::updateBusinessSumSectionWidth);
+
     connect((QDialog*)ui->annualSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
             this, SLOT(updateAnnualTableviewScrollBar(int)));
 
@@ -49,9 +68,36 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     //            ui->annualTableview->horizontalScrollBar(), SLOT(&QAbstractSlider::setValue(int)));
 }
 
-void CarEditDialog::updateSectionWidth(int logicalIndex, int /* oldSize */, int newSize)
+void
+CarEditDialog::updateAnnualSumSectionWidth(int logicalIndex,
+                                           int /* oldSize */,
+                                           int newSize)
 {
     ui->annualSumTableView->setColumnWidth(logicalIndex, newSize);
+}
+
+void
+CarEditDialog::updateProjectSumSectionWidth(int logicalIndex,
+                                            int /* oldSize */,
+                                            int newSize)
+{
+    ui->projectSumTableView->setColumnWidth(logicalIndex, newSize);
+}
+
+void
+CarEditDialog::updateBusinessSumSectionWidth(int logicalIndex,
+                                             int /* oldSize */,
+                                             int newSize)
+{
+    ui->businessSumTableView->setColumnWidth(logicalIndex, newSize);
+}
+
+void
+CarEditDialog::updatePaymentSumSectionWidth(int logicalIndex,
+                                            int /* oldSize */,
+                                            int newSize)
+{
+    ui->paymentSumTableView->setColumnWidth(logicalIndex, newSize);
 }
 
 CarEditDialog::~CarEditDialog()
@@ -102,7 +148,7 @@ CarEditDialog::initView()
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("车辆档案");
-    this->setFixedSize(1000, 700);
+    this->setFixedSize(1030, 700);
     initProjectTableview();
     initAnnualTableview();
     initBusinessTableview();
@@ -129,6 +175,26 @@ CarEditDialog::initProjectTableview()
     ui->projectTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
+    //列表头不可拖动，最后一列自适应剩余空间
+//    ui->projectTableView->horizontalHeader()
+//            ->setSectionResizeMode(0, QHeaderView::Fixed);
+//    ui->projectTableView->horizontalHeader()
+//            ->setSectionResizeMode(1, QHeaderView::Fixed);
+//    ui->projectTableView->horizontalHeader()
+//            ->setSectionResizeMode(2, QHeaderView::Fixed);
+//    ui->projectTableView->horizontalHeader()
+//            ->setSectionResizeMode(3, QHeaderView::Fixed);
+//    ui->projectTableView->horizontalHeader()
+//            ->setSectionResizeMode(4, QHeaderView::Fixed);
+//    ui->projectTableView->horizontalHeader()
+//            ->setSectionResizeMode(5, QHeaderView::Fixed);
+//    ui->projectTableView->horizontalHeader()
+//            ->setSectionResizeMode(6, QHeaderView::Fixed);
+//    ui->projectTableView->horizontalHeader()
+//            ->setSectionResizeMode(7, QHeaderView::Fixed);
+    ui->projectTableView->horizontalHeader()
+            ->setSectionResizeMode(7, QHeaderView::Stretch);
+
     ui->projectTableView->verticalHeader()->setVisible(false);          //隐藏行表头
     ui->projectTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
@@ -138,6 +204,61 @@ CarEditDialog::initProjectTableview()
     ui->projectTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    initProjectSumTableview();
+}
+
+void
+CarEditDialog::initProjectSumTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "编号" << "日期" << "合同号" << "客户编号"
+               << "客户名称" << "工程款额" << "备注" << "录单";
+
+    mProjectSumModel = new TableModel(0, headerList.size());
+    ui->projectSumTableView->setModel(mProjectSumModel);
+    mProjectSumModel->setHorizontalHeaderLabels(headerList);
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->projectSumTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->projectSumTableView->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->projectSumTableView->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+//    ui->projectSumTableView->setHorizontalScrollBarPolicy(
+//                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
+    ui->projectSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
+    ui->projectSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
+    ui->projectSumTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->projectSumTableView->setAlternatingRowColors(true);
+    ui->projectSumTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    QStandardItem* sumStr
+            = new QStandardItem("合计");
+    QStandardItem* a1
+            = new QStandardItem("100");
+    QStandardItem* a2
+            = new QStandardItem("100");
+    QStandardItem* a3
+            = new QStandardItem("100");
+    QStandardItem* a4
+            = new QStandardItem("100");
+    QStandardItem* a5
+            = new QStandardItem("100");
+    QStandardItem* a6
+            = new QStandardItem("100");
+    QStandardItem* a7
+            = new QStandardItem("100");
+    QList<QStandardItem*> items;
+    items << sumStr << a1 << a2 << a3 << a4 << a5 << a6 << a7;
+    mProjectSumModel->appendRow(items);
 }
 
 void
@@ -159,6 +280,19 @@ CarEditDialog::initAnnualTableview()
     ui->annualTableview->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
+    //列表头不可拖动，最后一列自适应剩余空间
+    ui->annualTableview->horizontalHeader()
+            ->setSectionResizeMode(0, QHeaderView::Fixed);
+    ui->annualTableview->horizontalHeader()
+            ->setSectionResizeMode(1, QHeaderView::Fixed);
+    ui->annualTableview->horizontalHeader()
+            ->setSectionResizeMode(2, QHeaderView::Fixed);
+    ui->annualTableview->horizontalHeader()
+            ->setSectionResizeMode(3, QHeaderView::Fixed);
+    ui->annualTableview->horizontalHeader()
+            ->setSectionResizeMode(4, QHeaderView::Fixed);
+    ui->annualTableview->horizontalHeader()
+            ->setSectionResizeMode(4, QHeaderView::Stretch);
     //    ui->annualTableview->setHorizontalScrollBarPolicy(
     //                Qt::ScrollBarAlwaysOff);                                 //隐藏滚动条
     ui->annualTableview->verticalHeader()->setVisible(false);           //隐藏行表头
@@ -171,11 +305,6 @@ CarEditDialog::initAnnualTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    ui->annualTableview->setColumnWidth(0, 100);
-    ui->annualTableview->setColumnWidth(1, 200);
-    ui->annualTableview->setColumnWidth(2, 200);
-    ui->annualTableview->setColumnWidth(3, 200);
-    ui->annualTableview->setColumnWidth(4, 200);
     initAnnualSumTableview();
 }
 
@@ -209,25 +338,18 @@ CarEditDialog::initAnnualSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    ui->annualSumTableView->setColumnWidth(0, 100);
-    ui->annualSumTableView->setColumnWidth(1, 200);
-    ui->annualSumTableView->setColumnWidth(2, 200);
-    ui->annualSumTableView->setColumnWidth(3, 200);
-    ui->annualSumTableView->setColumnWidth(4, 200);
-
-    QStandardItem* num
+    QStandardItem* sum
             = new QStandardItem("合计");
-    QStandardItem* clientype
+    QStandardItem* a1
             = new QStandardItem("100");
-    QStandardItem* paid
+    QStandardItem* a2
             = new QStandardItem("100");
-    QStandardItem* balance
+    QStandardItem* a3
             = new QStandardItem("100");
-    QStandardItem* remarks
+    QStandardItem* a4
             = new QStandardItem("100");
-
     QList<QStandardItem*> items;
-    items << num << clientype << paid << balance << remarks;
+    items << sum << a1 << a2 << a3 << a4;
     mAnnualSumModel->appendRow(items);
 }
 
@@ -250,6 +372,20 @@ CarEditDialog::initBusinessTableview()
     ui->businessTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
+    //列表头不可拖动，最后一列自适应剩余空间
+    ui->businessTableView->horizontalHeader()
+            ->setSectionResizeMode(0, QHeaderView::Fixed);
+    ui->businessTableView->horizontalHeader()
+            ->setSectionResizeMode(1, QHeaderView::Fixed);
+    ui->businessTableView->horizontalHeader()
+            ->setSectionResizeMode(2, QHeaderView::Fixed);
+    ui->businessTableView->horizontalHeader()
+            ->setSectionResizeMode(3, QHeaderView::Fixed);
+    ui->businessTableView->horizontalHeader()
+            ->setSectionResizeMode(4, QHeaderView::Fixed);
+    ui->businessTableView->horizontalHeader()
+            ->setSectionResizeMode(4, QHeaderView::Stretch);
+
     ui->businessTableView->verticalHeader()->setVisible(false);         //隐藏行表头
     ui->businessTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
@@ -259,6 +395,54 @@ CarEditDialog::initBusinessTableview()
     ui->businessTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    initBusinessSumTableview();
+}
+
+void
+CarEditDialog::initBusinessSumTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "编号" << "日期" << "保险费用" << "保险公司" << "备注";
+
+    mBusinessSumModel = new TableModel(0, headerList.size());
+    ui->businessSumTableView->setModel(mBusinessSumModel);
+    mBusinessSumModel->setHorizontalHeaderLabels(headerList);
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->businessSumTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->businessSumTableView->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->businessSumTableView->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+//    ui->businessSumTableView->setHorizontalScrollBarPolicy(
+//                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
+    ui->businessSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
+    ui->businessSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
+    ui->businessSumTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->businessSumTableView->setAlternatingRowColors(true);
+    ui->businessSumTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    QStandardItem* sum
+            = new QStandardItem("合计");
+    QStandardItem* a1
+            = new QStandardItem("100");
+    QStandardItem* a2
+            = new QStandardItem("100");
+    QStandardItem* a3
+            = new QStandardItem("100");
+    QStandardItem* a4
+            = new QStandardItem("100");
+    QList<QStandardItem*> items;
+    items << sum << a1 << a2 << a3 << a4;
+    mBusinessSumModel->appendRow(items);
 }
 
 void
@@ -280,6 +464,20 @@ CarEditDialog::initPaymentTableview()
     ui->paymentTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
+    //列表头不可拖动，最后一列自适应剩余空间
+    ui->paymentTableView->horizontalHeader()
+            ->setSectionResizeMode(0, QHeaderView::Fixed);
+    ui->paymentTableView->horizontalHeader()
+            ->setSectionResizeMode(1, QHeaderView::Fixed);
+    ui->paymentTableView->horizontalHeader()
+            ->setSectionResizeMode(2, QHeaderView::Fixed);
+    ui->paymentTableView->horizontalHeader()
+            ->setSectionResizeMode(3, QHeaderView::Fixed);
+    ui->paymentTableView->horizontalHeader()
+            ->setSectionResizeMode(4, QHeaderView::Fixed);
+    ui->paymentTableView->horizontalHeader()
+            ->setSectionResizeMode(4, QHeaderView::Stretch);
+
     ui->paymentTableView->verticalHeader()->setVisible(false);          //隐藏行表头
     ui->paymentTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
@@ -289,4 +487,52 @@ CarEditDialog::initPaymentTableview()
     ui->paymentTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    initPaymentSumTableview();
+}
+
+void
+CarEditDialog::initPaymentSumTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "编号" << "日期" << "保险费用" << "保险公司" << "备注";
+
+    mPaymentSumModel = new TableModel(0, headerList.size());
+    ui->paymentSumTableView->setModel(mPaymentSumModel);
+    mPaymentSumModel->setHorizontalHeaderLabels(headerList);
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->paymentSumTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->paymentSumTableView->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->paymentSumTableView->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+//    ui->paymentSumTableView->setHorizontalScrollBarPolicy(
+//                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
+    ui->paymentSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
+    ui->paymentSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
+    ui->paymentSumTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->paymentSumTableView->setAlternatingRowColors(true);
+    ui->paymentSumTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    QStandardItem* sum
+            = new QStandardItem("合计");
+    QStandardItem* a1
+            = new QStandardItem("100");
+    QStandardItem* a2
+            = new QStandardItem("100");
+    QStandardItem* a3
+            = new QStandardItem("100");
+    QStandardItem* a4
+            = new QStandardItem("100");
+    QList<QStandardItem*> items;
+    items << sum << a1 << a2 << a3 << a4;
+    mPaymentSumModel->appendRow(items);
 }

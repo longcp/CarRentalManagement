@@ -26,9 +26,18 @@ private slots:
      */
     void            openCarEditDialogSlot(OpenType type,
                                           Car &car);
-    void            updateSectionWidth(int logicalIndex,
-                                       int /* oldSize */,
-                                       int newSize);
+    void            updateProjectSumSectionWidth(int logicalIndex,
+                                                int /* oldSize */,
+                                                int newSize);
+    void            updateAnnualSumSectionWidth(int logicalIndex,
+                                                int /* oldSize */,
+                                                int newSize);
+    void            updateBusinessSumSectionWidth(int logicalIndex,
+                                                int /* oldSize */,
+                                                int newSize);
+    void            updatePaymentSumSectionWidth(int logicalIndex,
+                                                int /* oldSize */,
+                                                int newSize);
 
     void            updateAnnualTableviewScrollBar(int to);
 
@@ -58,6 +67,18 @@ private:
      * @brief initAnnualSumTableview
      */
     void            initAnnualSumTableview();
+    /**
+     * @brief initBusinessSumTableview
+     */
+    void            initBusinessSumTableview();
+    /**
+     * @brief initPaymentSumTableview
+     */
+    void            initPaymentSumTableview();
+    /**
+     * @brief initProjectSumTableview
+     */
+    void            initProjectSumTableview();
 
     Ui::CarEditDialog *ui;
     // 工具栏
@@ -74,10 +95,13 @@ private:
     QAction         *mActCancel;
 
     TableModel*     mProjectModel;
+    TableModel*     mProjectSumModel;
     TableModel*     mAnnualModel;
     TableModel*     mAnnualSumModel;
     TableModel*     mBusinessModel;
+    TableModel*     mBusinessSumModel;
     TableModel*     mPaymentModel;
+    TableModel*     mPaymentSumModel;
 };
 
 #endif // CAREDITDIALOG_H
