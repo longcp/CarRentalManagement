@@ -45,8 +45,8 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     connect((QDialog*)ui->annualSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
             this, SLOT(updateAnnualTableviewScrollBar(int)));
 
-//    connect(ui->annualSumTableView->horizontalScrollBar(), SIGNAL(&QAbstractSlider::valueChanged(int)),
-//            ui->annualTableview->horizontalScrollBar(), SLOT(&QAbstractSlider::setValue(int)));
+    //    connect(ui->annualSumTableView->horizontalScrollBar(), SIGNAL(&QAbstractSlider::valueChanged(int)),
+    //            ui->annualTableview->horizontalScrollBar(), SLOT(&QAbstractSlider::setValue(int)));
 }
 
 void CarEditDialog::updateSectionWidth(int logicalIndex, int /* oldSize */, int newSize)
@@ -69,9 +69,9 @@ void
 CarEditDialog::updateAnnualTableviewScrollBar(int to)
 {
     qDebug() << "to = " << to;
-//    ui->annualTableview->move(to, 0);
-//    ui->annualTableview->horizontalScrollbarValueChanged(to);
-//    QAbstractSlider::setValue(to);
+    //    ui->annualTableview->move(to, 0);
+    //    ui->annualTableview->horizontalScrollbarValueChanged(to);
+    //    QAbstractSlider::setValue(to);
 }
 
 void
@@ -102,7 +102,7 @@ CarEditDialog::initView()
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("车辆档案");
-    this->setFixedSize(1000, 800);
+    this->setFixedSize(1000, 700);
     initProjectTableview();
     initAnnualTableview();
     initBusinessTableview();
@@ -159,8 +159,8 @@ CarEditDialog::initAnnualTableview()
     ui->annualTableview->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-//    ui->annualTableview->setHorizontalScrollBarPolicy(
-//                t::ScrollBarAlwaysOff);                                 //隐藏滚动条
+    //    ui->annualTableview->setHorizontalScrollBarPolicy(
+    //                Qt::ScrollBarAlwaysOff);                                 //隐藏滚动条
     ui->annualTableview->verticalHeader()->setVisible(false);           //隐藏行表头
     ui->annualTableview->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
@@ -171,6 +171,11 @@ CarEditDialog::initAnnualTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
+    ui->annualTableview->setColumnWidth(0, 100);
+    ui->annualTableview->setColumnWidth(1, 200);
+    ui->annualTableview->setColumnWidth(2, 200);
+    ui->annualTableview->setColumnWidth(3, 200);
+    ui->annualTableview->setColumnWidth(4, 200);
     initAnnualSumTableview();
 }
 
@@ -191,6 +196,8 @@ CarEditDialog::initAnnualSumTableview()
     ui->annualSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
+//    ui->annualSumTableView->setHorizontalScrollBarPolicy(
+//                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
     ui->annualSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
     ui->annualSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
     ui->annualSumTableView->horizontalHeader()->setStyleSheet(
@@ -201,6 +208,12 @@ CarEditDialog::initAnnualSumTableview()
     ui->annualSumTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    ui->annualSumTableView->setColumnWidth(0, 100);
+    ui->annualSumTableView->setColumnWidth(1, 200);
+    ui->annualSumTableView->setColumnWidth(2, 200);
+    ui->annualSumTableView->setColumnWidth(3, 200);
+    ui->annualSumTableView->setColumnWidth(4, 200);
 
     QStandardItem* num
             = new QStandardItem("合计");
