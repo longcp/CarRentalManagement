@@ -4,6 +4,10 @@
 #include <car.h>
 #include <tablemodel.h>
 #include <QDebug>
+#include <QMessageBox>
+
+#define LOG_TAG                 "CAR_EDIT_DIALOG"
+#include "utils/Log.h"
 
 //#define                         BAN_SECTION
 
@@ -43,6 +47,32 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     mToolBar->addAction(mActExit);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+
+    /**
+     * @brief 保存退出
+     */
+    connect(mActSaveExit, SIGNAL(triggered(bool)),
+            this, SLOT(saveAndExitEvent()));
+    /**
+     * @brief 保存
+     */
+    connect(mActSave, SIGNAL(triggered(bool)),
+            this, SLOT(saveEvent()));
+    /**
+     * @brief 退出
+     */
+    connect(mActExit, SIGNAL(triggered(bool)),
+            this, SLOT(closeDialog()));
+    /**
+     * @brief 编辑模式
+     */
+    connect(mActEdit, SIGNAL(triggered(bool)),
+            this, SLOT(editEvent()));
+    /**
+     * @brief 查看模式
+     */
+    connect(mActCancel, SIGNAL(triggered(bool)),
+            this, SLOT(cancelEvent()));
     /**
      * @brief connect
      */
@@ -117,10 +147,11 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         mActPrev->setDisabled(true);
         mActNext->setDisabled(true);
         mActCancel->setDisabled(true);
-        ui->drivingLicenseDateDE->setDate(QDate::currentDate());
-        ui->createDateDE->setDate(QDate::currentDate());
         mActSave->setDisabled(true);
         ui->pumpTypeCbBox->setCurrentIndex(0);
+        ui->createDateDE->setDate(QDate::currentDate());
+        ui->drivingLicenseDateDE->setDate(QDate::currentDate());
+        ui->productDateDE->setDate(QDate::currentDate());
         setEditMode();
     } else {
         //已查看内容方式打开
@@ -185,12 +216,18 @@ CarEditDialog::initView()
 void
 CarEditDialog::setPumpTypeView()
 {
-    ui->pumpTypeCbBox->insertItem(0, PUMP_TYPE_37M1_STR);
-    ui->pumpTypeCbBox->insertItem(1, PUMP_TYPE_48M_STR);
-    ui->pumpTypeCbBox->insertItem(2, PUMP_TYPE_52M_STR);
-    ui->pumpTypeCbBox->insertItem(3, PUMP_TYPE_56M_STR);
-    ui->pumpTypeCbBox->insertItem(4, PUMP_TYPE_60M_STR);
-    ui->pumpTypeCbBox->insertItem(5, PUMP_TYPE_CAR_PUMP_STR);
+    ui->pumpTypeCbBox->insertItem(PUMP_TYPE_37M1_COLUMN,
+                                  PUMP_TYPE_37M1_STR);
+    ui->pumpTypeCbBox->insertItem(PUMP_TYPE_48M_COLUMN,
+                                  PUMP_TYPE_48M_STR);
+    ui->pumpTypeCbBox->insertItem(PUMP_TYPE_52M_COLUMN,
+                                  PUMP_TYPE_52M_STR);
+    ui->pumpTypeCbBox->insertItem(PUMP_TYPE_56M_COLUMN,
+                                  PUMP_TYPE_56M_STR);
+    ui->pumpTypeCbBox->insertItem(PUMP_TYPE_60M_COLUMN,
+                                  PUMP_TYPE_60M_STR);
+    ui->pumpTypeCbBox->insertItem(PUMP_TYPE_CAR_PUMP_COLUMN,
+                                  PUMP_TYPE_CAR_PUMP_STR);
 }
 
 void
@@ -629,7 +666,7 @@ CarEditDialog::setMode(bool mode)
     ui->boomHorizontalLenLE->setEnabled(mode);
     ui->totalWeightLE->setEnabled(mode);
     ui->equipmentWeightLE->setEnabled(mode);
-    ui->productDateEdit->setEnabled(mode);
+    ui->productDateDE->setEnabled(mode);
     ui->operator1LE->setEnabled(mode);
     ui->operator2LE->setEnabled(mode);
     ui->operator3LE->setEnabled(mode);
@@ -687,7 +724,7 @@ CarEditDialog::setView(Car &car)
     ui->equipmentWeightLE->setText(QString::number(car.equipmentWeight));
 
     ui->drivingLicenseDateDE->setDate(car.drivingLicenseDate);
-    ui->productDateEdit->setDate(car.productionDate);
+    ui->productDateDE->setDate(car.productionDate);
     ui->createDateDE->setDate(car.createDate);
     ui->pumpTypeCbBox->setCurrentIndex(getPumpTypePosition(car.pumptype));
 }
@@ -698,26 +735,218 @@ CarEditDialog::getPumpTypePosition(PumpType type)
 
     switch (type) {
     case TYPE_37M1:
-       return 0;
+       return PUMP_TYPE_37M1_COLUMN;
 
     case TYPE_48M:
-       return 1;
+       return PUMP_TYPE_48M_COLUMN;
 
     case TYPE_52M:
-       return 2;
+       return PUMP_TYPE_52M_COLUMN;
 
     case TYPE_56M:
-       return 3;
+       return PUMP_TYPE_56M_COLUMN;
 
     case TYPE_60M:
-       return 4;
+       return PUMP_TYPE_60M_COLUMN;
 
     case TYPE_CAR_PUMP:
-       return 5;
+       return PUMP_TYPE_CAR_PUMP_COLUMN;
 
     default:
         break;
     }
 
-    return 0;
+    return PUMP_TYPE_37M1_COLUMN;
+}
+
+void
+CarEditDialog::saveAndExitEvent()
+{
+    int ret;
+
+    if (ui->numLE->text().isEmpty() ||
+            ui->carNumberLE->text().isEmpty()) {
+        QMessageBox::warning(this, tr("温馨提示"),
+                             tr("车号与车牌号不能为空！\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+        return;
+    }
+
+    if (!isModified()) {
+        closeDialog();
+        return;
+    }
+
+    Car car;
+    saveUiContent(car);
+    dumpCar(car);
+
+    if (mOpenType == CREATEITEM) {
+        // 插入数据库,更新到界面
+    } else {
+        // 更新到数据库
+    }
+
+    this->close();
+}
+
+bool
+CarEditDialog::isModified()
+{
+    if (ui->numLE->isModified() ||
+            ui->ownerLE->isModified() ||
+            ui->bankAccountLE->isModified() ||
+            ui->pumpTypeCbBox->isWindowModified() ||
+            ui->carNumberLE->isModified() ||
+            ui->carBrandLE->isModified() ||
+            ui->chassisBrandLE->isModified() ||
+            ui->drivingLicenseDateDE->isWindowModified() ||
+            ui->fuelCarNumberLE->isModified() ||
+            ui->frameNumberLE->isModified() ||
+            ui->identificationNumberLE->isModified() ||
+            ui->engineNumberLE->isModified() ||
+            ui->worthLE->isModified() ||
+            ui->insuranceCardNumberLE->isModified() ||
+            ui->factoryCodeLE->isModified() ||
+            ui->productNumberLE->isModified() ||
+            ui->enginePowerLE->isModified() ||
+            ui->maxDeliverySizesLE->isModified() ||
+            ui->maxOutputPressureLE->isModified() ||
+            ui->dimensionsLE->isModified() ||
+            ui->boomVerticalLenLE->isModified() ||
+            ui->boomHorizontalLenLE->isModified() ||
+            ui->totalWeightLE->isModified() ||
+            ui->equipmentWeightLE->isModified() ||
+            ui->productDateDE->isWindowModified() ||
+            ui->operator1LE->isModified() ||
+            ui->operator2LE->isModified() ||
+            ui->operator3LE->isModified() ||
+            ui->operator4LE->isModified() ||
+            ui->operator5LE->isModified() ||
+            ui->remarksTextEdit->isWindowModified() ||
+            ui->pumpedSquareLE->isModified() ||
+            ui->pumpedTimesLE->isModified() ||
+            ui->milageLE->isModified() ||
+            ui->creatorLE->isModified() ||
+            ui->createDateDE->isWindowModified()) {
+        ALOGE("is modified!!!");
+        return true;
+    }
+
+    return false;
+}
+
+void
+CarEditDialog::closeEvent(QCloseEvent *event)
+{
+    if (isModified()) {
+        // 有内容发生修改
+        ALOGD("isModified");
+        int ret = QMessageBox::warning(this, tr("温馨提示"),
+                                       tr("是否保存修改？\n"),
+                                       QMessageBox::Yes |
+                                       QMessageBox::No |
+                                       QMessageBox::Cancel,
+                                       QMessageBox::Yes);
+        if (ret == QMessageBox::Yes)
+            saveEvent();
+        else
+            return;
+    }
+    clean();
+}
+
+void
+CarEditDialog::clean()
+{
+    cleanContent();
+}
+
+void
+CarEditDialog::cleanContent()
+{
+    ui->numLE->setText("");
+    ui->ownerLE->setText("");
+    ui->bankAccountLE->setText("");
+    ui->carNumberLE->setText("");
+    ui->carBrandLE->setText("");
+    ui->chassisBrandLE->setText("");
+    ui->fuelCarNumberLE->setText("");
+    ui->frameNumberLE->setText("");
+    ui->identificationNumberLE->setText("");
+    ui->engineNumberLE->setText("");
+    ui->insuranceCardNumberLE->setText("");
+    ui->factoryCodeLE->setText("");
+    ui->productNumberLE->setText("");
+    ui->dimensionsLE->setText("");
+    ui->operator1LE->setText("");
+    ui->operator2LE->setText("");
+    ui->operator3LE->setText("");
+    ui->operator4LE->setText("");
+    ui->operator5LE->setText("");
+    ui->remarksTextEdit->setText("");
+    ui->creatorLE->setText("");
+
+    ui->pumpedSquareLE->setText("");
+    ui->pumpedTimesLE->setText("");
+    ui->milageLE->setText("");
+    ui->worthLE->setText("");
+    ui->enginePowerLE->setText("");
+    ui->maxDeliverySizesLE->setText("");
+    ui->maxOutputPressureLE->setText("");
+    ui->boomVerticalLenLE->setText("");
+    ui->boomHorizontalLenLE->setText("");
+    ui->totalWeightLE->setText("");
+    ui->equipmentWeightLE->setText("");
+}
+
+void
+CarEditDialog::closeDialog()
+{
+    ALOGD("closeDialog");
+    this->close();
+}
+
+void
+CarEditDialog::saveUiContent(Car &car)
+{
+
+}
+
+void
+CarEditDialog::dumpCar(Car &car)
+{
+    ALOGD("");
+}
+
+void
+CarEditDialog::saveEvent()
+{
+    Car car;
+
+    saveUiContent(car);
+    //更新数据到数据库、更新界面数据
+}
+
+void
+CarEditDialog::editEvent()
+{
+    setEditMode();
+}
+
+void
+CarEditDialog::cancelEvent()
+{
+    resetView();
+    setViewMode();
+}
+
+void
+CarEditDialog::resetView()
+{
+    if (!isModified())
+        return;
+
+    setView(*mOriginCar);
 }

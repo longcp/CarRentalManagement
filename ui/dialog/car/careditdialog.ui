@@ -298,8 +298,11 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(0, 85, 255);</string>
+            </property>
             <property name="text">
-             <string>车牌号:</string>
+             <string>*车牌号:</string>
             </property>
            </widget>
           </item>
@@ -1343,7 +1346,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QDateEdit" name="productDateEdit">
+           <widget class="QDateEdit" name="productDateDE">
             <property name="minimumSize">
              <size>
               <width>180</width>

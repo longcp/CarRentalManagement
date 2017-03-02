@@ -20,6 +20,13 @@
 #define PUMP_TYPE_CAR_PUMP_STR  "车载泵"
 #define PUMP_TYPE_UNKNOWN_STR   "UNKNOWN_PUMPTYPE"
 
+#define PUMP_TYPE_37M1_COLUMN       0
+#define PUMP_TYPE_48M_COLUMN        1
+#define PUMP_TYPE_52M_COLUMN        2
+#define PUMP_TYPE_56M_COLUMN        3
+#define PUMP_TYPE_60M_COLUMN        4
+#define PUMP_TYPE_CAR_PUMP_COLUMN   5
+
 // 错误号
 #define OK                          0
 #define SUCCESS                     0

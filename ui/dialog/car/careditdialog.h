@@ -40,6 +40,30 @@ private slots:
                                                 int newSize);
 
     void            updateAnnualTableviewScrollBar(int to);
+    /**
+     * @brief 关闭窗口
+     */
+    void            closeDialog();
+    /**
+     * @brief 保存退出
+     */
+    void            saveAndExitEvent();
+    /**
+     * @brief 保存
+     */
+    void            saveEvent();
+    /**
+     * @brief 窗口关闭事件
+     */
+    void            closeEvent(QCloseEvent *event);
+    /**
+     * @brief 编辑事件
+     */
+    void            editEvent();
+    /**
+     * @brief 取消事件
+     */
+    void            cancelEvent();
 
 private:
     void            initView();
@@ -88,6 +112,10 @@ private:
      */
     void            setViewMode();
     /**
+     * @brief 重置界面
+     */
+    void            resetView();
+    /**
      * @brief 设置模式 编辑/查看
      */
     void            setMode(bool mode);
@@ -105,6 +133,26 @@ private:
      * @brief getPumpTypePosition
      */
     int             getPumpTypePosition(PumpType type);
+    /**
+     * @brief isModified
+     */
+    bool            isModified();
+    /**
+     * @brief 清理资源
+     */
+    void            clean();
+    /**
+     * @brief 清理内容
+     */
+    void            cleanContent();
+    /**
+     * @brief 保存界面数据到client
+     */
+    void            saveUiContent(Car &car);
+    /**
+     * @brief 打印car信息
+     */
+    void            dumpCar(Car &car);
 
     Ui::CarEditDialog *ui;
     // 工具栏
