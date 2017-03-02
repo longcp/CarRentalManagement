@@ -26,9 +26,11 @@ private slots:
      */
     void            openCarEditDialogSlot(OpenType type,
                                           Car &car);
-    void    updateSectionWidth(int logicalIndex, int /* oldSize */, int newSize);
+    void            updateSectionWidth(int logicalIndex,
+                                       int /* oldSize */,
+                                       int newSize);
 
-    void    updateAnnualTableviewScrollBar(int to);
+    void            updateAnnualTableviewScrollBar(int to);
 
 private:
     void            initView();
@@ -52,6 +54,10 @@ private:
      * @brief initBusinessTableview
      */
     void            initBusinessTableview();
+    /**
+     * @brief initAnnualSumTableview
+     */
+    void            initAnnualSumTableview();
 
     Ui::CarEditDialog *ui;
     // 工具栏

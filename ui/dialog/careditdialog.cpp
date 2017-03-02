@@ -69,6 +69,9 @@ void
 CarEditDialog::updateAnnualTableviewScrollBar(int to)
 {
     qDebug() << "to = " << to;
+//    ui->annualTableview->move(to, 0);
+//    ui->annualTableview->horizontalScrollbarValueChanged(to);
+//    QAbstractSlider::setValue(to);
 }
 
 void
@@ -156,8 +159,9 @@ CarEditDialog::initAnnualTableview()
     ui->annualTableview->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
+//    ui->annualTableview->setHorizontalScrollBarPolicy(
+//                t::ScrollBarAlwaysOff);                                 //隐藏滚动条
     ui->annualTableview->verticalHeader()->setVisible(false);           //隐藏行表头
-    ui->annualTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->annualTableview->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
@@ -167,6 +171,15 @@ CarEditDialog::initAnnualTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
+    initAnnualSumTableview();
+}
+
+void
+CarEditDialog::initAnnualSumTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "编号" << "日期" << "年费" << "车船费" << "备注";
     mAnnualSumModel = new TableModel(0, headerList.size());
     ui->annualSumTableView->setModel(mAnnualSumModel);
     mAnnualSumModel->setHorizontalHeaderLabels(headerList);
@@ -178,8 +191,8 @@ CarEditDialog::initAnnualTableview()
     ui->annualSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    ui->annualSumTableView->verticalHeader()->setVisible(false);           //隐藏行表头
-    ui->annualSumTableView->horizontalHeader()->setVisible(false);         //隐藏列表头
+    ui->annualSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
+    ui->annualSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
     ui->annualSumTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
