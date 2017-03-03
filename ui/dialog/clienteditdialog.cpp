@@ -284,10 +284,10 @@ ClientEditDialog::closeEvent(QCloseEvent *event)
                                        QMessageBox::No |
                                        QMessageBox::Cancel,
                                        QMessageBox::Yes);
-        if (ret == QMessageBox::Yes)
-            saveEvent();
-        else
+        if (ret == QMessageBox::Cancel)
             return;
+        else if (ret == QMessageBox::Yes)
+            saveEvent();
     }
     clean();
 }
@@ -393,6 +393,15 @@ ClientEditDialog::saveAndExitEvent()
 
     if (mOpenType == CREATEITEM) {
         // 添加条目
+        if (mDb->isClientExist(client)) {
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("该客户已存在，添加失败!\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+            return;
+        }
+
         ret = mDb->insertClientTable(client);
         if (!ret) {
             resetView(client);
@@ -413,9 +422,9 @@ ClientEditDialog::saveAndExitEvent()
     } else {
         // 编辑条目
         ret = mDb->updateClientTableItem(client);
-        resetView(client);
-        updateClientItemSignal(client);
         if (!ret) {
+            resetView(client);
+            updateClientItemSignal(client);
             ret = QMessageBox::information(this,
                                            tr("温馨提示"),
                                            tr("已保存.\n"),
@@ -471,6 +480,7 @@ ClientEditDialog::saveEvent()
     Client client;
 
     saveUiContent(client);
+
     if (!mDb->updateClientTableItem(client)) {
         resetView(client);
         updateClientItemSignal(client);
@@ -501,6 +511,11 @@ ClientEditDialog::cancelEvent()
 void
 ClientEditDialog::setEditMode()
 {
+    if (mOpenType == CREATEITEM)
+        ui->clientNumLineEdit->setFocus();
+    else
+        ui->clientNameLineEdit->setFocus();
+
     mActEdit->setDisabled(true);
     mActCancel->setEnabled(true);
     mActSave->setEnabled(true);

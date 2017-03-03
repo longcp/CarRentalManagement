@@ -149,12 +149,12 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         mActPrev->setDisabled(true);
         mActNext->setDisabled(true);
         mActCancel->setDisabled(true);
-        mActSave->setDisabled(true);
         ui->pumpTypeCbBox->setCurrentIndex(0);
         ui->createDateDE->setDate(QDate::currentDate());
         ui->drivingLicenseDateDE->setDate(QDate::currentDate());
         ui->productDateDE->setDate(QDate::currentDate());
         setEditMode();
+        mActSave->setDisabled(true);
     } else {
         //已查看内容方式打开
         mActSave->setEnabled(true);
@@ -625,6 +625,11 @@ CarEditDialog::initPaymentSumTableview()
 void
 CarEditDialog::setEditMode()
 {
+    if (mOpenType == CREATEITEM)
+        ui->numLE->setFocus();
+    else
+        ui->carNumberLE->setFocus();
+
     mActEdit->setDisabled(true);
     mActCancel->setEnabled(true);
     mActSave->setEnabled(true);
@@ -786,6 +791,15 @@ CarEditDialog::saveAndExitEvent()
 
     if (mOpenType == CREATEITEM) {
         // 插入数据库,更新到界面
+        if (mDb->isCarExist(car)) {
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("该车辆已存在，添加失败!\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+            return;
+        }
+
         if(!mDb->insertCarTable(car)) {
             resetView(car);
             emit addCarItemSignal(car);
@@ -805,6 +819,8 @@ CarEditDialog::saveAndExitEvent()
     } else {
         // 更新到数据库
         if (!mDb->updateCarTableData(car)) {
+            resetView(car);
+            updateCarItemSignal(car);
             ret = QMessageBox::information(this,
                                            tr("温馨提示"),
                                            tr("已保存.\n"),
@@ -872,7 +888,9 @@ CarEditDialog::isModified()
 void
 CarEditDialog::closeEvent(QCloseEvent *event)
 {
-    if (isModified()) {
+    if (mOpenType == CREATEITEM)
+        ALOGD("CREATEITEM");
+    else if (isModified()) {
         // 有内容发生修改
         ALOGD("isModified");
         int ret = QMessageBox::warning(this, tr("温馨提示"),
@@ -881,10 +899,10 @@ CarEditDialog::closeEvent(QCloseEvent *event)
                                        QMessageBox::No |
                                        QMessageBox::Cancel,
                                        QMessageBox::Yes);
-        if (ret == QMessageBox::Yes)
-            saveEvent();
-        else
+        if (ret == QMessageBox::Cancel)
             return;
+        else if (ret == QMessageBox::Yes)
+            saveEvent();
     }
     clean();
 }
@@ -892,6 +910,7 @@ CarEditDialog::closeEvent(QCloseEvent *event)
 void
 CarEditDialog::clean()
 {
+    ALOGD("%s enter", __FUNCTION__);
     cleanContent();
 }
 

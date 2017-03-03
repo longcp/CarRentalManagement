@@ -2,6 +2,7 @@
 #define DATABASE_H
 
 #include <QtSql/QSqlDatabase>
+#include <datatype.h>
 
 class User;
 
@@ -55,6 +56,27 @@ public:
     int                 deleteCarDataInNumber(QString number);
     int                 getCarInNumber(QString number,
                                           Car &car);
+    bool                isCarExist(Car &car);
+
+    // insurance表
+    int                 getAllInsuranceData(QList<INSURANCE_RECORD> &records);
+    int                 insertInsuranceTable(INSURANCE_RECORD &record);
+    int                 delInsuranceDataInNumber(QString number);
+
+    // business insurance表
+    int                 getAllBusinessInsuranceData(QList<INSURANCE_RECORD> &records);
+    int                 insertBusinessInsuranceTable(INSURANCE_RECORD &record);
+    int                 delBusinessInsuranceDataInNumber(QString number);
+
+    // annual
+    int                 getAllAnnualData(QList<ANNUALFEE_RECORD> &records);
+    int                 insertAnnualTable(ANNUALFEE_RECORD &record);
+    int                 delAnnualDataInNumber(QString number);
+
+    // project表
+    int                 getAllProjectData(QList<PROJECT_RECORD> &records);
+    int                 insertProjectTable(PROJECT_RECORD &record);
+    int                 delProjectDataInNumber(QString number);
 
 private:
     bool                openDataBase();

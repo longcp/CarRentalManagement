@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class DataBase;
+
 namespace Ui {
 class CarAnnualDialog;
 }
@@ -18,11 +20,15 @@ public:
 private slots:
     void        openWindow();
 
-    void on_ensureBtn_clicked();
+    void        on_ensureBtn_clicked();
 
-    void on_cancelBtn_clicked();
+    void        on_cancelBtn_clicked();
 
 private:
+    void        clean();
+
+    DataBase*   mDb;
+
     Ui::CarAnnualDialog *ui;
 };
 

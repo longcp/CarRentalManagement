@@ -928,3 +928,364 @@ DataBase::deleteCarDataInNumber(QString number)
 
     return SUCCESS;
 }
+
+bool
+DataBase::isCarExist(Car &car)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM car WHERE number=?");
+    query->addBindValue(car.number);
+    if (!query->exec()) {
+        ALOGE("exec [SELECT * FROM client WHERE number=%s] failed!",
+              car.number.toStdString().data());
+        errorno = SELECT_DATABASE_FAIL;
+        return false;
+    }
+
+    if (!query->next())
+        return false;
+
+    return true;
+}
+
+int
+DataBase::insertInsuranceTable(INSURANCE_RECORD &record)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO insurance_record "
+                   "VALUES(:number, :carNumber, :company, "
+                   ":remarks, :date, :fee)");
+    query->bindValue(":number", record.number);
+    query->bindValue(":carNumber", record.carNumber);
+    query->bindValue(":company", record.company);
+    query->bindValue(":remarks", record.remarks);
+    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":fee", record.fee);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_INSURANCE_ITEM_FAIL;
+        return INSERT_INSURANCE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllInsuranceData(QList<INSURANCE_RECORD> &records)
+{
+    INSURANCE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM insurance_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM insurance_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.company = query->value(2).toString();
+        record.remarks = query->value(3).toString();
+        record.date = QDate::fromString(query->value(4).toString(),
+                                               "yyyy-MM-dd");
+        record.fee = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delInsuranceDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM insurance_record WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM insurance_record failed!", __FUNCTION__);
+        return DELETE_INSURANCE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertBusinessInsuranceTable(INSURANCE_RECORD &record)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO business_insurance_record "
+                   "VALUES(:number, :carNumber, :company, "
+                   ":remarks, :date, :fee)");
+    query->bindValue(":number", record.number);
+    query->bindValue(":carNumber", record.carNumber);
+    query->bindValue(":company", record.company);
+    query->bindValue(":remarks", record.remarks);
+    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":fee", record.fee);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_INSURANCE_ITEM_FAIL;
+        return INSERT_INSURANCE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllBusinessInsuranceData(QList<INSURANCE_RECORD> &records)
+{
+    INSURANCE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM business_insurance_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM business_insurance_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.company = query->value(2).toString();
+        record.remarks = query->value(3).toString();
+        record.date = QDate::fromString(query->value(4).toString(),
+                                               "yyyy-MM-dd");
+        record.fee = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delBusinessInsuranceDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM business_insurance_record WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM business_insurance_record failed!",
+              __FUNCTION__);
+        return DELETE_INSURANCE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertAnnualTable(ANNUALFEE_RECORD &record)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO annual_fee_record "
+                   "VALUES(:number, :carNumber, :remarks, "
+                   ":date, :annualFee, :travelExpenses)");
+    query->bindValue(":number", record.number);
+    query->bindValue(":carNumber", record.carNumber);
+    query->bindValue(":remarks", record.remarks);
+    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":annualFee", record.annualFee);
+    query->bindValue(":travelExpenses", record.travelExpenses);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_ANNUAL_ITEM_FAIL;
+        return INSERT_ANNUAL_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllAnnualData(QList<ANNUALFEE_RECORD> &records)
+{
+    ANNUALFEE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM annual_fee_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM annual_fee_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.remarks = query->value(2).toString();
+        record.date = QDate::fromString(query->value(3).toString(),
+                                               "yyyy-MM-dd");
+        record.annualFee = query->value(4).toFloat();
+        record.travelExpenses = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delAnnualDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM annual_fee_record WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM business_insurance_record failed!",
+              __FUNCTION__);
+        return DELETE_ANNUAL_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertProjectTable(PROJECT_RECORD &record)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO project_record "
+                   "VALUES(:number, :carNumber, :clientNum, "
+                   ":contractNum, :clientName, :remarks, "
+                   ":date, :amount)");
+    query->bindValue(":number", record.number);
+    query->bindValue(":carNumber", record.carNumber);
+    query->bindValue(":clientNum", record.clientNum);
+    query->bindValue(":contractNum", record.contractNum);
+    query->bindValue(":clientName", record.clientName);
+    query->bindValue(":remarks", record.remarks);
+    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":amount", record.amount);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_PROJECT_ITEM_FAIL;
+        return INSERT_PROJECT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllProjectData(QList<PROJECT_RECORD> &records)
+{
+    PROJECT_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM project_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM project_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.clientNum = query->value(2).toString();
+        record.contractNum = query->value(3).toString();
+        record.clientName = query->value(4).toString();
+        record.remarks = query->value(5).toString();
+        record.date = QDate::fromString(query->value(6).toString(),
+                                               "yyyy-MM-dd");
+        record.amount = query->value(7).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delProjectDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM project_record WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM project_record failed!",
+              __FUNCTION__);
+        return DELETE_PROJECT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
