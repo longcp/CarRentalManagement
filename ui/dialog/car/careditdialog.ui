@@ -654,6 +654,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="maximum">
+             <double>9999999999.989999771118164</double>
+            </property>
            </widget>
           </item>
           <item>
@@ -843,6 +846,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="maximum">
+             <double>9999999999.989999771118164</double>
+            </property>
            </widget>
           </item>
           <item>
@@ -880,6 +886,9 @@
               <width>180</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="maximum">
+             <double>9999999999.989999771118164</double>
             </property>
            </widget>
           </item>
@@ -971,6 +980,9 @@
               <width>180</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="maximum">
+             <double>9999999999.989999771118164</double>
             </property>
            </widget>
           </item>
@@ -1101,6 +1113,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="maximum">
+             <double>9999999999.989999771118164</double>
+            </property>
            </widget>
           </item>
           <item>
@@ -1138,6 +1153,9 @@
               <width>180</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="maximum">
+             <double>999999999.990000009536743</double>
             </property>
            </widget>
           </item>
@@ -1230,6 +1248,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="maximum">
+             <double>9999999999.989999771118164</double>
+            </property>
            </widget>
           </item>
           <item>
@@ -1267,6 +1288,9 @@
               <width>180</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="maximum">
+             <double>9999999999.989999771118164</double>
             </property>
            </widget>
           </item>

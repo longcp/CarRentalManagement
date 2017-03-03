@@ -507,7 +507,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="paidLineEdit">
+       <widget class="QDoubleSpinBox" name="paidDSB">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -519,6 +519,9 @@
           <width>200</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="maximum">
+         <double>999999999.990000009536743</double>
         </property>
        </widget>
       </item>
@@ -542,7 +545,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="amountLineEdit">
+       <widget class="QDoubleSpinBox" name="amountDSB">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -554,6 +557,9 @@
           <width>200</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="maximum">
+         <double>999999999.990000009536743</double>
         </property>
        </widget>
       </item>

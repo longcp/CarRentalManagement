@@ -95,9 +95,7 @@ ClientEditDialog::initView()
     ui->clientNumLineEdit->setMaxLength(16);
     ui->telLineEdit->setMaxLength(11);
     ui->faxLineEdit->setMaxLength(11);
-    ui->paidLineEdit->setMaxLength(32);
     ui->emailLineEdit->setMaxLength(64);
-    ui->amountLineEdit->setMaxLength(32);
     ui->addressLineEdit->setMaxLength(64);
     ui->balanceLineEdit->setMaxLength(16);
     ui->contractLineEdit->setMaxLength(16);
@@ -132,8 +130,6 @@ ClientEditDialog::initView()
     QValidator *moneyValidator = new QRegExpValidator(
                                         RegularExpression::getMoneyRegExp(),
                                         this);                          //金额
-    ui->paidLineEdit->setValidator(moneyValidator);
-    ui->amountLineEdit->setValidator(moneyValidator);
     ui->balanceLineEdit->setValidator(moneyValidator);
 }
 
@@ -229,8 +225,8 @@ ClientEditDialog::setView(Client &client)
     ui->createDateEdit->setDate(client.createDate);
     ui->createPeopleLineEdit->setText(client.creator);
     ui->remarksFxtEdit->setText(client.remarks);
-    ui->amountLineEdit->setText(QString::number(client.amount));
-    ui->paidLineEdit->setText(QString::number(client.paid));
+    ui->amountDSB->setValue(client.amount);
+    ui->paidDSB->setValue(client.paid);
     ui->balanceLineEdit->setText(QString::number(client.amount
                                                  - client.paid));
     ui->monthlySpinBox->setValue(client.monthly);
@@ -315,10 +311,10 @@ ClientEditDialog::cleanContent()
 {
     ui->telLineEdit->setText("");
     ui->faxLineEdit->setText("");
-    ui->paidLineEdit->setText("");
+    ui->paidDSB->setValue(0);
     ui->emailLineEdit->setText("");
     ui->remarksFxtEdit->setText("");
-    ui->amountLineEdit->setText("");
+    ui->amountDSB->setValue(0);
     ui->addressLineEdit->setText("");
     ui->balanceLineEdit->setText("");
     ui->contractLineEdit->setText("");
@@ -333,11 +329,11 @@ ClientEditDialog::isModified()
 {
     if (ui->telLineEdit->isModified() ||
             ui->faxLineEdit->isModified() ||
-            ui->paidLineEdit->isModified() ||
+            ui->paidDSB->isWindowModified() ||
             ui->emailLineEdit->isModified() ||
             ui->monthlySpinBox->isWindowModified() ||
             ui->remarksFxtEdit->isWindowModified() ||
-            ui->amountLineEdit->isModified() ||
+            ui->amountDSB->isWindowModified() ||
             ui->addressLineEdit->isModified() ||
             ui->cashRadioButton->isWindowModified() ||
             ui->balanceLineEdit->isModified() ||
@@ -455,8 +451,8 @@ ClientEditDialog::saveUiContent(Client &client)
     client.creator  = ui->createPeopleLineEdit->text();
     client.createDate = QDate::fromString(
                 ui->createDateEdit->text(), "yyyy-MM-dd");
-    client.amount   = ui->amountLineEdit->text().toFloat(&ok);
-    client.paid     = ui->paidLineEdit->text().toFloat(&ok);
+    client.amount   = ui->amountDSB->value();
+    client.paid     = ui->paidDSB->value();
     client.monthly = ui->monthlySpinBox->text().toInt(&ok, 10);
     if (ui->cashRadioButton->isChecked())
         client.paytype = PayType::CASH;
@@ -534,8 +530,8 @@ ClientEditDialog::setMode(bool mode)
     ui->monthlyRadioButton->setEnabled(mode);
     ui->monthlySpinBox->setEnabled(mode);
     ui->remarksFxtEdit->setEnabled(mode);
-    ui->paidLineEdit->setEnabled(mode);
-    ui->amountLineEdit->setEnabled(mode);
+    ui->paidDSB->setEnabled(mode);
+    ui->amountDSB->setEnabled(mode);
 //    ui->balanceLineEdit->setEnabled(mode);
     ui->createDateEdit->setEnabled(mode);
     ui->createPeopleLineEdit->setEnabled(mode);
