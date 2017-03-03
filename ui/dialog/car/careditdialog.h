@@ -7,6 +7,7 @@
 class QToolBar;
 class Car;
 class TableModel;
+class DataBase;
 
 namespace Ui {
 class CarEditDialog;
@@ -179,6 +180,7 @@ private:
 
     OpenType        mOpenType;
     Car*            mOriginCar;
+    DataBase        *mDb;
 };
 
 #endif // CAREDITDIALOG_H

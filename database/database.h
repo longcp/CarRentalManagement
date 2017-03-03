@@ -14,6 +14,7 @@ class User;
 
 class QMutex;
 class Client;
+class Car;
 template <class Key, class T> class QMap;
 
 class DataBase
@@ -45,6 +46,13 @@ public:
     int                 getAllUserTableData(QList<User> &users);
     int                 getUserCount();
     int                 deleteUserTabledata(QString uName);
+
+    // car表
+    int                 insertCarTable(Car &car);
+    int                 updateCarTableData(Car &car);
+    int                 getAllCarData(QList<Car> &cars);
+    int                 clearCarTable();
+    int                 deleteCarDataInNumber(QString number);
 
 private:
     bool                openDataBase();

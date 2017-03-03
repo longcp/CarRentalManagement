@@ -60,3 +60,31 @@ Car::getPumpType(QString typeStr)
         return UNKNOWN_PUMPTYPE;
 }
 
+PumpType
+Car::getPumpType(int type)
+{
+    switch (type) {
+    case 0:
+        return TYPE_37M1;
+
+    case 1:
+        return TYPE_48M;
+
+    case 2:
+        return TYPE_52M;
+
+    case 3:
+        return TYPE_56M;
+
+    case 4:
+        return TYPE_60M;
+
+    case 5:
+        return TYPE_CAR_PUMP;
+
+    default:
+        break;
+    }
+
+    return UNKNOWN_PUMPTYPE;
+}

@@ -187,6 +187,7 @@ public:
      * @brief getPumpType
      */
     PumpType        getPumpType(QString typeStr);
+    PumpType        getPumpType(int type);
 
     QString         number;
     QString         carNumber;

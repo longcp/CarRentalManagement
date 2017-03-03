@@ -5,6 +5,7 @@
 #include <tablemodel.h>
 #include <QDebug>
 #include <QMessageBox>
+#include <database/database.h>
 
 #define LOG_TAG                 "CAR_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -19,6 +20,7 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(this->windowFlags()
                          &~Qt::WindowMaximizeButtonHint);               //去掉最大化按钮
+    mDb = DataBase::getInstance();
     initView();
 
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
@@ -784,6 +786,7 @@ CarEditDialog::saveAndExitEvent()
 
     if (mOpenType == CREATEITEM) {
         // 插入数据库,更新到界面
+//        ret =
     } else {
         // 更新到数据库
     }
