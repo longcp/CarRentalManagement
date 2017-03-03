@@ -168,6 +168,7 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         setView(car);
         ui->mainTabWidget->addTab(ui->insuranceTab, "保险资料");
         ui->mainTabWidget->addTab(ui->projectRecordTab, "工程记录");
+        updateAllTableView();
     }
     ui->mainTabWidget->setCurrentIndex(0);
     ui->insuranceTabWidget->setCurrentIndex(0);
@@ -242,7 +243,7 @@ CarEditDialog::initProjectTableview()
     //设置首行标题
     QStringList headerList;
     headerList << "编号" << "日期" << "合同号" << "客户编号"
-               << "客户名称" << "工程款额" << "备注" << "录单";
+               << "客户名称" << "工程款额" << "备注";
 
     mProjectModel = new TableModel(0, headerList.size());
     ui->projectTableView->setModel(mProjectModel);
@@ -276,7 +277,7 @@ CarEditDialog::initProjectTableview()
             ->setSectionResizeMode(7, QHeaderView::Fixed);
 #endif
     ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(7, QHeaderView::Stretch);
+            ->setSectionResizeMode(6, QHeaderView::Stretch);
 
     ui->projectTableView->verticalHeader()->setVisible(false);          //隐藏行表头
     ui->projectTableView->horizontalHeader()->setStyleSheet(
@@ -297,7 +298,7 @@ CarEditDialog::initProjectSumTableview()
     //设置首行标题
     QStringList headerList;
     headerList << "编号" << "日期" << "合同号" << "客户编号"
-               << "客户名称" << "工程款额" << "备注" << "录单";
+               << "客户名称" << "工程款额" << "备注";
 
     mProjectSumModel = new TableModel(0, headerList.size());
     ui->projectSumTableView->setModel(mProjectSumModel);
@@ -337,10 +338,8 @@ CarEditDialog::initProjectSumTableview()
             = new QStandardItem("100");
     QStandardItem* a6
             = new QStandardItem("100");
-    QStandardItem* a7
-            = new QStandardItem("100");
     QList<QStandardItem*> items;
-    items << sumStr << a1 << a2 << a3 << a4 << a5 << a6 << a7;
+    items << sumStr << a1 << a2 << a3 << a4 << a5 << a6;
     mProjectSumModel->appendRow(items);
 }
 
@@ -1144,7 +1143,7 @@ CarEditDialog::resetView()
 void
 CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
 {
-    ALOGD("555555555");
+    ALOGD("%s", __FUNCTION__);
     QStandardItem* num
             = new QStandardItem(record.number);
     QStandardItem* date
@@ -1159,4 +1158,204 @@ CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
     QList<QStandardItem*> items;
     items << num << date << annualFee << travelExpenses << remarks;
     mAnnualModel->appendRow(items);
+
+    //update sum tableview
+}
+
+void
+CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
+{
+    ALOGD("%s", __FUNCTION__);
+    QStandardItem* num
+            = new QStandardItem(record.number);
+    QStandardItem* date
+            = new QStandardItem(record.date.toString("yyyy-MM-dd"));
+    QStandardItem* fee
+            = new QStandardItem(QString("%1").arg(record.fee));
+    QStandardItem* company
+            = new QStandardItem(record.company);
+    QStandardItem* remarks
+            = new QStandardItem(QString("%1").arg(record.remarks));
+
+    QList<QStandardItem*> items;
+    items << num << date << fee << company << remarks;
+    mPaymentModel->appendRow(items);
+
+    //update sum tableview
+}
+
+void
+CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
+{
+    ALOGD("%s", __FUNCTION__);
+    QStandardItem* num
+            = new QStandardItem(record.number);
+    QStandardItem* date
+            = new QStandardItem(record.date.toString("yyyy-MM-dd"));
+    QStandardItem* fee
+            = new QStandardItem(QString("%1").arg(record.fee));
+    QStandardItem* company
+            = new QStandardItem(record.company);
+    QStandardItem* remarks
+            = new QStandardItem(QString("%1").arg(record.remarks));
+
+    QList<QStandardItem*> items;
+    items << num << date << fee << company << remarks;
+    mBusinessModel->appendRow(items);
+
+    //update sum tableview
+}
+
+void
+CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
+{
+    ALOGD("%s", __FUNCTION__);
+    QStandardItem* num
+            = new QStandardItem(record.number);
+    QStandardItem* date
+            = new QStandardItem(record.date.toString("yyyy-MM-dd"));
+    QStandardItem* contractNum
+            = new QStandardItem(record.contractNum);
+    QStandardItem* clientNum
+            = new QStandardItem(record.clientNum);
+    QStandardItem* clientName
+            = new QStandardItem(record.clientName);
+    QStandardItem* amount
+            = new QStandardItem(QString("%1").arg(record.amount));
+    QStandardItem* remarks
+            = new QStandardItem(QString("%1").arg(record.remarks));
+
+    QList<QStandardItem*> items;
+    items << num << date << contractNum << clientNum << clientName
+          << amount<< remarks;
+    mPaymentModel->appendRow(items);
+
+    //update sum tableview
+}
+
+void
+CarEditDialog::updateAllTableView()
+{
+    updateAnnualTableView();
+    updateInsuranceTableView();
+    updateBusinessInsuanceTableView();
+    updateProjectTableView();
+}
+
+
+void
+CarEditDialog::updateAnnualTableView()
+{
+    int size;
+    ANNUALFEE_RECORD record;
+    QList<ANNUALFEE_RECORD> records;
+
+    ALOGD("%s", __FUNCTION__);
+
+    if (mAnnualModel->rowCount()) {
+        //删除所有行
+        mAnnualModel->removeRows(0, mAnnualModel->rowCount());
+    }
+
+    if (!mDb->getAllAnnualData(records)) {
+        if (!records.isEmpty()) {
+            size = records.size();
+            for (int i = 0; i < size; i++) {
+                record = records.at(i);
+                ALOGD("%s, record.carNumber = %s, mOriginCar->number = %s",
+                      __FUNCTION__, record.carNumber.toStdString().data(),
+                      mOriginCar->number.toStdString().data());
+                if (record.carNumber == mOriginCar->number) {
+                    addAnnualItemSlot(record);
+                }
+            }
+        }
+    }
+}
+
+void
+CarEditDialog::updateInsuranceTableView()
+{
+    int size;
+    INSURANCE_RECORD record;
+    QList<INSURANCE_RECORD> records;
+
+    ALOGD("%s", __FUNCTION__);
+
+    if (mPaymentModel->rowCount()) {
+        //删除所有行
+        mPaymentModel->removeRows(0, mPaymentModel->rowCount());
+    }
+
+    if (!mDb->getAllInsuranceData(records)) {
+        if (!records.isEmpty()) {
+            size = records.size();
+            for (int i = 0; i < size; i++) {
+                record = records.at(i);
+                ALOGD("%s, record.carNumber = %s, mOriginCar->number = %s",
+                      __FUNCTION__, record.carNumber.toStdString().data(),
+                      mOriginCar->number.toStdString().data());
+                if (record.carNumber == mOriginCar->number)
+                    addInsuranceItemSlot(record);
+            }
+        }
+    }
+}
+
+void
+CarEditDialog::updateBusinessInsuanceTableView()
+{
+    int size;
+    INSURANCE_RECORD record;
+    QList<INSURANCE_RECORD> records;
+
+    ALOGD("%s", __FUNCTION__);
+
+    if (mBusinessModel->rowCount()) {
+        //删除所有行
+        mBusinessModel->removeRows(0, mBusinessModel->rowCount());
+    }
+
+    if (!mDb->getAllBusinessInsuranceData(records)) {
+        if (!records.isEmpty()) {
+            size = records.size();
+            for (int i = 0; i < size; i++) {
+                record = records.at(i);
+                ALOGD("%s, record.carNumber = %s, mOriginCar->number = %s",
+                      __FUNCTION__, record.carNumber.toStdString().data(),
+                      mOriginCar->number.toStdString().data());
+                if (record.carNumber == mOriginCar->number)
+                    addBusinessInsuranceItemSlot(record);
+            }
+        }
+    }
+}
+
+void
+CarEditDialog::updateProjectTableView()
+{
+    int size;
+    PROJECT_RECORD record;
+    QList<PROJECT_RECORD> records;
+
+    ALOGD("%s", __FUNCTION__);
+
+    if (mBusinessModel->rowCount()) {
+        //删除所有行
+        mProjectModel->removeRows(0, mProjectModel->rowCount());
+    }
+
+    if (!mDb->getAllProjectData(records)) {
+        if (!records.isEmpty()) {
+            size = records.size();
+            for (int i = 0; i < size; i++) {
+                record = records.at(i);
+                ALOGD("%s, record.carNumber = %s, mOriginCar->number = %s",
+                      __FUNCTION__, record.carNumber.toStdString().data(),
+                      mOriginCar->number.toStdString().data());
+                if (record.carNumber == mOriginCar->number)
+                    addProjectItemSlot(record);
+            }
+        }
+    }
 }

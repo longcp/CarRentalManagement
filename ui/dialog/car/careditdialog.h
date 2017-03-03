@@ -69,6 +69,9 @@ private slots:
      * @brief 添加年费条目
      */
     void            addAnnualItemSlot(ANNUALFEE_RECORD &record);
+    void            addInsuranceItemSlot(INSURANCE_RECORD &record);
+    void            addBusinessInsuranceItemSlot(INSURANCE_RECORD &record);
+    void            addProjectItemSlot(PROJECT_RECORD &record);
 
 signals:
     void            addCarItemSignal(Car &car);
@@ -166,6 +169,14 @@ private:
      * @brief 打印car信息
      */
     void            dumpCar(Car &car);
+    /**
+     * @brief 更新所有表数据
+     */
+    void            updateAllTableView();
+    void            updateAnnualTableView();
+    void            updateInsuranceTableView();
+    void            updateBusinessInsuanceTableView();
+    void            updateProjectTableView();
 
     Ui::CarEditDialog *ui;
     // 工具栏

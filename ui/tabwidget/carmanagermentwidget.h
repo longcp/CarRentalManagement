@@ -55,7 +55,6 @@ private slots:
 signals:
     void            openCarEditDialogSignal(OpenType type,
                                             Car &car);
-    void            addAnnualItemSig(ANNUALFEE_RECORD &);
 
 private:
     /**
@@ -74,11 +73,6 @@ private:
      * @brief 初始化数据到表中
      */
     void            initTableView();
-
-    void            initAnnualTableView();
-    void            initInsuranceTableView();
-    void            initBusinessInsuanceTableView();
-    void            initProjectTableView();
 
     Ui::CarManagermentWidget *ui;
     QToolBar        *mToolBar;
