@@ -305,11 +305,11 @@ void
 ClientManagermentWidget::deleteClientItemSlog()
 {
     if (curRow < 0) {
-        QMessageBox::information(this,
-                                 tr("温馨提示"),
-                                 tr("请选择要删除条目.\n"),
-                                 QMessageBox::Ok,
-                                 QMessageBox::Ok);
+        QMessageBox::warning(this,
+                             tr("温馨提示"),
+                             tr("请选择要删除条目.\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
         return;
     }
 

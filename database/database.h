@@ -53,6 +53,8 @@ public:
     int                 getAllCarData(QList<Car> &cars);
     int                 clearCarTable();
     int                 deleteCarDataInNumber(QString number);
+    int                 getCarInNumber(QString number,
+                                          Car &car);
 
 private:
     bool                openDataBase();

@@ -8,12 +8,15 @@
 #include <insurancedialog.h>
 #include <carannualdialog.h>
 #include <datatype.h>
+#include <database/database.h>
+#include <QMessageBox>
 
 #define LOG_TAG                 "CAR_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
 
 CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     QWidget(parent),
+    curRow(-1),
     mCarEditDialog(new CarEditDialog()),
     mInsuranceDialog(new InsuranceDialog()),
     mCarAnnualDialog(new CarAnnualDialog()),
@@ -21,7 +24,7 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("车辆档案");
-
+    mDb = DataBase::getInstance();
     initView();
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
@@ -57,7 +60,7 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     connect(ui->carTableView, SIGNAL(doubleClicked(const QModelIndex &)),
             this, SLOT(cellDoubleClickedSlot(const QModelIndex &)));
     /**
-     * @brief 单元格双击事件
+     * @brief 打开车辆资料编辑窗口
      */
     connect(this, SIGNAL(openCarEditDialogSignal(OpenType, Car&)),
             mCarEditDialog, SLOT(openCarEditDialogSlot(OpenType, Car&)));
@@ -86,6 +89,16 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
      */
     connect(mCarEditDialog, SIGNAL(updateCarItemSignal(Car&)),
             this, SLOT(updateCarItemSlot(Car&)));
+    /**
+     * @brief 编辑条目
+     */
+    connect(mActEdit, SIGNAL(triggered()),
+            this, SLOT(editCarItemSlot()));
+    /**
+     * @brief 删除条目
+     */
+    connect(mActDelete, SIGNAL(triggered()),
+            this, SLOT(deleteCarItemSlot()));
 }
 
 CarManagermentWidget::~CarManagermentWidget()
@@ -172,10 +185,48 @@ CarManagermentWidget::addCarSlot()
 }
 
 void
-CarManagermentWidget::cellDoubleClickedSlot(const QModelIndex &index)
+CarManagermentWidget::editRowEvent(int row)
 {
     Car car;
-//    emit openCarEditDialogSignal(CREATEITEM, car);
+    QString number = mModel->index(row, 0).data().toString();
+    if (mDb->getCarInNumber(number, car)) {
+        ALOGE("getClientInNumber failed, sql err = %s", mDb->lastError());
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("未知错误,无法查看该项.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+        return;
+    }
+
+    emit openCarEditDialogSignal(SHOWITEM, car);
+}
+
+void
+CarManagermentWidget::cellDoubleClickedSlot(const QModelIndex &index)
+{
+    editRowEvent(index.row());
+}
+
+void
+CarManagermentWidget::editCarItemSlot()
+{
+    if (curRow < 0) {
+        QMessageBox::information(this,
+                                 tr("温馨提示"),
+                                 tr("请选择要编辑条目.\n"),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    editRowEvent(curRow);
+}
+
+void
+CarManagermentWidget::on_carTableView_clicked(const QModelIndex &index)
+{
+    curRow = index.row();
 }
 
 void
@@ -261,6 +312,95 @@ void
 CarManagermentWidget::updateCarItemSlot(Car &car)
 {
     ALOGD("%s enter", __FUNCTION__);
-//    mModel->setData(mModel->index(curRow, 0),
-//                    car.number);
+    mModel->setData(mModel->index(curRow, 0),
+                    car.number);
+    mModel->setData(mModel->index(curRow, 1),
+                    car.getPumpTypeStr(car.pumptype));
+    mModel->setData(mModel->index(curRow, 2),
+                    QString("%1").arg(car.pumpedSquare));
+    mModel->setData(mModel->index(curRow, 3),
+                    QString("%1").arg(car.pumpedTimes));
+    mModel->setData(mModel->index(curRow, 4),
+                    QString("%1").arg(car.milage));
+    mModel->setData(mModel->index(curRow, 5),
+                    car.carBrand);
+    mModel->setData(mModel->index(curRow, 6),
+                    car.chassisBrand);
+    mModel->setData(mModel->index(curRow, 7),
+                    car.drivingLicenseDate.toString("yyyy-MM-dd"));
+    mModel->setData(mModel->index(curRow, 8),
+                    car.fuelCarNumber);
+    mModel->setData(mModel->index(curRow, 9),
+                    car.frameNumber);
+    mModel->setData(mModel->index(curRow, 10),
+                    car.identificationNumber);
+    mModel->setData(mModel->index(curRow, 11),
+                    car.productNumber);
+    mModel->setData(mModel->index(curRow, 12),
+                    car.insuranceCardNumber);
+    mModel->setData(mModel->index(curRow, 13),
+                    car.engineNumber);
+    mModel->setData(mModel->index(curRow, 14),
+                    QString("%1").arg(car.worth));
+    mModel->setData(mModel->index(curRow, 15),
+                    QString("%1").arg(car.enginePower));
+    mModel->setData(mModel->index(curRow, 16),
+                    QString("%1").arg(car.maxDeliverySizes));
+    mModel->setData(mModel->index(curRow, 17),
+                    QString("%1").arg(car.maxOutputPressure));
+    mModel->setData(mModel->index(curRow, 18),
+                    car.dimensions);
+    mModel->setData(mModel->index(curRow, 19),
+                    QString("%1").arg(car.boomVerticalLen));
+    mModel->setData(mModel->index(curRow, 20),
+                    QString("%1").arg(car.boomHorizontalLen));
+    mModel->setData(mModel->index(curRow, 21),
+                    QString("%1").arg(car.totalWeight));
+    mModel->setData(mModel->index(curRow, 22),
+                    QString("%1").arg(car.equipmentWeight));
+    mModel->setData(mModel->index(curRow, 23),
+                    car.productionDate.toString("yyyy-MM-dd"));
+    mModel->setData(mModel->index(curRow, 24),
+                    car.factoryCode);
+    mModel->setData(mModel->index(curRow, 25),
+                    car.operator1);
+    mModel->setData(mModel->index(curRow, 26),
+                    car.operator2);
+    mModel->setData(mModel->index(curRow, 27),
+                    car.operator3);
+    mModel->setData(mModel->index(curRow, 28),
+                    car.operator4);
+    mModel->setData(mModel->index(curRow, 29),
+                    car.operator5);
+    mModel->setData(mModel->index(curRow, 30),
+                    car.remarks);
+}
+
+void
+CarManagermentWidget::deleteCarItemSlot()
+{
+    if (curRow < 0) {
+        QMessageBox::warning(this,
+                             tr("温馨提示"),
+                             tr("请选择要删除条目.\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+        return;
+    }
+
+    int ret = QMessageBox::warning(this,
+                                   tr("温馨提示"),
+                                   tr("确定要删除该条目吗？.\n"),
+                                   QMessageBox::Yes |
+                                   QMessageBox::No,
+                                   QMessageBox::No);
+    if (ret == QMessageBox::No)
+        return;
+
+    QString number = "";
+    number = mModel->index(curRow, 0).data().toString();
+    if (!mDb->deleteCarDataInNumber(number)) {
+        ALOGD("%s, delete ok", __FUNCTION__);
+        mModel->removeRow(curRow);
+    }
 }

@@ -11,6 +11,7 @@ class InsuranceDialog;
 class CarAnnualDialog;
 class TableModel;
 class Car;
+class DataBase;
 
 namespace Ui {
 class CarManagermentWidget;
@@ -38,6 +39,18 @@ private slots:
      * @brief 更新表格条目
      */
     void            updateCarItemSlot(Car &car);
+    /**
+     * @brief 单击表格
+     */
+    void            on_carTableView_clicked(const QModelIndex &index);
+    /**
+     * @brief 编辑条目
+     */
+    void            editCarItemSlot();
+    /**
+     * @brief 删除条目
+     */
+    void            deleteCarItemSlot();
 
 signals:
     void            openCarEditDialogSignal(OpenType type,
@@ -52,6 +65,10 @@ private:
      * @brief 初始化界面
      */
     void            initView();
+    /**
+     * @brief 编辑条目
+     */
+    void            editRowEvent(int row);
 
     Ui::CarManagermentWidget *ui;
     QToolBar        *mToolBar;
@@ -72,6 +89,9 @@ private:
     QAction         *mActAnnual;
 
     TableModel*     mModel;
+    DataBase*       mDb;
+
+    int             curRow;
 };
 
 #endif // CARMANAGERMENT_H

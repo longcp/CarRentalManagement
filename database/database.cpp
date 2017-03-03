@@ -366,6 +366,8 @@ DataBase::updateClientTableItem(Client &client)
 int
 DataBase::clearClientTable()
 {
+    QMutexLocker locker(pmMutex);
+
     QSqlQuery *query = getDataBaseQuery();
     if (!query) {
         exit (GET_DATABASE_FAIL);
@@ -815,10 +817,79 @@ DataBase::getAllCarData(QList<Car> &cars)
     return SUCCESS;
 }
 
+int
+DataBase::getCarInNumber(QString number, Car &car)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM car WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGE("[%s]: select car table failed!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    if (query->next()) {
+        car.number = query->value(0).toString();
+        car.carNumber = query->value(1).toString();
+        car.bankAccount = query->value(2).toString();
+        car.owner = query->value(3).toString();
+        car.carBrand = query->value(4).toString();
+        car.chassisBrand = query->value(5).toString();
+        car.fuelCarNumber = query->value(6).toString();
+        car.frameNumber = query->value(7).toString();
+        car.identificationNumber = query->value(8).toString();
+        car.productNumber = query->value(9).toString();
+        car.insuranceCardNumber = query->value(10).toString();
+        car.engineNumber = query->value(11).toString();
+        car.dimensions = query->value(12).toString();
+        car.factoryCode = query->value(13).toString();
+        car.operator1 = query->value(14).toString();
+        car.operator2 = query->value(15).toString();
+        car.operator3 = query->value(16).toString();
+        car.operator4 = query->value(17).toString();
+        car.operator5 = query->value(18).toString();
+        car.remarks = query->value(19).toString();
+        car.creator = query->value(20).toString();
+
+        car.productionDate = QDate::fromString(query->value(21).toString(),
+                                               "yyyy-MM-dd");
+        car.drivingLicenseDate = QDate::fromString(query->value(22).toString(),
+                                                   "yyyy-MM-dd");
+        car.createDate = QDate::fromString(query->value(23).toString(),
+                                           "yyyy-MM-dd");
+
+        car.pumpedSquare = query->value(24).toFloat();
+        car.pumpedTimes = query->value(25).toFloat();
+        car.milage = query->value(26).toFloat();
+        car.worth = query->value(27).toFloat();
+        car.enginePower = query->value(28).toFloat();
+        car.maxDeliverySizes = query->value(29).toFloat();
+        car.maxOutputPressure = query->value(30).toFloat();
+        car.boomVerticalLen = query->value(31).toFloat();
+        car.boomHorizontalLen = query->value(32).toFloat();
+        car.totalWeight = query->value(33).toFloat();
+        car.equipmentWeight = query->value(34).toFloat();
+
+        car.pumptype = car.getPumpType(query->value(35).toInt());
+
+        return SUCCESS;
+    }
+
+    return DATABASE_ITEM_NOT_EXIST;
+}
 
 int
 DataBase::clearCarTable()
 {
+    QMutexLocker locker(pmMutex);
+
     QSqlQuery *query = getDataBaseQuery();
     if (!query) {
         exit (GET_DATABASE_FAIL);
