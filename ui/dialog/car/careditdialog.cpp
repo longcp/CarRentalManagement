@@ -656,18 +656,18 @@ CarEditDialog::setMode(bool mode)
     ui->frameNumberLE->setEnabled(mode);
     ui->identificationNumberLE->setEnabled(mode);
     ui->engineNumberLE->setEnabled(mode);
-    ui->worthLE->setEnabled(mode);
+    ui->worthDSB->setEnabled(mode);
     ui->insuranceCardNumberLE->setEnabled(mode);
     ui->factoryCodeLE->setEnabled(mode);
     ui->productNumberLE->setEnabled(mode);
-    ui->enginePowerLE->setEnabled(mode);
-    ui->maxDeliverySizesLE->setEnabled(mode);
-    ui->maxOutputPressureLE->setEnabled(mode);
+    ui->enginePowerDSB->setEnabled(mode);
+    ui->maxDeliverySizesDSB->setEnabled(mode);
+    ui->maxOutputPressureDSB->setEnabled(mode);
     ui->dimensionsLE->setEnabled(mode);
-    ui->boomVerticalLenLE->setEnabled(mode);
-    ui->boomHorizontalLenLE->setEnabled(mode);
-    ui->totalWeightLE->setEnabled(mode);
-    ui->equipmentWeightLE->setEnabled(mode);
+    ui->boomVerticalLenDSB->setEnabled(mode);
+    ui->boomHorizontalLenDSB->setEnabled(mode);
+    ui->totalWeightDSB->setEnabled(mode);
+    ui->equipmentWeightDSB->setEnabled(mode);
     ui->productDateDE->setEnabled(mode);
     ui->operator1LE->setEnabled(mode);
     ui->operator2LE->setEnabled(mode);
@@ -675,9 +675,9 @@ CarEditDialog::setMode(bool mode)
     ui->operator4LE->setEnabled(mode);
     ui->operator5LE->setEnabled(mode);
     ui->remarksTextEdit->setEnabled(mode);
-    ui->pumpedSquareLE->setEnabled(mode);
-    ui->pumpedTimesLE->setEnabled(mode);
-    ui->milageLE->setEnabled(mode);
+    ui->pumpedSquareDSB->setEnabled(mode);
+    ui->pumpedTimesDSB->setEnabled(mode);
+    ui->milageDSB->setEnabled(mode);
     ui->creatorLE->setEnabled(mode);
     ui->createDateDE->setEnabled(mode);
 }
@@ -713,17 +713,17 @@ CarEditDialog::setView(Car &car)
     ui->remarksTextEdit->setText(car.remarks);
     ui->creatorLE->setText(car.creator);
 
-    ui->pumpedSquareLE->setText(QString::number(car.pumpedSquare));
-    ui->pumpedTimesLE->setText(QString::number(car.pumpedTimes));
-    ui->milageLE->setText(QString::number(car.milage));
-    ui->worthLE->setText(QString::number(car.worth));
-    ui->enginePowerLE->setText(QString::number(car.enginePower));
-    ui->maxDeliverySizesLE->setText(QString::number(car.maxDeliverySizes));
-    ui->maxOutputPressureLE->setText(QString::number(car.maxOutputPressure));
-    ui->boomVerticalLenLE->setText(QString::number(car.boomVerticalLen));
-    ui->boomHorizontalLenLE->setText(QString::number(car.boomHorizontalLen));
-    ui->totalWeightLE->setText(QString::number(car.totalWeight));
-    ui->equipmentWeightLE->setText(QString::number(car.equipmentWeight));
+    ui->pumpedSquareDSB->setValue(car.pumpedSquare);
+    ui->pumpedTimesDSB->setValue(car.pumpedTimes);
+    ui->milageDSB->setValue(car.milage);
+    ui->worthDSB->setValue(car.worth);
+    ui->enginePowerDSB->setValue(car.enginePower);
+    ui->maxDeliverySizesDSB->setValue(car.maxDeliverySizes);
+    ui->maxOutputPressureDSB->setValue(car.maxOutputPressure);
+    ui->boomVerticalLenDSB->setValue(car.boomVerticalLen);
+    ui->boomHorizontalLenDSB->setValue(car.boomHorizontalLen);
+    ui->totalWeightDSB->setValue(car.totalWeight);
+    ui->equipmentWeightDSB->setValue(car.equipmentWeight);
 
     ui->drivingLicenseDateDE->setDate(car.drivingLicenseDate);
     ui->productDateDE->setDate(car.productionDate);
@@ -838,18 +838,18 @@ CarEditDialog::isModified()
             ui->frameNumberLE->isModified() ||
             ui->identificationNumberLE->isModified() ||
             ui->engineNumberLE->isModified() ||
-            ui->worthLE->isModified() ||
+            ui->worthDSB->isWindowModified() ||
             ui->insuranceCardNumberLE->isModified() ||
             ui->factoryCodeLE->isModified() ||
             ui->productNumberLE->isModified() ||
-            ui->enginePowerLE->isModified() ||
-            ui->maxDeliverySizesLE->isModified() ||
-            ui->maxOutputPressureLE->isModified() ||
+            ui->enginePowerDSB->isWindowModified() ||
+            ui->maxDeliverySizesDSB->isWindowModified() ||
+            ui->maxOutputPressureDSB->isWindowModified() ||
             ui->dimensionsLE->isModified() ||
-            ui->boomVerticalLenLE->isModified() ||
-            ui->boomHorizontalLenLE->isModified() ||
-            ui->totalWeightLE->isModified() ||
-            ui->equipmentWeightLE->isModified() ||
+            ui->boomVerticalLenDSB->isWindowModified() ||
+            ui->boomHorizontalLenDSB->isWindowModified() ||
+            ui->totalWeightDSB->isWindowModified() ||
+            ui->equipmentWeightDSB->isWindowModified() ||
             ui->productDateDE->isWindowModified() ||
             ui->operator1LE->isModified() ||
             ui->operator2LE->isModified() ||
@@ -857,9 +857,9 @@ CarEditDialog::isModified()
             ui->operator4LE->isModified() ||
             ui->operator5LE->isModified() ||
             ui->remarksTextEdit->isWindowModified() ||
-            ui->pumpedSquareLE->isModified() ||
-            ui->pumpedTimesLE->isModified() ||
-            ui->milageLE->isModified() ||
+            ui->pumpedSquareDSB->isWindowModified() ||
+            ui->pumpedTimesDSB->isWindowModified() ||
+            ui->milageDSB->isWindowModified() ||
             ui->creatorLE->isModified() ||
             ui->createDateDE->isWindowModified()) {
         ALOGE("is modified!!!");
@@ -920,17 +920,18 @@ CarEditDialog::cleanContent()
     ui->remarksTextEdit->setText("");
     ui->creatorLE->setText("");
 
-    ui->pumpedSquareLE->setText("");
-    ui->pumpedTimesLE->setText("");
-    ui->milageLE->setText("");
-    ui->worthLE->setText("");
-    ui->enginePowerLE->setText("");
-    ui->maxDeliverySizesLE->setText("");
-    ui->maxOutputPressureLE->setText("");
-    ui->boomVerticalLenLE->setText("");
-    ui->boomHorizontalLenLE->setText("");
-    ui->totalWeightLE->setText("");
-    ui->equipmentWeightLE->setText("");
+    ui->pumpedSquareDSB->setValue(0);
+    ui->pumpedSquareDSB->setValue(0);
+    ui->pumpedTimesDSB->setValue(0);
+    ui->milageDSB->setValue(0);
+    ui->worthDSB->setValue(0);
+    ui->enginePowerDSB->setValue(0);
+    ui->maxDeliverySizesDSB->setValue(0);
+    ui->maxOutputPressureDSB->setValue(0);
+    ui->boomVerticalLenDSB->setValue(0);
+    ui->boomHorizontalLenDSB->setValue(0);
+    ui->totalWeightDSB->setValue(0);
+    ui->equipmentWeightDSB->setValue(0);
 }
 
 void
