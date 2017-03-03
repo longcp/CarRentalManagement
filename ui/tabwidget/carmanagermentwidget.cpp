@@ -154,6 +154,28 @@ CarManagermentWidget::initView()
     ui->carTableView->setColumnWidth(20, 200);
     ui->carTableView->setColumnWidth(21, 200);
     ui->carTableView->setColumnWidth(22, 200);
+
+    initTableView();
+}
+
+void
+CarManagermentWidget::initTableView()
+{
+    int size;
+
+    Car car;
+    QList<Car> cars;
+
+    if (!mDb->getAllCarData(cars)) {
+        if (cars.isEmpty())
+            return;
+
+        size = cars.size();
+        for (int i = 0; i < size; i++) {
+            car = cars.at(i);
+            addCarItemSlot(car);
+        }
+    }
 }
 
 void

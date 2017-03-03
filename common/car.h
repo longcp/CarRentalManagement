@@ -188,6 +188,7 @@ public:
      */
     PumpType        getPumpType(QString typeStr);
     PumpType        getPumpType(int type);
+    void            dump();
 
     QString         number;
     QString         carNumber;

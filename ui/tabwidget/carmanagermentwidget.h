@@ -69,6 +69,10 @@ private:
      * @brief 编辑条目
      */
     void            editRowEvent(int row);
+    /**
+     * @brief 初始化数据到表中
+     */
+    void            initTableView();
 
     Ui::CarManagermentWidget *ui;
     QToolBar        *mToolBar;

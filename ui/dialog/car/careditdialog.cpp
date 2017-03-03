@@ -967,6 +967,13 @@ CarEditDialog::saveUiContent(Car &car)
     car.remarks = ui->remarksTextEdit->toPlainText();
     car.creator = ui->creatorLE->text();
 
+    car.drivingLicenseDate = QDate::fromString(
+                ui->drivingLicenseDateDE->text(), "yyyy-MM-dd");
+    car.productionDate = QDate::fromString(
+                ui->productDateDE->text(), "yyyy-MM-dd");
+    car.createDate = QDate::fromString(
+                ui->createDateDE->text(), "yyyy-MM-dd");
+
     car.pumpedSquare = ui->pumpedSquareDSB->value();
     car.pumpedTimes = ui->pumpedTimesDSB->value();
     car.milage = ui->milageDSB->value();

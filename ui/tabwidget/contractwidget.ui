@@ -96,22 +96,22 @@
         </property>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>全部项目</string>
          </property>
         </column>
         <item>
          <property name="text">
-          <string>新建项目</string>
+          <string>项目1</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>新建项目</string>
+          <string>项目2</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>新建项目</string>
+          <string>项目3</string>
          </property>
         </item>
        </widget>

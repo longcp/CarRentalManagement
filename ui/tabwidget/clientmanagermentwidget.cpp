@@ -142,7 +142,6 @@ ClientManagermentWidget::initTableView()
 {
     int i, ret, size;
     QList<Client>clients;
-    QList<Client>::iterator c;
     Client client;
 
     ret = mDb->getAllClientData(clients);
