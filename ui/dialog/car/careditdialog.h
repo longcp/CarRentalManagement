@@ -66,6 +66,10 @@ private slots:
      */
     void            cancelEvent();
 
+signals:
+    void            addCarItemSignal(Car &car);
+    void            updateCarItemSignal(Car &car);
+
 private:
     void            initView();
     /**
@@ -112,6 +116,10 @@ private:
      * @brief 设置查看模式
      */
     void            setViewMode();
+    /**
+     * @brief 重置界面
+     */
+    void            resetView(Car &car);
     /**
      * @brief 重置界面
      */

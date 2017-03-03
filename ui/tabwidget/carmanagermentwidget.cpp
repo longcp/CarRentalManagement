@@ -76,6 +76,16 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
      */
     connect(mActAnnual, SIGNAL(triggered()),
             mCarAnnualDialog, SLOT(openWindow()));
+    /**
+     * @brief 增加条目
+     */
+    connect(mCarEditDialog, SIGNAL(addCarItemSignal(Car &)),
+            this, SLOT(addCarItemSlot(Car&)));
+    /**
+     * @brief 更新条目
+     */
+    connect(mCarEditDialog, SIGNAL(updateCarItemSignal(Car&)),
+            this, SLOT(updateCarItemSlot(Car&)));
 }
 
 CarManagermentWidget::~CarManagermentWidget()
@@ -170,4 +180,16 @@ CarManagermentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 {
     Car car;
 //    emit openCarEditDialogSignal(CREATEITEM, car);
+}
+
+void
+CarManagermentWidget::addCarItemSlot(Car &car)
+{
+    ALOGD("%s enter", __FUNCTION__);
+}
+
+void
+CarManagermentWidget::updateCarItemSlot(Car &car)
+{
+    ALOGD("%s enter", __FUNCTION__);
 }

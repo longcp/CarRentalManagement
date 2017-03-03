@@ -786,9 +786,38 @@ CarEditDialog::saveAndExitEvent()
 
     if (mOpenType == CREATEITEM) {
         // 插入数据库,更新到界面
-//        ret =
+        if(!mDb->insertCarTable(car)) {
+            resetView(car);
+            emit addCarItemSignal(car);
+            QMessageBox::information(this,
+                                     tr("温馨提示"),
+                                     tr("添加成功.\n"),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+        } else {
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("添加失败!未知错误.\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+            return;
+        }
     } else {
         // 更新到数据库
+        if (!mDb->updateCarTableData(car)) {
+            ret = QMessageBox::information(this,
+                                           tr("温馨提示"),
+                                           tr("已保存.\n"),
+                                           QMessageBox::Ok,
+                                           QMessageBox::Ok);
+        } else {
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("保存失败!未知错误.\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+            return;
+        }
     }
 
     this->close();
@@ -930,12 +959,23 @@ CarEditDialog::saveEvent()
 
     saveUiContent(car);
     //更新数据到数据库、更新界面数据
+    if (!mDb->updateCarTableData(car)) {
+        resetView(car);
+        emit updateCarItemSignal(car);
+    } else {
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("保存失败!未知错误.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+    }
 }
 
 void
 CarEditDialog::editEvent()
 {
     setEditMode();
+    ui->numLE->setDisabled(true);
 }
 
 void
@@ -943,6 +983,13 @@ CarEditDialog::cancelEvent()
 {
     resetView();
     setViewMode();
+}
+
+void
+CarEditDialog::resetView(Car &car)
+{
+    setOriginCar(car);
+    resetView();
 }
 
 void
