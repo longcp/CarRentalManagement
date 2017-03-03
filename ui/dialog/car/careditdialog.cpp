@@ -155,6 +155,8 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         ui->productDateDE->setDate(QDate::currentDate());
         setEditMode();
         mActSave->setDisabled(true);
+        ui->mainTabWidget->removeTab(2);
+        ui->mainTabWidget->removeTab(1);
     } else {
         //已查看内容方式打开
         mActSave->setEnabled(true);
@@ -164,6 +166,8 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         setViewMode();
         setOriginCar(car);
         setView(car);
+        ui->mainTabWidget->addTab(ui->insuranceTab, "保险资料");
+        ui->mainTabWidget->addTab(ui->projectRecordTab, "工程记录");
     }
     ui->mainTabWidget->setCurrentIndex(0);
     ui->insuranceTabWidget->setCurrentIndex(0);
@@ -1135,4 +1139,24 @@ CarEditDialog::resetView()
         return;
 
     setView(*mOriginCar);
+}
+
+void
+CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
+{
+    ALOGD("555555555");
+    QStandardItem* num
+            = new QStandardItem(record.number);
+    QStandardItem* date
+            = new QStandardItem(record.date.toString("yyyy-MM-dd"));
+    QStandardItem* annualFee
+            = new QStandardItem(QString("%1").arg(record.annualFee));
+    QStandardItem* travelExpenses
+            = new QStandardItem(QString("%1").arg(record.travelExpenses));
+    QStandardItem* remarks
+            = new QStandardItem(QString("%1").arg(record.remarks));
+
+    QList<QStandardItem*> items;
+    items << num << date << annualFee << travelExpenses << remarks;
+    mAnnualModel->appendRow(items);
 }

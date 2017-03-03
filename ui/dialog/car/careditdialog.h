@@ -65,6 +65,10 @@ private slots:
      * @brief 取消事件
      */
     void            cancelEvent();
+    /**
+     * @brief 添加年费条目
+     */
+    void            addAnnualItemSlot(ANNUALFEE_RECORD &record);
 
 signals:
     void            addCarItemSignal(Car &car);

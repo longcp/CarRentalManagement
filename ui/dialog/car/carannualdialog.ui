@@ -157,7 +157,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextBrowser" name="remarksTextBrowser"/>
+       <widget class="QTextEdit" name="textEdit"/>
       </item>
      </layout>
     </widget>

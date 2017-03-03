@@ -25,6 +25,13 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("车辆档案");
     mDb = DataBase::getInstance();
+
+    /**
+     * @brief 添加年费条目，在initview以前先建立槽，否则会收不到
+     */
+    connect(this, SIGNAL(addAnnualItemSig(ANNUALFEE_RECORD &)),
+            mCarEditDialog, SLOT(addAnnualItemSlot(ANNUALFEE_RECORD &)));
+
     initView();
 
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
@@ -99,6 +106,11 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
      */
     connect(mActDelete, SIGNAL(triggered()),
             this, SLOT(deleteCarItemSlot()));
+    /**
+     * @brief 添加年费条目
+     */
+    connect(mCarAnnualDialog, SIGNAL(addAnnualItemSignal(ANNUALFEE_RECORD &)),
+            mCarEditDialog, SLOT(addAnnualItemSlot(ANNUALFEE_RECORD &)));
 }
 
 CarManagermentWidget::~CarManagermentWidget()
@@ -176,6 +188,47 @@ CarManagermentWidget::initTableView()
             addCarItemSlot(car);
         }
     }
+
+    initAnnualTableView();
+    initInsuranceTableView();
+    initBusinessInsuanceTableView();
+    initProjectTableView();
+}
+
+void
+CarManagermentWidget::initAnnualTableView()
+{
+    int size;
+    ANNUALFEE_RECORD record;
+    QList<ANNUALFEE_RECORD> records;
+
+    if (!mDb->getAllAnnualData(records)) {
+        if (!records.isEmpty()) {
+            size = records.size();
+            for (int i = 0; i < size; i++) {
+                record = records.at(i);
+                emit addAnnualItemSig(record);
+            }
+        }
+    }
+}
+
+void
+CarManagermentWidget::initInsuranceTableView()
+{
+
+}
+
+void
+CarManagermentWidget::initBusinessInsuanceTableView()
+{
+
+}
+
+void
+CarManagermentWidget::initProjectTableView()
+{
+
 }
 
 void

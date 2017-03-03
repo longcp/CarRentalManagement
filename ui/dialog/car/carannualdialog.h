@@ -2,6 +2,7 @@
 #define CARANNUALDIALOG_H
 
 #include <QDialog>
+#include <datatype.h>
 
 class DataBase;
 
@@ -24,7 +25,11 @@ private slots:
 
     void        on_cancelBtn_clicked();
 
+signals:
+    void        addAnnualItemSignal(ANNUALFEE_RECORD &record);
+
 private:
+    void        closeEvent(QCloseEvent *event);
     void        clean();
 
     DataBase*   mDb;

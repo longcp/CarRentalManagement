@@ -3,8 +3,10 @@
 #include <QDate>
 #include <database/database.h>
 #include <car.h>
+#include <datatype.h>
+#include <QMessageBox>
 
-#define LOG_TAG                 "CAR_EDIT_DIALOG"
+#define LOG_TAG                 "ANNUAL_DIALOG"
 #include "utils/Log.h"
 
 CarAnnualDialog::CarAnnualDialog(QWidget *parent) :
@@ -60,6 +62,27 @@ CarAnnualDialog::openWindow()
 void
 CarAnnualDialog::on_ensureBtn_clicked()
 {
+    ANNUALFEE_RECORD record;
+    record.number = ui->numberLabel->text();
+    record.carNumber = ui->carNumComboBox->currentText();
+    record.remarks = ui->textEdit->toPlainText();
+    record.annualFee = ui->annualFeeDoubleSpinBox->value();
+    record.travelExpenses = ui->travelExpensesDoubleSpinBox->value();
+    record.date = QDate::fromString(ui->dateDateEdit->text(), "yyyy-MM-dd");
+    if (!mDb->insertAnnualTable(record)) {
+        QMessageBox::information(this,
+                                 tr("温馨提示"),
+                                 tr("添加成功!\n"),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+        emit addAnnualItemSignal(record);
+    } else {
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("添加失败!未知错误.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+    }
     clean();
     this->close();
 }
@@ -72,10 +95,17 @@ CarAnnualDialog::on_cancelBtn_clicked()
 }
 
 void
+CarAnnualDialog::closeEvent(QCloseEvent *event)
+{
+    clean();
+}
+
+void
 CarAnnualDialog::clean()
 {
+    ALOGD("%s", __FUNCTION__);
     ui->annualFeeDoubleSpinBox->setValue(0);
     ui->travelExpensesDoubleSpinBox->setValue(0);
-    ui->remarksTextBrowser->setText("");
+    ui->textEdit->setText("");
     ui->carNumComboBox->clear();
 }
