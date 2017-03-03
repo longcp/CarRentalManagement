@@ -111,7 +111,6 @@ ClientManagermentWidget::initView()
     ui->clientTableView->setModel(mModel);
     mModel->setHorizontalHeaderLabels(headerList);
 
-
     //设置单元格不可编辑,单击选中一行且只能选中一行
     ui->clientTableView->setEditTriggers(
                 QAbstractItemView::NoEditTriggers);
@@ -119,6 +118,8 @@ ClientManagermentWidget::initView()
                 QAbstractItemView::SelectRows);
     ui->clientTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
+    ui->clientTableView->horizontalHeader()
+            ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 
     ui->typeWidget->setStyleSheet("background-color: "
                                   "rgb(234,234,234);color:rgb(0,0,0);");
@@ -186,8 +187,7 @@ void
 ClientManagermentWidget::editRowEvent(int row)
 {
     Client client;
-    QString clientNum = ui->clientTableView->model()
-            ->index(curRow, 0).data().toString();
+    QString clientNum = mModel->index(curRow, 0).data().toString();
     if (mDb->getClientInNumber(clientNum, client)) {
         ALOGE("getClientInNumber failed, sql err = %s", mDb->lastError());
         QMessageBox::critical(this,
@@ -273,45 +273,32 @@ void
 ClientManagermentWidget::updateClientItemSlog(Client &client)
 {
     ALOGD("%s enter", __FUNCTION__);
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 0),
-                client.number);
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 1),
-                client.getClientTypeStr(client.clienttype));
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 2),
-                client.name);
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 3),
-                client.address);
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 4),
-                client.telephone);
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 5),
-                client.fax);
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 6),
-                client.contract);
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 7),
-                client.getPayTypeStr(client.paytype));
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 8),
-                QString::number(client.monthly));
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 9),
-                QString("%1").arg(client.amount));
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 10),
-                QString("%1").arg(client.paid));
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 11),
-                QString("%1").arg(client.amount - client.paid));
-    ui->clientTableView->model()->setData(
-                ui->clientTableView->model()->index(curRow, 12),
-                client.remarks);
+    mModel->setData(mModel->index(curRow, 0),
+                    client.number);
+    mModel->setData(mModel->index(curRow, 1),
+                    client.getClientTypeStr(client.clienttype));
+    mModel->setData(mModel->index(curRow, 2),
+                    client.name);
+    mModel->setData(mModel->index(curRow, 3),
+                    client.address);
+    mModel->setData(mModel->index(curRow, 4),
+                    client.telephone);
+    mModel->setData(mModel->index(curRow, 5),
+                    client.fax);
+    mModel->setData(mModel->index(curRow, 6),
+                    client.contract);
+    mModel->setData(mModel->index(curRow, 7),
+                    client.getPayTypeStr(client.paytype));
+    mModel->setData(mModel->index(curRow, 8),
+                    QString::number(client.monthly));
+    mModel->setData(mModel->index(curRow, 9),
+                    QString("%1").arg(client.amount));
+    mModel->setData(mModel->index(curRow, 10),
+                    QString("%1").arg(client.paid));
+    mModel->setData(mModel->index(curRow, 11),
+                    QString("%1").arg(client.amount - client.paid));
+    mModel->setData(mModel->index(curRow, 12),
+                    client.remarks);
 }
 
 void
@@ -336,10 +323,10 @@ ClientManagermentWidget::deleteClientItemSlog()
         return;
 
     QString number = "";
-    number = ui->clientTableView->model()->index(curRow, 0).data().toString();
+    number = mModel->index(curRow, 0).data().toString();
     if (!mDb->deleteClientInNumber(number)) {
         ALOGD("%s, delete ok", __FUNCTION__);
-        ui->clientTableView->model()->removeRow(curRow);
+        mModel->removeRow(curRow);
     }
 }
 

@@ -921,7 +921,6 @@ CarEditDialog::cleanContent()
     ui->creatorLE->setText("");
 
     ui->pumpedSquareDSB->setValue(0);
-    ui->pumpedSquareDSB->setValue(0);
     ui->pumpedTimesDSB->setValue(0);
     ui->milageDSB->setValue(0);
     ui->worthDSB->setValue(0);
@@ -944,13 +943,123 @@ CarEditDialog::closeDialog()
 void
 CarEditDialog::saveUiContent(Car &car)
 {
+    bool ok;
 
+    car.number = ui->numLE->text();
+    car.owner = ui->ownerLE->text();
+    car.bankAccount = ui->bankAccountLE->text();
+    car.carNumber = ui->carNumberLE->text();
+    car.carBrand = ui->carBrandLE->text();
+    car.chassisBrand = ui->chassisBrandLE->text();
+    car.fuelCarNumber = ui->fuelCarNumberLE->text();
+    car.frameNumber = ui->frameNumberLE->text();
+    car.identificationNumber = ui->identificationNumberLE->text();
+    car.engineNumber = ui->engineNumberLE->text();
+    car.insuranceCardNumber = ui->insuranceCardNumberLE->text();
+    car.factoryCode = ui->factoryCodeLE->text();
+    car.productNumber = ui->productNumberLE->text();
+    car.dimensions = ui->dimensionsLE->text();
+    car.operator1 = ui->operator1LE->text();
+    car.operator2 = ui->operator2LE->text();
+    car.operator3 = ui->operator3LE->text();
+    car.operator4 = ui->operator4LE->text();
+    car.operator5 = ui->operator5LE->text();
+    car.remarks = ui->remarksTextEdit->toPlainText();
+    car.creator = ui->creatorLE->text();
+
+    car.pumpedSquare = ui->pumpedSquareDSB->value();
+    car.pumpedTimes = ui->pumpedTimesDSB->value();
+    car.milage = ui->milageDSB->value();
+    car.worth = ui->worthDSB->value();
+    car.enginePower = ui->enginePowerDSB->value();
+    car.maxDeliverySizes = ui->maxDeliverySizesDSB->value();
+    car.maxOutputPressure = ui->maxOutputPressureDSB->value();
+    car.boomVerticalLen = ui->boomVerticalLenDSB->value();
+    car.boomHorizontalLen = ui->boomHorizontalLenDSB->value();
+    car.totalWeight = ui->totalWeightDSB->value();
+    car.equipmentWeight = ui->equipmentWeightDSB->value();
+
+    car.pumptype = car.getPumpType(ui->pumpTypeCbBox->currentText());
 }
 
 void
 CarEditDialog::dumpCar(Car &car)
 {
-    ALOGD("");
+    ALOGD("car.number = %s\n"
+          "car.owner = %s\n"
+          "car.bankAccount = %s\n"
+          "car.carNumber = %s\n"
+          "car.carBrand = %s\n"
+          "car.chassisBrand = %s\n"
+          "car.fuelCarNumber = %s\n"
+          "car.frameNumber = %s\n"
+          "car.identificationNumber = %s\n"
+          "car.engineNumber = %s\n"
+          "car.insuranceCardNumber = %s\n"
+          "car.factoryCode = %s\n"
+          "car.productNumber = %s\n"
+          "car.dimensions = %s\n"
+          "car.operator1 = %s\n"
+          "car.operator2 = %s\n"
+          "car.operator3 = %s\n"
+          "car.operator4 = %s\n"
+          "car.operator5 = %s\n"
+          "car.remarks = %s\n"
+          "car.creator = %s\n"
+          "car.pumpedSquare = %f\n"
+          "car.pumpedTimes = %f\n"
+          "car.milage = %f\n"
+          "car.worth = %f\n"
+          "car.enginePower = %f\n"
+          "car.maxDeliverySizes = %f\n"
+          "car.maxOutputPressure = %f\n"
+          "car.boomVerticalLen = %f\n"
+          "car.boomHorizontalLen = %f\n"
+          "car.totalWeight = %f\n"
+          "car.equipmentWeight = %f\n"
+          "car.pumptype = %d\n",
+          "car.pumptype = %d\n",
+          "car.pumptype = %d\n",
+          "car.pumptype = %d\n",
+          "car.drivingLicenseDate",
+          "car.createDate",
+          "car.productionDate",
+          car.number.toStdString().data(),
+          car.owner.toStdString().data(),
+          car.bankAccount.toStdString().data(),
+          car.carNumber.toStdString().data(),
+          car.carBrand.toStdString().data(),
+          car.chassisBrand.toStdString().data(),
+          car.fuelCarNumber.toStdString().data(),
+          car.frameNumber.toStdString().data(),
+          car.identificationNumber.toStdString().data(),
+          car.engineNumber.toStdString().data(),
+          car.insuranceCardNumber.toStdString().data(),
+          car.factoryCode.toStdString().data(),
+          car.productNumber.toStdString().data(),
+          car.dimensions.toStdString().data(),
+          car.operator1.toStdString().data(),
+          car.operator2.toStdString().data(),
+          car.operator3.toStdString().data(),
+          car.operator4.toStdString().data(),
+          car.operator5.toStdString().data(),
+          car.remarks.toStdString().data(),
+          car.creator.toStdString().data(),
+          car.pumpedSquare,
+          car.pumpedTimes,
+          car.milage,
+          car.worth,
+          car.enginePower,
+          car.maxDeliverySizes,
+          car.maxOutputPressure,
+          car.boomVerticalLen,
+          car.boomHorizontalLen,
+          car.totalWeight,
+          car.equipmentWeight,
+          car.pumptype,
+          car.drivingLicenseDate.toString("yyyy-MM-dd").toStdString().data(),
+          car.createDate.toString("yyyy-MM-dd").toStdString().data(),
+          car.productionDate.toString("yyyy-MM-dd").toStdString().data());
 }
 
 void

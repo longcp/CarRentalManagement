@@ -108,13 +108,9 @@ CarManagermentWidget::initView()
                << "最大理论输送量(m3/h)" << "最大理论输出压力(MPA)" << "外形尺寸"
                << "臂架垂直长度(M)" << "臂架水平长度(M)"
                << "整车总质量(KG)" << "整车装备质量(KG)"
-               << "生产日期" << "出厂日期" << "出厂编码"
-               << "是否购买保险" << "交险费" << "保险公司(交险)"
-               << "购买日期(交险)" << "是否购买商险"
-               << "商险费" << "保险公司(商险)"
-               << "购买日期(商险)" << "年费" << "车船费"
-               << "年审日期" << "操作员(1)" << "操作员(2)"
-               << "操作员(3)" << "操作员(4)" << "操作员(5)" << "备注";
+               << "生产日期" << "出厂编码"
+               << "操作员(1)" << "操作员(2)" << "操作员(3)"
+               << "操作员(4)" << "操作员(5)" << "备注";
 
     mModel = new TableModel(0, headerList.size());
     ui->carTableView->setModel(mModel);
@@ -186,10 +182,85 @@ void
 CarManagermentWidget::addCarItemSlot(Car &car)
 {
     ALOGD("%s enter", __FUNCTION__);
+    QStandardItem* number
+            = new QStandardItem(car.number);
+    QStandardItem* pumptype
+            = new QStandardItem(car.getPumpTypeStr(car.pumptype));
+    QStandardItem* pumpedSquare
+            = new QStandardItem(QString("%1").arg(car.pumpedSquare));
+    QStandardItem* pumpedTimes
+            = new QStandardItem(QString("%1").arg(car.pumpedTimes));
+    QStandardItem* milage
+            = new QStandardItem(QString("%1").arg(car.milage));
+    QStandardItem* carBrand
+            = new QStandardItem(car.carBrand);
+    QStandardItem* chassisBrand
+            = new QStandardItem(car.chassisBrand);
+    QStandardItem* drivingLicenseDate
+            = new QStandardItem(car.drivingLicenseDate.toString("yyyy-MM-dd"));
+    QStandardItem* fuelCarNumber
+            = new QStandardItem(car.fuelCarNumber);
+    QStandardItem* frameNumber
+            = new QStandardItem(car.frameNumber);
+    QStandardItem* identificationNumber
+            = new QStandardItem(car.identificationNumber);
+    QStandardItem* productNumber
+            = new QStandardItem(car.productNumber);
+    QStandardItem* insuranceCardNumber
+            = new QStandardItem(car.insuranceCardNumber);
+    QStandardItem* engineNumber
+            = new QStandardItem(car.engineNumber);
+    QStandardItem* worth
+            = new QStandardItem(QString("%1").arg(car.worth));
+    QStandardItem* enginePower
+            = new QStandardItem(QString("%1").arg(car.enginePower));
+    QStandardItem* maxDeliverySizes
+            = new QStandardItem(QString("%1").arg(car.maxDeliverySizes));
+    QStandardItem* maxOutputPressure
+            = new QStandardItem(QString("%1").arg(car.maxOutputPressure));
+    QStandardItem* dimensions
+            = new QStandardItem(car.dimensions);
+    QStandardItem* boomVerticalLen
+            = new QStandardItem(QString("%1").arg(car.boomVerticalLen));
+    QStandardItem* boomHorizontalLen
+            = new QStandardItem(QString("%1").arg(car.boomHorizontalLen));
+    QStandardItem* totalWeight
+            = new QStandardItem(QString("%1").arg(car.totalWeight));
+    QStandardItem* equipmentWeight
+            = new QStandardItem(QString("%1").arg(car.equipmentWeight));
+    QStandardItem* productionDate
+            = new QStandardItem(car.productionDate.toString("yyyy-MM-dd"));
+    QStandardItem* factoryCode
+            = new QStandardItem(car.factoryCode);
+    QStandardItem* operator1
+            = new QStandardItem(car.operator1);
+    QStandardItem* operator2
+            = new QStandardItem(car.operator2);
+    QStandardItem* operator3
+            = new QStandardItem(car.operator3);
+    QStandardItem* operator4
+            = new QStandardItem(car.operator4);
+    QStandardItem* operator5
+            = new QStandardItem(car.operator5);
+    QStandardItem* remarks
+            = new QStandardItem(car.remarks);
+
+    QList<QStandardItem*> items;
+    items << number << pumptype << pumpedSquare << pumpedTimes << milage
+          << carBrand << chassisBrand << drivingLicenseDate << fuelCarNumber
+          << frameNumber << identificationNumber << productNumber << insuranceCardNumber
+          << engineNumber << worth << enginePower << maxDeliverySizes
+          << maxOutputPressure << dimensions << boomVerticalLen << boomHorizontalLen
+          << totalWeight << equipmentWeight << productionDate << factoryCode
+          << operator1 << operator2 << operator3 << operator4
+          << operator5 << remarks;
+    mModel->appendRow(items);
 }
 
 void
 CarManagermentWidget::updateCarItemSlot(Car &car)
 {
     ALOGD("%s enter", __FUNCTION__);
+//    mModel->setData(mModel->index(curRow, 0),
+//                    car.number);
 }
