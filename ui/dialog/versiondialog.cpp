@@ -5,7 +5,7 @@
 #include <QDebug>
 
 #define APP_NAME    "CarRentalManagement"
-#define VERSION_CODE    " v0.10"
+#define VERSION_CODE    " v0.11"
 
 #define TITLE_TEXT  tr(APP_NAME).append(VERSION_CODE)
 
