@@ -70,7 +70,8 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/versiondialog.h \
     ui/dialog/car/carannualdialog.h \
     ui/dialog/car/careditdialog.h \
-    ui/dialog/car/insurancedialog.h
+    ui/dialog/car/insurancedialog.h \
+    utils/Log.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
