@@ -243,7 +243,7 @@ CarEditDialog::initProjectTableview()
     //设置首行标题
     QStringList headerList;
     headerList << "编号" << "日期" << "合同号" << "客户编号"
-               << "客户名称" << "工程款额" << "备注";
+               << "客户名称" << "工程款额" << "备注" << "签单号";
 
     mProjectModel = new TableModel(0, headerList.size());
     ui->projectTableView->setModel(mProjectModel);
@@ -277,7 +277,7 @@ CarEditDialog::initProjectTableview()
             ->setSectionResizeMode(7, QHeaderView::Fixed);
 #endif
     ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(6, QHeaderView::Stretch);
+            ->setSectionResizeMode(7, QHeaderView::Stretch);
 
     ui->projectTableView->verticalHeader()->setVisible(false);          //隐藏行表头
     ui->projectTableView->horizontalHeader()->setStyleSheet(
@@ -298,7 +298,7 @@ CarEditDialog::initProjectSumTableview()
     //设置首行标题
     QStringList headerList;
     headerList << "编号" << "日期" << "合同号" << "客户编号"
-               << "客户名称" << "工程款额" << "备注";
+               << "客户名称" << "工程款额" << "备注" << "签单号";
 
     mProjectSumModel = new TableModel(0, headerList.size());
     ui->projectSumTableView->setModel(mProjectSumModel);
@@ -338,8 +338,10 @@ CarEditDialog::initProjectSumTableview()
             = new QStandardItem("100");
     QStandardItem* a6
             = new QStandardItem("100");
+    QStandardItem* a7
+            = new QStandardItem("100");
     QList<QStandardItem*> items;
-    items << sumStr << a1 << a2 << a3 << a4 << a5 << a6;
+    items << sumStr << a1 << a2 << a3 << a4 << a5 << a6 << a7;
     mProjectSumModel->appendRow(items);
 }
 

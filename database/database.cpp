@@ -1214,11 +1214,12 @@ DataBase::insertProjectTable(PROJECT_RECORD &record)
     query->finish();
     query->prepare("INSERT INTO project_record "
                    "VALUES(:number, :carNumber, :clientNum, "
-                   ":contractNum, :clientName, :remarks, "
-                   ":date, :amount)");
+                   ":rentalDocNum, :contractNum, :clientName, "
+                   ":remarks, :date, :amount)");
     query->bindValue(":number", record.number);
     query->bindValue(":carNumber", record.carNumber);
     query->bindValue(":clientNum", record.clientNum);
+    query->bindValue(":rentalDocNum", record.rentalDocNum);
     query->bindValue(":contractNum", record.contractNum);
     query->bindValue(":clientName", record.clientName);
     query->bindValue(":remarks", record.remarks);
@@ -1256,12 +1257,13 @@ DataBase::getAllProjectData(QList<PROJECT_RECORD> &records)
         record.number = query->value(0).toString();
         record.carNumber = query->value(1).toString();
         record.clientNum = query->value(2).toString();
-        record.contractNum = query->value(3).toString();
-        record.clientName = query->value(4).toString();
-        record.remarks = query->value(5).toString();
-        record.date = QDate::fromString(query->value(6).toString(),
+        record.rentalDocNum = query->value(3).toString();
+        record.contractNum = query->value(4).toString();
+        record.clientName = query->value(5).toString();
+        record.remarks = query->value(6).toString();
+        record.date = QDate::fromString(query->value(7).toString(),
                                                "yyyy-MM-dd");
-        record.amount = query->value(7).toFloat();
+        record.amount = query->value(8).toFloat();
 
         records.push_back(record);                              //插入list
     }
