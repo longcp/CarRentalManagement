@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     ui/dialog/versiondialog.cpp \
     ui/dialog/car/carannualdialog.cpp \
     ui/dialog/car/careditdialog.cpp \
-    ui/dialog/car/insurancedialog.cpp
+    ui/dialog/car/insurancedialog.cpp \
+    ui/dialog/contracteditdialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -71,7 +72,8 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/car/carannualdialog.h \
     ui/dialog/car/careditdialog.h \
     ui/dialog/car/insurancedialog.h \
-    utils/Log.h
+    utils/Log.h \
+    ui/dialog/contracteditdialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -90,7 +92,8 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/versiondialog.ui \
     ui/dialog/car/carannualdialog.ui \
     ui/dialog/car/careditdialog.ui \
-    ui/dialog/car/insurancedialog.ui
+    ui/dialog/car/insurancedialog.ui \
+    ui/dialog/contracteditdialog.ui
 
 RESOURCES += \
     icon.qrc

@@ -424,6 +424,9 @@
         <height>21</height>
        </rect>
       </property>
+      <property name="maximum">
+       <number>31</number>
+      </property>
      </widget>
      <widget class="QLabel" name="label_17">
       <property name="geometry">
@@ -615,6 +618,9 @@
           <width>200</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

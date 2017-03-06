@@ -134,7 +134,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QDateEdit" name="dateDateEdit"/>
+       <widget class="QDateEdit" name="dateDateEdit">
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
