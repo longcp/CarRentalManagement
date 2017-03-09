@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <datatype.h>
-#include <datatype.h>
 
 class QToolBar;
 class Client;

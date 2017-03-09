@@ -2,8 +2,10 @@
 #include "ui_contractwidget.h"
 #include <QToolBar>
 #include <tablemodel.h>
+#include <contracteditdialog.h>
 
 ContractWidget::ContractWidget(QWidget *parent) :
+    mContractEditDialog(new ContractEditDialog()),
     QWidget(parent),
     ui(new Ui::ContractWidget)
 {
@@ -34,6 +36,18 @@ ContractWidget::ContractWidget(QWidget *parent) :
     mToolBar->addAction(mActExport);
 
     ui->toolBarHorizonLayout->addWidget(mToolBar);
+
+
+    /**
+     * @brief 打开编辑窗口
+     */
+    connect(mActAdd, SIGNAL(triggered()),
+            this, SLOT(addContractSlot()));
+    /**
+     * @brief 打开编辑窗口
+     */
+    connect(this, SIGNAL(openContractEditDialogSignal()),
+            mContractEditDialog, SLOT(openContractEditDialogSlot()));
 }
 
 ContractWidget::~ContractWidget()
@@ -138,4 +152,11 @@ ContractWidget::initPriceTableview()
     ui->prictTableView->resizeColumnToContents(3);                      //自动适应列宽
     ui->prictTableView->resizeColumnToContents(4);                      //自动适应列宽
 //    setPriceTableViewData();
+}
+
+void
+ContractWidget::addContractSlot()
+{
+//    Contract car;
+    emit openContractEditDialogSignal();
 }

@@ -207,7 +207,7 @@ CarEditDialog::configToolBar()
 }
 
 void
-CarEditDialog::initView()
+CarEditDialog:: initView()
 {
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");

@@ -5,6 +5,7 @@
 
 class QToolBar;
 class TableModel;
+class ContractEditDialog;
 
 namespace Ui {
 class ContractWidget;
@@ -17,6 +18,15 @@ class ContractWidget : public QWidget
 public:
     explicit ContractWidget(QWidget *parent = 0);
     ~ContractWidget();
+
+signals:
+    void            openContractEditDialogSignal();
+
+private slots:
+    /**
+     * @brief 工具栏，添加按钮
+     */
+    void            addContractSlot();
 
 private:
     /**
@@ -37,9 +47,10 @@ private:
     void            initPriceTableview();
 
     Ui::ContractWidget *ui;
-    QToolBar        *mToolBar;
+    ContractEditDialog* mContractEditDialog;
 
     // 工具栏动作
+    QToolBar        *mToolBar;
     QAction         *mActAdd;
     QAction         *mActDelete;
     QAction         *mActEdit;
