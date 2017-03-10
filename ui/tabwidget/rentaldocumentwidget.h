@@ -20,7 +20,8 @@ public:
     ~RentalDocumentWidget();
 
 private slots:
-    void            cellDoubleClickedSlot(int a,int b);
+    void            cellDoubleClickedSlot(const QModelIndex &index);
+    void            addRentalDocSlot();
 
 signals:
     void            openRentalEditDialogSignal();

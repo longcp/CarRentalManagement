@@ -178,7 +178,8 @@ ClientManagermentWidget::configToolBar()
 void
 ClientManagermentWidget::cellDoubleClickedSlot(const QModelIndex & index)
 {
-    ALOGD("%s, a = %d, b = %d", __FUNCTION__, index.column(), index.row());
+    ALOGD("%s, a = %d, b = %d", __FUNCTION__,
+          index.column(), index.row());
     editRowEvent(index.row());
 }
 

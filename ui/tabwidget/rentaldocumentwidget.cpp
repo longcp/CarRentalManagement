@@ -3,6 +3,7 @@
 #include "rentaldocumenteditdialog.h"
 #include <QToolBar>
 #include <tablemodel.h>
+#include <contract.h>
 
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
@@ -44,12 +45,17 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     ui->toolBarHorizonLayout->addWidget(mToolBar);
 
     /**
-     * @brief 单元格双击事件
+     * @brief 打开编辑窗口
      */
-//    connect(ui->docTableview, SIGNAL(cellDoubleClicked(int,int)),
-//            this, SLOT(cellDoubleClickedSlot(int,int)));
+    connect(mActAdd, SIGNAL(triggered()),
+            this, SLOT(addRentalDocSlot()));
     /**
      * @brief 单元格双击事件
+     */
+    connect(ui->docTableview, SIGNAL(doubleClicked(const QModelIndex &)),
+            this, SLOT(cellDoubleClickedSlot(const QModelIndex &)));
+    /**
+     * @brief 打开编辑窗口
      */
     connect(this, SIGNAL(openRentalEditDialogSignal()),
             mRentalDocEditDialog, SLOT(openRentalDocEditDialogSlot()));
@@ -83,9 +89,10 @@ RentalDocumentWidget::configToolBar()
 }
 
 void
-RentalDocumentWidget::cellDoubleClickedSlot(int a,int b)
+RentalDocumentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 {
-    ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
+    ALOGD("%s, a = %d, b = %d", __FUNCTION__,
+          index.column(), index.row());
     emit openRentalEditDialogSignal();
 }
 
@@ -125,4 +132,11 @@ RentalDocumentWidget::initView()
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
 //    initTableView();
+}
+
+void
+RentalDocumentWidget::addRentalDocSlot()
+{
+    Contract contract;
+    emit openRentalEditDialogSignal();
 }

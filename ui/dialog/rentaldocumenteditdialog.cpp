@@ -10,10 +10,8 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("泵送签证单");
-    this->setFixedSize(800, 650);
+//    this->setFixedSize(800, 650);
 
-    mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
-                          tr("新增"), this);
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
                           tr("保存"), this);
     mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -23,7 +21,7 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
     mActNext = new QAction(QIcon(":/menu/icon/arrow_right_64.ico"),
                           tr("下一条"), this);
     mActExit = new QAction(QIcon(":/menu/icon/exit_out_64.ico"),
-                          tr("取消"), this);
+                          tr("退出"), this);
     mActCancel = new QAction(QIcon(":/menu/icon/cancel_64.ico"),
                           tr("取消"), this);
     mActSaveExit = new QAction(QIcon(":/menu/icon/ok_64.ico"),
@@ -34,7 +32,6 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
     mToolBar->addAction(mActSaveExit);
     mToolBar->addAction(mActSave);
     mToolBar->addAction(mActEdit);
-    mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActPrev);
     mToolBar->addAction(mActNext);
     mToolBar->addAction(mActCancel);
