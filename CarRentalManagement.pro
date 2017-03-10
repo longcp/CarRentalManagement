@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     ui/dialog/car/carannualdialog.cpp \
     ui/dialog/car/careditdialog.cpp \
     ui/dialog/car/insurancedialog.cpp \
-    ui/dialog/contracteditdialog.cpp
+    ui/dialog/contracteditdialog.cpp \
+    common/contract.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -73,7 +74,8 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/car/careditdialog.h \
     ui/dialog/car/insurancedialog.h \
     utils/Log.h \
-    ui/dialog/contracteditdialog.h
+    ui/dialog/contracteditdialog.h \
+    common/contract.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
