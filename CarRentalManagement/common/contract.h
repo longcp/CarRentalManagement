@@ -19,7 +19,7 @@ public:
         clientNumber = c.clientNumber;
         projectName = c.projectName;
         projectAddress = c.projectAddress;
-        requireMent = c.requireMent;
+        requirement = c.requirement;
         supplement = c.supplement;
         remarks = c.remarks;
         creator = c.creator;
@@ -45,7 +45,7 @@ public:
         clientNumber = c.clientNumber;
         projectName = c.projectName;
         projectAddress = c.projectAddress;
-        requireMent = c.requireMent;
+        requirement = c.requirement;
         supplement = c.supplement;
         remarks = c.remarks;
         creator = c.creator;
@@ -71,7 +71,7 @@ public:
         target->clientNumber = src.clientNumber;
         target->projectName = src.projectName;
         target->projectAddress = src.projectAddress;
-        target->requireMent = src.requireMent;
+        target->requirement = src.requirement;
         target->supplement = src.supplement;
         target->remarks = src.remarks;
         target->creator = src.creator;
@@ -100,7 +100,7 @@ public:
     QString clientNumber;
     QString projectName;
     QString projectAddress;
-    QString requireMent;
+    QString requirement;
     QString supplement;
     QString remarks;
     QString creator;

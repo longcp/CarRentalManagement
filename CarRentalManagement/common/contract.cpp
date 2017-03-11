@@ -17,7 +17,7 @@ Contract::dump()
           "clientNumber = %s\n"
           "projectName = %s\n"
           "projectAddress = %s\n"
-          "requireMent = %s\n"
+          "requirement = %s\n"
           "supplement = %s\n"
           "remarks = %s\n"
           "creator = %s\n"
@@ -34,7 +34,7 @@ Contract::dump()
           clientNumber.toStdString().data(),
           projectName.toStdString().data(),
           projectAddress.toStdString().data(),
-          requireMent.toStdString().data(),
+          requirement.toStdString().data(),
           supplement.toStdString().data(),
           remarks.toStdString().data(),
           creator.toStdString().data(),

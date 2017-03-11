@@ -8,7 +8,7 @@ Car::Car(QObject *parent) : QObject(parent)
 
 }
 
-QString
+const QString
 Car::getPumpTypeStr(PumpType type)
 {
     switch (type) {
@@ -38,7 +38,7 @@ Car::getPumpTypeStr(PumpType type)
 }
 
 
-PumpType
+const PumpType
 Car::getPumpType(QString typeStr)
 {
     if (typeStr == PUMP_TYPE_37M1_STR)
@@ -63,7 +63,7 @@ Car::getPumpType(QString typeStr)
         return UNKNOWN_PUMPTYPE;
 }
 
-PumpType
+const PumpType
 Car::getPumpType(int type)
 {
     switch (type) {

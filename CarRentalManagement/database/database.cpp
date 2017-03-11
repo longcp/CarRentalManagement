@@ -13,6 +13,7 @@
 #include <QDate>
 #include <user.h>
 #include <car.h>
+#include <contract.h>
 
 #define LOG_TAG                         "DATABASE"
 #include "utils/Log.h"
@@ -573,6 +574,24 @@ DataBase::lastError()
     case DELETE_CAR_ITEM_FAIL:
         return "DELETE_CAR_ITEM_FAIL";
 
+    case INSERT_CONTRACT_ITEM_FAIL:
+        return "INSERT_CONTRACT_ITEM_FAIL";
+
+    case DELETE_CONTRACT_ITEM_FAIL:
+        return "DELETE_CONTRACT_ITEM_FAIL";
+
+    case UPDATE_CONTRACT_ITEM_FAIL:
+        return "UPDATE_CONTRACT_ITEM_FAIL";
+
+    case INSERT_PRICE_ITEM_FAIL:
+        return "INSERT_PRICE_ITEM_FAIL";
+
+    case DELETE_PRICE_ITEM_FAIL:
+        return "DELETE_PRICE_ITEM_FAIL";
+
+    case UPDATE_PRICE_ITEM_FAIL:
+        return "UPDATE_PRICE_ITEM_FAIL";
+
     case OK:
     default:
         return "Ok";
@@ -655,7 +674,6 @@ DataBase::insertCarTable(Car &car)
 
     return SUCCESS;
 }
-
 
 int
 DataBase::updateCarTableData(Car &car)
@@ -830,7 +848,7 @@ DataBase::getCarInNumber(QString number, Car &car)
     query->prepare("SELECT * FROM car WHERE number=?");
     query->addBindValue(number);
     if (!query->exec()) {
-        ALOGE("[%s]: select car table failed!");
+        ALOGE("[%s]: select car table failed!", __FUNCTION__);
         errorno = SELECT_DATABASE_FAIL;
         return SELECT_DATABASE_FAIL;
     }
@@ -942,7 +960,7 @@ DataBase::isCarExist(Car &car)
     query->prepare("SELECT * FROM car WHERE number=?");
     query->addBindValue(car.number);
     if (!query->exec()) {
-        ALOGE("exec [SELECT * FROM client WHERE number=%s] failed!",
+        ALOGE("exec [SELECT * FROM car WHERE number=%s] failed!",
               car.number.toStdString().data());
         errorno = SELECT_DATABASE_FAIL;
         return false;
@@ -1287,6 +1305,362 @@ DataBase::delProjectDataInNumber(QString number)
         ALOGD("%s, DELETE FROM project_record failed!",
               __FUNCTION__);
         return DELETE_PROJECT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertContractTable(Contract &contract)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO contract "
+                   "VALUES(:number, :clientName, :clientNumber, "
+                   ":projectName, :projectAddress, :requirement, "
+                   ":supplement, :remarks, :creator, "
+                   ":deliverySizes, :structureLevel, :taxRate, "
+                   ":signedDate, :beginDate, :endDate, "
+                   ":creatDate, :isIncludeTax)");
+    query->bindValue(":number", contract.number);
+    query->bindValue(":clientName", contract.clientName);
+    query->bindValue(":clientNumber", contract.clientNumber);
+    query->bindValue(":projectName", contract.projectName);
+    query->bindValue(":projectAddress", contract.projectAddress);
+    query->bindValue(":requirement", contract.requirement);
+    query->bindValue(":supplement", contract.supplement);
+    query->bindValue(":remarks", contract.remarks);
+    query->bindValue(":creator", contract.creator);
+    query->bindValue(":deliverySizes", contract.deliverySizes);
+    query->bindValue(":structureLevel", contract.structureLevel);
+    query->bindValue(":taxRate", contract.taxRate);
+
+    query->bindValue(":signedDate",
+                     contract.signedDate.toString("yyyy-MM-dd"));
+    query->bindValue(":beginDate",
+                     contract.beginDate.toString("yyyy-MM-dd"));
+    query->bindValue(":endDate",
+                     contract.beginDate.toString("yyyy-MM-dd"));
+    query->bindValue(":creatDate",
+                     contract.creatDate.toString("yyyy-MM-dd"));
+
+    query->bindValue(":isIncludeTax", contract.isIncludeTax);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_CONTRACT_ITEM_FAIL;
+        return INSERT_CONTRACT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::updateContractTableData(Contract &contract)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("UPDATE contract "
+                   "SET clientName=?, "
+                   "clientNumber=?, "
+                   "projectName=?, "
+                   "projectAddress=?, "
+                   "requirement=?, "
+                   "supplement=?, "
+                   "remarks=?, "
+                   "creator=?, "
+                   "deliverySizes=?, "
+                   "structureLevel=?, "
+                   "taxRate=?, "
+                   "signedDate=?, "
+                   "beginDate=?, "
+                   "endDate=?, "
+                   "creatDate=?, "
+                   "isIncludeTax=?, "
+                   "WHERE number=?;");
+    query->addBindValue(contract.clientName);
+    query->addBindValue(contract.clientNumber);
+    query->addBindValue(contract.projectName);
+    query->addBindValue(contract.projectAddress);
+    query->addBindValue(contract.requirement);
+    query->addBindValue(contract.supplement);
+    query->addBindValue(contract.remarks);
+    query->addBindValue(contract.creator);
+    query->addBindValue(contract.deliverySizes);
+    query->addBindValue(contract.structureLevel);
+    query->addBindValue(contract.taxRate);
+    query->addBindValue(contract.signedDate);
+    query->addBindValue(contract.beginDate);
+    query->addBindValue(contract.endDate);
+    query->addBindValue(contract.creatDate);
+    query->addBindValue(contract.isIncludeTax);
+    query->addBindValue(contract.number);
+    if (!query->exec()) {
+        ALOGE("%s fail", __FUNCTION__);
+        errorno = UPDATE_CONTRACT_ITEM_FAIL;
+        return UPDATE_CONTRACT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllContractData(QList<Contract> &contracts)
+{
+    Contract contract;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM contract");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM contract!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        contract.number = query->value(0).toString();
+        contract.clientName = query->value(1).toString();
+        contract.clientNumber = query->value(2).toString();
+        contract.projectName = query->value(3).toString();
+        contract.projectAddress = query->value(4).toString();
+        contract.requirement = query->value(5).toString();
+        contract.supplement = query->value(6).toString();
+        contract.remarks = query->value(7).toString();
+        contract.creator = query->value(8).toString();
+        contract.deliverySizes = query->value(9).toFloat();
+        contract.structureLevel = query->value(10).toFloat();
+        contract.taxRate = query->value(11).toFloat();
+
+        contract.signedDate = QDate::fromString(query->value(12).toString(),
+                                               "yyyy-MM-dd");
+        contract.beginDate = QDate::fromString(query->value(13).toString(),
+                                                   "yyyy-MM-dd");
+        contract.endDate = QDate::fromString(query->value(14).toString(),
+                                           "yyyy-MM-dd");
+        contract.creatDate = QDate::fromString(query->value(15).toString(),
+                                           "yyyy-MM-dd");
+
+        contract.isIncludeTax = query->value(16).toFloat();
+
+        contracts.push_back(contract);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getContractInNumber(QString number, Contract &contract)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM contract WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGE("[%s]: select contract table failed!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    if (query->next()) {
+        contract.number = query->value(0).toString();
+        contract.clientName = query->value(1).toString();
+        contract.clientNumber = query->value(2).toString();
+        contract.projectName = query->value(3).toString();
+        contract.projectAddress = query->value(4).toString();
+        contract.requirement = query->value(5).toString();
+        contract.supplement = query->value(6).toString();
+        contract.remarks = query->value(7).toString();
+        contract.creator = query->value(8).toString();
+        contract.deliverySizes = query->value(9).toFloat();
+        contract.structureLevel = query->value(10).toFloat();
+        contract.taxRate = query->value(11).toFloat();
+
+        contract.signedDate = QDate::fromString(query->value(12).toString(),
+                                               "yyyy-MM-dd");
+        contract.beginDate = QDate::fromString(query->value(13).toString(),
+                                                   "yyyy-MM-dd");
+        contract.endDate = QDate::fromString(query->value(14).toString(),
+                                           "yyyy-MM-dd");
+        contract.creatDate = QDate::fromString(query->value(15).toString(),
+                                           "yyyy-MM-dd");
+
+        contract.isIncludeTax = query->value(16).toFloat();
+
+        return SUCCESS;
+    }
+
+    return DATABASE_ITEM_NOT_EXIST;
+}
+
+int
+DataBase::clearContractTable()
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    //删除操作
+    query->finish();
+    query->prepare("DELETE FROM contract;");
+    if (!query->exec()) {
+        ALOGE("%s fail!", __FUNCTION__);
+        errorno = DELETE_TABLE_FAIL;
+        return DELETE_TABLE_FAIL;
+    }
+
+    ALOGV("%s success!", __FUNCTION__);
+    return SUCCESS;
+}
+
+int
+DataBase::deleteContractDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM contract WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM contract failed!", __FUNCTION__);
+        return DELETE_CONTRACT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+bool
+DataBase::isContractExist(const Contract &contract)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM contract WHERE number=?");
+    query->addBindValue(contract.number);
+    if (!query->exec()) {
+        ALOGE("exec [SELECT * FROM contract WHERE number=%s] failed!",
+              contract.number.toStdString().data());
+        errorno = SELECT_DATABASE_FAIL;
+        return false;
+    }
+
+    if (!query->next())
+        return false;
+
+    return true;
+}
+
+int
+DataBase::getAllContractPriceData(QList<CONTRACT_PRICE> &prices)
+{
+    CONTRACT_PRICE price;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM contract_price");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM contract_price!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        price.number = query->value(0).toString();
+        price.contractNumber = query->value(1).toString();
+        price.remarks = query->value(2).toString();
+        price.pumpType = Car::getPumpType(query->value(3).toInt());
+        price.squarePrice = query->value(4).toFloat();
+        price.standardPrice = query->value(5).toFloat();
+        price.within150MinPrice = query->value(6).toFloat();
+        price.within240MinPrice = query->value(7).toFloat();
+
+        prices.push_back(price);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertContractPriceTable(const CONTRACT_PRICE &price)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO contract_price "
+                   "VALUES(:number, :contractNumber, :remarks, "
+                   ":pumpType, :squarePrice, :standardPrice,"
+                   ":within150MinPrice, :within240MinPrice)");
+    query->bindValue(":number", price.number);
+    query->bindValue(":contractNumber", price.contractNumber);
+    query->bindValue(":remarks", price.remarks);
+    query->bindValue(":pumpType", price.pumpType);
+    query->bindValue(":squarePrice", price.squarePrice);
+    query->bindValue(":standardPrice", price.standardPrice);
+    query->bindValue(":within150MinPrice", price.within150MinPrice);
+    query->bindValue(":within240MinPrice", price.within240MinPrice);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_PRICE_ITEM_FAIL;
+        return INSERT_PRICE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delContractPriceInNumber(const QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM contract_price WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM contract_price failed!", __FUNCTION__);
+        return DELETE_PRICE_ITEM_FAIL;
     }
 
     return SUCCESS;

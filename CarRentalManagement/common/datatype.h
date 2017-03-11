@@ -47,7 +47,13 @@
 #define INSERT_ANNUAL_ITEM_FAIL     (-1015)
 #define DELETE_ANNUAL_ITEM_FAIL     (-1016)
 #define INSERT_PROJECT_ITEM_FAIL    (-1017)
-#define DELETE_PROJECT_ITEM_FAIL     (-1018)
+#define DELETE_PROJECT_ITEM_FAIL    (-1018)
+#define INSERT_CONTRACT_ITEM_FAIL   (-1019)
+#define DELETE_CONTRACT_ITEM_FAIL   (-1020)
+#define UPDATE_CONTRACT_ITEM_FAIL   (-1021)
+#define INSERT_PRICE_ITEM_FAIL      (-1022)
+#define DELETE_PRICE_ITEM_FAIL      (-1023)
+#define UPDATE_PRICE_ITEM_FAIL      (-1024)
 
 enum OpenType {CREATEITEM=0, SHOWITEM, UNKNOWN_OPENTYPE};
 
@@ -98,7 +104,7 @@ typedef struct ContractPrice {
     QString number;
     QString contractNumber;
     PumpType pumpType;
-    float suqarePrice;
+    float squarePrice;
     float standardPrice;
     float within150MinPrice;
     float within240MinPrice;

@@ -182,12 +182,12 @@ public:
     /**
      * @brief getPumpTypeStr
      */
-    QString         getPumpTypeStr(PumpType type);
+    const static QString getPumpTypeStr(PumpType type);
     /**
      * @brief getPumpType
      */
-    PumpType        getPumpType(QString typeStr);
-    PumpType        getPumpType(int type);
+    const static PumpType getPumpType(QString typeStr);
+    const static PumpType getPumpType(int type);
     void            dump();
 
     QString         number;
