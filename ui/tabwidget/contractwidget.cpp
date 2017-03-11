@@ -124,33 +124,33 @@ ContractWidget::initPriceTableview()
 {
     //设置首行标题
     QStringList headerList;
-    headerList << "泵式" << "方量价格" << "标准台班价格"
-               << "2.5小时内台板价格" << "4小时内台班价格" << "备注";
+    headerList << "编号" << "泵式" << "方量价格" << "标准台班价格"
+               << "2.5小时内台班价格" << "4小时内台班价格" << "备注";
 
     mContractModel = new TableModel(0, headerList.size());
-    ui->prictTableView->setModel(mContractModel);
+    ui->priceTableView->setModel(mContractModel);
     mContractModel->setHorizontalHeaderLabels(headerList);
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->prictTableView->setEditTriggers(
+    ui->priceTableView->setEditTriggers(
                 QAbstractItemView::NoEditTriggers);
-    ui->prictTableView->setSelectionBehavior(
+    ui->priceTableView->setSelectionBehavior(
                 QAbstractItemView::SelectRows);
-    ui->prictTableView->setSelectionMode(
+    ui->priceTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    ui->prictTableView->verticalHeader()->setVisible(false);           //隐藏行表头
-    ui->prictTableView->horizontalHeader()->setStyleSheet(
+    ui->priceTableView->verticalHeader()->setVisible(false);            //隐藏行表头
+    ui->priceTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
 
-    ui->prictTableView->setAlternatingRowColors(true);
-    ui->prictTableView->setStyleSheet(
+    ui->priceTableView->setAlternatingRowColors(true);
+    ui->priceTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    ui->prictTableView->resizeColumnToContents(3);                      //自动适应列宽
-    ui->prictTableView->resizeColumnToContents(4);                      //自动适应列宽
+    ui->priceTableView->resizeColumnToContents(3);                      //自动适应列宽
+    ui->priceTableView->resizeColumnToContents(4);                      //自动适应列宽
 //    setPriceTableViewData();
 }
 

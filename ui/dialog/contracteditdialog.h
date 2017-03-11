@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <datatype.h>
 
+class TableModel;
+
 class QToolBar;
 class DataBase;
 
@@ -22,6 +24,10 @@ public:
 private slots:
     void            openContractEditDialogSlot();
 
+    void on_addBtn_clicked();
+
+    void on_deleteBtn_clicked();
+
 private:
     /**
      * @brief 初始化界面
@@ -31,6 +37,10 @@ private:
      * @brief 配置工具栏
      */
     void            configToolBar();
+    /**
+     * @brief 初始化价格表
+     */
+    void            initPriceTableView();
 
     Ui::ContractEditDialog *ui;
     // 工具栏
@@ -48,6 +58,7 @@ private:
 
     DataBase*       mDb;
     OpenType        mOpenType;
+    TableModel*     mModel;
 };
 
 #endif // CONTRACTEDITDIALOG_H

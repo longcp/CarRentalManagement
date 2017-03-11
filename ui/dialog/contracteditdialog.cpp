@@ -3,6 +3,7 @@
 #include <database/database.h>
 #include <QAction>
 #include <QToolBar>
+#include <tablemodel.h>
 
 ContractEditDialog::ContractEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -51,7 +52,9 @@ ContractEditDialog::initView()
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("编辑合同");
-    this->setFixedSize(1000, 700);
+    this->setFixedSize(1300, 700);
+
+    initPriceTableView();
 }
 
 void
@@ -80,4 +83,46 @@ void
 ContractEditDialog::openContractEditDialogSlot()
 {
     this->exec();
+}
+
+void
+ContractEditDialog::initPriceTableView()
+{
+    QStringList headerList;
+    headerList << "编号" << "泵式" << "方量价格" << "标准台班价格"
+               << "2.5小时内台班价格" << "4小时内台班价格" << "备注";
+
+    mModel = new TableModel(0, headerList.size());
+    ui->priceTableView->setModel(mModel);
+    mModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑
+    ui->priceTableView->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->priceTableView->verticalHeader()->setVisible(false);            //隐藏行表头
+    ui->priceTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->priceTableView->setAlternatingRowColors(true);
+    ui->priceTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    ui->priceTableView->resizeColumnToContents(4);                      //自动适应列宽
+    ui->priceTableView->resizeColumnToContents(5);
+    ui->priceTableView->horizontalHeader()
+            ->setSectionResizeMode(6, QHeaderView::Stretch);                  //自动适应列宽
+}
+
+void
+ContractEditDialog::on_addBtn_clicked()
+{
+
+}
+
+void
+ContractEditDialog::on_deleteBtn_clicked()
+{
+
 }

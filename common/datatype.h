@@ -94,4 +94,15 @@ typedef struct ProjectRecord {
     QString remarks;
 }PROJECT_RECORD;
 
+typedef struct ContractPrice {
+    QString number;
+    QString contractNumber;
+    PumpType pumpType;
+    float suqarePrice;
+    float standardPrice;
+    float within150MinPrice;
+    float within240MinPrice;
+    QString remarks;
+}CONTRACT_PRICE;
+
 #endif // DATATYPE_H
