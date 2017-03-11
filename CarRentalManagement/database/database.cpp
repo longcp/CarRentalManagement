@@ -1,0 +1,1293 @@
+#include "database.h"
+#include <QFile>
+#include <QDir>
+#include <QMutex>
+#include <QMutexLocker>
+#include <client.h>
+#include <datatype.h>
+#include <QMap>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
+#include <QDate>
+#include <user.h>
+#include <car.h>
+
+#define LOG_TAG                         "DATABASE"
+#include "utils/Log.h"
+
+DataBase::DataBase() :
+    pmMutex(new QMutex(QMutex::Recursive)),
+    pmQuery(new QMap<int, QSqlQuery*>),
+    errorno(0)
+{
+    mDbPath = QDir::currentPath().append("/").append(DB_PATH_SUFFIX);
+    openDataBase();
+}
+
+DataBase::~DataBase()
+{
+    delete pmMutex;
+}
+
+DataBase*
+DataBase::getInstance()
+{
+    if (!mInstance)
+        mInstance = new DataBase;
+
+    return mInstance;
+}
+
+bool
+DataBase::openDataBase()
+{
+    if (!QFile::exists(mDbPath)) {
+        qDebug()<< "database" << mDbPath << " is not existed!";
+        if (!QFile::copy(mDbPath, mDbPath)) {
+            ALOGE("copy database[%s] failed.", mDbPath
+                  .toStdString()
+                  .data());
+            return false;
+        }
+    }
+
+    if (mDb.isOpen())
+        return true;
+
+    if (QSqlDatabase::contains(DB_NAME))
+        mDb = QSqlDatabase::database(DB_NAME);
+    else
+        mDb = QSqlDatabase::addDatabase("QSQLITE", DB_NAME);
+
+    mDb.setDatabaseName(mDbPath);
+    if (!mDb.open()) {
+        ALOGE("open database[%s] failed!", mDbPath
+              .toStdString()
+              .data());
+        return false;
+    }
+
+    return true;
+}
+
+bool
+DataBase::closeDataBase()
+{
+    if (mDb.isOpen()) {
+        mDb.close();
+        mDb.removeDatabase(DB_NAME);
+    }
+
+    return true;
+}
+
+QSqlQuery*
+DataBase::getDataBaseQuery()
+{
+    if (!openDataBase()) {
+        ALOGE("getDbQuery, openDataBase failed!");
+        return NULL;
+    }
+
+    if (pmQuery->contains(mId))
+        return pmQuery->value(mId);
+
+    QSqlQuery *query = new QSqlQuery(mDb);
+    if (!query) {
+        ALOGE("getDbQuery, new QSqlQuery failed.");
+        return NULL;
+    }
+
+    if (!query->exec("PRAGMA foreign_keys = ON;")) {
+        qDebug() << query->lastError();
+        return NULL;
+    }
+
+    pmQuery->insert(mId, query);
+
+    return query;
+}
+
+bool
+DataBase::isClientExist(Client &client)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM client WHERE number=?");
+    query->addBindValue(client.number);
+    if (!query->exec()) {
+        ALOGE("exec [SELECT * FROM client WHERE number=%s] failed!",
+              client.number.toStdString().data());
+        errorno = SELECT_DATABASE_FAIL;
+        return false;
+    }
+
+    if (!query->next())
+        return false;
+
+    return true;
+}
+
+int
+DataBase::insertClientTable(Client &client)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO client "
+                   "VALUES(:name, :number, :telephone, "
+                   ":address, :email, :fax, :contract, "
+                   ":remarks, :creator, :paytype, "
+                   ":clienttype, :createDate, :monthly, "
+                   ":amount, :paid)");
+    query->bindValue(":name", client.name);
+    query->bindValue(":number", client.number);
+    query->bindValue(":telephone", client.telephone);
+    query->bindValue(":address", client.address);
+    query->bindValue(":email", client.email);
+    query->bindValue(":fax", client.fax);
+    query->bindValue(":contract", client.contract);
+    query->bindValue(":remarks", client.remarks);
+    query->bindValue(":creator", client.creator);
+    query->bindValue(":paytype", client.paytype);
+    query->bindValue(":clienttype", client.clienttype);
+    query->bindValue(":createDate", client
+                     .createDate.toString("yyyy-MM-dd"));
+    query->bindValue(":monthly", client.monthly);
+    query->bindValue(":amount", client.amount);
+    query->bindValue(":paid", client.paid);
+
+    if (!query->exec()) {
+        ALOGE("insertClientTable failed!");
+        return INSERT_CLIENT_TABLE_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getClientInNumber(QString clientNum, Client &client)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM client WHERE number=?");
+    query->addBindValue(clientNum);
+    if (!query->exec()) {
+        ALOGE("[%s]: select client table failed!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    if (query->next()) {
+        client.name = query->value(0).toString();
+        client.number = query->value(1).toString();
+        client.telephone = query->value(2).toString();
+        client.address = query->value(3).toString();
+        client.email = query->value(4).toString();
+        client.fax = query->value(5).toString();
+        client.contract = query->value(6).toString();
+        client.remarks = query->value(7).toString();
+        client.creator = query->value(8).toString();
+        client.paytype = query->value(9).toInt() ?
+                    PayType::CASH : PayType::MONTHLY;
+        client.clienttype = query->value(10).toInt() ?
+                    ClientType::CONTRACT : ClientType::TEMPORARY;
+        client.createDate = QDate::fromString(query->value(11)
+                                              .toString(), "yyyy-MM-dd");
+        client.monthly = query->value(12).toInt();
+        client.amount = query->value(13).toFloat();
+        client.paid = query->value(14).toFloat();
+
+        return SUCCESS;
+    }
+
+    return DATABASE_ITEM_NOT_EXIST;
+}
+
+int
+DataBase::getAllClientsNumber(QList<QString> &numbers)
+{
+    ALOGD("getAllClientsNumber enter");
+    QString number;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM client");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM client failed!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        number = query->value(1).toString();
+        numbers.push_back(number);                              //插入list
+    }
+
+    ALOGD("getAllClientsNumber SUCCESS");
+    return SUCCESS;
+}
+
+int
+DataBase::deleteClientInNumber(QString clientNum)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM client WHERE number=?");
+    query->addBindValue(clientNum);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM client failed!", __FUNCTION__);
+        errorno = DELETE_CLIENT_ITEM_FAIL;
+        return DELETE_CLIENT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllClientData(QList<Client> &clients)
+{
+    Client client;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM client");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM client!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        client.name = query->value(0).toString();
+        client.number = query->value(1).toString();
+        client.telephone = query->value(2).toString();
+        client.address = query->value(3).toString();
+        client.email = query->value(4).toString();
+        client.fax = query->value(5).toString();
+        client.contract = query->value(6).toString();
+        client.remarks = query->value(7).toString();
+        client.creator = query->value(8).toString();
+        client.paytype = query->value(9).toInt() ?
+                    PayType::CASH : PayType::MONTHLY;
+        client.clienttype = query->value(10).toInt() ?
+                    ClientType::CONTRACT : ClientType::TEMPORARY;
+        client.createDate = QDate::fromString(query->value(11)
+                                              .toString(), "yyyy-MM-dd");
+        client.monthly = query->value(12).toInt();
+        client.amount = query->value(13).toFloat();
+        client.paid = query->value(14).toFloat();
+
+        clients.push_back(client);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::updateClientTableItem(Client &client)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("UPDATE client "
+                   "SET name=?, "
+                   "telephone=?, "
+                   "address=?, "
+                   "email=?, "
+                   "fax=?, "
+                   "contract=?, "
+                   "remarks=?, "
+                   "creator=?, "
+                   "paytype=?, "
+                   "clienttype=?, "
+                   "createDate=?, "
+                   "monthly=?, "
+                   "amount=?, "
+                   "paid=? "
+                   "WHERE number=?;");
+    query->addBindValue(client.name);
+    query->addBindValue(client.telephone);
+    query->addBindValue(client.address);
+    query->addBindValue(client.email);
+    query->addBindValue(client.fax);
+    query->addBindValue(client.contract);
+    query->addBindValue(client.remarks);
+    query->addBindValue(client.creator);
+    query->addBindValue(client.paytype);
+    query->addBindValue(client.clienttype);
+    query->addBindValue(client.createDate);
+    query->addBindValue(client.monthly);
+    query->addBindValue(client.amount);
+    query->addBindValue(client.paid);
+    query->addBindValue(client.number);
+    if (!query->exec()) {
+        ALOGE("updateClientTableItem fail");
+        errorno = UPDATE_CLIENT_ITEM_FAIL;
+        return UPDATE_CLIENT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::clearClientTable()
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    //删除操作
+    query->finish();
+    query->prepare("DELETE FROM client;");
+    if (!query->exec()) {
+        ALOGE("clearClientTable fail!");
+        errorno = DELETE_TABLE_FAIL;
+        return DELETE_TABLE_FAIL;
+    }
+
+    ALOGV("clearClientTable success!");
+    return SUCCESS;
+}
+
+int
+DataBase::getUserTableData(User &user, QString name)
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    query->finish();
+    query->prepare("SELECT * FROM user WHERE user_Name=?");
+    query->addBindValue(name);
+    if (!query->exec()) {
+        ALOGE("select user table fail!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    if (query->next()) {
+        user.name = query->value(0).toString();
+        user.passward = query->value(1).toString();
+        user.right = query->value(2).toInt() ?
+                    UserRight::RIGHT_NORMAL : UserRight::RIGHT_ROOT;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::deleteUserTabledata(QString uName)
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    //删除操作
+    query->finish();
+    query->prepare("DELETE FROM user WHERE user_Name=?");
+    query->addBindValue(uName);
+    if (!query->exec()) {
+        ALOGE("delete user table data fail!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertUserTable(User &user)
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    //插入操作
+    query->finish();
+    query->prepare("INSERT INTO user VALUES(:user_Name, :user_Passward, :right_level)");
+    query->bindValue(":user_Name",      user.name);
+    query->bindValue(":user_Passward",  user.passward);
+    query->bindValue(":right_level",    user.right);
+    if (!query->exec()) {
+        ALOGE("insert to user table fail!");
+        errorno = INSERT_USER_ITEM_FAIL;
+        return INSERT_USER_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::updateUserTableData(User &user)
+{
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    query->finish();
+    query->prepare("UPDATE user SET user_Passward=? WHERE user_Name=?;");
+    query->addBindValue(user.passward);
+    query->addBindValue(user.name);
+    if (!query->exec()) {
+        ALOGE("select user table fail!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllUserTableData(QList<User> &users)
+{
+    User user;
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    query->finish();
+    query->prepare("SELECT * FROM user");
+    if (!query->exec()) {
+        ALOGE("select user table fail!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        user.name = query->value(0).toString();
+        user.passward = query->value(1).toString();
+        user.right = query->value(2).toInt() ?
+                    UserRight::RIGHT_NORMAL : UserRight::RIGHT_ROOT;
+
+        users.push_back(user);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getUserCount()
+{
+    int count = 0;
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    query->finish();
+    query->prepare("SELECT * FROM user");
+    if (!query->exec()) {
+        ALOGE("select user table fail!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        count++;
+    }
+
+    return count;
+}
+
+QString
+DataBase::lastError()
+{
+    switch(errorno) {
+    case GET_DATABASE_FAIL:
+        return "GET_DATABASE_FAIL";
+
+    case INSERT_CLIENT_TABLE_FAIL:
+        return "INSERT_CLIENT_TABLE_FAIL";
+
+    case DELETE_TABLE_FAIL:
+        return "DELETE_TABLE_FAIL";
+
+    case DATABASE_ITEM_EXIST:
+        return "DATABASE_ITEM_EXIST";
+
+    case DATABASE_ITEM_NOT_EXIST:
+        return "DATABASE_ITEM_NOT_EXIST";
+
+    case SELECT_DATABASE_FAIL:
+        return "SELECT_DATABASE_FAIL";
+
+    case UPDATE_CLIENT_ITEM_FAIL:
+        return "UPDATE_CLIENT_ITEM_FAIL";
+
+    case DELETE_CLIENT_ITEM_FAIL:
+        return "DELETE_CLIENT_ITEM_FAIL";
+
+    case INSERT_USER_ITEM_FAIL:
+        return "INSERT_USER_ITEM_FAIL";
+
+    case INSERT_CAR_ITEM_FAIL:
+        return "INSERT_CAR_ITEM_FAIL";
+
+    case UPDATE_CAR_ITEM_FAIL:
+        return "UPDATE_CAR_ITEM_FAIL";
+
+    case DELETE_CAR_ITEM_FAIL:
+        return "DELETE_CAR_ITEM_FAIL";
+
+    case OK:
+    default:
+        return "Ok";
+        break;
+    }
+
+    return "Ok";
+}
+
+int
+DataBase::insertCarTable(Car &car)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO car "
+                   "VALUES(:number, :carNumber, :bankAccount, "
+                   ":owner, :carBrand, :chassisBrand, :fuelCarNumber, "
+                   ":frameNumber, :identificationNumber, :productNumber, "
+                   ":insuranceCardNumber, :engineNumber, :dimensions, "
+                   ":factoryCode, :operator1, :operator2, "
+                   ":operator3, :operator4, :operator5, "
+                   ":remarks, :creator, :productionDate, "
+                   ":drivingLicenseDate, :createDate, :pumpedSquare, "
+                   ":pumpedTimes, :milage, :worth, "
+                   ":enginePower, :maxDeliverySizes, :maxOutputPressure, "
+                   ":boomVerticalLen, :boomHorizontalLen, :totalWeight, "
+                   ":equipmentWeight, :pumptype)");
+    query->bindValue(":number", car.number);
+    query->bindValue(":carNumber", car.carNumber);
+    query->bindValue(":bankAccount", car.bankAccount);
+    query->bindValue(":owner", car.owner);
+    query->bindValue(":carBrand", car.carBrand);
+    query->bindValue(":chassisBrand", car.chassisBrand);
+    query->bindValue(":fuelCarNumber", car.fuelCarNumber);
+    query->bindValue(":frameNumber", car.frameNumber);
+    query->bindValue(":identificationNumber", car.identificationNumber);
+    query->bindValue(":productNumber", car.productNumber);
+    query->bindValue(":insuranceCardNumber", car.insuranceCardNumber);
+    query->bindValue(":engineNumber", car.engineNumber);
+    query->bindValue(":dimensions", car.dimensions);
+    query->bindValue(":factoryCode", car.factoryCode);
+    query->bindValue(":operator1", car.operator1);
+    query->bindValue(":operator2", car.operator2);
+    query->bindValue(":operator3", car.operator3);
+    query->bindValue(":operator4", car.operator4);
+    query->bindValue(":operator5", car.operator5);
+    query->bindValue(":remarks", car.remarks);
+    query->bindValue(":creator", car.creator);
+
+    query->bindValue(":productionDate",
+                     car.productionDate.toString("yyyy-MM-dd"));
+    query->bindValue(":drivingLicenseDate",
+                     car.drivingLicenseDate.toString("yyyy-MM-dd"));
+    query->bindValue(":createDate",
+                     car.createDate.toString("yyyy-MM-dd"));
+
+    query->bindValue(":pumpedSquare", car.pumpedSquare);
+    query->bindValue(":pumpedTimes", car.pumpedTimes);
+    query->bindValue(":milage", car.milage);
+    query->bindValue(":worth", car.worth);
+    query->bindValue(":enginePower", car.enginePower);
+    query->bindValue(":maxDeliverySizes", car.maxDeliverySizes);
+    query->bindValue(":maxOutputPressure", car.maxOutputPressure);
+    query->bindValue(":boomVerticalLen", car.boomVerticalLen);
+    query->bindValue(":boomHorizontalLen", car.boomHorizontalLen);
+    query->bindValue(":totalWeight", car.totalWeight);
+    query->bindValue(":equipmentWeight", car.equipmentWeight);
+    query->bindValue(":pumptype", car.pumptype);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_CAR_ITEM_FAIL;
+        return INSERT_CAR_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+
+int
+DataBase::updateCarTableData(Car &car)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("UPDATE car "
+                   "SET carNumber=?, "
+                   "bankAccount=?, "
+                   "owner=?, "
+                   "carBrand=?, "
+                   "chassisBrand=?, "
+                   "fuelCarNumber=?, "
+                   "frameNumber=?, "
+                   "identificationNumber=?, "
+                   "productNumber=?, "
+                   "insuranceCardNumber=?, "
+                   "engineNumber=?, "
+                   "dimensions=?, "
+                   "factoryCode=?, "
+                   "operator1=?, "
+                   "operator2=?, "
+                   "operator3=?, "
+                   "operator4=?, "
+                   "operator5=?, "
+                   "remarks=?, "
+                   "creator=?, "
+                   "productionDate=?, "
+                   "drivingLicenseDate=?, "
+                   "createDate=?, "
+                   "pumpedSquare=?, "
+                   "pumpedTimes=?, "
+                   "milage=?, "
+                   "worth=?, "
+                   "enginePower=?, "
+                   "maxDeliverySizes=?, "
+                   "maxOutputPressure=?, "
+                   "boomVerticalLen=?, "
+                   "boomHorizontalLen=?, "
+                   "totalWeight=?, "
+                   "equipmentWeight=?, "
+                   "pumptype=? "
+                   "WHERE number=?;");
+    query->addBindValue(car.carNumber);
+    query->addBindValue(car.bankAccount);
+    query->addBindValue(car.owner);
+    query->addBindValue(car.carBrand);
+    query->addBindValue(car.chassisBrand);
+    query->addBindValue(car.fuelCarNumber);
+    query->addBindValue(car.frameNumber);
+    query->addBindValue(car.identificationNumber);
+    query->addBindValue(car.productNumber);
+    query->addBindValue(car.insuranceCardNumber);
+    query->addBindValue(car.engineNumber);
+    query->addBindValue(car.dimensions);
+    query->addBindValue(car.factoryCode);
+    query->addBindValue(car.operator1);
+    query->addBindValue(car.operator2);
+    query->addBindValue(car.operator3);
+    query->addBindValue(car.operator4);
+    query->addBindValue(car.operator5);
+    query->addBindValue(car.remarks);
+    query->addBindValue(car.creator);
+    query->addBindValue(car.productionDate);
+    query->addBindValue(car.drivingLicenseDate);
+    query->addBindValue(car.createDate);
+    query->addBindValue(car.pumpedSquare);
+    query->addBindValue(car.pumpedTimes);
+    query->addBindValue(car.milage);
+    query->addBindValue(car.worth);
+    query->addBindValue(car.enginePower);
+    query->addBindValue(car.maxDeliverySizes);
+    query->addBindValue(car.maxOutputPressure);
+    query->addBindValue(car.boomVerticalLen);
+    query->addBindValue(car.boomHorizontalLen);
+    query->addBindValue(car.totalWeight);
+    query->addBindValue(car.equipmentWeight);
+    query->addBindValue(car.pumptype);
+    query->addBindValue(car.number);
+    if (!query->exec()) {
+        ALOGE("updateClientTableItem fail");
+        errorno = UPDATE_CAR_ITEM_FAIL;
+        return UPDATE_CAR_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllCarData(QList<Car> &cars)
+{
+    Car car;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM car");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM car!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        car.number = query->value(0).toString();
+        car.carNumber = query->value(1).toString();
+        car.bankAccount = query->value(2).toString();
+        car.owner = query->value(3).toString();
+        car.carBrand = query->value(4).toString();
+        car.chassisBrand = query->value(5).toString();
+        car.fuelCarNumber = query->value(6).toString();
+        car.frameNumber = query->value(7).toString();
+        car.identificationNumber = query->value(8).toString();
+        car.productNumber = query->value(9).toString();
+        car.insuranceCardNumber = query->value(10).toString();
+        car.engineNumber = query->value(11).toString();
+        car.dimensions = query->value(12).toString();
+        car.factoryCode = query->value(13).toString();
+        car.operator1 = query->value(14).toString();
+        car.operator2 = query->value(15).toString();
+        car.operator3 = query->value(16).toString();
+        car.operator4 = query->value(17).toString();
+        car.operator5 = query->value(18).toString();
+        car.remarks = query->value(19).toString();
+        car.creator = query->value(20).toString();
+
+        car.productionDate = QDate::fromString(query->value(21).toString(),
+                                               "yyyy-MM-dd");
+        car.drivingLicenseDate = QDate::fromString(query->value(22).toString(),
+                                                   "yyyy-MM-dd");
+        car.createDate = QDate::fromString(query->value(23).toString(),
+                                           "yyyy-MM-dd");
+
+        car.pumpedSquare = query->value(24).toFloat();
+        car.pumpedTimes = query->value(25).toFloat();
+        car.milage = query->value(26).toFloat();
+        car.worth = query->value(27).toFloat();
+        car.enginePower = query->value(28).toFloat();
+        car.maxDeliverySizes = query->value(29).toFloat();
+        car.maxOutputPressure = query->value(30).toFloat();
+        car.boomVerticalLen = query->value(31).toFloat();
+        car.boomHorizontalLen = query->value(32).toFloat();
+        car.totalWeight = query->value(33).toFloat();
+        car.equipmentWeight = query->value(34).toFloat();
+
+        car.pumptype = car.getPumpType(query->value(35).toInt());
+
+        cars.push_back(car);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getCarInNumber(QString number, Car &car)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM car WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGE("[%s]: select car table failed!");
+        errorno = SELECT_DATABASE_FAIL;
+        return SELECT_DATABASE_FAIL;
+    }
+
+    if (query->next()) {
+        car.number = query->value(0).toString();
+        car.carNumber = query->value(1).toString();
+        car.bankAccount = query->value(2).toString();
+        car.owner = query->value(3).toString();
+        car.carBrand = query->value(4).toString();
+        car.chassisBrand = query->value(5).toString();
+        car.fuelCarNumber = query->value(6).toString();
+        car.frameNumber = query->value(7).toString();
+        car.identificationNumber = query->value(8).toString();
+        car.productNumber = query->value(9).toString();
+        car.insuranceCardNumber = query->value(10).toString();
+        car.engineNumber = query->value(11).toString();
+        car.dimensions = query->value(12).toString();
+        car.factoryCode = query->value(13).toString();
+        car.operator1 = query->value(14).toString();
+        car.operator2 = query->value(15).toString();
+        car.operator3 = query->value(16).toString();
+        car.operator4 = query->value(17).toString();
+        car.operator5 = query->value(18).toString();
+        car.remarks = query->value(19).toString();
+        car.creator = query->value(20).toString();
+
+        car.productionDate = QDate::fromString(query->value(21).toString(),
+                                               "yyyy-MM-dd");
+        car.drivingLicenseDate = QDate::fromString(query->value(22).toString(),
+                                                   "yyyy-MM-dd");
+        car.createDate = QDate::fromString(query->value(23).toString(),
+                                           "yyyy-MM-dd");
+
+        car.pumpedSquare = query->value(24).toFloat();
+        car.pumpedTimes = query->value(25).toFloat();
+        car.milage = query->value(26).toFloat();
+        car.worth = query->value(27).toFloat();
+        car.enginePower = query->value(28).toFloat();
+        car.maxDeliverySizes = query->value(29).toFloat();
+        car.maxOutputPressure = query->value(30).toFloat();
+        car.boomVerticalLen = query->value(31).toFloat();
+        car.boomHorizontalLen = query->value(32).toFloat();
+        car.totalWeight = query->value(33).toFloat();
+        car.equipmentWeight = query->value(34).toFloat();
+
+        car.pumptype = car.getPumpType(query->value(35).toInt());
+
+        return SUCCESS;
+    }
+
+    return DATABASE_ITEM_NOT_EXIST;
+}
+
+int
+DataBase::clearCarTable()
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query) {
+        exit (GET_DATABASE_FAIL);
+    }
+
+    //删除操作
+    query->finish();
+    query->prepare("DELETE FROM car;");
+    if (!query->exec()) {
+        ALOGE("%s fail!", __FUNCTION__);
+        errorno = DELETE_TABLE_FAIL;
+        return DELETE_TABLE_FAIL;
+    }
+
+    ALOGV("%s success!", __FUNCTION__);
+    return SUCCESS;
+}
+
+
+int
+DataBase::deleteCarDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM car WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM client failed!", __FUNCTION__);
+        return DELETE_CAR_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+bool
+DataBase::isCarExist(Car &car)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM car WHERE number=?");
+    query->addBindValue(car.number);
+    if (!query->exec()) {
+        ALOGE("exec [SELECT * FROM client WHERE number=%s] failed!",
+              car.number.toStdString().data());
+        errorno = SELECT_DATABASE_FAIL;
+        return false;
+    }
+
+    if (!query->next())
+        return false;
+
+    return true;
+}
+
+int
+DataBase::insertInsuranceTable(INSURANCE_RECORD &record)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO insurance_record "
+                   "VALUES(:number, :carNumber, :company, "
+                   ":remarks, :date, :fee)");
+    query->bindValue(":number", record.number);
+    query->bindValue(":carNumber", record.carNumber);
+    query->bindValue(":company", record.company);
+    query->bindValue(":remarks", record.remarks);
+    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":fee", record.fee);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_INSURANCE_ITEM_FAIL;
+        return INSERT_INSURANCE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllInsuranceData(QList<INSURANCE_RECORD> &records)
+{
+    INSURANCE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM insurance_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM insurance_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.company = query->value(2).toString();
+        record.remarks = query->value(3).toString();
+        record.date = QDate::fromString(query->value(4).toString(),
+                                               "yyyy-MM-dd");
+        record.fee = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delInsuranceDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM insurance_record WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM insurance_record failed!", __FUNCTION__);
+        return DELETE_INSURANCE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertBusinessInsuranceTable(INSURANCE_RECORD &record)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO business_insurance_record "
+                   "VALUES(:number, :carNumber, :company, "
+                   ":remarks, :date, :fee)");
+    query->bindValue(":number", record.number);
+    query->bindValue(":carNumber", record.carNumber);
+    query->bindValue(":company", record.company);
+    query->bindValue(":remarks", record.remarks);
+    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":fee", record.fee);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_INSURANCE_ITEM_FAIL;
+        return INSERT_INSURANCE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllBusinessInsuranceData(QList<INSURANCE_RECORD> &records)
+{
+    INSURANCE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM business_insurance_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM business_insurance_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.company = query->value(2).toString();
+        record.remarks = query->value(3).toString();
+        record.date = QDate::fromString(query->value(4).toString(),
+                                               "yyyy-MM-dd");
+        record.fee = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delBusinessInsuranceDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM business_insurance_record WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM business_insurance_record failed!",
+              __FUNCTION__);
+        return DELETE_INSURANCE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertAnnualTable(ANNUALFEE_RECORD &record)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO annual_fee_record "
+                   "VALUES(:number, :carNumber, :remarks, "
+                   ":date, :annualFee, :travelExpenses)");
+    query->bindValue(":number", record.number);
+    query->bindValue(":carNumber", record.carNumber);
+    query->bindValue(":remarks", record.remarks);
+    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":annualFee", record.annualFee);
+    query->bindValue(":travelExpenses", record.travelExpenses);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_ANNUAL_ITEM_FAIL;
+        return INSERT_ANNUAL_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllAnnualData(QList<ANNUALFEE_RECORD> &records)
+{
+    ANNUALFEE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM annual_fee_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM annual_fee_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.remarks = query->value(2).toString();
+        record.date = QDate::fromString(query->value(3).toString(),
+                                               "yyyy-MM-dd");
+        record.annualFee = query->value(4).toFloat();
+        record.travelExpenses = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delAnnualDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM annual_fee_record WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM business_insurance_record failed!",
+              __FUNCTION__);
+        return DELETE_ANNUAL_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertProjectTable(PROJECT_RECORD &record)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO project_record "
+                   "VALUES(:number, :carNumber, :clientNum, "
+                   ":rentalDocNum, :contractNum, :clientName, "
+                   ":remarks, :date, :amount)");
+    query->bindValue(":number", record.number);
+    query->bindValue(":carNumber", record.carNumber);
+    query->bindValue(":clientNum", record.clientNum);
+    query->bindValue(":rentalDocNum", record.rentalDocNum);
+    query->bindValue(":contractNum", record.contractNum);
+    query->bindValue(":clientName", record.clientName);
+    query->bindValue(":remarks", record.remarks);
+    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":amount", record.amount);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_PROJECT_ITEM_FAIL;
+        return INSERT_PROJECT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllProjectData(QList<PROJECT_RECORD> &records)
+{
+    PROJECT_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM project_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM project_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.clientNum = query->value(2).toString();
+        record.rentalDocNum = query->value(3).toString();
+        record.contractNum = query->value(4).toString();
+        record.clientName = query->value(5).toString();
+        record.remarks = query->value(6).toString();
+        record.date = QDate::fromString(query->value(7).toString(),
+                                               "yyyy-MM-dd");
+        record.amount = query->value(8).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::delProjectDataInNumber(QString number)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM project_record WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM project_record failed!",
+              __FUNCTION__);
+        return DELETE_PROJECT_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
