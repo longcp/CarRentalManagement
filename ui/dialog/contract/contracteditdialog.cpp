@@ -4,10 +4,15 @@
 #include <QAction>
 #include <QToolBar>
 #include <tablemodel.h>
+#include <contractpricedialog.h>
+
+#define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
+#include "utils/Log.h"
 
 ContractEditDialog::ContractEditDialog(QWidget *parent) :
     QDialog(parent),
     mDb(DataBase::getInstance()),
+    mContractPriceDialog(new ContractPriceDialog()),
     ui(new Ui::ContractEditDialog)
 {
     ui->setupUi(this);
@@ -39,6 +44,9 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
     mToolBar->addAction(mActCancel);
     mToolBar->addAction(mActExit);
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+
+    connect(this, SIGNAL(openContractPriceWindowSignal(QString)),
+            mContractPriceDialog, SLOT(openWindow(QString)));
 }
 
 ContractEditDialog::~ContractEditDialog()
@@ -118,7 +126,8 @@ ContractEditDialog::initPriceTableView()
 void
 ContractEditDialog::on_addBtn_clicked()
 {
-
+    ALOGD("enter.");
+    emit openContractPriceWindowSignal("");
 }
 
 void

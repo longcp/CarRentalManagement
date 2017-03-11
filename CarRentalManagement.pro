@@ -18,6 +18,7 @@ INCLUDEPATH += ui/tabwidget/
 INCLUDEPATH += ui/dialog/
 INCLUDEPATH += ui/dialog/user/
 INCLUDEPATH += ui/dialog/car/
+INCLUDEPATH += ui/dialog/contract/
 INCLUDEPATH += utils/
 INCLUDEPATH += common/
 
@@ -45,8 +46,9 @@ SOURCES += main.cpp\
     ui/dialog/car/carannualdialog.cpp \
     ui/dialog/car/careditdialog.cpp \
     ui/dialog/car/insurancedialog.cpp \
-    ui/dialog/contracteditdialog.cpp \
-    common/contract.cpp
+    common/contract.cpp \
+    ui/dialog/contract/contractpricedialog.cpp \
+    ui/dialog/contract/contracteditdialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -74,8 +76,9 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/car/careditdialog.h \
     ui/dialog/car/insurancedialog.h \
     utils/Log.h \
-    ui/dialog/contracteditdialog.h \
-    common/contract.h
+    common/contract.h \
+    ui/dialog/contract/contractpricedialog.h \
+    ui/dialog/contract/contracteditdialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -95,7 +98,8 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/car/carannualdialog.ui \
     ui/dialog/car/careditdialog.ui \
     ui/dialog/car/insurancedialog.ui \
-    ui/dialog/contracteditdialog.ui
+    ui/dialog/contract/contractpricedialog.ui \
+    ui/dialog/contract/contracteditdialog.ui
 
 RESOURCES += \
     icon.qrc

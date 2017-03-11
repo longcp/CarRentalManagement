@@ -5,9 +5,9 @@
 #include <datatype.h>
 
 class TableModel;
-
 class QToolBar;
 class DataBase;
+class ContractPriceDialog;
 
 namespace Ui {
 class ContractEditDialog;
@@ -24,9 +24,12 @@ public:
 private slots:
     void            openContractEditDialogSlot();
 
-    void on_addBtn_clicked();
+    void            on_addBtn_clicked();
 
-    void on_deleteBtn_clicked();
+    void            on_deleteBtn_clicked();
+
+signals:
+    void            openContractPriceWindowSignal(QString);
 
 private:
     /**
@@ -59,6 +62,7 @@ private:
     DataBase*       mDb;
     OpenType        mOpenType;
     TableModel*     mModel;
+    ContractPriceDialog*    mContractPriceDialog;
 };
 
 #endif // CONTRACTEDITDIALOG_H

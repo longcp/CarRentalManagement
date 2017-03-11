@@ -971,7 +971,7 @@
                </size>
               </property>
               <property name="text">
-               <string>增加</string>
+               <string>添加</string>
               </property>
              </widget>
             </item>
