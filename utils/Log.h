@@ -52,8 +52,10 @@
 
 #if LOG_LEVEL >= 3
 #define ALOGD(x, ...)           qDebug("[D][%s] " x, LOG_TAG, ##__VA_ARGS__)
+#define ALOGDTRACE()            ALOGD("Function[%s]", __FUNCTION__);
 #else
 #define ALOGD(x, ...)
+#define ALOGDTRACE()
 #endif
 
 #if LOG_LEVEL >= 2

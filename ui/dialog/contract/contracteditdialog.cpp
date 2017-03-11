@@ -120,13 +120,13 @@ ContractEditDialog::initPriceTableView()
     ui->priceTableView->resizeColumnToContents(4);                      //自动适应列宽
     ui->priceTableView->resizeColumnToContents(5);
     ui->priceTableView->horizontalHeader()
-            ->setSectionResizeMode(6, QHeaderView::Stretch);                  //自动适应列宽
+            ->setSectionResizeMode(6, QHeaderView::Stretch);            //自动适应列宽
 }
 
 void
 ContractEditDialog::on_addBtn_clicked()
 {
-    ALOGD("enter.");
+    ALOGDTRACE();
     emit openContractPriceWindowSignal("");
 }
 

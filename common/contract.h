@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDate>
+#include <datatype.h>
 
 class QDate;
 
@@ -33,6 +34,9 @@ public:
         creatDate = c.creatDate;
 
         isIncludeTax = c.isIncludeTax;
+
+        for (int i = 0; i < c.prices.size(); i++)
+           prices.push_back(c.prices.at(i));
     }
 
     Contract(const Contract& c) {
@@ -56,6 +60,9 @@ public:
         creatDate = c.creatDate;
 
         isIncludeTax = c.isIncludeTax;
+
+        for (int i = 0; i < c.prices.size(); i++)
+           prices.push_back(c.prices.at(i));
     }
 
     void copy(const Contract &src, Contract* target) {
@@ -79,6 +86,11 @@ public:
         target->creatDate = src.creatDate;
 
         target->isIncludeTax = src.isIncludeTax;
+
+        if (!target->prices.isEmpty())
+            target->prices.clear();
+        for (int i = 0; i < src.prices.size(); i++)
+            target->prices.push_back(src.prices.at(i));
     }
 
     void            dump();
@@ -103,6 +115,7 @@ public:
     QDate   creatDate;
 
     bool    isIncludeTax;
+    QList<CONTRACT_PRICE> prices;
 
 signals:
 
