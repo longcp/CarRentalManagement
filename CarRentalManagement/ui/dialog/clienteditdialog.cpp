@@ -143,12 +143,12 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
         mActEdit->setDisabled(true);
         mActPrev->setDisabled(true);
         mActNext->setDisabled(true);
-        mActCancel->setDisabled(true);
         ui->monthlyRadioButton->setChecked(true);
         ui->temporaryRadioButton->setChecked(true);
         ui->createDateEdit->setDate(QDate::currentDate());
         setEditMode();                                                  //编辑模式
         mActSave->setDisabled(true);
+        mActCancel->setDisabled(true);
     } else {
         //以查看内容方式打开
         mActSave->setEnabled(true);

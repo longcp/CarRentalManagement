@@ -148,13 +148,13 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         mActEdit->setDisabled(true);
         mActPrev->setDisabled(true);
         mActNext->setDisabled(true);
-        mActCancel->setDisabled(true);
         ui->pumpTypeCbBox->setCurrentIndex(0);
         ui->createDateDE->setDate(QDate::currentDate());
         ui->drivingLicenseDateDE->setDate(QDate::currentDate());
         ui->productDateDE->setDate(QDate::currentDate());
         setEditMode();
         mActSave->setDisabled(true);
+        mActCancel->setDisabled(true);
         ui->mainTabWidget->removeTab(2);
         ui->mainTabWidget->removeTab(1);
     } else {
