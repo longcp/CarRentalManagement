@@ -5,6 +5,7 @@
 #include <QToolBar>
 #include <tablemodel.h>
 #include <contractpricedialog.h>
+#include <contract.h>
 
 #define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -13,6 +14,7 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
     QDialog(parent),
     mDb(DataBase::getInstance()),
     mContractPriceDialog(new ContractPriceDialog()),
+    mOriginContract(new Contract()),
     ui(new Ui::ContractEditDialog)
 {
     ui->setupUi(this);
@@ -45,6 +47,8 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
     mToolBar->addAction(mActExit);
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
 
+    connect(mActEdit, SIGNAL(triggered()),
+            this, SLOT(editEvent()));
     connect(this, SIGNAL(openContractPriceWindowSignal(QString)),
             mContractPriceDialog, SLOT(openWindow(QString)));
 }
@@ -88,8 +92,32 @@ ContractEditDialog::configToolBar()
 }
 
 void
-ContractEditDialog::openContractEditDialogSlot()
+ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
+                                               Contract &contract)
 {
+    mOpenType = opentype;
+    if (opentype == OpenType::CREATEITEM) {
+        //以创建条目方式打开
+        mActEdit->setDisabled(true);
+        mActPrev->setDisabled(true);
+        mActNext->setDisabled(true);
+        ui->signedDateDE->setDate(QDate::currentDate());
+        ui->startDateDE->setDate(QDate::currentDate());
+        ui->endDateDE->setDate(QDate::currentDate());
+        ui->createDateDE->setDate(QDate::currentDate());
+        setEditMode();
+        mActSave->setDisabled(true);
+        mActCancel->setDisabled(true);
+    } else {
+        //以查看内容方式打开
+        mActSave->setEnabled(true);
+        mActPrev->setEnabled(true);
+        mActNext->setEnabled(true);
+        ui->contractNumberLE->setDisabled(true);
+        setViewMode();
+        setOriginContract(contract);
+        setView(contract);
+    }
     this->exec();
 }
 
@@ -121,6 +149,74 @@ ContractEditDialog::initPriceTableView()
     ui->priceTableView->resizeColumnToContents(5);
     ui->priceTableView->horizontalHeader()
             ->setSectionResizeMode(6, QHeaderView::Stretch);            //自动适应列宽
+}
+
+void
+ContractEditDialog::setEditMode()
+{
+    if (mOpenType == OpenType::CREATEITEM)
+        ui->contractNumberLE->setFocus();
+    else
+        ui->projectNameLE->setFocus();
+
+    mActEdit->setDisabled(true);
+    mActCancel->setEnabled(true);
+    mActSave->setEnabled(true);
+    setMode(true);
+}
+
+void
+ContractEditDialog::setViewMode()
+{
+    mActCancel->setDisabled(true);
+    mActEdit->setEnabled(true);
+    mActSave->setDisabled(true);
+    setMode(false);
+}
+
+void
+ContractEditDialog::setMode(bool mode)
+{
+    ui->contractNumberLE->setEnabled(mode);
+    ui->signedDateDE->setEnabled(mode);
+    ui->clientNameCB->setEnabled(mode);
+    ui->clientNumberLebel->setEnabled(mode);
+    ui->projectNameLE->setEnabled(mode);
+    ui->projectAddrLE->setEnabled(mode);
+    ui->deliveryDSB->setEnabled(mode);
+    ui->structureLevelDSB->setEnabled(mode);
+    ui->startDateDE->setEnabled(mode);
+    ui->endDateDE->setEnabled(mode);
+    ui->requireTE->setEnabled(mode);
+    ui->supplementTE->setEnabled(mode);
+    ui->remarksTE->setEnabled(mode);
+    ui->isIncludeTexCB->setEnabled(mode);
+    ui->texRateSB->setEnabled(mode);
+    ui->creatorLE->setEnabled(mode);
+    ui->createDateDE->setEnabled(mode);
+    ui->addBtn->setEnabled(mode);
+    ui->deleteBtn->setEnabled(mode);
+}
+
+void
+ContractEditDialog::setOriginContract(Contract &contract)
+{
+    ALOGDTRACE();
+    mOriginContract->copy(contract);
+}
+
+void
+ContractEditDialog::setView(Contract &contract)
+{
+
+}
+
+void
+ContractEditDialog::editEvent()
+{
+    setEditMode();
+    //已存在的合同，其合同编码不可再次编辑
+    ui->contractNumberLE->setDisabled(true);
 }
 
 void

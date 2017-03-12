@@ -189,7 +189,8 @@ ClientManagermentWidget::editRowEvent(int row)
     Client client;
     QString clientNum = mModel->index(curRow, 0).data().toString();
     if (mDb->getClientInNumber(clientNum, client)) {
-        ALOGE("getClientInNumber failed, sql err = %s", mDb->lastError());
+        ALOGE("getClientInNumber failed, sql err = %s",
+              mDb->lastError().toStdString().data());
         QMessageBox::critical(this,
                               tr("温馨提示"),
                               tr("未知错误,无法查看该项.\n"),

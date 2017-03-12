@@ -2,10 +2,13 @@
 #define CONTRACTWIDGET_H
 
 #include <QWidget>
+#include <datatype.h>
 
 class QToolBar;
 class TableModel;
 class ContractEditDialog;
+class Contract;
+class DataBase;
 
 namespace Ui {
 class ContractWidget;
@@ -20,13 +23,18 @@ public:
     ~ContractWidget();
 
 signals:
-    void            openContractEditDialogSignal();
+    void            openContractEditDialogSignal(OpenType,
+                                                 Contract&);
 
 private slots:
     /**
      * @brief 工具栏，添加按钮
      */
     void            addContractSlot();
+    /**
+     * @brief 工具栏，编辑按钮
+     */
+    void            editContractItemSlot();
 
 private:
     /**
@@ -45,6 +53,10 @@ private:
      * @brief 初始化价格表格式
      */
     void            initPriceTableview();
+    /**
+     * @brief 编辑条目
+     */
+    void            editRowEvent(int row);
 
     Ui::ContractWidget *ui;
     ContractEditDialog* mContractEditDialog;
@@ -61,6 +73,8 @@ private:
 
     TableModel*     mContractModel;
     TableModel*     mPriceModel;
+    DataBase*       mDb;
+    int             curRow;
 };
 
 #endif // CONTRACTWIDGET_H

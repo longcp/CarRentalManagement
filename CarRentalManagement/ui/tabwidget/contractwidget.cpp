@@ -3,10 +3,18 @@
 #include <QToolBar>
 #include <tablemodel.h>
 #include <contracteditdialog.h>
+#include <database/database.h>
+#include <QMessageBox>
+#include <contract.h>
+
+#define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
+#include "utils/Log.h"
 
 ContractWidget::ContractWidget(QWidget *parent) :
     mContractEditDialog(new ContractEditDialog()),
     QWidget(parent),
+    mDb(DataBase::getInstance()),
+    curRow(-1),
     ui(new Ui::ContractWidget)
 {
     ui->setupUi(this);
@@ -44,10 +52,15 @@ ContractWidget::ContractWidget(QWidget *parent) :
     connect(mActAdd, SIGNAL(triggered()),
             this, SLOT(addContractSlot()));
     /**
+     * @brief 工具栏，编辑按钮
+     */
+    connect(mActEdit, SIGNAL(triggered()),
+            this, SLOT(editContractItemSlot()));
+    /**
      * @brief 打开编辑窗口
      */
-    connect(this, SIGNAL(openContractEditDialogSignal()),
-            mContractEditDialog, SLOT(openContractEditDialogSlot()));
+    connect(this, SIGNAL(openContractEditDialogSignal(OpenType , Contract&)),
+            mContractEditDialog, SLOT(openContractEditDialogSlot(OpenType, Contract&)));
 }
 
 ContractWidget::~ContractWidget()
@@ -157,6 +170,40 @@ ContractWidget::initPriceTableview()
 void
 ContractWidget::addContractSlot()
 {
-//    Contract car;
-    emit openContractEditDialogSignal();
+    Contract contract;
+    emit openContractEditDialogSignal(OpenType::CREATEITEM, contract);
+}
+
+void
+ContractWidget::editRowEvent(int row)
+{
+    Contract contract;
+    QString number = mContractModel->index(row, 0).data().toString();
+    if (mDb->getContractInNumber(number, contract)) {
+        ALOGE("%s getContractInNumber failed, sql err = ",
+              mDb->lastError().toStdString().data());
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("未知错误,无法查看该项.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+        return;
+    }
+
+    emit openContractEditDialogSignal(OpenType::SHOWITEM, contract);
+}
+
+void
+ContractWidget::editContractItemSlot()
+{
+    if (curRow < 0) {
+        QMessageBox::information(this,
+                                 tr("温馨提示"),
+                                 tr("请选择要编辑条目.\n"),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    editRowEvent(curRow);
 }

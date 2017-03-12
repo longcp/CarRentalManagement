@@ -93,6 +93,35 @@ public:
             target->prices.push_back(src.prices.at(i));
     }
 
+    void copy(const Contract &src) {
+        number = src.number;
+        clientName = src.clientName;
+        clientNumber = src.clientNumber;
+        projectName = src.projectName;
+        projectAddress = src.projectAddress;
+        requirement = src.requirement;
+        supplement = src.supplement;
+        remarks = src.remarks;
+        creator = src.creator;
+
+        deliverySizes = src.deliverySizes;
+        structureLevel = src.structureLevel;
+        taxRate = src.taxRate;
+
+        signedDate = src.signedDate;
+        beginDate = src.beginDate;
+        endDate = src.endDate;
+        creatDate = src.creatDate;
+
+        isIncludeTax = src.isIncludeTax;
+
+        if (!prices.isEmpty())
+            prices.clear();
+        for (int i = 0; i < src.prices.size(); i++)
+            prices.push_back(src.prices.at(i));
+    }
+
+
     void            dump();
 
     QString number;
