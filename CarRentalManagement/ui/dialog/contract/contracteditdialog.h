@@ -25,11 +25,26 @@ public:
 private slots:
     void            openContractEditDialogSlot(OpenType opentype,
                                                Contract &contract);
-
     /**
      * @brief 工具栏编辑按钮
      */
     void            editEvent();
+    /**
+     * @brief 工具栏保存退出按钮
+     */
+    void            saveAndExitEvent();
+    /**
+     * @brief 工具栏保存按钮
+     */
+    void            saveEvent();
+    /**
+     * @brief 工具栏取消按钮
+     */
+    void            cancelEvent();
+    /**
+     * @brief 工具栏退出按钮
+     */
+    void            closeDialog();
     /**
      * @brief 添加价格
      */
@@ -39,8 +54,12 @@ private slots:
      */
     void            on_deleteBtn_clicked();
 
+    void            on_isIncludeTexCB_stateChanged(int state);
+
 signals:
     void            openContractPriceWindowSignal(QString);
+    void            addContractItemSignal(Contract&);
+    void            updateContractItemSignal(Contract&);
 
 private:
     /**
@@ -67,6 +86,10 @@ private:
      * @brief 清理内容
      */
     void            cleanContent();
+    /**
+     * @brief 清空表内容
+     */
+    void            clearPriceTable();
     /**
      * @brief
      */
@@ -99,6 +122,14 @@ private:
      * @brief 设置初始数据
      */
     void            setOriginContract(Contract &contract);
+    /**
+     * @brief 窗口关闭事件
+     */
+    void            closeEvent(QCloseEvent *event);
+    /**
+     * @brief 保存界面数据
+     */
+    void            saveUiContent(Contract &contract);
 
     Ui::ContractEditDialog *ui;
     // 工具栏

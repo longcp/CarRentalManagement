@@ -883,7 +883,7 @@ CarEditDialog::isModified()
             ui->milageDSB->isWindowModified() ||
             ui->creatorLE->isModified() ||
             ui->createDateDE->isWindowModified()) {
-        ALOGE("is modified!!!");
+        ALOGD("is modified!!!");
         return true;
     }
 

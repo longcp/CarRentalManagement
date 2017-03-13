@@ -783,7 +783,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="texRateSB">
+             <widget class="QSpinBox" name="taxRateSB">
               <property name="minimumSize">
                <size>
                 <width>180</width>

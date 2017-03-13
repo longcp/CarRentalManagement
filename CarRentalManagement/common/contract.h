@@ -136,7 +136,7 @@ public:
 
     float   deliverySizes;
     float   structureLevel;
-    float   taxRate;
+    int     taxRate;
 
     QDate   signedDate;
     QDate   beginDate;

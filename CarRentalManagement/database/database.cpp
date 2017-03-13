@@ -1444,7 +1444,7 @@ DataBase::getAllContractData(QList<Contract> &contracts)
         contract.creator = query->value(8).toString();
         contract.deliverySizes = query->value(9).toFloat();
         contract.structureLevel = query->value(10).toFloat();
-        contract.taxRate = query->value(11).toFloat();
+        contract.taxRate = query->value(11).toInt();
 
         contract.signedDate = QDate::fromString(query->value(12).toString(),
                                                "yyyy-MM-dd");
@@ -1493,7 +1493,7 @@ DataBase::getContractInNumber(QString number, Contract &contract)
         contract.creator = query->value(8).toString();
         contract.deliverySizes = query->value(9).toFloat();
         contract.structureLevel = query->value(10).toFloat();
-        contract.taxRate = query->value(11).toFloat();
+        contract.taxRate = query->value(11).toInt();
 
         contract.signedDate = QDate::fromString(query->value(12).toString(),
                                                "yyyy-MM-dd");
