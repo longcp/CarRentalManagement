@@ -61,6 +61,16 @@ ContractWidget::ContractWidget(QWidget *parent) :
      */
     connect(this, SIGNAL(openContractEditDialogSignal(OpenType , Contract&)),
             mContractEditDialog, SLOT(openContractEditDialogSlot(OpenType, Contract&)));
+    /**
+     * @brief 添加条目
+     */
+    connect(mContractEditDialog, SIGNAL(addContractItemSignal(Contract&)),
+            this, SLOT(addContractItemSlot(Contract&)));
+    /**
+     * @brief 更新条目
+     */
+    connect(mContractEditDialog, SIGNAL(updateContractItemSignal(Contract&)),
+            this, SLOT(updateContractItemSLot(Contract&)));
 }
 
 ContractWidget::~ContractWidget()
@@ -206,4 +216,16 @@ ContractWidget::editContractItemSlot()
     }
 
     editRowEvent(curRow);
+}
+
+void
+ContractWidget::addContractItemSlot(Contract &contract)
+{
+
+}
+
+void
+ContractWidget::updateContractItemSLot(Contract &contract)
+{
+
 }

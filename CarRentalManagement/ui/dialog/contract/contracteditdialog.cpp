@@ -485,6 +485,12 @@ ContractEditDialog::saveAndExitEvent()
         }
 
         if(!mDb->insertContractTable(contract)) {
+            if (!contract.prices.isEmpty()) {
+                for (int i = 0; i < contract.prices.size(); i++) {
+                    // 插入价格
+                    mDb->insertContractPriceTable(contract.prices.at(i));
+                }
+            }
             resetView(contract);
             emit addContractItemSignal(contract);
             QMessageBox::information(this,

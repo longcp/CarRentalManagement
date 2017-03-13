@@ -35,6 +35,14 @@ private slots:
      * @brief 工具栏，编辑按钮
      */
     void            editContractItemSlot();
+    /**
+     * @brief 添加条目
+     */
+    void            addContractItemSlot(Contract&);
+    /**
+     * @brief 更新条目
+     */
+    void            updateContractItemSLot(Contract&);
 
 private:
     /**
