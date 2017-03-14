@@ -123,6 +123,7 @@ public:
 
 
     void            dump();
+    const static QString makeNewestContractNumber(int count);
 
     QString number;
     QString clientName;

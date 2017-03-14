@@ -77,8 +77,13 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
     /**
      * @brief 打开价格窗口
      */
-    connect(this, SIGNAL(openContractPriceWindowSignal(QString)),
-            mContractPriceDialog, SLOT(openWindow(QString)));
+    connect(this, SIGNAL(openContractPriceWindowSignal(OpenType, QString)),
+            mContractPriceDialog, SLOT(openWindow(OpenType, QString)));
+    /**
+     * @brief 添加价格
+     */
+    connect(mContractPriceDialog, SIGNAL(addPriceItemSignal(CONTRACT_PRICE &)),
+            this, SLOT(addPriceItemSlot(CONTRACT_PRICE &)));
 }
 
 ContractEditDialog::~ContractEditDialog()
@@ -123,6 +128,8 @@ void
 ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
                                                Contract &contract)
 {
+    int count = 0;
+    QList<Contract> contracts;
     mOpenType = opentype;
     if (opentype == OpenType::CREATEITEM) {
         //以创建条目方式打开
@@ -136,12 +143,14 @@ ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
         setEditMode();
         mActSave->setDisabled(true);
         mActCancel->setDisabled(true);
+        if (!mDb->getAllContractData(contracts))
+            count = contracts.size();
+        ui->contractNumberLabel->setText(Contract::makeNewestContractNumber(count));
     } else {
         //以查看内容方式打开
         mActSave->setEnabled(true);
         mActPrev->setEnabled(true);
         mActNext->setEnabled(true);
-        ui->contractNumberLE->setDisabled(true);
         setViewMode();
         setOriginContract(contract);
         setView(contract);
@@ -182,11 +191,7 @@ ContractEditDialog::initPriceTableView()
 void
 ContractEditDialog::setEditMode()
 {
-    if (mOpenType == OpenType::CREATEITEM)
-        ui->contractNumberLE->setFocus();
-    else
-        ui->projectNameLE->setFocus();
-
+    ui->projectNameLE->setFocus();
     mActEdit->setDisabled(true);
     mActCancel->setEnabled(true);
     mActSave->setEnabled(true);
@@ -205,7 +210,7 @@ ContractEditDialog::setViewMode()
 void
 ContractEditDialog::setMode(bool mode)
 {
-    ui->contractNumberLE->setEnabled(mode);
+//    ui->contractNumberLabel->setEnabled(mode);
     ui->signedDateDE->setEnabled(mode);
     ui->clientNameCB->setEnabled(mode);
     ui->clientNumberLebel->setEnabled(mode);
@@ -236,7 +241,7 @@ ContractEditDialog::setOriginContract(Contract &contract)
 void
 ContractEditDialog::setView(Contract &contract)
 {
-    ui->contractNumberLE->setText(contract.number);
+    ui->contractNumberLabel->setText(contract.number);
     ui->signedDateDE->setDate(contract.signedDate);
     ui->clientNameCB->setCurrentText(contract.clientName);
     ui->clientNumberLebel->setText(contract.clientNumber);
@@ -307,7 +312,7 @@ ContractEditDialog::resetView()
 bool
 ContractEditDialog::isModified()
 {
-    if (ui->contractNumberLE->isModified() ||
+    if (/*ui->contractNumberLabel->isModified() ||*/
             ui->signedDateDE->isWindowModified() ||
             ui->clientNameCB->isWindowModified() ||
             ui->clientNumberLebel->isWindowModified() ||
@@ -370,7 +375,7 @@ ContractEditDialog::clean()
 void
 ContractEditDialog::cleanContent()
 {
-    ui->contractNumberLE->setText("");
+    ui->contractNumberLabel->setText("");
     ui->clientNameCB->setCurrentText("");
     ui->clientNumberLebel->setText("");
     ui->projectNameLE->setText("");
@@ -401,7 +406,7 @@ ContractEditDialog::saveUiContent(Contract &contract)
 {
     bool ok;
 
-    contract.number = ui->contractNumberLE->text();
+    contract.number = ui->contractNumberLabel->text();
     contract.clientName = ui->clientNameCB->currentText();
     contract.clientNumber = ui->clientNumberLebel->text();
     contract.projectName = ui->projectNameLE->text();
@@ -446,7 +451,7 @@ ContractEditDialog::editEvent()
 {
     setEditMode();
     //已存在的合同，其合同编码不可再次编辑
-    ui->contractNumberLE->setDisabled(true);
+//    ui->contractNumberLabel->setDisabled(true);
 }
 
 void
@@ -454,11 +459,10 @@ ContractEditDialog::saveAndExitEvent()
 {
     int ret;
 
-    if (ui->contractNumberLE->text().isEmpty() ||
-            ui->clientNameCB->currentText().isEmpty() ||
+    if (ui->clientNameCB->currentText().isEmpty() ||
             mModel->rowCount() <= 0) {
         QMessageBox::warning(this, tr("温馨提示"),
-                             tr("合同号、客户名称和价格表不能为空！\n"),
+                             tr("客户名称和价格表不能为空！\n"),
                              QMessageBox::Ok,
                              QMessageBox::Ok);
         return;
@@ -555,10 +559,17 @@ ContractEditDialog::cancelEvent()
 }
 
 void
+ContractEditDialog::addPriceItemSlot(CONTRACT_PRICE &price)
+{
+    ALOGDTRACE();
+}
+
+void
 ContractEditDialog::on_addBtn_clicked()
 {
     ALOGDTRACE();
-    emit openContractPriceWindowSignal("");
+    emit openContractPriceWindowSignal(mOpenType,
+                                       ui->contractNumberLabel->text());
 }
 
 void

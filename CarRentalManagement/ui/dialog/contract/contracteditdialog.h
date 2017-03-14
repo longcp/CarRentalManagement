@@ -53,11 +53,12 @@ private slots:
      * @brief 删除价格
      */
     void            on_deleteBtn_clicked();
+    void            addPriceItemSlot(CONTRACT_PRICE &price);
 
     void            on_isIncludeTexCB_stateChanged(int state);
 
 signals:
-    void            openContractPriceWindowSignal(QString);
+    void            openContractPriceWindowSignal(OpenType, QString);
     void            addContractItemSignal(Contract&);
     void            updateContractItemSignal(Contract&);
 

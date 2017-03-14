@@ -71,6 +71,11 @@ ContractWidget::ContractWidget(QWidget *parent) :
      */
     connect(mContractEditDialog, SIGNAL(updateContractItemSignal(Contract&)),
             this, SLOT(updateContractItemSLot(Contract&)));
+    /**
+     * @brief 删除条目
+     */
+    connect(mActDelete, SIGNAL(triggered()),
+            this, SLOT(deleteCarItemSlot()));
 }
 
 ContractWidget::~ContractWidget()

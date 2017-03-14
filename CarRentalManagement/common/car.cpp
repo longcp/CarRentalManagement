@@ -63,6 +63,36 @@ Car::getPumpType(QString typeStr)
         return UNKNOWN_PUMPTYPE;
 }
 
+const int
+Car::getPumpTypePosition(PumpType type)
+{
+
+    switch (type) {
+    case TYPE_37M1:
+       return PUMP_TYPE_37M1_COLUMN;
+
+    case TYPE_48M:
+       return PUMP_TYPE_48M_COLUMN;
+
+    case TYPE_52M:
+       return PUMP_TYPE_52M_COLUMN;
+
+    case TYPE_56M:
+       return PUMP_TYPE_56M_COLUMN;
+
+    case TYPE_60M:
+       return PUMP_TYPE_60M_COLUMN;
+
+    case TYPE_CAR_PUMP:
+       return PUMP_TYPE_CAR_PUMP_COLUMN;
+
+    default:
+        break;
+    }
+
+    return PUMP_TYPE_37M1_COLUMN;
+}
+
 const PumpType
 Car::getPumpType(int type)
 {

@@ -188,6 +188,7 @@ public:
      */
     const static PumpType getPumpType(QString typeStr);
     const static PumpType getPumpType(int type);
+    const static int getPumpTypePosition(PumpType type);
     void            dump();
 
     QString         number;

@@ -145,7 +145,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="contractNumberLE">
+             <widget class="QLabel" name="contractNumberLabel">
               <property name="minimumSize">
                <size>
                 <width>180</width>
@@ -157,6 +157,9 @@
                 <width>180</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="text">
+               <string/>
               </property>
              </widget>
             </item>
