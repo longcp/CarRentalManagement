@@ -221,11 +221,114 @@ ContractWidget::editContractItemSlot()
 void
 ContractWidget::addContractItemSlot(Contract &contract)
 {
+    ALOGDTRACE();
+    QStandardItem *num
+            = new QStandardItem(contract.number);
+    QStandardItem *clientName
+            = new QStandardItem(contract.clientName);
+    QStandardItem *projectName
+            = new QStandardItem(contract.projectName);
+    QStandardItem *projectAddr
+            = new QStandardItem(contract.projectAddress);
+    QStandardItem* deliverySizes
+            = new QStandardItem(QString("%1")
+                                .arg(contract.deliverySizes));
+    QStandardItem* structureLevel
+            = new QStandardItem(QString("%1")
+                                .arg(contract.structureLevel));
+    QStandardItem* beginDate
+            = new QStandardItem(contract
+                                .beginDate.toString("yyyy-MM-dd"));
+    QStandardItem* endDate
+            = new QStandardItem(contract
+                                .endDate.toString("yyyy-MM-dd"));
+    QStandardItem* signedDate
+            = new QStandardItem(contract
+                                .signedDate.toString("yyyy-MM-dd"));
+    QStandardItem* taxRate
+            = new QStandardItem(QString("%1").arg(contract.taxRate));
+    QStandardItem* isIncludeTax
+            = new QStandardItem(contract.isIncludeTax ? "是" : "否");
+    QStandardItem *requirement
+            = new QStandardItem(contract.requirement);
+    QStandardItem *supplement
+            = new QStandardItem(contract.supplement);
+    QStandardItem *remarks
+            = new QStandardItem(contract.remarks);
 
+    QList<QStandardItem*> items;
+    items << num << clientName << projectName << projectAddr
+          << deliverySizes << structureLevel << beginDate
+          << endDate << signedDate << taxRate << isIncludeTax
+          << requirement << supplement << remarks;
+    mPriceModel->appendRow(items);
 }
 
 void
 ContractWidget::updateContractItemSLot(Contract &contract)
 {
+    ALOGDTRACE();
+    mPriceModel->setData(mPriceModel->index(curRow, 0),
+                         contract.number);
+    mPriceModel->setData(mPriceModel->index(curRow, 1),
+                         contract.clientName);
+    mPriceModel->setData(mPriceModel->index(curRow, 2),
+                         contract.projectName);
+    mPriceModel->setData(mPriceModel->index(curRow, 3),
+                         contract.projectAddress);
+    mPriceModel->setData(mPriceModel->index(curRow, 4),
+                         QString("%1").arg(contract.deliverySizes));
+    mPriceModel->setData(mPriceModel->index(curRow, 5),
+                         QString("%1").arg(contract.structureLevel));
+    mPriceModel->setData(mPriceModel->index(curRow, 6),
+                         contract.beginDate.toString("yyyy-MM-dd"));
+    mPriceModel->setData(mPriceModel->index(curRow, 7),
+                         contract.endDate.toString("yyyy-MM-dd"));
+    mPriceModel->setData(mPriceModel->index(curRow, 8),
+                         contract.signedDate.toString("yyyy-MM-dd"));
+    mPriceModel->setData(mPriceModel->index(curRow, 9),
+                         QString("%1").arg(contract.taxRate));
+    mPriceModel->setData(mPriceModel->index(curRow, 10),
+                         contract.isIncludeTax ? "是" : "否");
+    mPriceModel->setData(mPriceModel->index(curRow, 11),
+                         contract.requirement);
+    mPriceModel->setData(mPriceModel->index(curRow, 12),
+                         contract.supplement);
+    mPriceModel->setData(mPriceModel->index(curRow, 13),
+                         contract.remarks);
+}
 
+void
+ContractWidget::deleteCarItemSlot()
+{
+    if (curRow < 0) {
+        QMessageBox::warning(this,
+                             tr("温馨提示"),
+                             tr("请选择要删除条目.\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+        return;
+    }
+
+    int ret = QMessageBox::warning(this,
+                                   tr("温馨提示"),
+                                   tr("确定要删除该条目吗？.\n"),
+                                   QMessageBox::Yes |
+                                   QMessageBox::No,
+                                   QMessageBox::No);
+    if (ret == QMessageBox::No)
+        return;
+
+    QString number = "";
+    number = mPriceModel->index(curRow, 0).data().toString();
+    if (!mDb->deleteContractDataInNumber(number)) {
+        ALOGD("%s, delete ok", __FUNCTION__);
+        mPriceModel->removeRow(curRow);
+    }
+}
+
+void
+ContractWidget::on_contractTableView_clicked(const QModelIndex &index)
+{
+    curRow = index.row();
 }
