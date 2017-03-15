@@ -93,6 +93,7 @@ public:
     int                 getAllContractPriceData(QList<CONTRACT_PRICE> &prices);
     int                 insertContractPriceTable(const CONTRACT_PRICE &price);
     int                 delContractPriceInNumber(const QString number);
+    int                 delContractPriceInContractNumber(const QString contractNumber);
 
 private:
     bool                openDataBase();

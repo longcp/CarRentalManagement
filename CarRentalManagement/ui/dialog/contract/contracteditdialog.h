@@ -57,6 +57,8 @@ private slots:
 
     void            on_isIncludeTexCB_stateChanged(int state);
 
+    void on_priceTableView_clicked(const QModelIndex &index);
+
 signals:
     void            openContractPriceWindowSignal(OpenType, QString);
     void            addContractItemSignal(Contract&);
@@ -146,6 +148,7 @@ private:
     QAction         *mActNext;
     QAction         *mActCancel;
 
+    int             mCurRow;
     DataBase*       mDb;
     OpenType        mOpenType;
     TableModel*     mModel;

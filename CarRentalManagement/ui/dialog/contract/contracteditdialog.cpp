@@ -17,6 +17,7 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
     mDb(DataBase::getInstance()),
     mContractPriceDialog(new ContractPriceDialog()),
     mOriginContract(new Contract()),
+    mCurRow(-1),
     ui(new Ui::ContractEditDialog)
 {
     ui->setupUi(this);
@@ -540,6 +541,11 @@ ContractEditDialog::saveEvent()
 
     saveUiContent(contract);
     if (!mDb->updateContractTableData(contract)) {
+        //先把旧数据都删除，再重新插入数据
+        mDb->delContractPriceInContractNumber(contract.number);
+        for (int i = 0; i < contract.prices.size(); i++) {
+            mDb->insertContractPriceTable(contract.prices.at(i));
+        }
         resetView(contract);
         emit updateContractItemSignal(contract);
     } else {
@@ -562,6 +568,24 @@ void
 ContractEditDialog::addPriceItemSlot(CONTRACT_PRICE &price)
 {
     ALOGDTRACE();
+    QStandardItem *num
+            = new QStandardItem(price.number);
+    QStandardItem *pumpType
+            = new QStandardItem(Car::getPumpTypeStr(price.pumpType));
+    QStandardItem* squarePrice
+            = new QStandardItem(QString("%1").arg(price.squarePrice));
+    QStandardItem* standardPrice
+            = new QStandardItem(QString("%1").arg(price.standardPrice));
+    QStandardItem* within150MinPrice
+            = new QStandardItem(QString("%1").arg(price.within150MinPrice));
+    QStandardItem* within240MinPrice
+            = new QStandardItem(QString("%1").arg(price.within240MinPrice));
+    QStandardItem *remarks
+            = new QStandardItem(price.remarks);
+
+    QList<QStandardItem*> items;
+    items << num << pumpType <<squarePrice <<standardPrice
+          << within150MinPrice <<within240MinPrice <<remarks;
 }
 
 void
@@ -575,7 +599,39 @@ ContractEditDialog::on_addBtn_clicked()
 void
 ContractEditDialog::on_deleteBtn_clicked()
 {
+    if (mCurRow < 0) {
+        QMessageBox::warning(this,
+                             tr("温馨提示"),
+                             tr("请选择要删除条目.\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+        return;
+    }
 
+    int ret = QMessageBox::warning(this,
+                                   tr("温馨提示"),
+                                   tr("确定要删除该条目吗？.\n"),
+                                   QMessageBox::Yes |
+                                   QMessageBox::No,
+                                   QMessageBox::No);
+    if (ret == QMessageBox::No)
+        return;
+
+    QString number = "";
+    number = mModel->index(mCurRow, 0).data().toString();
+    if (mOpenType == OpenType::CREATEITEM) {
+        //FIXME:创建条目方式，不删除数据库条目，因为条目尚未插入数据库
+        mModel->removeRow(mCurRow);
+    } else {
+        /*
+         * 修改条目方式才删除数据库条目，因为在此种方式下，添加price条目时已经
+         * 把price插入数据库
+         */
+        if (!mDb->delProjectDataInNumber(number)) {
+            ALOGD("%s, delete ok", __FUNCTION__);
+            mModel->removeRow(mCurRow);
+        }
+    }
 }
 
 void ContractEditDialog::on_isIncludeTexCB_stateChanged(int state)
@@ -584,4 +640,10 @@ void ContractEditDialog::on_isIncludeTexCB_stateChanged(int state)
         ui->taxRateSB->setEnabled(true);
     else
         ui->taxRateSB->setDisabled(true);
+}
+
+void
+ContractEditDialog::on_priceTableView_clicked(const QModelIndex &index)
+{
+    mCurRow = index.row();
 }

@@ -1665,3 +1665,23 @@ DataBase::delContractPriceInNumber(const QString number)
 
     return SUCCESS;
 }
+
+int
+DataBase::delContractPriceInContractNumber(const QString contractNumber)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("DELETE FROM contract_price WHERE contractNumber=?");
+    query->addBindValue(contractNumber);
+    if (!query->exec()) {
+        ALOGD("%s, DELETE FROM contract_price failed!", __FUNCTION__);
+        return DELETE_PRICE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}

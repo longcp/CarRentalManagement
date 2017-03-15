@@ -57,7 +57,7 @@ Contract::makeNewestContractNumber(int count)
     int tailLen = 6;
     int maxVal = pow(10, 6);
     QString header = "C";
-    QString date = QDate::currentDate().toString("yyyy-MM-dd");
+    QString date = QDate::currentDate().toString("yyyyMMdd");
 
     int tailNum = count+1;
     if (tailNum >= maxVal)
