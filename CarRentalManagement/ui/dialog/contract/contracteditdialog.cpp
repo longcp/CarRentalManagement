@@ -8,6 +8,7 @@
 #include <contract.h>
 #include <QMessageBox>
 #include <car.h>
+#include <QTableView>
 
 #define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -213,7 +214,7 @@ ContractEditDialog::setMode(bool mode)
 {
 //    ui->contractNumberLabel->setEnabled(mode);
     ui->signedDateDE->setEnabled(mode);
-    ui->clientNameCB->setEnabled(mode);
+//    ui->clientNameLE->setEnabled(mode);
     ui->clientNumberLebel->setEnabled(mode);
     ui->projectNameLE->setEnabled(mode);
     ui->projectAddrLE->setEnabled(mode);
@@ -244,7 +245,7 @@ ContractEditDialog::setView(Contract &contract)
 {
     ui->contractNumberLabel->setText(contract.number);
     ui->signedDateDE->setDate(contract.signedDate);
-    ui->clientNameCB->setCurrentText(contract.clientName);
+    ui->clientNameLE->setText(contract.clientName);
     ui->clientNumberLebel->setText(contract.clientNumber);
     ui->projectNameLE->setText(contract.projectName);
     ui->projectAddrLE->setText(contract.projectAddress);
@@ -315,7 +316,7 @@ ContractEditDialog::isModified()
 {
     if (/*ui->contractNumberLabel->isModified() ||*/
             ui->signedDateDE->isWindowModified() ||
-            ui->clientNameCB->isWindowModified() ||
+            ui->clientNameLE->isWindowModified() ||
             ui->clientNumberLebel->isWindowModified() ||
             ui->projectNameLE->isModified() ||
             ui->projectAddrLE->isModified() ||
@@ -377,7 +378,7 @@ void
 ContractEditDialog::cleanContent()
 {
     ui->contractNumberLabel->setText("");
-    ui->clientNameCB->setCurrentText("");
+    ui->clientNameLE->setText("");
     ui->clientNumberLebel->setText("");
     ui->projectNameLE->setText("");
     ui->projectAddrLE->setText("");
@@ -408,7 +409,7 @@ ContractEditDialog::saveUiContent(Contract &contract)
     bool ok;
 
     contract.number = ui->contractNumberLabel->text();
-    contract.clientName = ui->clientNameCB->currentText();
+    contract.clientName = ui->clientNameLE->text();
     contract.clientNumber = ui->clientNumberLebel->text();
     contract.projectName = ui->projectNameLE->text();
     contract.projectAddress = ui->projectAddrLE->text();
@@ -460,7 +461,7 @@ ContractEditDialog::saveAndExitEvent()
 {
     int ret;
 
-    if (ui->clientNameCB->currentText().isEmpty() ||
+    if (ui->clientNameLE->text().isEmpty() ||
             mModel->rowCount() <= 0) {
         QMessageBox::warning(this, tr("温馨提示"),
                              tr("客户名称和价格表不能为空！\n"),

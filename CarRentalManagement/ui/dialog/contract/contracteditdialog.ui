@@ -251,7 +251,10 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="clientNameCB">
+             <widget class="QLineEdit" name="clientNameLE">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>180</width>
@@ -263,6 +266,13 @@
                 <width>180</width>
                 <height>16777215</height>
                </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="chooseClientBtn">
+              <property name="text">
+               <string>...</string>
               </property>
              </widget>
             </item>

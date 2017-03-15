@@ -9,6 +9,7 @@ class QToolBar;
 class DataBase;
 class ContractPriceDialog;
 class Contract;
+class QTableView;
 
 namespace Ui {
 class ContractEditDialog;
@@ -53,11 +54,12 @@ private slots:
      * @brief 删除价格
      */
     void            on_deleteBtn_clicked();
+
     void            addPriceItemSlot(CONTRACT_PRICE &price);
 
     void            on_isIncludeTexCB_stateChanged(int state);
 
-    void on_priceTableView_clicked(const QModelIndex &index);
+    void            on_priceTableView_clicked(const QModelIndex &index);
 
 signals:
     void            openContractPriceWindowSignal(OpenType, QString);
