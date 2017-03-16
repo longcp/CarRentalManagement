@@ -22,6 +22,7 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
     mOriginContract(new Contract()),
     mCurRow(-1),
     mClientTableDialog(new ClientTableDialog()),
+    mAddRows(0),
     ui(new Ui::ContractEditDialog)
 {
     ui->setupUi(this);
@@ -342,7 +343,7 @@ bool
 ContractEditDialog::isModified()
 {
     ALOGDTRACE();
-    if (/*ui->contractNumberLabel->isModified() ||*/
+    if (ui->contractNumberLabel->isWindowModified() ||
             ui->signedDateDE->isWindowModified() ||
             ui->clientNameLE->isWindowModified() ||
             ui->clientNumberLebel->isWindowModified() ||
@@ -358,7 +359,8 @@ ContractEditDialog::isModified()
             ui->isIncludeTexCB->isWindowModified() ||
             ui->taxRateSB->isWindowModified() ||
             ui->creatorLE->isModified() ||
-            ui->createDateDE->isWindowModified()) {
+            ui->createDateDE->isWindowModified() ||
+            mAddRows) {
         ALOGD("is modified!");
         return true;
     }
@@ -420,6 +422,7 @@ ContractEditDialog::cleanContent()
     ui->supplementTE->setText("");
     ui->remarksTE->setText("");
     ui->creatorLE->setText("");
+    mAddRows = 0;
 
     clearPriceTable();
 }
@@ -627,6 +630,7 @@ ContractEditDialog::addPriceItemSlot(CONTRACT_PRICE &price)
     items << num << pumpType <<squarePrice <<standardPrice
           << within150MinPrice <<within240MinPrice <<remarks;
     mModel->appendRow(items);
+    mAddRows++;
 }
 
 void
@@ -676,6 +680,7 @@ ContractEditDialog::on_deleteBtn_clicked()
     if (mOpenType == OpenType::CREATEITEM) {
         //FIXME:创建条目方式，不删除数据库条目，因为条目尚未插入数据库
         mModel->removeRow(mCurRow);
+        mAddRows--;
     } else {
         /*
          * 修改条目方式才删除数据库条目，因为在此种方式下，添加price条目时已经
@@ -684,6 +689,7 @@ ContractEditDialog::on_deleteBtn_clicked()
         if (!mDb->delProjectDataInNumber(number)) {
             ALOGD("%s, delete ok", __FUNCTION__);
             mModel->removeRow(mCurRow);
+            mAddRows--;
         }
     }
 }

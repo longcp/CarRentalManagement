@@ -29,7 +29,7 @@ Contract::dump()
           "beginDate = %s\n"
           "endDate = %s\n"
           "creatDate = %s\n"
-          /*"isIncludeTax = %d\n"*/,
+          "isIncludeTax = %s\n",
           number.toStdString().data(),
           clientName.toStdString().data(),
           clientNumber.toStdString().data(),
@@ -45,8 +45,8 @@ Contract::dump()
           signedDate.toString("yyyy-MM-dd").toStdString().data(),
           beginDate.toString("yyyy-MM-dd").toStdString().data(),
           endDate.toString("yyyy-MM-dd").toStdString().data(),
-          creatDate.toString("yyyy-MM-dd").toStdString().data()
-          /*isIncludeTax*/);
+          creatDate.toString("yyyy-MM-dd").toStdString().data(),
+          QString::number(isIncludeTax));
 }
 
 const QString

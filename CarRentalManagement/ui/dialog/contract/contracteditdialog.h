@@ -157,6 +157,7 @@ private:
     QAction         *mActCancel;
 
     int             mCurRow;
+    int             mAddRows;
     DataBase*       mDb;
     OpenType        mOpenType;
     TableModel*     mModel;
