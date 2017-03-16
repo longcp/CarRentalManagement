@@ -473,14 +473,14 @@ ContractEditDialog::saveUiContent(Contract &contract)
     contract.prices.clear();
     for (int i = 0; i < rowSize; i++) {
         price.number = mModel->index(i, 0).data().toString();
-        price.contractNumber = mModel->index(i, 1).data().toString();
+        price.contractNumber = ui->contractNumberLabel->text();
         price.pumpType = Car::getPumpType(
-                    mModel->index(i, 2).data().toString());
-        price.squarePrice = mModel->index(i, 3).data().toFloat(&ok);
-        price.standardPrice = mModel->index(i, 4).data().toFloat(&ok);
-        price.within150MinPrice = mModel->index(i, 5).data().toFloat(&ok);
-        price.within240MinPrice = mModel->index(i, 6).data().toFloat(&ok);
-        price.remarks = mModel->index(i, 7).data().toString();
+                    mModel->index(i, 1).data().toString());
+        price.squarePrice = mModel->index(i, 2).data().toFloat(&ok);
+        price.standardPrice = mModel->index(i, 3).data().toFloat(&ok);
+        price.within150MinPrice = mModel->index(i, 4).data().toFloat(&ok);
+        price.within240MinPrice = mModel->index(i, 5).data().toFloat(&ok);
+        price.remarks = mModel->index(i, 6).data().toString();
 
         contract.prices.push_back(price);
     }

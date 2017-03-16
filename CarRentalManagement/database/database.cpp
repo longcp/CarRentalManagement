@@ -1624,6 +1624,16 @@ DataBase::insertContractPriceTable(const CONTRACT_PRICE &price)
     if (!query)
         exit GET_DATABASE_FAIL;
 
+    ALOGD("price.number = %s, price.contractNumber = %s, price.remarks = %s"
+          "price.pumpType = %s, price.squarePrice = %f, price.standardPricee = %f"
+          "price.within150MinPrice = %f, price.within240MinPrice = %f",
+          price.number.toStdString().data(),
+          price.contractNumber.toStdString().data(),
+          price.remarks.toStdString().data(),
+          Car::getPumpTypeStr(price.pumpType).toStdString().data(),
+          price.squarePrice, price.standardPrice, price.within150MinPrice,
+          price.within240MinPrice);
+
     query->finish();
     query->prepare("INSERT INTO contract_price "
                    "VALUES(:number, :contractNumber, :remarks, "
