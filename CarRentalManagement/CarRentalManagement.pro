@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     ui/dialog/car/insurancedialog.cpp \
     common/contract.cpp \
     ui/dialog/contract/contractpricedialog.cpp \
-    ui/dialog/contract/contracteditdialog.cpp
+    ui/dialog/contract/contracteditdialog.cpp \
+    ui/dialog/contract/clienttabledialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -78,7 +79,8 @@ HEADERS  += ui\mainwindow.h \
     utils/Log.h \
     common/contract.h \
     ui/dialog/contract/contractpricedialog.h \
-    ui/dialog/contract/contracteditdialog.h
+    ui/dialog/contract/contracteditdialog.h \
+    ui/dialog/contract/clienttabledialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -99,7 +101,8 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/car/careditdialog.ui \
     ui/dialog/car/insurancedialog.ui \
     ui/dialog/contract/contractpricedialog.ui \
-    ui/dialog/contract/contracteditdialog.ui
+    ui/dialog/contract/contracteditdialog.ui \
+    ui/dialog/contract/clienttabledialog.ui
 
 RESOURCES += \
     icon.qrc

@@ -9,6 +9,8 @@
 #include <QMessageBox>
 #include <car.h>
 #include <QTableView>
+#include <clienttabledialog.h>
+#include <client.h>
 
 #define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -19,6 +21,7 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
     mContractPriceDialog(new ContractPriceDialog()),
     mOriginContract(new Contract()),
     mCurRow(-1),
+    mClientTableDialog(new ClientTableDialog()),
     ui(new Ui::ContractEditDialog)
 {
     ui->setupUi(this);
@@ -86,6 +89,16 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
      */
     connect(mContractPriceDialog, SIGNAL(addPriceItemSignal(CONTRACT_PRICE &)),
             this, SLOT(addPriceItemSlot(CONTRACT_PRICE &)));
+    /**
+     * @brief 打开客户列表
+     */
+    connect(this,  SIGNAL(openClientTableWindowSignal()),
+            mClientTableDialog, SLOT(openWindow()));
+    /**
+     * @brief 获取被选中客户
+     */
+    connect(mClientTableDialog, SIGNAL(selectedClient(QString)),
+            this, SLOT(getSelectedClient(QString)));
 }
 
 ContractEditDialog::~ContractEditDialog()
@@ -198,6 +211,10 @@ ContractEditDialog::setEditMode()
     mActCancel->setEnabled(true);
     mActSave->setEnabled(true);
     setMode(true);
+    if (ui->isIncludeTexCB->isChecked())
+        ui->taxRateSB->setEnabled(true);
+    else
+        ui->taxRateSB->setEnabled(false);
 }
 
 void
@@ -590,6 +607,18 @@ ContractEditDialog::addPriceItemSlot(CONTRACT_PRICE &price)
 }
 
 void
+ContractEditDialog::getSelectedClient(QString number)
+{
+    ALOGDTRACE();
+
+    Client client;
+    if (!mDb->getClientInNumber(number, client)) {
+        ui->clientNameLE->setText(client.name);
+        ui->clientNumberLebel->setText(client.number);
+    }
+}
+
+void
 ContractEditDialog::on_addBtn_clicked()
 {
     ALOGDTRACE();
@@ -647,4 +676,10 @@ void
 ContractEditDialog::on_priceTableView_clicked(const QModelIndex &index)
 {
     mCurRow = index.row();
+}
+
+void
+ContractEditDialog::on_chooseClientBtn_clicked()
+{
+    emit openClientTableWindowSignal();
 }

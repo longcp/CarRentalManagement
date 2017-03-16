@@ -797,6 +797,9 @@
             </item>
             <item>
              <widget class="QSpinBox" name="taxRateSB">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>180</width>

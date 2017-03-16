@@ -10,6 +10,7 @@ class DataBase;
 class ContractPriceDialog;
 class Contract;
 class QTableView;
+class ClientTableDialog;
 
 namespace Ui {
 class ContractEditDialog;
@@ -61,10 +62,15 @@ private slots:
 
     void            on_priceTableView_clicked(const QModelIndex &index);
 
+    void            getSelectedClient(QString number);
+
+    void on_chooseClientBtn_clicked();
+
 signals:
     void            openContractPriceWindowSignal(OpenType, QString);
     void            addContractItemSignal(Contract&);
     void            updateContractItemSignal(Contract&);
+    void            openClientTableWindowSignal();
 
 private:
     /**
@@ -155,6 +161,7 @@ private:
     OpenType        mOpenType;
     TableModel*     mModel;
     Contract*       mOriginContract;
+    ClientTableDialog*      mClientTableDialog;
     ContractPriceDialog*    mContractPriceDialog;
 };
 
