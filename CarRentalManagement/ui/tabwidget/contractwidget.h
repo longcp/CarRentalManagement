@@ -46,7 +46,7 @@ private slots:
     /**
      * @brief 删除按钮
      */
-    void            deleteCarItemSlot();
+    void            deleteContractItemSlot();
 
     void on_contractTableView_clicked(const QModelIndex &index);
 

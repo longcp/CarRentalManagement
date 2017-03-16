@@ -1617,6 +1617,7 @@ DataBase::getAllContractPriceData(QList<CONTRACT_PRICE> &prices)
 int
 DataBase::insertContractPriceTable(const CONTRACT_PRICE &price)
 {
+    ALOGDTRACE();
     QMutexLocker locker(pmMutex);
 
     QSqlQuery *query = getDataBaseQuery();

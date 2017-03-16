@@ -75,7 +75,7 @@ ContractWidget::ContractWidget(QWidget *parent) :
      * @brief 删除条目
      */
     connect(mActDelete, SIGNAL(triggered()),
-            this, SLOT(deleteCarItemSlot()));
+            this, SLOT(deleteContractItemSlot()));
 }
 
 ContractWidget::~ContractWidget()
@@ -155,9 +155,9 @@ ContractWidget::initPriceTableview()
     headerList << "编号" << "泵式" << "方量价格" << "标准台班价格"
                << "2.5小时内台班价格" << "4小时内台班价格" << "备注";
 
-    mContractModel = new TableModel(0, headerList.size());
-    ui->priceTableView->setModel(mContractModel);
-    mContractModel->setHorizontalHeaderLabels(headerList);
+    mPriceModel = new TableModel(0, headerList.size());
+    ui->priceTableView->setModel(mPriceModel);
+    mPriceModel->setHorizontalHeaderLabels(headerList);
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
     ui->priceTableView->setEditTriggers(
@@ -266,45 +266,45 @@ ContractWidget::addContractItemSlot(Contract &contract)
           << deliverySizes << structureLevel << beginDate
           << endDate << signedDate << taxRate << isIncludeTax
           << requirement << supplement << remarks;
-    mPriceModel->appendRow(items);
+    mContractModel->appendRow(items);
 }
 
 void
 ContractWidget::updateContractItemSLot(Contract &contract)
 {
     ALOGDTRACE();
-    mPriceModel->setData(mPriceModel->index(curRow, 0),
+    mContractModel->setData(mContractModel->index(curRow, 0),
                          contract.number);
-    mPriceModel->setData(mPriceModel->index(curRow, 1),
+    mContractModel->setData(mContractModel->index(curRow, 1),
                          contract.clientName);
-    mPriceModel->setData(mPriceModel->index(curRow, 2),
+    mContractModel->setData(mContractModel->index(curRow, 2),
                          contract.projectName);
-    mPriceModel->setData(mPriceModel->index(curRow, 3),
+    mContractModel->setData(mContractModel->index(curRow, 3),
                          contract.projectAddress);
-    mPriceModel->setData(mPriceModel->index(curRow, 4),
+    mContractModel->setData(mContractModel->index(curRow, 4),
                          QString("%1").arg(contract.deliverySizes));
-    mPriceModel->setData(mPriceModel->index(curRow, 5),
+    mContractModel->setData(mContractModel->index(curRow, 5),
                          QString("%1").arg(contract.structureLevel));
-    mPriceModel->setData(mPriceModel->index(curRow, 6),
+    mContractModel->setData(mContractModel->index(curRow, 6),
                          contract.beginDate.toString("yyyy-MM-dd"));
-    mPriceModel->setData(mPriceModel->index(curRow, 7),
+    mContractModel->setData(mContractModel->index(curRow, 7),
                          contract.endDate.toString("yyyy-MM-dd"));
-    mPriceModel->setData(mPriceModel->index(curRow, 8),
+    mContractModel->setData(mContractModel->index(curRow, 8),
                          contract.signedDate.toString("yyyy-MM-dd"));
-    mPriceModel->setData(mPriceModel->index(curRow, 9),
+    mContractModel->setData(mContractModel->index(curRow, 9),
                          QString("%1").arg(contract.taxRate));
-    mPriceModel->setData(mPriceModel->index(curRow, 10),
+    mContractModel->setData(mContractModel->index(curRow, 10),
                          contract.isIncludeTax ? "是" : "否");
-    mPriceModel->setData(mPriceModel->index(curRow, 11),
+    mContractModel->setData(mContractModel->index(curRow, 11),
                          contract.requirement);
-    mPriceModel->setData(mPriceModel->index(curRow, 12),
+    mContractModel->setData(mContractModel->index(curRow, 12),
                          contract.supplement);
-    mPriceModel->setData(mPriceModel->index(curRow, 13),
+    mContractModel->setData(mContractModel->index(curRow, 13),
                          contract.remarks);
 }
 
 void
-ContractWidget::deleteCarItemSlot()
+ContractWidget::deleteContractItemSlot()
 {
     if (curRow < 0) {
         QMessageBox::warning(this,
@@ -325,10 +325,10 @@ ContractWidget::deleteCarItemSlot()
         return;
 
     QString number = "";
-    number = mPriceModel->index(curRow, 0).data().toString();
+    number = mContractModel->index(curRow, 0).data().toString();
     if (!mDb->deleteContractDataInNumber(number)) {
         ALOGD("%s, delete ok", __FUNCTION__);
-        mPriceModel->removeRow(curRow);
+        mContractModel->removeRow(curRow);
     }
 }
 

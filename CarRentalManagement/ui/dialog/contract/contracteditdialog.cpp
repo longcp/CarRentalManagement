@@ -109,6 +109,7 @@ ContractEditDialog::~ContractEditDialog()
 void
 ContractEditDialog::initView()
 {
+    ALOGDTRACE();
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle("编辑合同");
@@ -120,6 +121,7 @@ ContractEditDialog::initView()
 void
 ContractEditDialog::configToolBar()
 {
+    ALOGDTRACE();
     if (!mToolBar)
         return;
 
@@ -143,6 +145,7 @@ void
 ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
                                                Contract &contract)
 {
+    ALOGDTRACE();
     int count = 0;
     QList<Contract> contracts;
     mOpenType = opentype;
@@ -176,6 +179,7 @@ ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
 void
 ContractEditDialog::initPriceTableView()
 {
+    ALOGDTRACE();
     QStringList headerList;
     headerList << "编号" << "泵式" << "方量价格" << "标准台班价格"
                << "2.5小时内台班价格" << "4小时内台班价格" << "备注";
@@ -206,6 +210,7 @@ ContractEditDialog::initPriceTableView()
 void
 ContractEditDialog::setEditMode()
 {
+    ALOGDTRACE();
     ui->projectNameLE->setFocus();
     mActEdit->setDisabled(true);
     mActCancel->setEnabled(true);
@@ -220,6 +225,7 @@ ContractEditDialog::setEditMode()
 void
 ContractEditDialog::setViewMode()
 {
+    ALOGDTRACE();
     mActCancel->setDisabled(true);
     mActEdit->setEnabled(true);
     mActSave->setDisabled(true);
@@ -229,6 +235,7 @@ ContractEditDialog::setViewMode()
 void
 ContractEditDialog::setMode(bool mode)
 {
+    ALOGDTRACE();
 //    ui->contractNumberLabel->setEnabled(mode);
     ui->signedDateDE->setEnabled(mode);
 //    ui->clientNameLE->setEnabled(mode);
@@ -260,6 +267,7 @@ ContractEditDialog::setOriginContract(Contract &contract)
 void
 ContractEditDialog::setView(Contract &contract)
 {
+    ALOGDTRACE();
     ui->contractNumberLabel->setText(contract.number);
     ui->signedDateDE->setDate(contract.signedDate);
     ui->clientNameLE->setText(contract.clientName);
@@ -315,6 +323,7 @@ ContractEditDialog::setView(Contract &contract)
 void
 ContractEditDialog::resetView(Contract &contract)
 {
+    ALOGDTRACE();
     setOriginContract(contract);
     resetView();
 }
@@ -322,6 +331,7 @@ ContractEditDialog::resetView(Contract &contract)
 void
 ContractEditDialog::resetView()
 {
+    ALOGDTRACE();
     if (!isModified())
         return;
 
@@ -331,6 +341,7 @@ ContractEditDialog::resetView()
 bool
 ContractEditDialog::isModified()
 {
+    ALOGDTRACE();
     if (/*ui->contractNumberLabel->isModified() ||*/
             ui->signedDateDE->isWindowModified() ||
             ui->clientNameLE->isWindowModified() ||
@@ -358,6 +369,7 @@ ContractEditDialog::isModified()
 void
 ContractEditDialog::closeEvent(QCloseEvent *event)
 {
+    ALOGDTRACE();
     if (mOpenType == CREATEITEM)
         ALOGDTRACE();
     else if (isModified()) {
@@ -394,6 +406,7 @@ ContractEditDialog::clean()
 void
 ContractEditDialog::cleanContent()
 {
+    ALOGDTRACE();
     ui->contractNumberLabel->setText("");
     ui->clientNameLE->setText("");
     ui->clientNumberLebel->setText("");
@@ -414,6 +427,7 @@ ContractEditDialog::cleanContent()
 void
 ContractEditDialog::clearPriceTable()
 {
+    ALOGDTRACE();
     if (mModel->rowCount()) {
         // 删除所有行并清除item内存
         mModel->removeRows(0, mModel->rowCount());
@@ -423,6 +437,7 @@ ContractEditDialog::clearPriceTable()
 void
 ContractEditDialog::saveUiContent(Contract &contract)
 {
+    ALOGDTRACE();
     bool ok;
 
     contract.number = ui->contractNumberLabel->text();
@@ -455,19 +470,23 @@ ContractEditDialog::saveUiContent(Contract &contract)
     contract.prices.clear();
     for (int i = 0; i < rowSize; i++) {
         price.number = mModel->index(i, 0).data().toString();
+        price.contractNumber = mModel->index(i, 1).data().toString();
         price.pumpType = Car::getPumpType(
-                    mModel->index(i, 1).data().toString());
-        price.squarePrice = mModel->index(i, 2).data().toFloat(&ok);
-        price.standardPrice = mModel->index(i, 3).data().toFloat(&ok);
-        price.within150MinPrice = mModel->index(i, 4).data().toFloat(&ok);
-        price.within240MinPrice = mModel->index(i, 5).data().toFloat(&ok);
+                    mModel->index(i, 2).data().toString());
+        price.squarePrice = mModel->index(i, 3).data().toFloat(&ok);
+        price.standardPrice = mModel->index(i, 4).data().toFloat(&ok);
+        price.within150MinPrice = mModel->index(i, 5).data().toFloat(&ok);
+        price.within240MinPrice = mModel->index(i, 6).data().toFloat(&ok);
         price.remarks = mModel->index(i, 7).data().toString();
+
+        contract.prices.push_back(price);
     }
 }
 
 void
 ContractEditDialog::editEvent()
 {
+    ALOGDTRACE();
     setEditMode();
     //已存在的合同，其合同编码不可再次编辑
 //    ui->contractNumberLabel->setDisabled(true);
@@ -476,6 +495,7 @@ ContractEditDialog::editEvent()
 void
 ContractEditDialog::saveAndExitEvent()
 {
+    ALOGDTRACE();
     int ret;
 
     if (ui->clientNameLE->text().isEmpty() ||
@@ -555,6 +575,7 @@ ContractEditDialog::saveAndExitEvent()
 void
 ContractEditDialog::saveEvent()
 {
+    ALOGDTRACE();
     Contract contract;
 
     saveUiContent(contract);
@@ -578,6 +599,7 @@ ContractEditDialog::saveEvent()
 void
 ContractEditDialog::cancelEvent()
 {
+    ALOGDTRACE();
     resetView();
     setViewMode();
 }
@@ -604,6 +626,7 @@ ContractEditDialog::addPriceItemSlot(CONTRACT_PRICE &price)
     QList<QStandardItem*> items;
     items << num << pumpType <<squarePrice <<standardPrice
           << within150MinPrice <<within240MinPrice <<remarks;
+    mModel->appendRow(items);
 }
 
 void
@@ -629,6 +652,7 @@ ContractEditDialog::on_addBtn_clicked()
 void
 ContractEditDialog::on_deleteBtn_clicked()
 {
+    ALOGDTRACE();
     if (mCurRow < 0) {
         QMessageBox::warning(this,
                              tr("温馨提示"),
@@ -666,6 +690,7 @@ ContractEditDialog::on_deleteBtn_clicked()
 
 void ContractEditDialog::on_isIncludeTexCB_stateChanged(int state)
 {
+    ALOGDTRACE();
     if (state == Qt::Checked)
         ui->taxRateSB->setEnabled(true);
     else
@@ -675,11 +700,13 @@ void ContractEditDialog::on_isIncludeTexCB_stateChanged(int state)
 void
 ContractEditDialog::on_priceTableView_clicked(const QModelIndex &index)
 {
+    ALOGDTRACE();
     mCurRow = index.row();
 }
 
 void
 ContractEditDialog::on_chooseClientBtn_clicked()
 {
+    ALOGDTRACE();
     emit openClientTableWindowSignal();
 }

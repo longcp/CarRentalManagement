@@ -26,6 +26,8 @@ ContractPriceDialog::~ContractPriceDialog()
 void
 ContractPriceDialog::openWindow(OpenType type, QString contractNumber)
 {
+    ALOGD("%s, contractNumber = %s", __FUNCTION__,
+          contractNumber.toStdString().data());
     mContractNumber = contractNumber;
     mOpenType = type;
     QDate date = QDate::currentDate();
@@ -56,6 +58,8 @@ ContractPriceDialog::on_ensureBtn_clicked()
     price.within150MinPrice = ui->within150minDSB->value();
     price.within240MinPrice = ui->within240minDSB->value();
 
+    ALOGD("%s, contractNumber = %s", __FUNCTION__,
+          price.contractNumber.toStdString().data());
     if (mOpenType == OpenType::CREATEITEM) {
         emit addPriceItemSignal(price);
     } else {
