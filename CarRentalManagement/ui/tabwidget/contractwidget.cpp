@@ -402,7 +402,15 @@ ContractWidget::deleteContractItemSlot()
 void
 ContractWidget::on_contractTableView_clicked(const QModelIndex &index)
 {
+    ALOGDTRACE();
     curRow = index.row();
+    Contract contract;
+    QString number = mContractModel->index(curRow, 0).data().toString();
+    if (!mDb->getContractInNumber(number, contract)) {
+        mDb->getAllContractPriceData(contract.number, contract.prices);
+        updateContractPriceTable(contract.prices);
+    }
+
 }
 
 void ContractWidget::on_contractTableView_doubleClicked(const QModelIndex &index)
