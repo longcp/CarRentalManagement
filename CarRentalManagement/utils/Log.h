@@ -28,6 +28,14 @@
 #ifndef _LIBS_UTILS_LOG_H
 #define _LIBS_UTILS_LOG_H
 
+#include <QtGlobal>
+
+#define LOCAL_LOG
+
+#ifdef LOCAL_LOG
+#define ALOGDTRACE()            qDebug("[D][%s] Function[%s]", LOG_TAG, __FUNCTION__)
+#endif
+
 #ifndef LOG_NDEBUG
 #define LOG_NDEBUG 0
 #endif
@@ -42,8 +50,6 @@
 #define LOG_LEVEL 4
 #endif // LOG_NDEBUG
 
-#include <QtGlobal>
-
 #if LOG_LEVEL >= 4
 #define ALOGV(x, ...)           qDebug("[V][%s] " x, LOG_TAG, ##__VA_ARGS__)
 #else
@@ -52,7 +58,6 @@
 
 #if LOG_LEVEL >= 3
 #define ALOGD(x, ...)           qDebug("[D][%s] " x, LOG_TAG, ##__VA_ARGS__)
-#define ALOGDTRACE()            ALOGD("Function[%s]", __FUNCTION__)
 #else
 #define ALOGD(x, ...)
 #define ALOGDTRACE()
