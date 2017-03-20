@@ -50,6 +50,8 @@ private slots:
 
     void on_contractTableView_clicked(const QModelIndex &index);
 
+    void on_contractTableView_doubleClicked(const QModelIndex &index);
+
 private:
     /**
      * @brief 配置工具栏
@@ -71,6 +73,15 @@ private:
      * @brief 编辑条目
      */
     void            editRowEvent(int row);
+    /**
+     * @brief 项目表添加行
+     */
+    void            addContractTableRow(Contract &contract);
+    /**
+     * @brief 价格表添加行
+     */
+    void            addPriceTableRows(QList<CONTRACT_PRICE> prices);
+    void            addPriceTableRow(CONTRACT_PRICE price);
 
     Ui::ContractWidget *ui;
     ContractEditDialog* mContractEditDialog;

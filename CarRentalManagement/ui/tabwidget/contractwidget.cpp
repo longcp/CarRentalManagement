@@ -6,6 +6,7 @@
 #include <database/database.h>
 #include <QMessageBox>
 #include <contract.h>
+#include <car.h>
 
 #define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -227,6 +228,14 @@ void
 ContractWidget::addContractItemSlot(Contract &contract)
 {
     ALOGDTRACE();
+    addContractTableRow(contract);
+    addPriceTableRows(contract.prices);
+}
+
+void
+ContractWidget::addContractTableRow(Contract &contract)
+{
+    ALOGDTRACE();
     QStandardItem *num
             = new QStandardItem(contract.number);
     QStandardItem *clientName
@@ -267,6 +276,41 @@ ContractWidget::addContractItemSlot(Contract &contract)
           << endDate << signedDate << taxRate << isIncludeTax
           << requirement << supplement << remarks;
     mContractModel->appendRow(items);
+}
+
+void
+ContractWidget::addPriceTableRows(QList<CONTRACT_PRICE> prices)
+{
+    ALOGDTRACE();
+    int size = prices.size();
+    for (int i = 0; i < size; i++) {
+        addPriceTableRow(prices.at(i));
+    }
+}
+
+void
+ContractWidget::addPriceTableRow(CONTRACT_PRICE price)
+{
+    ALOGDTRACE();
+    QStandardItem *num
+            = new QStandardItem(price.number);
+    QStandardItem *pumyType
+            = new QStandardItem(Car::getPumpTypeStr(price.pumpType));
+    QStandardItem *squarePrice
+            = new QStandardItem(QString("%1").arg(price.squarePrice));
+    QStandardItem *standardPrice
+            = new QStandardItem(QString("%1").arg(price.standardPrice));
+    QStandardItem *within150MinPrice
+            = new QStandardItem(QString("%1").arg(price.within150MinPrice));
+    QStandardItem *within240MinPrice
+            = new QStandardItem(QString("%1").arg(price.within240MinPrice));
+    QStandardItem *remarks
+            = new QStandardItem(price.remarks);
+
+    QList<QStandardItem*> items;
+    items << num << pumyType << squarePrice << standardPrice
+          << within150MinPrice << within240MinPrice << remarks;
+    mPriceModel->appendRow(items);
 }
 
 void
@@ -336,4 +380,10 @@ void
 ContractWidget::on_contractTableView_clicked(const QModelIndex &index)
 {
     curRow = index.row();
+}
+
+void ContractWidget::on_contractTableView_doubleClicked(const QModelIndex &index)
+{
+    ALOGDTRACE();
+    editRowEvent(index.row());
 }
