@@ -81,7 +81,18 @@ private:
      * @brief 价格表添加行
      */
     void            addPriceTableRows(QList<CONTRACT_PRICE> prices);
+    /**
+     * @brief 价格表添加行
+     */
     void            addPriceTableRow(CONTRACT_PRICE price);
+    /**
+     * @brief 更新合同表
+     */
+    void            updateContractRow(Contract &contract);
+    /**
+     * @brief 更新价格表
+     */
+    void            updateContractPriceTable(QList<CONTRACT_PRICE> prices);
 
     Ui::ContractWidget *ui;
     ContractEditDialog* mContractEditDialog;

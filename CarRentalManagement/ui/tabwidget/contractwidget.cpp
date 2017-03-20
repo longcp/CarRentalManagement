@@ -319,6 +319,14 @@ void
 ContractWidget::updateContractItemSLot(Contract &contract)
 {
     ALOGDTRACE();
+    updateContractRow(contract);
+    updateContractPriceTable(contract.prices);
+}
+
+void
+ContractWidget::updateContractRow(Contract &contract)
+{
+    ALOGDTRACE();
     mContractModel->setData(mContractModel->index(curRow, 0),
                          contract.number);
     mContractModel->setData(mContractModel->index(curRow, 1),
@@ -347,6 +355,19 @@ ContractWidget::updateContractItemSLot(Contract &contract)
                          contract.supplement);
     mContractModel->setData(mContractModel->index(curRow, 13),
                          contract.remarks);
+}
+
+void
+ContractWidget::updateContractPriceTable(QList<CONTRACT_PRICE> prices)
+{
+    if (mPriceModel->rowCount()) {
+        // 删除所有行并清除item内存
+        mPriceModel->removeRows(0, mPriceModel->rowCount());
+    }
+
+    for (int i = 0; i < prices.size(); i++) {
+        addPriceTableRow(prices.at(i));
+    }
 }
 
 void
