@@ -8,7 +8,7 @@
 #include <contract.h>
 #include <car.h>
 
-#define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
+#define LOG_TAG                 "CONTRACT_WIDGET_DIALOG"
 #include "utils/Log.h"
 
 ContractWidget::ContractWidget(QWidget *parent) :
@@ -193,6 +193,7 @@ ContractWidget::addContractSlot()
 void
 ContractWidget::editRowEvent(int row)
 {
+    ALOGDTRACE();
     Contract contract;
     QString number = mContractModel->index(row, 0).data().toString();
     if (mDb->getContractInNumber(number, contract)) {
@@ -206,6 +207,7 @@ ContractWidget::editRowEvent(int row)
         return;
     }
 
+    mDb->getAllContractPriceData(contract.number, contract.prices);
     emit openContractEditDialogSignal(OpenType::SHOWITEM, contract);
 }
 

@@ -90,7 +90,8 @@ public:
     bool                isContractExist(const Contract &contract);
 
     // contract_price表
-    int                 getAllContractPriceData(QList<CONTRACT_PRICE> &prices);
+    int                 getAllContractPriceData(const QString contractNumber,
+                                                QList<CONTRACT_PRICE> &prices);
     int                 insertContractPriceTable(const CONTRACT_PRICE &price);
     int                 delContractPriceInNumber(const QString number);
     int                 delContractPriceInContractNumber(const QString contractNumber);

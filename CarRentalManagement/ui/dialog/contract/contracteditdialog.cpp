@@ -293,7 +293,9 @@ ContractEditDialog::setView(Contract &contract)
     }
     // 插入数据到价格表
     QList<QStandardItem*> items;
+    ALOGD("1111111111111");
     for (int i = 0; i < contract.prices.size(); i++) {
+        ALOGD("2222222222222222222222");
         QStandardItem* num =
                 new QStandardItem(contract.prices.at(i).number);
         QStandardItem* pumpType =
@@ -337,6 +339,7 @@ ContractEditDialog::resetView()
         return;
 
     setView(*mOriginContract);
+    mAddRows = 0;
 }
 
 bool

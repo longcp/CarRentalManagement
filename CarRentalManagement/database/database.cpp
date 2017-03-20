@@ -1386,7 +1386,7 @@ DataBase::updateContractTableData(Contract &contract)
                    "beginDate=?, "
                    "endDate=?, "
                    "creatDate=?, "
-                   "isIncludeTax=?, "
+                   "isIncludeTax=? "
                    "WHERE number=?;");
     query->addBindValue(contract.clientName);
     query->addBindValue(contract.clientNumber);
@@ -1581,7 +1581,8 @@ DataBase::isContractExist(const Contract &contract)
 }
 
 int
-DataBase::getAllContractPriceData(QList<CONTRACT_PRICE> &prices)
+DataBase::getAllContractPriceData(const QString contractNumber,
+                                  QList<CONTRACT_PRICE> &prices)
 {
     CONTRACT_PRICE price;
 
@@ -1592,11 +1593,15 @@ DataBase::getAllContractPriceData(QList<CONTRACT_PRICE> &prices)
         exit GET_DATABASE_FAIL;
 
     query->finish();
-    query->prepare("SELECT * FROM contract_price");
+    query->prepare("SELECT * FROM contract_price WHERE contractNumber=?");
+    query->addBindValue(contractNumber);
     if (!query->exec()) {
         ALOGE("SELECT * FROM contract_price!");
         return SELECT_DATABASE_FAIL;
     }
+
+    if (!prices.isEmpty())
+        prices.clear();
 
     while (query->next()) {
         price.number = query->value(0).toString();
