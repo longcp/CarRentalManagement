@@ -230,8 +230,8 @@ void
 ContractWidget::addContractItemSlot(Contract &contract)
 {
     ALOGDTRACE();
-    ui->contractTableView->selectRow(mContractModel->rowCount());
     addContractTableRow(contract);
+    ui->contractTableView->selectRow(mContractModel->rowCount()-1);
 
     if (mPriceModel->rowCount())
         mPriceModel->removeRows(0, mPriceModel->rowCount());
