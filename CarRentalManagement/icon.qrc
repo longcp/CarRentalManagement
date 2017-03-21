@@ -29,5 +29,7 @@
         <file>icon/information_64.ico</file>
         <file>icon/annual_64.ico</file>
         <file>icon/insurance_add_64.ico</file>
+        <file>icon/folder.ico</file>
+        <file>icon/empty_64.ico</file>
     </qresource>
 </RCC>

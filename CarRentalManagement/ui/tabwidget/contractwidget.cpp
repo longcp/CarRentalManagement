@@ -6,6 +6,7 @@
 #include <database/database.h>
 #include <QMessageBox>
 #include <contract.h>
+#include <client.h>
 #include <car.h>
 
 #define LOG_TAG                 "CONTRACT_WIDGET_DIALOG"
@@ -17,6 +18,7 @@ ContractWidget::ContractWidget(QWidget *parent) :
     mDb(DataBase::getInstance()),
     curRow(-1),
     ui(new Ui::ContractWidget)
+
 {
     ui->setupUi(this);
     ui->toolBarWidget->setStyleSheet(
@@ -111,6 +113,7 @@ ContractWidget::initView()
 {
     initContractTableview();
     initPriceTableview();
+    initClientTreeWidget();
 }
 
 void
@@ -181,6 +184,35 @@ ContractWidget::initPriceTableview()
     ui->priceTableView->resizeColumnToContents(3);                      //自动适应列宽
     ui->priceTableView->resizeColumnToContents(4);                      //自动适应列宽
 //    setPriceTableViewData();
+}
+
+void
+ContractWidget::initClientTreeWidget()
+{
+    mRootItem = new QTreeWidgetItem(ui->clientTreeWidget,
+                                    QStringList("所有客户"));
+    mRootItem->setIcon(0, QIcon(":/menu/icon/client.png"));
+    addAllClientItem();
+}
+
+void
+ContractWidget::addAllClientItem()
+{
+    int size;
+    QList<Client> clients;
+    if (!mDb->getAllClientData(clients)) {
+        size = clients.size();
+        for (int i = 0; i < size; i++) {
+            QStringList itemList;
+            itemList << clients.at(i).name;
+            QTreeWidgetItem *newItem =
+                    new QTreeWidgetItem(mRootItem, itemList);
+            if (i % 2)
+                newItem->setIcon(0, QIcon(":/menu/icon/contract_64.ico"));
+            else
+                newItem->setIcon(0, QIcon(":/menu/icon/empty_64.ico"));
+        }
+    }
 }
 
 void

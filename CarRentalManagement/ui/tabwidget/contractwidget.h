@@ -9,6 +9,7 @@ class TableModel;
 class ContractEditDialog;
 class Contract;
 class DataBase;
+class QTreeWidgetItem;
 
 namespace Ui {
 class ContractWidget;
@@ -70,6 +71,14 @@ private:
      */
     void            initPriceTableview();
     /**
+     * @brief 初始化客户树
+     */
+    void            initClientTreeWidget();
+    /**
+     * @brief 添加所有节点
+     */
+    void            addAllClientItem();
+    /**
      * @brief 编辑条目
      */
     void            editRowEvent(int row);
@@ -107,6 +116,7 @@ private:
     QAction         *mActExport;
     QAction         *mActImport;
 
+    QTreeWidgetItem*    mRootItem;
     TableModel*     mContractModel;
     TableModel*     mPriceModel;
     DataBase*       mDb;
