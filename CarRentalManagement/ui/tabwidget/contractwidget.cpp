@@ -207,7 +207,7 @@ ContractWidget::addAllClientItem()
             itemList << clients.at(i).name;
             QTreeWidgetItem *newItem =
                     new QTreeWidgetItem(mRootItem, itemList);
-            if (i % 2)
+            if (mDb->isClientHasContract(clients.at(i).number))
                 newItem->setIcon(0, QIcon(":/menu/icon/contract_64.ico"));
             else
                 newItem->setIcon(0, QIcon(":/menu/icon/empty_64.ico"));

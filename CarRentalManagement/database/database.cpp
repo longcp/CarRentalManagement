@@ -1463,6 +1463,31 @@ DataBase::getAllContractData(QList<Contract> &contracts)
     return SUCCESS;
 }
 
+bool
+DataBase::isClientHasContract(QString clientNumber)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM contract WHERE clientNumber=?");
+    query->addBindValue(clientNumber);
+    if (!query->exec()) {
+        ALOGE("exec [SELECT * FROM contract WHERE clientNumber=%s] failed!",
+              clientNumber.toStdString().data());
+        errorno = SELECT_DATABASE_FAIL;
+        return false;
+    }
+
+    if (!query->next())
+        return false;
+
+    return true;
+}
+
 int
 DataBase::getContractInNumber(QString number, Contract &contract)
 {

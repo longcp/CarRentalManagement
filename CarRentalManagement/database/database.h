@@ -83,6 +83,7 @@ public:
     int                 insertContractTable(Contract &contract);
     int                 updateContractTableData(Contract &contract);
     int                 getAllContractData(QList<Contract> &contracts);
+    bool                isClientHasContract(QString clientNumber);
     int                 getContractInNumber(QString number,
                                             Contract &contract);
     int                 clearContractTable();
