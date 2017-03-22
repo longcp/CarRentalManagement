@@ -53,6 +53,8 @@ private slots:
 
     void on_contractTableView_doubleClicked(const QModelIndex &index);
 
+    void on_clientTreeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
 private:
     /**
      * @brief 配置工具栏
@@ -85,6 +87,10 @@ private:
     /**
      * @brief 项目表添加行
      */
+    void            addContractTableRows(QList<Contract> &contracts);
+    /**
+     * @brief 项目表添加行
+     */
     void            addContractTableRow(Contract &contract);
     /**
      * @brief 价格表添加行
@@ -102,6 +108,14 @@ private:
      * @brief 更新价格表
      */
     void            updateContractPriceTable(QList<CONTRACT_PRICE> prices);
+    /**
+     * @brief 清空合同表
+     */
+    void            clearContractTable();
+    /**
+     * @brief 清空价格表
+     */
+    void            clearPriceTable();
 
     Ui::ContractWidget *ui;
     ContractEditDialog* mContractEditDialog;
@@ -121,6 +135,8 @@ private:
     TableModel*     mPriceModel;
     DataBase*       mDb;
     int             curRow;
+    const static int mClientNameColumn = 0;
+    const static int mClientNumberColumn = 1;
 };
 
 #endif // CONTRACTWIDGET_H

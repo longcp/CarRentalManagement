@@ -96,7 +96,12 @@
         </property>
         <column>
          <property name="text">
-          <string>客户列表</string>
+          <string>客户名称</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>客户编号</string>
          </property>
         </column>
        </widget>

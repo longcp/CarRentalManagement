@@ -189,6 +189,7 @@ ContractWidget::initPriceTableview()
 void
 ContractWidget::initClientTreeWidget()
 {
+    ui->clientTreeWidget->setColumnWidth(0, 220);
     mRootItem = new QTreeWidgetItem(ui->clientTreeWidget,
                                     QStringList("所有客户"));
     mRootItem->setIcon(0, QIcon(":/menu/icon/client.png"));
@@ -204,13 +205,14 @@ ContractWidget::addAllClientItem()
         size = clients.size();
         for (int i = 0; i < size; i++) {
             QStringList itemList;
-            itemList << clients.at(i).name;
+            itemList << clients.at(i).name << clients.at(i).number;
             QTreeWidgetItem *newItem =
                     new QTreeWidgetItem(mRootItem, itemList);
             if (mDb->isClientHasContract(clients.at(i).number))
                 newItem->setIcon(0, QIcon(":/menu/icon/contract_64.ico"));
             else
                 newItem->setIcon(0, QIcon(":/menu/icon/empty_64.ico"));
+            mRootItem->addChild(newItem);
         }
     }
 }
@@ -259,15 +261,36 @@ ContractWidget::editContractItemSlot()
 }
 
 void
+ContractWidget::clearContractTable()
+{
+    if (mContractModel->rowCount())
+        mContractModel->removeRows(0, mContractModel->rowCount());
+}
+
+void
+ContractWidget::clearPriceTable()
+{
+    if (mPriceModel->rowCount())
+        mPriceModel->removeRows(0, mPriceModel->rowCount());
+}
+
+void
 ContractWidget::addContractItemSlot(Contract &contract)
 {
     ALOGDTRACE();
     addContractTableRow(contract);
     ui->contractTableView->selectRow(mContractModel->rowCount()-1);
-
-    if (mPriceModel->rowCount())
-        mPriceModel->removeRows(0, mPriceModel->rowCount());
+    clearPriceTable();
     addPriceTableRows(contract.prices);
+}
+
+void
+ContractWidget::addContractTableRows(QList<Contract> &contracts)
+{
+    for (int i = 0; i < contracts.size(); i++) {
+        Contract contract = contracts.at(i);
+        addContractTableRow(contract);
+    }
 }
 
 void
@@ -449,8 +472,42 @@ ContractWidget::on_contractTableView_clicked(const QModelIndex &index)
 
 }
 
-void ContractWidget::on_contractTableView_doubleClicked(const QModelIndex &index)
+void 
+ContractWidget::on_contractTableView_doubleClicked(const QModelIndex &index)
 {
     ALOGDTRACE();
     editRowEvent(index.row());
+}
+
+void
+ContractWidget::on_clientTreeWidget_itemDoubleClicked(QTreeWidgetItem *item,
+                                                      int column)
+{
+    ALOGDTRACE();
+    ALOGD("%s name=%s, number=%s, column=%d",
+          __FUNCTION__, item->text(mClientNameColumn).toStdString().data(),
+          item->text(mClientNumberColumn).toStdString().data(), column);
+
+    QList<Contract> contracts;
+    if (item->parent() == NULL) {
+        //根节点
+        ALOGD("item->parent() == NULL");
+        clearContractTable();
+        if (mDb->getAllContractData(contracts))
+            return;
+
+        addContractTableRows(contracts);
+        if (mContractModel->rowCount() > 0) {
+            //默认显示第一行的数据
+            ui->contractTableView->selectRow(0);
+            QString number = mContractModel->index(0, 0).data().toString();
+            QList<CONTRACT_PRICE> prices;
+            if (mDb->getAllContractPriceData(number, prices))
+                return;
+            addPriceTableRows(prices);
+        }
+    } else {
+        //子节点
+        ALOGD("item->parent() != NULL");
+    }
 }
