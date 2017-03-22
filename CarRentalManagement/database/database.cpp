@@ -1463,6 +1463,57 @@ DataBase::getAllContractData(QList<Contract> &contracts)
     return SUCCESS;
 }
 
+int
+DataBase::getContractInClientNumber(QString clientNumber,
+                                    QList<Contract> &contracts)
+{
+    Contract contract;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM contract WHERE clientNumber=?");
+    query->addBindValue(clientNumber);
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM contract!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        contract.number = query->value(0).toString();
+        contract.clientName = query->value(1).toString();
+        contract.clientNumber = query->value(2).toString();
+        contract.projectName = query->value(3).toString();
+        contract.projectAddress = query->value(4).toString();
+        contract.requirement = query->value(5).toString();
+        contract.supplement = query->value(6).toString();
+        contract.remarks = query->value(7).toString();
+        contract.creator = query->value(8).toString();
+        contract.deliverySizes = query->value(9).toFloat();
+        contract.structureLevel = query->value(10).toFloat();
+        contract.taxRate = query->value(11).toInt();
+
+        contract.signedDate = QDate::fromString(query->value(12).toString(),
+                                               "yyyy-MM-dd");
+        contract.beginDate = QDate::fromString(query->value(13).toString(),
+                                                   "yyyy-MM-dd");
+        contract.endDate = QDate::fromString(query->value(14).toString(),
+                                           "yyyy-MM-dd");
+        contract.creatDate = QDate::fromString(query->value(15).toString(),
+                                           "yyyy-MM-dd");
+
+        contract.isIncludeTax = query->value(16).toFloat();
+
+        contracts.push_back(contract);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
 bool
 DataBase::isClientHasContract(QString clientNumber)
 {

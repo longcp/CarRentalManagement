@@ -287,8 +287,9 @@ ContractWidget::addContractItemSlot(Contract &contract)
 void
 ContractWidget::addContractTableRows(QList<Contract> &contracts)
 {
+    Contract contract;
     for (int i = 0; i < contracts.size(); i++) {
-        Contract contract = contracts.at(i);
+        contract = contracts.at(i);
         addContractTableRow(contract);
     }
 }
@@ -489,25 +490,27 @@ ContractWidget::on_clientTreeWidget_itemDoubleClicked(QTreeWidgetItem *item,
           item->text(mClientNumberColumn).toStdString().data(), column);
 
     QList<Contract> contracts;
+    clearContractTable();
+    clearPriceTable();
     if (item->parent() == NULL) {
         //根节点
-        ALOGD("item->parent() == NULL");
-        clearContractTable();
         if (mDb->getAllContractData(contracts))
             return;
-
-        addContractTableRows(contracts);
-        if (mContractModel->rowCount() > 0) {
-            //默认显示第一行的数据
-            ui->contractTableView->selectRow(0);
-            QString number = mContractModel->index(0, 0).data().toString();
-            QList<CONTRACT_PRICE> prices;
-            if (mDb->getAllContractPriceData(number, prices))
-                return;
-            addPriceTableRows(prices);
-        }
     } else {
         //子节点
-        ALOGD("item->parent() != NULL");
+        if (mDb->getContractInClientNumber(item->text(mClientNumberColumn),
+                                           contracts))
+            return;
+    }
+
+    addContractTableRows(contracts);
+    if (mContractModel->rowCount() > 0) {
+        //默认显示第一行的数据
+        ui->contractTableView->selectRow(0);
+        QString number = mContractModel->index(0, 0).data().toString();
+        QList<CONTRACT_PRICE> prices;
+        if (mDb->getAllContractPriceData(number, prices))
+            return;
+        addPriceTableRows(prices);
     }
 }
