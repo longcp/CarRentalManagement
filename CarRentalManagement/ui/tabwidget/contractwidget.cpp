@@ -62,8 +62,10 @@ ContractWidget::ContractWidget(QWidget *parent) :
     /**
      * @brief 打开编辑窗口
      */
-    connect(this, SIGNAL(openContractEditDialogSignal(OpenType , Contract&)),
-            mContractEditDialog, SLOT(openContractEditDialogSlot(OpenType, Contract&)));
+    connect(this,
+            SIGNAL(openContractEditDialogSignal(OpenType, Contract&, QString, QString)),
+            mContractEditDialog,
+            SLOT(openContractEditDialogSlot(OpenType, Contract&, QString, QString)));
     /**
      * @brief 添加条目
      */
@@ -220,8 +222,34 @@ ContractWidget::addAllClientItem()
 void
 ContractWidget::addContractSlot()
 {
+    ALOGD("ui->clientTreeWidget->currentIndex().row()=%d",
+          ui->clientTreeWidget->currentIndex().row());
     Contract contract;
-    emit openContractEditDialogSignal(OpenType::CREATEITEM, contract);
+    if (!isSelectedClient()) {
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("请先选好客户.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+        return;
+    }
+    int curTreeRow = ui->clientTreeWidget->currentIndex().row();
+    QString clientName = ui->clientTreeWidget->currentItem()
+                            ->text(mClientNameColumn);
+    QString clientNumber = ui->clientTreeWidget->currentItem()
+                            ->text(mClientNumberColumn);
+    emit openContractEditDialogSignal(OpenType::CREATEITEM, contract,
+                                      clientName, clientNumber);
+}
+
+bool
+ContractWidget::isSelectedClient()
+{
+    if (ui->clientTreeWidget->currentItem() == NULL ||
+            ui->clientTreeWidget->currentItem()->parent() == NULL)
+        return false;
+
+    return true;
 }
 
 void
@@ -242,7 +270,8 @@ ContractWidget::editRowEvent(int row)
     }
 
     mDb->getAllContractPriceData(contract.number, contract.prices);
-    emit openContractEditDialogSignal(OpenType::SHOWITEM, contract);
+    emit openContractEditDialogSignal(OpenType::SHOWITEM, contract,
+                                      contract.clientName, contract.clientNumber);
 }
 
 void
@@ -480,9 +509,7 @@ ContractWidget::on_contractTableView_doubleClicked(const QModelIndex &index)
     editRowEvent(index.row());
 }
 
-void
-ContractWidget::on_clientTreeWidget_itemDoubleClicked(QTreeWidgetItem *item,
-                                                      int column)
+void ContractWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
     ALOGDTRACE();
     ALOGD("%s name=%s, number=%s, column=%d",

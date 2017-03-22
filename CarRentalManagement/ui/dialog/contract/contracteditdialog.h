@@ -26,7 +26,9 @@ public:
 
 private slots:
     void            openContractEditDialogSlot(OpenType opentype,
-                                               Contract &contract);
+                                               Contract &contract,
+                                               QString clientName,
+                                               QString clientNumber);
     /**
      * @brief 工具栏编辑按钮
      */

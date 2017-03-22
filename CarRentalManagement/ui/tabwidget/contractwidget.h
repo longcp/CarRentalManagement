@@ -25,13 +25,19 @@ public:
 
 signals:
     void            openContractEditDialogSignal(OpenType,
-                                                 Contract&);
+                                                 Contract&,
+                                                 QString,
+                                                 QString);
 
 private slots:
     /**
      * @brief 工具栏，添加按钮
      */
     void            addContractSlot();
+    /**
+     * @brief 是否选中client
+     */
+    bool            isSelectedClient();
     /**
      * @brief 工具栏，编辑按钮
      */
@@ -53,7 +59,7 @@ private slots:
 
     void on_contractTableView_doubleClicked(const QModelIndex &index);
 
-    void on_clientTreeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
+    void on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
 private:
     /**

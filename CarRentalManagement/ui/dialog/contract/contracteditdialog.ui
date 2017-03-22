@@ -251,10 +251,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="clientNameLE">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
+             <widget class="QLabel" name="clientNameLable">
               <property name="minimumSize">
                <size>
                 <width>180</width>
@@ -267,12 +264,8 @@
                 <height>16777215</height>
                </size>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="chooseClientBtn">
               <property name="text">
-               <string>...</string>
+               <string/>
               </property>
              </widget>
             </item>

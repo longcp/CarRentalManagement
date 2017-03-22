@@ -144,12 +144,16 @@ ContractEditDialog::configToolBar()
 
 void
 ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
-                                               Contract &contract)
+                                               Contract &contract,
+                                               QString clientName,
+                                               QString clientNumber)
 {
     ALOGDTRACE();
     int count = 0;
     QList<Contract> contracts;
     mOpenType = opentype;
+    ui->clientNameLable->setText(clientName);
+    ui->clientNumberLebel->setText(clientNumber);
     if (opentype == OpenType::CREATEITEM) {
         //以创建条目方式打开
         mActEdit->setDisabled(true);
@@ -239,7 +243,7 @@ ContractEditDialog::setMode(bool mode)
     ALOGDTRACE();
 //    ui->contractNumberLabel->setEnabled(mode);
     ui->signedDateDE->setEnabled(mode);
-//    ui->clientNameLE->setEnabled(mode);
+    ui->clientNameLable->setEnabled(mode);
     ui->clientNumberLebel->setEnabled(mode);
     ui->projectNameLE->setEnabled(mode);
     ui->projectAddrLE->setEnabled(mode);
@@ -271,7 +275,7 @@ ContractEditDialog::setView(Contract &contract)
     ALOGDTRACE();
     ui->contractNumberLabel->setText(contract.number);
     ui->signedDateDE->setDate(contract.signedDate);
-    ui->clientNameLE->setText(contract.clientName);
+    ui->clientNameLable->setText(contract.clientName);
     ui->clientNumberLebel->setText(contract.clientNumber);
     ui->projectNameLE->setText(contract.projectName);
     ui->projectAddrLE->setText(contract.projectAddress);
@@ -346,7 +350,7 @@ ContractEditDialog::isModified()
     ALOGDTRACE();
     if (ui->contractNumberLabel->isWindowModified() ||
             ui->signedDateDE->isWindowModified() ||
-            ui->clientNameLE->isWindowModified() ||
+            ui->clientNameLable->isWindowModified() ||
             ui->clientNumberLebel->isWindowModified() ||
             ui->projectNameLE->isModified() ||
             ui->projectAddrLE->isModified() ||
@@ -411,7 +415,7 @@ ContractEditDialog::cleanContent()
 {
     ALOGDTRACE();
     ui->contractNumberLabel->setText("");
-    ui->clientNameLE->setText("");
+    ui->clientNameLable->setText("");
     ui->clientNumberLebel->setText("");
     ui->projectNameLE->setText("");
     ui->projectAddrLE->setText("");
@@ -445,7 +449,7 @@ ContractEditDialog::saveUiContent(Contract &contract)
     bool ok;
 
     contract.number = ui->contractNumberLabel->text();
-    contract.clientName = ui->clientNameLE->text();
+    contract.clientName = ui->clientNameLable->text();
     contract.clientNumber = ui->clientNumberLebel->text();
     contract.projectName = ui->projectNameLE->text();
     contract.projectAddress = ui->projectAddrLE->text();
@@ -502,10 +506,9 @@ ContractEditDialog::saveAndExitEvent()
     ALOGDTRACE();
     int ret;
 
-    if (ui->clientNameLE->text().isEmpty() ||
-            mModel->rowCount() <= 0) {
+    if (mModel->rowCount() <= 0) {
         QMessageBox::warning(this, tr("温馨提示"),
-                             tr("客户名称和价格表不能为空！\n"),
+                             tr("价格表不能为空！\n"),
                              QMessageBox::Ok,
                              QMessageBox::Ok);
         return;
@@ -641,7 +644,7 @@ ContractEditDialog::getSelectedClient(QString number)
 
     Client client;
     if (!mDb->getClientInNumber(number, client)) {
-        ui->clientNameLE->setText(client.name);
+        ui->clientNameLable->setText(client.name);
         ui->clientNumberLebel->setText(client.number);
     }
 }
