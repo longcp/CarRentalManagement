@@ -98,7 +98,7 @@
          <number>9</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_27">
+         <widget class="QLabel" name="label_3">
           <property name="minimumSize">
            <size>
             <width>80</width>
@@ -112,7 +112,7 @@
            </size>
           </property>
           <property name="text">
-           <string>合同号:</string>
+           <string>签单号:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -120,7 +120,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QLabel" name="numberLabel">
           <property name="minimumSize">
            <size>
             <width>160</width>
@@ -132,6 +132,9 @@
             <width>160</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
@@ -158,7 +161,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit">
+         <widget class="QLineEdit" name="clientNameLe">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -174,7 +177,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="label_27">
           <property name="minimumSize">
            <size>
             <width>60</width>
@@ -188,7 +191,7 @@
            </size>
           </property>
           <property name="text">
-           <string>签单号:</string>
+           <string>合同号:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -196,9 +199,18 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_26">
-          <property name="text">
-           <string>TextLabel</string>
+         <widget class="QComboBox" name="contractNumberCB">
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>180</width>
+            <height>16777215</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -265,7 +277,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_3">
+         <widget class="QComboBox" name="carNumberCB">
           <property name="minimumSize">
            <size>
             <width>160</width>
@@ -303,7 +315,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="pumpTypeCB">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -341,7 +353,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_9">
+         <widget class="QLineEdit" name="constructPlaceLE">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -419,7 +431,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_10">
+         <widget class="QLineEdit" name="concreteLableLE">
           <property name="minimumSize">
            <size>
             <width>160</width>
@@ -457,7 +469,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_11">
+         <widget class="QDoubleSpinBox" name="beginFuelDSB">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -469,6 +481,9 @@
             <width>180</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="maximum">
+           <double>999999999.990000009536743</double>
           </property>
          </widget>
         </item>
@@ -495,7 +510,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_12">
+         <widget class="QDoubleSpinBox" name="endFuelDSB">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -573,7 +588,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDateEdit" name="dateEdit">
+         <widget class="QDateEdit" name="dateDE">
           <property name="minimumSize">
            <size>
             <width>160</width>
@@ -614,7 +629,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_20">
+         <widget class="QLineEdit" name="principalLE">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -652,7 +667,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_21">
+         <widget class="QLineEdit" name="principalTelLE">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -730,7 +745,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDateEdit" name="dateEdit_2">
+         <widget class="QDateTimeEdit" name="arrivalTimeDTE">
           <property name="minimumSize">
            <size>
             <width>160</width>
@@ -771,7 +786,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDateTimeEdit" name="dateTimeEdit">
+         <widget class="QDateTimeEdit" name="leaveTimeDTE">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -812,18 +827,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_15">
-          <property name="minimumSize">
-           <size>
-            <width>180</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>180</width>
-            <height>16777215</height>
-           </size>
+         <widget class="QTimeEdit" name="workTimeTE">
+          <property name="calendarPopup">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -890,7 +896,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_22">
+         <widget class="QLineEdit" name="driver1LE">
           <property name="minimumSize">
            <size>
             <width>160</width>
@@ -928,7 +934,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_23">
+         <widget class="QLineEdit" name="driver2LE">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -966,7 +972,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_24">
+         <widget class="QLineEdit" name="driver3LE">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -1044,7 +1050,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
+         <widget class="QDoubleSpinBox" name="projectAmountDSB">
           <property name="minimumSize">
            <size>
             <width>160</width>
@@ -1082,7 +1088,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_4">
+         <widget class="QLineEdit" name="projectNameLE">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -1108,7 +1114,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_6">
+         <widget class="QLineEdit" name="projectAddressLE">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -1186,7 +1192,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <widget class="QDoubleSpinBox" name="pumpSquareDSB">
           <property name="minimumSize">
            <size>
             <width>250</width>
@@ -1212,7 +1218,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+         <widget class="QDoubleSpinBox" name="squareUnitPriceDSB">
           <property name="minimumSize">
            <size>
             <width>250</width>
@@ -1290,7 +1296,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+         <widget class="QDoubleSpinBox" name="pumpTimesDSB">
           <property name="minimumSize">
            <size>
             <width>250</width>
@@ -1316,7 +1322,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+         <widget class="QDoubleSpinBox" name="pumpTimeUnitPriceDSB">
           <property name="minimumSize">
            <size>
             <width>250</width>
@@ -1332,6 +1338,54 @@
          </widget>
         </item>
        </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>单据状态</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_21">
+      <item>
+       <widget class="QRadioButton" name="reservationRB">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>预约</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="confirmedRB">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>已确认</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="unconfirmedRB">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>未确认</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -1400,7 +1454,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QTextEdit" name="textEdit"/>
+         <widget class="QTextEdit" name="remarksTE"/>
         </item>
        </layout>
       </item>
