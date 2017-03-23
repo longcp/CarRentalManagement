@@ -161,7 +161,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="clientNameLe">
+         <widget class="QComboBox" name="clientNameCB">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -827,9 +827,22 @@
          </widget>
         </item>
         <item>
-         <widget class="QTimeEdit" name="workTimeTE">
-          <property name="calendarPopup">
-           <bool>true</bool>
+         <widget class="QDoubleSpinBox" name="doubleSpinBox">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <double>999999999.990000009536743</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_26">
+          <property name="text">
+           <string>小时</string>
           </property>
          </widget>
         </item>
@@ -1346,6 +1359,9 @@
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>单据状态</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_21">
       <item>

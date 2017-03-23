@@ -70,6 +70,11 @@ enum PumpType {TYPE_37M1,
                TYPE_CAR_PUMP,
                UNKNOWN_PUMPTYPE};
 
+enum RentalDocState {RESERVATION_STATE,
+                     CONFIRMED_STATE,
+                     UNCONFIRMED_STATE,
+                     UNKNOWN_STATE};
+
 typedef struct InsuranceRecord {
     QString number;
     QString carNumber;

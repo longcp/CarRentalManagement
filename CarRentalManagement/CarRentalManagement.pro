@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     common/contract.cpp \
     ui/dialog/contract/contractpricedialog.cpp \
     ui/dialog/contract/contracteditdialog.cpp \
-    ui/dialog/contract/clienttabledialog.cpp
+    ui/dialog/contract/clienttabledialog.cpp \
+    common/rentaldocument.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -80,7 +81,8 @@ HEADERS  += ui\mainwindow.h \
     common/contract.h \
     ui/dialog/contract/contractpricedialog.h \
     ui/dialog/contract/contracteditdialog.h \
-    ui/dialog/contract/clienttabledialog.h
+    ui/dialog/contract/clienttabledialog.h \
+    common/rentaldocument.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
