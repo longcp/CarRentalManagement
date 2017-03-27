@@ -27,6 +27,11 @@
 #define PUMP_TYPE_60M_COLUMN        4
 #define PUMP_TYPE_CAR_PUMP_COLUMN   5
 
+#define RENTAL_DOC_STATE_RESERVATION_STR    "预约"
+#define RENTAL_DOC_STATE_CONFIRMED_STR      "已确认"
+#define RENTAL_DOC_STATE_UNCONFIRMED_STR    "未确认"
+#define RENTAL_DOC_STATE_UNKNOWN_STR        "未确认"
+
 // 错误号
 #define OK                          0
 #define SUCCESS                     0
@@ -54,6 +59,9 @@
 #define INSERT_PRICE_ITEM_FAIL      (-1022)
 #define DELETE_PRICE_ITEM_FAIL      (-1023)
 #define UPDATE_PRICE_ITEM_FAIL      (-1024)
+#define INSERT_DOC_ITEM_FAIL        (-1025)
+#define UPDATE_DOC_ITEM_FAIL        (-1026)
+#define DELETE_DOC_ITEM_FAIL        (-1027)
 
 enum OpenType {CREATEITEM=0, SHOWITEM, UNKNOWN_OPENTYPE};
 

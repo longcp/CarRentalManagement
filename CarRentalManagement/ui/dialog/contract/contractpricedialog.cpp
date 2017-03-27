@@ -30,16 +30,7 @@ ContractPriceDialog::openWindow(OpenType type, QString contractNumber)
           contractNumber.toStdString().data());
     mContractNumber = contractNumber;
     mOpenType = type;
-    QDate date = QDate::currentDate();
-    int hour = QTime::currentTime().hour();
-    int minute = QTime::currentTime().minute();
-    int second = QTime::currentTime().second();
-    QString curTime = QString::number(hour)
-                        .append(QString::number(minute)
-                        .append(QString::number(second)));
-    ALOGD("%s, %s", date.toString("yyyyMMdd").toStdString().data(),
-          curTime.toStdString().data());
-    QString number = date.toString("yyyyMMdd").append(curTime);
+    QString number = QDateTime::currentDateTime().toString("yyyyMMddhhmmsszzz");
     ui->numberLabel->setText(number);
     ui->pumpTypeCB->setCurrentIndex(0);
     this->exec();

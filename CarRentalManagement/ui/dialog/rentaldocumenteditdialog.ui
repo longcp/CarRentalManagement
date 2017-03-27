@@ -827,7 +827,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <widget class="QDoubleSpinBox" name="workingHoursDSB">
           <property name="minimumSize">
            <size>
             <width>140</width>

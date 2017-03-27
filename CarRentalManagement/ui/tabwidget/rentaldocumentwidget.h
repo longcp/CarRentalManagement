@@ -2,10 +2,13 @@
 #define RENTALDOCUMENTWIDGET_H
 
 #include <QWidget>
+#include <datatype.h>
+
 class QToolBar;
 class QTableWidget;
 class RentalDocumentEditDialog;
 class TableModel;
+class RentalDocument;
 
 namespace Ui {
 class RentalDocumentWidget;
@@ -24,7 +27,7 @@ private slots:
     void            addRentalDocSlot();
 
 signals:
-    void            openRentalEditDialogSignal();
+    void            openRentalEditDialogSignal(OpenType, RentalDocument &);
 
 private:
     /**

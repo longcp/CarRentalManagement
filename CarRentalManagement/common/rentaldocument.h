@@ -4,7 +4,7 @@
 #include <QObject>
 #include <datatype.h>
 
-class Date;
+class QDate;
 class QTime;
 class QDateTime;
 
@@ -40,7 +40,7 @@ public:
         pumpTimeUnitPrice = r.pumpTimeUnitPrice;
 
         date = r.date;
-        workTime = r.workTime;
+        workingHours = r.workingHours;
         arrivalDateTime = r.arrivalDateTime;
         leaveDateTime = r.leaveDateTime;
 
@@ -75,7 +75,7 @@ public:
         pumpTimeUnitPrice = r.pumpTimeUnitPrice;
 
         date = r.date;
-        workTime = r.workTime;
+        workingHours = r.workingHours;
         arrivalDateTime = r.arrivalDateTime;
         leaveDateTime = r.leaveDateTime;
 
@@ -110,7 +110,7 @@ public:
         pumpTimeUnitPrice = r.pumpTimeUnitPrice;
 
         date = r.date;
-        workTime = r.workTime;
+        workingHours = r.workingHours;
         arrivalDateTime = r.arrivalDateTime;
         leaveDateTime = r.leaveDateTime;
 
@@ -119,6 +119,8 @@ public:
     }
 
     void    dump();
+    const static QString getRentalDocStatStr(RentalDocState stat);
+    const static RentalDocState getRentalDocStat(QString stat);
 
     QString number;
     QString clientName;
@@ -144,9 +146,9 @@ public:
     float squareUnitPrice;
     float pumpTimes;
     float pumpTimeUnitPrice;
+    float workingHours;
 
-    Date date;
-    QTime workTime;
+    QDate date;
     QDateTime arrivalDateTime;
     QDateTime leaveDateTime;
 

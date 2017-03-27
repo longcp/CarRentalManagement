@@ -17,6 +17,7 @@ class QMutex;
 class Client;
 class Car;
 class Contract;
+class RentalDocument;
 template <class Key, class T> class QMap;
 
 class DataBase
@@ -98,6 +99,16 @@ public:
     int                 insertContractPriceTable(const CONTRACT_PRICE &price);
     int                 delContractPriceInNumber(const QString number);
     int                 delContractPriceInContractNumber(const QString contractNumber);
+
+    // rentaldocument表
+    int                 insertRentalDocumentTable(const RentalDocument &doc);
+    int                 updateRentalDocumentData(const RentalDocument &doc);
+    int                 getAllRentalDocumentData(QList<RentalDocument> &docs);
+    int                 getRentalDocInClientNumber(QList<RentalDocument> &docs);
+    int                 clearRentalDocumentTable();
+    int                 deleteRentalDocumentInNumber(QString number);
+    int                 getRentalDocumentDataInNumber(QString number, RentalDocument &doc);
+    bool                isRentalDocumentExist(RentalDocument &doc);
 
 private:
     bool                openDataBase();

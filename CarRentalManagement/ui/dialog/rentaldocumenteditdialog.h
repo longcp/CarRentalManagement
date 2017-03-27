@@ -2,8 +2,11 @@
 #define RENTALDOCUMENTEDITDIALOG_H
 
 #include <QDialog>
+#include <datatype.h>
 
 class QToolBar;
+class DataBase;
+class RentalDocument;
 
 namespace Ui {
 class RentalDocumentEditDialog;
@@ -21,27 +24,64 @@ private slots:
     /**
      * @brief 打开本窗口
      */
-    void            openRentalDocEditDialogSlot();
+    void            openWindow(OpenType type, RentalDocument &doc);
+    /**
+     * @brief 工具栏编辑按钮
+     */
+    void            editEvent();
+    /**
+     * @brief 工具栏保存退出按钮
+     */
+    void            saveAndExitEvent();
+    /**
+     * @brief 工具栏保存按钮
+     */
+    void            saveEvent();
+    /**
+     * @brief 工具栏取消按钮
+     */
+    void            cancelEvent();
+    /**
+     * @brief 工具栏退出按钮
+     */
+    void            closeDialog();
 
 private:
     /**
      * @brief 配置工具栏
      */
     void            configToolBar();
+    QString         makeRentalDocNumber();
+    void            initView();
+    void            setEditMode();
+    void            setEditModePre();
+    void            setEditModeSupplement();
+    void            setViewMode();
+    void            setViewModePre();
+    void            setViewModeSupplement();
+    void            setMode(bool mode);
+    void            setOriginRentalDocument(RentalDocument &doc);
+    void            setView(RentalDocument &doc);
+    bool            isModified();
 
     Ui::RentalDocumentEditDialog *ui;
     // 工具栏
-    QToolBar        *mToolBar;
+    QToolBar*       mToolBar;
+    OpenType        mOpenType;
+    DataBase*       mDb;
+    RentalDocument* mRentalDocument;
+    QString         mCarNumber;
+    QString         mClientNumber;
 
     // 工具栏动作
-    QAction         *mActAdd;
-    QAction         *mActSaveExit;
-    QAction         *mActSave;
-    QAction         *mActExit;
-    QAction         *mActEdit;
-    QAction         *mActPrev;
-    QAction         *mActNext;
-    QAction         *mActCancel;
+    QAction*        mActAdd;
+    QAction*        mActSaveExit;
+    QAction*        mActSave;
+    QAction*        mActExit;
+    QAction*        mActEdit;
+    QAction*        mActPrev;
+    QAction*        mActNext;
+    QAction*        mActCancel;
 };
 
 #endif // RENTALDOCUMENTEDITDIALOG_H

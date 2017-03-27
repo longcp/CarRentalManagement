@@ -4,6 +4,7 @@
 #include <database/database.h>
 #include <QMessageBox>
 #include <car.h>
+#include <QDateTime>
 
 #define LOG_TAG                 "INSURANCE_DIALOG"
 #include "utils/Log.h"
@@ -42,16 +43,7 @@ InsuranceDialog::openWindow()
         ui->carNumComboBox->insertItem(i, car.number);
     }
 
-    QDate date = QDate::currentDate();
-    int hour = QTime::currentTime().hour();
-    int minute = QTime::currentTime().minute();
-    int second = QTime::currentTime().second();
-    QString curTime = QString::number(hour)
-                        .append(QString::number(minute)
-                        .append(QString::number(second)));
-    ALOGD("%s, %s", date.toString("yyyyMMdd").toStdString().data(),
-          curTime.toStdString().data());
-    QString number = date.toString("yyyyMMdd").append(curTime);
+    QString number = QDateTime::currentDateTime().toString("yyyyMMddhhmmsszzz");
     ui->numberLabel->setText(number);
     ui->dateDateEdit->setDate(QDate::currentDate());
     ui->insuranceRadioBtn->setChecked(true);

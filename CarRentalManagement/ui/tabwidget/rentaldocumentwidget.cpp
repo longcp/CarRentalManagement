@@ -4,6 +4,7 @@
 #include <QToolBar>
 #include <tablemodel.h>
 #include <contract.h>
+#include <rentaldocument.h>
 
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
@@ -57,8 +58,8 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     /**
      * @brief 打开编辑窗口
      */
-    connect(this, SIGNAL(openRentalEditDialogSignal()),
-            mRentalDocEditDialog, SLOT(openRentalDocEditDialogSlot()));
+    connect(this, SIGNAL(openRentalEditDialogSignal(OpenType, RentalDocument &)),
+            mRentalDocEditDialog, SLOT(openWindow(OpenType, RentalDocument &)));
 }
 
 RentalDocumentWidget::~RentalDocumentWidget()
@@ -93,7 +94,8 @@ RentalDocumentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__,
           index.column(), index.row());
-    emit openRentalEditDialogSignal();
+    RentalDocument rentalDoc;
+    emit openRentalEditDialogSignal(OpenType::CREATEITEM, rentalDoc);
 }
 
 void
@@ -137,6 +139,7 @@ RentalDocumentWidget::initView()
 void
 RentalDocumentWidget::addRentalDocSlot()
 {
-    Contract contract;
-    emit openRentalEditDialogSignal();
+
+    RentalDocument rentalDoc;
+    emit openRentalEditDialogSignal(OpenType::CREATEITEM, rentalDoc);
 }

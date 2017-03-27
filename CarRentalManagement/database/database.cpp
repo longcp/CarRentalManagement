@@ -14,6 +14,7 @@
 #include <user.h>
 #include <car.h>
 #include <contract.h>
+#include <rentaldocument.h>
 
 #define LOG_TAG                         "DATABASE"
 #include "utils/Log.h"
@@ -591,6 +592,15 @@ DataBase::lastError()
 
     case UPDATE_PRICE_ITEM_FAIL:
         return "UPDATE_PRICE_ITEM_FAIL";
+
+    case INSERT_DOC_ITEM_FAIL:
+        return "INSERT_DOC_ITEM_FAIL";
+
+    case UPDATE_DOC_ITEM_FAIL:
+        return "UPDATE_DOC_ITEM_FAIL";
+
+    case DELETE_DOC_ITEM_FAIL:
+        return "DELETE_DOC_ITEM_FAIL";
 
     case OK:
     default:
@@ -1773,6 +1783,209 @@ DataBase::delContractPriceInContractNumber(const QString contractNumber)
     if (!query->exec()) {
         ALOGD("%s, DELETE FROM contract_price failed!", __FUNCTION__);
         return DELETE_PRICE_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::insertRentalDocumentTable(const RentalDocument &doc)
+{
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("INSERT INTO rentaldocument "
+                   "VALUES(:number, :clientName, :clientNumber, "
+                   ":contractNumber, :carNumber, :carPlateNumber, "
+                   ":contructPlace, :concreteLable, :principal, "
+                   ":principalTel, :driver1, :driver2, "
+                   ":driver3, :projectName, :projectAddress, "
+                   ":remarks, :beginFuel, :endFuel, "
+                   ":projectAmount, :pumpSquare, :squareUnitPrice, "
+                   ":pumpTimes, :pumpTimeUnitPrice, :workingHours, "
+                   ":date, :arrivalDateTime, :leaveDateTime, "
+                   ":rentalDocState, :pumpType)");
+    query->bindValue(":number", doc.number);
+    query->bindValue(":clientName", doc.clientName);
+    query->bindValue(":clientNumber", doc.clientNumber);
+    query->bindValue(":contractNumber", doc.contractNumber);
+    query->bindValue(":carNumber", doc.carNumber);
+    query->bindValue(":carPlateNumber", doc.carPlateNumber);
+    query->bindValue(":contructPlace", doc.contructPlace);
+    query->bindValue(":concreteLable", doc.concreteLable);
+    query->bindValue(":principal", doc.principal);
+    query->bindValue(":principalTel", doc.principalTel);
+    query->bindValue(":driver1", doc.driver1);
+    query->bindValue(":driver2", doc.driver2);
+    query->bindValue(":driver3", doc.driver3);
+    query->bindValue(":projectName", doc.projectName);
+    query->bindValue(":projectAddress", doc.projectAddress);
+    query->bindValue(":remarks", doc.remarks);
+    query->bindValue(":beginFuel", doc.beginFuel);
+    query->bindValue(":endFuel", doc.endFuel);
+    query->bindValue(":projectAmount", doc.projectAmount);
+    query->bindValue(":pumpSquare", doc.pumpSquare);
+    query->bindValue(":squareUnitPrice", doc.squareUnitPrice);
+    query->bindValue(":pumpTimes", doc.pumpTimes);
+    query->bindValue(":pumpTimeUnitPrice", doc.pumpTimeUnitPrice);
+    query->bindValue(":workingHours", doc.workingHours);
+
+    query->bindValue(":date",
+                     doc.date.toString("yyyy-MM-dd"));
+    query->bindValue(":arrivalDateTime",
+                     doc.arrivalDateTime.toString("yyyy-MM-dd hh:mm:ss"));
+    query->bindValue(":leaveDateTime",
+                     doc.leaveDateTime.toString("yyyy-MM-dd hh:mm:ss"));
+    query->bindValue(":rentalDocState",
+                     (int)doc.rentalDocState);
+    query->bindValue(":isIncludeTax", (int)doc.pumpType);
+
+    if (!query->exec()) {
+        ALOGE("%s failed!", __FUNCTION__);
+        errorno = INSERT_DOC_ITEM_FAIL;
+        return INSERT_DOC_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::updateRentalDocumentData(const RentalDocument &doc)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("UPDATE rentaldocument "
+                   "SET clientName=?, "
+                   "clientNumber=?, "
+                   "contractNumber=?, "
+                   "carNumber=?, "
+                   "carPlateNumber=?, "
+                   "contructPlace=?, "
+                   "concreteLable=?, "
+                   "principal=?, "
+                   "principalTel=?, "
+                   "driver1=?, "
+                   "driver2=?, "
+                   "driver3=?, "
+                   "projectName=?, "
+                   "remarks=?, "
+                   "beginFuel=?, "
+                   "endFuel=?, "
+                   "projectAmount=?, "
+                   "pumpSquare=?, "
+                   "squareUnitPrice=?, "
+                   "pumpTimes=?, "
+                   "pumpTimeUnitPrice=?, "
+                   "workingHours=?, "
+                   "date=?, "
+                   "arrivalDateTime=?, "
+                   "leaveDateTime=?, "
+                   "rentalDocState=?, "
+                   "pumpType=? "
+                   "WHERE number=?;");
+    query->addBindValue(doc.clientName);
+    query->addBindValue(doc.clientNumber);
+    query->addBindValue(doc.contractNumber);
+    query->addBindValue(doc.carNumber);
+    query->addBindValue(doc.carPlateNumber);
+    query->addBindValue(doc.contructPlace);
+    query->addBindValue(doc.concreteLable);
+    query->addBindValue(doc.principal);
+    query->addBindValue(doc.principalTel);
+    query->addBindValue(doc.driver1);
+    query->addBindValue(doc.driver2);
+    query->addBindValue(doc.driver3);
+    query->addBindValue(doc.projectName);
+    query->addBindValue(doc.projectAddress);
+    query->addBindValue(doc.remarks);
+    query->addBindValue(doc.beginFuel);
+    query->addBindValue(doc.endFuel);
+    query->addBindValue(doc.projectAmount);
+    query->addBindValue(doc.pumpSquare);
+    query->addBindValue(doc.squareUnitPrice);
+    query->addBindValue(doc.pumpTimes);
+    query->addBindValue(doc.pumpTimeUnitPrice);
+    query->addBindValue(doc.workingHours);
+    query->addBindValue(doc.date);
+    query->addBindValue(doc.arrivalDateTime);
+    query->addBindValue(doc.leaveDateTime);
+    query->addBindValue(doc.rentalDocState);
+    query->addBindValue(doc.pumpType);
+    query->addBindValue(doc.number);
+    if (!query->exec()) {
+        ALOGE("%s fail", __FUNCTION__);
+        errorno = UPDATE_DOC_ITEM_FAIL;
+        return UPDATE_DOC_ITEM_FAIL;
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllRentalDocumentData(QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM rentaldocument");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM rentaldocument!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        doc.number = query->value(0).toString();
+        doc.clientName = query->value(1).toString();
+        doc.clientNumber = query->value(2).toString();
+        doc.contractNumber = query->value(3).toString();
+        doc.carNumber = query->value(4).toString();
+        doc.carPlateNumber = query->value(5).toString();
+        doc.contructPlace = query->value(6).toString();
+        doc.concreteLable = query->value(7).toString();
+        doc.principal = query->value(8).toString();
+        doc.principalTel = query->value(9).toString();
+        doc.driver1 = query->value(10).toString();
+        doc.driver2 = query->value(11).toString();
+        doc.driver3 = query->value(12).toString();
+        doc.projectName = query->value(13).toString();
+        doc.projectAddress = query->value(14).toString();
+        doc.remarks = query->value(15).toString();
+
+        doc.beginFuel = query->value(16).toFloat();
+        doc.endFuel = query->value(17).toFloat();
+        doc.projectAmount = query->value(18).toFloat();
+        doc.pumpSquare = query->value(19).toFloat();
+        doc.squareUnitPrice = query->value(20).toFloat();
+        doc.pumpTimes = query->value(21).toFloat();
+        doc.pumpTimeUnitPrice = query->value(22).toFloat();
+        doc.workingHours = query->value(23).toFloat();
+
+        doc.date = QDate::fromString(query->value(24).toString(),
+                                               "yyyy-MM-dd");
+        doc.arrivalDateTime = QDate::fromString(query->value(25).toString(),
+                                                   "yyyy-MM-dd hh:mm:ss");
+        doc.leaveDateTime = QDate::fromString(query->value(26).toString(),
+                                           "yyyy-MM-dd hh:mm:ss");
+        doc.rentalDocState = (RentalDocState)query->value(27).toInt();
+        doc.pumpType = (PumpType)query->value(28).toInt();
+
+        docs.push_back(doc);                              //插入list
     }
 
     return SUCCESS;
