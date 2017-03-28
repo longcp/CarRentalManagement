@@ -32,7 +32,6 @@ SOURCES += main.cpp\
     ui/tabwidget/contractwidget.cpp \
     ui/dialog/clienteditdialog.cpp \
     ui/dialog/receipteditdialog.cpp \
-    ui/dialog/rentaldocumenteditdialog.cpp \
     common/client.cpp \
     common/regularexpression.cpp \
     database/database.cpp \
@@ -49,8 +48,10 @@ SOURCES += main.cpp\
     common/contract.cpp \
     ui/dialog/contract/contractpricedialog.cpp \
     ui/dialog/contract/contracteditdialog.cpp \
-    ui/dialog/contract/clienttabledialog.cpp \
-    common/rentaldocument.cpp
+    common/rentaldocument.cpp \
+    ui/dialog/rentaldocument/rentaldocumenteditdialog.cpp \
+    ui/dialog/contracttabledialog.cpp \
+    ui/dialog/clienttabledialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -61,7 +62,6 @@ HEADERS  += ui\mainwindow.h \
     ui/tabwidget/contractwidget.h \
     ui/dialog/clienteditdialog.h \
     ui/dialog/receipteditdialog.h \
-    ui/dialog/rentaldocumenteditdialog.h \
     common/client.h \
     common/regularexpression.h \
     common/datatype.h \
@@ -81,8 +81,10 @@ HEADERS  += ui\mainwindow.h \
     common/contract.h \
     ui/dialog/contract/contractpricedialog.h \
     ui/dialog/contract/contracteditdialog.h \
-    ui/dialog/contract/clienttabledialog.h \
-    common/rentaldocument.h
+    common/rentaldocument.h \
+    ui/dialog/rentaldocument/rentaldocumenteditdialog.h \
+    ui/dialog/contracttabledialog.h \
+    ui/dialog/clienttabledialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -93,7 +95,6 @@ FORMS    += ui\mainwindow.ui \
     ui/tabwidget/contractwidget.ui \
     ui/dialog/clienteditdialog.ui \
     ui/dialog/receipteditdialog.ui \
-    ui/dialog/rentaldocumenteditdialog.ui \
     ui/dialog/user/logindialog.ui \
     ui/dialog/user/usermanagerdialog.ui \
     ui/dialog/user/modifypasswarddialog.ui \
@@ -104,7 +105,9 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/car/insurancedialog.ui \
     ui/dialog/contract/contractpricedialog.ui \
     ui/dialog/contract/contracteditdialog.ui \
-    ui/dialog/contract/clienttabledialog.ui
+    ui/dialog/rentaldocument/rentaldocumenteditdialog.ui \
+    ui/dialog/contracttabledialog.ui \
+    ui/dialog/clienttabledialog.ui
 
 RESOURCES += \
     icon.qrc
