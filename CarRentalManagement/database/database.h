@@ -104,9 +104,10 @@ public:
     int                 insertRentalDocumentTable(const RentalDocument &doc);
     int                 updateRentalDocumentData(const RentalDocument &doc);
     int                 getAllRentalDocumentData(QList<RentalDocument> &docs);
-    int                 getRentalDocInClientNumber(QList<RentalDocument> &docs);
+    int                 getRentalDocInClientNumber(const QString clientNumber,
+                                                   QList<RentalDocument> &docs);
     int                 clearRentalDocumentTable();
-    int                 deleteRentalDocumentInNumber(QString number);
+    int                 deleteRentalDocumentInNumber(const QString number);
     int                 getRentalDocumentDataInNumber(QString number, RentalDocument &doc);
     bool                isRentalDocumentExist(RentalDocument &doc);
 

@@ -21,6 +21,7 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("泵送签证单");
+    initView();
 //    this->setFixedSize(800, 650);
 
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
@@ -107,9 +108,55 @@ RentalDocumentEditDialog::configToolBar()
 void
 RentalDocumentEditDialog::initView()
 {
-
+    setPumpTypeView();
 }
 
+void
+RentalDocumentEditDialog::setPumpTypeView()
+{
+    ui->pumpTypeCB->insertItem(PUMP_TYPE_37M1_COLUMN,
+                                  PUMP_TYPE_37M1_STR);
+    ui->pumpTypeCB->insertItem(PUMP_TYPE_48M_COLUMN,
+                                  PUMP_TYPE_48M_STR);
+    ui->pumpTypeCB->insertItem(PUMP_TYPE_52M_COLUMN,
+                                  PUMP_TYPE_52M_STR);
+    ui->pumpTypeCB->insertItem(PUMP_TYPE_56M_COLUMN,
+                                  PUMP_TYPE_56M_STR);
+    ui->pumpTypeCB->insertItem(PUMP_TYPE_60M_COLUMN,
+                                  PUMP_TYPE_60M_STR);
+    ui->pumpTypeCB->insertItem(PUMP_TYPE_CAR_PUMP_COLUMN,
+                                  PUMP_TYPE_CAR_PUMP_STR);
+}
+
+int
+RentalDocumentEditDialog::getPumpTypePosition(PumpType type)
+{
+
+    switch (type) {
+    case TYPE_37M1:
+       return PUMP_TYPE_37M1_COLUMN;
+
+    case TYPE_48M:
+       return PUMP_TYPE_48M_COLUMN;
+
+    case TYPE_52M:
+       return PUMP_TYPE_52M_COLUMN;
+
+    case TYPE_56M:
+       return PUMP_TYPE_56M_COLUMN;
+
+    case TYPE_60M:
+       return PUMP_TYPE_60M_COLUMN;
+
+    case TYPE_CAR_PUMP:
+       return PUMP_TYPE_CAR_PUMP_COLUMN;
+
+    default:
+        break;
+    }
+
+    return PUMP_TYPE_37M1_COLUMN;
+}
 
 void
 RentalDocumentEditDialog::openWindow(OpenType type, RentalDocument &doc)
@@ -120,10 +167,13 @@ RentalDocumentEditDialog::openWindow(OpenType type, RentalDocument &doc)
         mActEdit->setDisabled(true);
         mActPrev->setDisabled(true);
         mActNext->setDisabled(true);
-        ui->dateDE->setDate(QDate::currentDate());
         setEditMode();
         mActSave->setDisabled(true);
         mActCancel->setDisabled(true);
+        ui->pumpTypeCB->setCurrentIndex(0);
+        ui->dateDE->setDate(QDate::currentDate());
+        ui->arrivalTimeDTE->setDateTime(QDateTime::currentDateTime());
+        ui->leaveTimeDTE->setDateTime(QDateTime::currentDateTime());
         ui->numberLabel->setText(makeRentalDocNumber());
     } else {
         //以查看方式打开
@@ -239,8 +289,7 @@ RentalDocumentEditDialog::setView(RentalDocument &doc)
     ui->clientNameCB->setCurrentText(doc.clientName);
     ui->contractNumberCB->setCurrentText(doc.contractNumber);
     ui->carNumberCB->setCurrentText(doc.carPlateNumber);
-    ui->pumpTypeCB->setCurrentText(Car::getPumpTypeStr(doc.pumpType));
-    ui->constructPlaceLE->setText(doc.contructPlace);
+    ui->constructPlaceLE->setText(doc.constructPlace);
     ui->concreteLableLE->setText(doc.concreteLable);
     ui->beginFuelDSB->setValue(doc.beginFuel);
     ui->endFuelDSB->setValue(doc.endFuel);
@@ -258,6 +307,7 @@ RentalDocumentEditDialog::setView(RentalDocument &doc)
     ui->pumpTimesDSB->setValue(doc.pumpTimes);
     ui->pumpTimeUnitPriceDSB->setValue(doc.pumpTimeUnitPrice);
     ui->remarksTE->setText(doc.remarks);
+    ui->pumpTypeCB->setCurrentIndex(getPumpTypePosition(doc.pumpType));
 
     switch (doc.rentalDocState) {
     case RentalDocState::RESERVATION_STATE:
@@ -300,30 +350,119 @@ RentalDocumentEditDialog::saveAndExitEvent()
         closeDialog();
         return;
     }
+
+    RentalDocument doc;
+    saveUiContent(doc);
+    if (mOpenType == OpenType::CREATEITEM) {
+        //插入到数据库
+        if (mDb->isRentalDocumentExist(doc)) {
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("该签单已存在，添加失败!\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+            return;
+        }
+
+        if (!mDb->insertRentalDocumentTable(doc)) {
+            resetView(doc);
+            emit addRentalDocSignal(doc);
+            QMessageBox::information(this,
+                                     tr("温馨提示"),
+                                     tr("添加成功.\n"),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+        } else {
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("添加失败!未知错误.\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+            return;
+        }
+    } else {
+        //更新到数据库
+        if (!mDb->updateRentalDocumentData(doc)) {
+            resetView(doc);
+            updateDocItemSignal(doc);
+            QMessageBox::information(this,
+                                     tr("温馨提示"),
+                                     tr("已保存.\n"),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+        } else {
+            QMessageBox::critical(this,
+                                  tr("温馨提示"),
+                                  tr("保存失败!未知错误.\n"),
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+            return;
+        }
+    }
+
+    this->close();
+}
+
+void
+RentalDocumentEditDialog::closeEvent(QCloseEvent *)
+{
+
+    if (mOpenType == CREATEITEM)
+        ALOGD("CREATEITEM");
+    else if (isModified()) {
+        // 有内容发生修改
+        ALOGD("isModified");
+        int ret = QMessageBox::warning(this, tr("温馨提示"),
+                                       tr("是否保存修改？\n"),
+                                       QMessageBox::Yes |
+                                       QMessageBox::No |
+                                       QMessageBox::Cancel,
+                                       QMessageBox::Yes);
+        if (ret == QMessageBox::Cancel)
+            return;
+        else if (ret == QMessageBox::Yes)
+            saveEvent();
+    }
+    clean();
 }
 
 void
 RentalDocumentEditDialog::saveEvent()
 {
+    RentalDocument doc;
 
+    saveUiContent(doc);
+    //更新数据到数据库、更新界面数据
+    if (!mDb->updateRentalDocumentData(doc)) {
+        resetView(doc);
+        emit updateDocItemSignal(doc);
+    } else {
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("保存失败!未知错误.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+    }
 }
 
 void
 RentalDocumentEditDialog::cancelEvent()
 {
-
+    resetView();
+    setViewMode();
 }
 
 void
 RentalDocumentEditDialog::editEvent()
 {
-
+    setEditMode();
 }
 
 void
 RentalDocumentEditDialog::closeDialog()
 {
-
+    ALOGD("closeDialog");
+    this->close();
 }
 
 bool
@@ -362,4 +501,106 @@ RentalDocumentEditDialog::isModified()
     }
 
     return false;
+}
+
+void
+RentalDocumentEditDialog::saveUiContent(RentalDocument &doc)
+{
+    bool ok;
+
+    doc.number = ui->numberLabel->text();
+    doc.clientName = ui->clientNameCB->currentText();
+    doc.clientNumber = mClientNumber;
+    doc.contractNumber = ui->contractNumberCB->currentText();
+    doc.carNumber = mCarNumber;
+    doc.carPlateNumber = ui->carNumberCB->currentText();
+    doc.principal = ui->principalLE->text();
+    doc.principalTel = ui->principalTelLE->text();
+    doc.constructPlace = ui->constructPlaceLE->text();
+    doc.concreteLable = ui->concreteLableLE->text();
+    doc.driver1 = ui->driver1LE->text();
+    doc.driver2 = ui->driver2LE->text();
+    doc.driver3 = ui->driver3LE->text();
+    doc.projectName = ui->projectNameLE->text();
+    doc.projectAddress = ui->projectAddressLE->text();
+    doc.remarks = ui->remarksTE->toPlainText();
+
+    doc.beginFuel = ui->beginFuelDSB->value();
+    doc.endFuel = ui->endFuelDSB->value();
+    doc.projectAmount = ui->projectAmountDSB->value();
+    doc.workingHours = ui->workingHoursDSB->value();
+    doc.pumpSquare = ui->pumpSquareDSB->value();
+    doc.squareUnitPrice = ui->squareUnitPriceDSB->value();
+    doc.pumpTimes = ui->pumpTimesDSB->value();
+    doc.pumpTimeUnitPrice = ui->pumpTimeUnitPriceDSB->value();
+
+    doc.pumpType = Car::getPumpType(ui->pumpTypeCB->currentIndex());
+    doc.date = QDate::fromString(ui->dateDE->text(), "yyyy-MM-dd");
+    doc.arrivalDateTime = QDateTime::fromString(ui->arrivalTimeDTE->text(),
+                                                "yyyy-MM-dd hh:mm:ss");
+    doc.leaveDateTime = QDateTime::fromString(ui->leaveTimeDTE->text(),
+                                              "yyyy-MM-dd hh:mm:ss");
+    if (ui->reservationRB->isChecked())
+        doc.rentalDocState = RentalDocState::RESERVATION_STATE;
+    else if (ui->confirmedRB->isChecked())
+        doc.rentalDocState = RentalDocState::CONFIRMED_STATE;
+    else
+        doc.rentalDocState = RentalDocState::UNCONFIRMED_STATE;
+}
+
+void
+RentalDocumentEditDialog::resetView(RentalDocument &doc)
+{
+    setOriginRentalDocument(doc);
+    resetView();
+}
+
+void
+RentalDocumentEditDialog::resetView()
+{
+    if (!isModified())
+        return;
+
+    setView(*mRentalDocument);
+}
+
+void
+RentalDocumentEditDialog::clean()
+{
+    ALOGD("%s enter", __FUNCTION__);
+    cleanContent();
+}
+
+void
+RentalDocumentEditDialog::cleanContent()
+{
+    ui->numberLabel->setText("");
+    ui->clientNameCB->setCurrentText("");
+    ui->contractNumberCB->setCurrentText("");
+    ui->carNumberCB->setCurrentText("");
+    ui->pumpTypeCB->setCurrentIndex(0);
+    ui->constructPlaceLE->setText("");
+    ui->concreteLableLE->setText("");
+    ui->beginFuelDSB->setValue(0);
+    ui->endFuelDSB->setValue(0);
+    ui->dateDE->setDate(QDate::currentDate());
+    ui->principalLE->setText("");
+    ui->principalTelLE->setText("");
+    ui->arrivalTimeDTE->setDateTime(QDateTime::currentDateTime());
+    ui->leaveTimeDTE->setDateTime(QDateTime::currentDateTime());
+    ui->workingHoursDSB->setValue(0);
+    ui->driver1LE->setText("");
+    ui->driver2LE->setText("");
+    ui->driver3LE->setText("");
+    ui->projectAmountDSB->setValue(0);
+    ui->projectNameLE->setText("");
+    ui->projectAddressLE->setText("");
+    ui->pumpSquareDSB->setValue(0);
+    ui->squareUnitPriceDSB->setValue(0);
+    ui->pumpTimesDSB->setValue(0);
+    ui->pumpTimeUnitPriceDSB->setValue(0);
+    ui->reservationRB->setChecked(true);
+    ui->confirmedRB->setChecked(false);
+    ui->unconfirmedRB->setChecked(false);
+    ui->remarksTE->setText("");
 }

@@ -20,7 +20,7 @@ public:
         contractNumber = r.contractNumber;
         carNumber = r.carNumber;
         carPlateNumber = r.carPlateNumber;
-        contructPlace = r.contructPlace;
+        constructPlace = r.constructPlace;
         concreteLable = r.concreteLable;
         principal = r.principal;
         principalTel = r.principalTel;
@@ -55,7 +55,7 @@ public:
         contractNumber = r.contractNumber;
         carNumber = r.carNumber;
         carPlateNumber = r.carPlateNumber;
-        contructPlace = r.contructPlace;
+        constructPlace = r.constructPlace;
         concreteLable = r.concreteLable;
         principal = r.principal;
         principalTel = r.principalTel;
@@ -90,7 +90,7 @@ public:
         contractNumber = r.contractNumber;
         carNumber = r.carNumber;
         carPlateNumber = r.carPlateNumber;
-        contructPlace = r.contructPlace;
+        constructPlace = r.constructPlace;
         concreteLable = r.concreteLable;
         principal = r.principal;
         principalTel = r.principalTel;
@@ -128,7 +128,7 @@ public:
     QString contractNumber;
     QString carNumber;
     QString carPlateNumber;
-    QString contructPlace;
+    QString constructPlace;
     QString concreteLable;
     QString principal;
     QString principalTel;

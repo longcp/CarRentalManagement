@@ -46,6 +46,10 @@ private slots:
      */
     void            closeDialog();
 
+signals:
+    void            addRentalDocSignal(RentalDocument &doc);
+    void            updateDocItemSignal(RentalDocument &doc);
+
 private:
     /**
      * @brief 配置工具栏
@@ -53,6 +57,8 @@ private:
     void            configToolBar();
     QString         makeRentalDocNumber();
     void            initView();
+    void            setPumpTypeView();
+    int             getPumpTypePosition(PumpType type);
     void            setEditMode();
     void            setEditModePre();
     void            setEditModeSupplement();
@@ -63,6 +69,12 @@ private:
     void            setOriginRentalDocument(RentalDocument &doc);
     void            setView(RentalDocument &doc);
     bool            isModified();
+    void            saveUiContent(RentalDocument &doc);
+    void            resetView(RentalDocument &doc);
+    void            resetView();
+    void            closeEvent(QCloseEvent *);
+    void            clean();
+    void            cleanContent();
 
     Ui::RentalDocumentEditDialog *ui;
     // 工具栏

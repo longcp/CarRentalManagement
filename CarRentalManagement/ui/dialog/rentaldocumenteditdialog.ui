@@ -758,6 +758,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="displayFormat">
+           <string>yyyy-MM-dd hh:mm:ss</string>
+          </property>
           <property name="calendarPopup">
            <bool>true</bool>
           </property>
@@ -798,6 +801,9 @@
             <width>180</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="displayFormat">
+           <string>yyyy-MM-dd hh:mm:ss</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -1374,6 +1380,9 @@
         </property>
         <property name="text">
          <string>预约</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
