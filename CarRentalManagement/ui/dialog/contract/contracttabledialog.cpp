@@ -34,7 +34,7 @@ ContractTableDialog::initView()
                << "签订日期";
 
     mModel = new TableModel(0, headerList.size());
-    ui->clientTableView->setModel(mModel);
+    ui->contractTableView->setModel(mModel);
     mModel->setHorizontalHeaderLabels(headerList);
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
@@ -72,7 +72,7 @@ ContractTableDialog::initTableView()
         size = contracts.size();
         for (int i = 0; i < size; i++) {
             contract = contracts.at(i);
-            addClientItem(contract);
+            addContractItem(contract);
         }
     }
 }
