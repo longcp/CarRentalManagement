@@ -103,6 +103,7 @@ ContractTableDialog::openWindow()
 {
     ALOGDTRACE();
     initTableView();
+    this->exec();
 }
 
 void

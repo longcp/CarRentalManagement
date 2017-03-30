@@ -10,6 +10,10 @@
 #include <QDate>
 #include <QDateTime>
 #include <car.h>
+#include <contract.h>
+#include <client.h>
+#include <cartabledialog.h>
+#include <contracttabledialog.h>
 
 #define LOG_TAG                 "RENTALDOCUMENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -17,6 +21,9 @@
 RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
     QDialog(parent),
     mDb(DataBase::getInstance()),
+    isSetWindowSize(false),
+    mCarTableDialog(new CarTableDialog),
+    mContractTableDialog(new ContractTableDialog),
     ui(new Ui::RentalDocumentEditDialog)
 {
     ui->setupUi(this);
@@ -76,6 +83,26 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
      */
     connect(mActExit, SIGNAL(triggered()),
             this, SLOT(closeDialog()));
+    /**
+     * @brief 选择car
+     */
+    connect(this, SIGNAL(openCarTableDialogSignal()),
+            mCarTableDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择car
+     */
+    connect(mCarTableDialog, SIGNAL(selectedCar(QString)),
+            this, SLOT(getCar(QString)));
+    /**
+     * @brief 选择contract
+     */
+    connect(this, SIGNAL(openContractTableDialogSignal()),
+            mContractTableDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择contract
+     */
+    connect(mContractTableDialog, SIGNAL(selectedContract(QString)),
+            this, SLOT(getContract(QString)));
 }
 
 RentalDocumentEditDialog::~RentalDocumentEditDialog()
@@ -159,7 +186,17 @@ RentalDocumentEditDialog::getPumpTypePosition(PumpType type)
 }
 
 void
-RentalDocumentEditDialog::openWindow(OpenType type, RentalDocument &doc)
+RentalDocumentEditDialog::setWindowSize()
+{
+    ALOGD("this->height()=%d, this->width()=%d", this->height(), this->width());
+    this->setFixedSize(this->width(), this->height());
+}
+
+void
+RentalDocumentEditDialog::openWindow(OpenType type,
+                                     RentalDocument &doc,
+                                     QString clientName,
+                                     QString clientNumber)
 {
     mOpenType = type;
     if (type == OpenType::CREATEITEM) {
@@ -184,8 +221,14 @@ RentalDocumentEditDialog::openWindow(OpenType type, RentalDocument &doc)
         setOriginRentalDocument(doc);
         setView(doc);
         mCarNumber = doc.carNumber;
-        mClientNumber = doc.clientNumber;
     }
+    ui->clientNameLabel->setText(clientName);
+    mClientNumber = clientNumber;
+
+    if (!isSetWindowSize)
+        setWindowSize();
+    isSetWindowSize = true;
+
     this->exec();
 }
 
@@ -208,7 +251,7 @@ RentalDocumentEditDialog::setEditMode()
 void
 RentalDocumentEditDialog::setEditModePre()
 {
-    ui->clientNameCB->setFocus();
+//    ui->clientNameCB->setFocus();
     mActEdit->setDisabled(true);
     mActCancel->setEnabled(true);
     mActSave->setEnabled(true);
@@ -245,9 +288,9 @@ RentalDocumentEditDialog::setViewModeSupplement()
 void
 RentalDocumentEditDialog::setMode(bool mode)
 {
-    ui->clientNameCB->setEnabled(mode);
-    ui->contractNumberCB->setEnabled(mode);
-    ui->carNumberCB->setEnabled(mode);
+    ui->clientNameLabel->setEnabled(mode);
+    ui->contractNumberLabel->setEnabled(mode);
+    ui->carNumberLabel->setEnabled(mode);
     ui->pumpTypeCB->setEnabled(mode);
     ui->constructPlaceLE->setEnabled(mode);
     ui->concreteLableLE->setEnabled(mode);
@@ -286,9 +329,9 @@ void
 RentalDocumentEditDialog::setView(RentalDocument &doc)
 {
     ui->numberLabel->setText(doc.number);
-    ui->clientNameCB->setCurrentText(doc.clientName);
-    ui->contractNumberCB->setCurrentText(doc.contractNumber);
-    ui->carNumberCB->setCurrentText(doc.carPlateNumber);
+    ui->clientNameLabel->setText(doc.clientName);
+    ui->contractNumberLabel->setText(doc.contractNumber);
+    ui->carNumberLabel->setText(doc.carPlateNumber);
     ui->constructPlaceLE->setText(doc.constructPlace);
     ui->concreteLableLE->setText(doc.concreteLable);
     ui->beginFuelDSB->setValue(doc.beginFuel);
@@ -339,10 +382,9 @@ RentalDocumentEditDialog::setView(RentalDocument &doc)
 void
 RentalDocumentEditDialog::saveAndExitEvent()
 {
-    if (ui->clientNameCB->currentText() == "" ||
-            ui->contractNumberCB->currentText() == "") {
+    if (ui->contractNumberLabel->text() == "") {
         QMessageBox::warning(this, tr("温馨提示"),
-                             tr("承租客户和合同号不能为空！"));
+                             tr("合同号不能为空！"));
         return;
     }
 
@@ -465,12 +507,31 @@ RentalDocumentEditDialog::closeDialog()
     this->close();
 }
 
+void
+RentalDocumentEditDialog::getCar(QString number)
+{
+    Car car;
+    if (!mDb->getCarInNumber(number, car)) {
+        ui->carNumberLabel->setText(car.carNumber);
+        mCarNumber = car.number;
+    }
+}
+
+void
+RentalDocumentEditDialog::getContract(QString number)
+{
+    Contract contract;
+    if (!mDb->getContractInNumber(number, contract)) {
+        ui->contractNumberLabel->setText(contract.number);
+    }
+}
+
 bool
 RentalDocumentEditDialog::isModified()
 {
-    if (ui->clientNameCB->isWindowModified() ||
-            ui->contractNumberCB->isWindowModified() ||
-            ui->carNumberCB->isWindowModified() ||
+    if (ui->clientNameLabel->isWindowModified() ||
+            ui->contractNumberLabel->isWindowModified() ||
+            ui->carNumberLabel->isWindowModified() ||
             ui->pumpTypeCB->isWindowModified() ||
             ui->constructPlaceLE->isModified() ||
             ui->concreteLableLE->isModified() ||
@@ -509,11 +570,11 @@ RentalDocumentEditDialog::saveUiContent(RentalDocument &doc)
     bool ok;
 
     doc.number = ui->numberLabel->text();
-    doc.clientName = ui->clientNameCB->currentText();
+    doc.clientName = ui->clientNameLabel->text();
     doc.clientNumber = mClientNumber;
-    doc.contractNumber = ui->contractNumberCB->currentText();
+    doc.contractNumber = ui->contractNumberLabel->text();
     doc.carNumber = mCarNumber;
-    doc.carPlateNumber = ui->carNumberCB->currentText();
+    doc.carPlateNumber = ui->carNumberLabel->text();
     doc.principal = ui->principalLE->text();
     doc.principalTel = ui->principalTelLE->text();
     doc.constructPlace = ui->constructPlaceLE->text();
@@ -575,9 +636,9 @@ void
 RentalDocumentEditDialog::cleanContent()
 {
     ui->numberLabel->setText("");
-    ui->clientNameCB->setCurrentText("");
-    ui->contractNumberCB->setCurrentText("");
-    ui->carNumberCB->setCurrentText("");
+    ui->clientNameLabel->setText("");
+    ui->contractNumberLabel->setText("");
+    ui->carNumberLabel->setText("");
     ui->pumpTypeCB->setCurrentIndex(0);
     ui->constructPlaceLE->setText("");
     ui->concreteLableLE->setText("");
@@ -603,4 +664,16 @@ RentalDocumentEditDialog::cleanContent()
     ui->confirmedRB->setChecked(false);
     ui->unconfirmedRB->setChecked(false);
     ui->remarksTE->setText("");
+}
+
+void
+RentalDocumentEditDialog::on_contractNumToolButton_clicked()
+{
+    emit openContractTableDialogSignal();
+}
+
+void
+RentalDocumentEditDialog::on_carNumToolButton_clicked()
+{
+    emit openCarTableDialogSignal();
 }

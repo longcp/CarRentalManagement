@@ -161,7 +161,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="clientNameCB">
+         <widget class="QLabel" name="clientNameLabel">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -173,6 +173,9 @@
             <width>180</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
@@ -199,18 +202,16 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="contractNumberCB">
-          <property name="minimumSize">
-           <size>
-            <width>180</width>
-            <height>0</height>
-           </size>
+         <widget class="QLabel" name="contractNumberLabel">
+          <property name="text">
+           <string/>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>180</width>
-            <height>16777215</height>
-           </size>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="contractNumToolButton">
+          <property name="text">
+           <string>...</string>
           </property>
          </widget>
         </item>
@@ -277,18 +278,16 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="carNumberCB">
-          <property name="minimumSize">
-           <size>
-            <width>160</width>
-            <height>0</height>
-           </size>
+         <widget class="QLabel" name="carNumberLabel">
+          <property name="text">
+           <string/>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>160</width>
-            <height>16777215</height>
-           </size>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="carNumToolButton">
+          <property name="text">
+           <string>...</string>
           </property>
          </widget>
         </item>

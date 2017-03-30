@@ -7,6 +7,9 @@
 class QToolBar;
 class DataBase;
 class RentalDocument;
+class CarTableDialog;
+class ContractTableDialog;
+class ClientTableDialog;
 
 namespace Ui {
 class RentalDocumentEditDialog;
@@ -24,7 +27,7 @@ private slots:
     /**
      * @brief 打开本窗口
      */
-    void            openWindow(OpenType type, RentalDocument &doc);
+    void            openWindow(OpenType type, RentalDocument &doc, QString clientName, QString clientNumber);
     /**
      * @brief 工具栏编辑按钮
      */
@@ -45,10 +48,24 @@ private slots:
      * @brief 工具栏退出按钮
      */
     void            closeDialog();
+    /**
+     * @brief 选择car
+     */
+    void            getCar(QString number);
+    /**
+     * @brief 选择contract
+     */
+    void            getContract(QString number);
+
+    void            on_contractNumToolButton_clicked();
+
+    void            on_carNumToolButton_clicked();
 
 signals:
     void            addRentalDocSignal(RentalDocument &doc);
     void            updateDocItemSignal(RentalDocument &doc);
+    void            openCarTableDialogSignal();
+    void            openContractTableDialogSignal();
 
 private:
     /**
@@ -75,6 +92,7 @@ private:
     void            closeEvent(QCloseEvent *);
     void            clean();
     void            cleanContent();
+    void            setWindowSize();
 
     Ui::RentalDocumentEditDialog *ui;
     // 工具栏
@@ -84,6 +102,9 @@ private:
     RentalDocument* mRentalDocument;
     QString         mCarNumber;
     QString         mClientNumber;
+    bool            isSetWindowSize;
+    CarTableDialog* mCarTableDialog;
+    ContractTableDialog* mContractTableDialog;
 
     // 工具栏动作
     QAction*        mActAdd;
