@@ -286,7 +286,7 @@ CarManagermentWidget::addCarItemSlot(Car &car)
     QStandardItem* chassisBrand
             = new QStandardItem(car.chassisBrand);
     QStandardItem* drivingLicenseDate
-            = new QStandardItem(car.drivingLicenseDate.toString("yyyy-MM-dd"));
+            = new QStandardItem(car.drivingLicenseDate.toString(DATE_FORMAT_STR));
     QStandardItem* fuelCarNumber
             = new QStandardItem(car.fuelCarNumber);
     QStandardItem* frameNumber
@@ -318,7 +318,7 @@ CarManagermentWidget::addCarItemSlot(Car &car)
     QStandardItem* equipmentWeight
             = new QStandardItem(QString("%1").arg(car.equipmentWeight));
     QStandardItem* productionDate
-            = new QStandardItem(car.productionDate.toString("yyyy-MM-dd"));
+            = new QStandardItem(car.productionDate.toString(DATE_FORMAT_STR));
     QStandardItem* factoryCode
             = new QStandardItem(car.factoryCode);
     QStandardItem* operator1
@@ -365,7 +365,7 @@ CarManagermentWidget::updateCarItemSlot(Car &car)
     mModel->setData(mModel->index(curRow, 6),
                     car.chassisBrand);
     mModel->setData(mModel->index(curRow, 7),
-                    car.drivingLicenseDate.toString("yyyy-MM-dd"));
+                    car.drivingLicenseDate.toString(DATE_FORMAT_STR));
     mModel->setData(mModel->index(curRow, 8),
                     car.fuelCarNumber);
     mModel->setData(mModel->index(curRow, 9),
@@ -397,7 +397,7 @@ CarManagermentWidget::updateCarItemSlot(Car &car)
     mModel->setData(mModel->index(curRow, 22),
                     QString("%1").arg(car.equipmentWeight));
     mModel->setData(mModel->index(curRow, 23),
-                    car.productionDate.toString("yyyy-MM-dd"));
+                    car.productionDate.toString(DATE_FORMAT_STR));
     mModel->setData(mModel->index(curRow, 24),
                     car.factoryCode);
     mModel->setData(mModel->index(curRow, 25),

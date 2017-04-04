@@ -197,7 +197,7 @@ Car::dump()
           totalWeight,
           equipmentWeight,
           pumptype,
-          drivingLicenseDate.toString("yyyy-MM-dd").toStdString().data(),
-          createDate.toString("yyyy-MM-dd").toStdString().data(),
-          productionDate.toString("yyyy-MM-dd").toStdString().data());
+          drivingLicenseDate.toString(DATE_FORMAT_STR).toStdString().data(),
+          createDate.toString(DATE_FORMAT_STR).toStdString().data(),
+          productionDate.toString(DATE_FORMAT_STR).toStdString().data());
 }

@@ -42,10 +42,10 @@ Contract::dump()
           deliverySizes,
           structureLevel,
           taxRate,
-          signedDate.toString("yyyy-MM-dd").toStdString().data(),
-          beginDate.toString("yyyy-MM-dd").toStdString().data(),
-          endDate.toString("yyyy-MM-dd").toStdString().data(),
-          creatDate.toString("yyyy-MM-dd").toStdString().data(),
+          signedDate.toString(DATE_FORMAT_STR).toStdString().data(),
+          beginDate.toString(DATE_FORMAT_STR).toStdString().data(),
+          endDate.toString(DATE_FORMAT_STR).toStdString().data(),
+          creatDate.toString(DATE_FORMAT_STR).toStdString().data(),
           QString::number(isIncludeTax));
 }
 

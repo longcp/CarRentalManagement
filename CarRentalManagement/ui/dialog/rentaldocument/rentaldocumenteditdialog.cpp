@@ -235,9 +235,9 @@ RentalDocumentEditDialog::openWindow(OpenType type,
 QString
 RentalDocumentEditDialog::makeRentalDocNumber()
 {
-    ALOGD("curdatetime=%s", QDateTime::currentDateTime().toString("yyyyMMddhhmmsszzz")
+    ALOGD("curdatetime=%s", QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR)
           .toStdString().data());
-    return QDateTime::currentDateTime().toString("yyyyMMddhhmmsszzz");
+    return QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR);
 }
 
 void
@@ -596,7 +596,7 @@ RentalDocumentEditDialog::saveUiContent(RentalDocument &doc)
     doc.pumpTimeUnitPrice = ui->pumpTimeUnitPriceDSB->value();
 
     doc.pumpType = Car::getPumpType(ui->pumpTypeCB->currentIndex());
-    doc.date = QDate::fromString(ui->dateDE->text(), "yyyy-MM-dd");
+    doc.date = QDate::fromString(ui->dateDE->text(), DATE_FORMAT_STR);
     doc.arrivalDateTime = QDateTime::fromString(ui->arrivalTimeDTE->text(),
                                                 "yyyy-MM-dd hh:mm:ss");
     doc.leaveDateTime = QDateTime::fromString(ui->leaveTimeDTE->text(),

@@ -43,7 +43,7 @@ InsuranceDialog::openWindow()
         ui->carNumComboBox->insertItem(i, car.number);
     }
 
-    QString number = QDateTime::currentDateTime().toString("yyyyMMddhhmmsszzz");
+    QString number = QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR);
     ui->numberLabel->setText(number);
     ui->dateDateEdit->setDate(QDate::currentDate());
     ui->insuranceRadioBtn->setChecked(true);
@@ -59,7 +59,7 @@ InsuranceDialog::on_ensureBtn_clicked()
     record.number = ui->numberLabel->text();
     record.company = ui->companyLE->text();
     record.carNumber = ui->carNumComboBox->currentText();
-    record.date = QDate::fromString(ui->dateDateEdit->text(), "yyyy-MM-dd");
+    record.date = QDate::fromString(ui->dateDateEdit->text(), DATE_FORMAT_STR);
     record.remarks = ui->textEdit->toPlainText();
     record.fee = ui->feeDoubleSpinBox->value();
     if (ui->businessInsuranceRadioBtn->isChecked()) {

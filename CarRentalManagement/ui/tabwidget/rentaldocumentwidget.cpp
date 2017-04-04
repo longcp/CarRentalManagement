@@ -11,6 +11,7 @@
 
 RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     QWidget(parent),
+    mCurRow(-1),
     ui(new Ui::RentalDocumentWidget)
 {
     ui->setupUi(this);
@@ -58,8 +59,20 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     /**
      * @brief 打开编辑窗口
      */
-    connect(this, SIGNAL(openRentalEditDialogSignal(OpenType, RentalDocument &)),
-            mRentalDocEditDialog, SLOT(openWindow(OpenType, RentalDocument &)));
+    connect(this, SIGNAL(openRentalEditDialogSignal(OpenType, RentalDocument &,
+                                                    QString, QString)),
+            mRentalDocEditDialog, SLOT(openWindow(OpenType, RentalDocument &,
+                                                  QString, QString)));
+    /**
+     * @brief 添加条目
+     */
+    connect(mRentalDocEditDialog, SIGNAL(addRentalDocSignal(RentalDocument&)),
+            this, SLOT(addRentalDoc(RentalDocument&)));
+    /**
+     * @brief 更新条目
+     */
+    connect(mRentalDocEditDialog, SIGNAL(updateDocItemSignal(RentalDocument&)),
+            this, SLOT(updateDocItemSlot(RentalDocument&)));
 }
 
 RentalDocumentWidget::~RentalDocumentWidget()
@@ -95,7 +108,7 @@ RentalDocumentWidget::cellDoubleClickedSlot(const QModelIndex &index)
     ALOGD("%s, a = %d, b = %d", __FUNCTION__,
           index.column(), index.row());
     RentalDocument rentalDoc;
-    emit openRentalEditDialogSignal(OpenType::CREATEITEM, rentalDoc);
+//    emit openRentalEditDialogSignal(OpenType::CREATEITEM, rentalDoc);
 }
 
 void
@@ -106,7 +119,7 @@ RentalDocumentWidget::initView()
     headerList << "签单号" << "承租单位/客户" << "工程名称" << "工程地址"
                << "日期" << "车牌型号" << "泵式" << "施工部位"
                << "混凝土标号" << "开工燃油" << "收工燃油"
-               << "进场时间" << "工作时长" << "泵送方量(m3)"
+               << "进场时间" << "出场时间" << "工作时长" << "泵送方量(m3)"
                << "方量单价(元)" << "泵送台班数" << "台板价格(元)"
                << "现场负责人" << "负责人联系电话" << "当班司机1"
                << "当班司机2" << "当班司机3" << "备注";
@@ -139,7 +152,110 @@ RentalDocumentWidget::initView()
 void
 RentalDocumentWidget::addRentalDocSlot()
 {
-
     RentalDocument rentalDoc;
-    emit openRentalEditDialogSignal(OpenType::CREATEITEM, rentalDoc);
+    QString name = "123123123";
+    QString number = "123123123134534";
+    emit openRentalEditDialogSignal(OpenType::CREATEITEM, rentalDoc,
+                                    name, number);
+}
+
+void
+RentalDocumentWidget::addRentalDoc(RentalDocument &doc)
+{
+    ALOGDTRACE();
+    addRentalDocTableRow(doc);
+    ui->docTableview->selectRow(mModel->rowCount() - 1);
+}
+
+void
+RentalDocumentWidget::addRentalDocRows(QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+
+    for (int i = 0; i < docs.size(); i++) {
+        doc = docs.at(i);
+        addRentalDocTableRow(doc);
+    }
+}
+
+void
+RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
+{
+    QStandardItem *docNum = new QStandardItem(doc.number);
+    QStandardItem *clientName = new QStandardItem(doc.clientName);
+    QStandardItem *projectName = new QStandardItem(doc.projectName);
+    QStandardItem *projectAddr = new QStandardItem(doc.projectAddress);
+    QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
+    QStandardItem *carPlateNumber = new QStandardItem(doc.carPlateNumber);
+    QStandardItem *pumpType = new QStandardItem(QString("%1").arg(doc.pumpType));
+    QStandardItem *constructPlace = new QStandardItem(doc.constructPlace);
+    QStandardItem *concreteLable = new QStandardItem(doc.concreteLable);
+    QStandardItem *beginFuel = new QStandardItem(QString("%1")
+                                                 .arg(doc.beginFuel));
+    QStandardItem *endFuel = new QStandardItem(QString("%1").arg(doc.endFuel));
+    QStandardItem *arrivalDateTime = new QStandardItem(doc.arrivalDateTime
+                                                       .toString(DATETIME_FORMAT_STR));
+    QStandardItem *leaveDateTime = new QStandardItem(doc.leaveDateTime
+                                                     .toString(DATETIME_FORMAT_STR));
+    QStandardItem *workingHours = new QStandardItem(QString("%1")
+                                                    .arg(doc.workingHours));
+    QStandardItem *pumpSquare = new QStandardItem(QString("%1")
+                                                  .arg(doc.pumpSquare));
+    QStandardItem *squareUnitPrice = new QStandardItem(QString("%1")
+                                                       .arg(doc.squareUnitPrice));
+    QStandardItem *pumpTimes = new QStandardItem(QString("%1")
+                                                 .arg(doc.pumpTimes));
+    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString("%1")
+                                                         .arg(doc.pumpTimeUnitPrice));
+    QStandardItem *principal = new QStandardItem(doc.principal);
+    QStandardItem *principalTel = new QStandardItem(doc.principalTel);
+    QStandardItem *driver1 = new QStandardItem(doc.driver1);
+    QStandardItem *driver2 = new QStandardItem(doc.driver2);
+    QStandardItem *driver3 = new QStandardItem(doc.driver3);
+    QStandardItem *remarks = new QStandardItem(doc.remarks);
+
+    QList<QStandardItem*> items;
+    items << docNum << clientName << projectName << projectAddr << date
+          << carPlateNumber << pumpType << constructPlace << concreteLable
+          << beginFuel << endFuel << arrivalDateTime << leaveDateTime
+          << workingHours << pumpSquare << squareUnitPrice << pumpTimes
+          << pumpTimeUnitPrice << principal << principalTel << driver1
+          << driver2 << driver3 << remarks;
+    mModel->appendRow(items);
+}
+
+void
+RentalDocumentWidget::updateDocItemSlot(RentalDocument &doc)
+{
+    ALOGDTRACE();
+    mModel->setData(mModel->index(mCurRow, 0), doc.number);
+    mModel->setData(mModel->index(mCurRow, 1), doc.clientName);
+    mModel->setData(mModel->index(mCurRow, 2), doc.projectName);
+    mModel->setData(mModel->index(mCurRow, 3), doc.projectAddress);
+    mModel->setData(mModel->index(mCurRow, 4), doc.date.toString(DATE_FORMAT_STR));
+    mModel->setData(mModel->index(mCurRow, 5), doc.carPlateNumber);
+    mModel->setData(mModel->index(mCurRow, 6), QString("%1").arg(doc.pumpType));
+    mModel->setData(mModel->index(mCurRow, 7), doc.constructPlace);
+    mModel->setData(mModel->index(mCurRow, 8), doc.concreteLable);
+    mModel->setData(mModel->index(mCurRow, 9), QString("%1").arg(doc.beginFuel));
+    mModel->setData(mModel->index(mCurRow, 10), QString("%1").arg(doc.endFuel));
+    mModel->setData(mModel->index(mCurRow, 11), doc.arrivalDateTime.toString(DATETIME_FORMAT_STR));
+    mModel->setData(mModel->index(mCurRow, 12), doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
+    mModel->setData(mModel->index(mCurRow, 13), QString("%1").arg(doc.workingHours));
+    mModel->setData(mModel->index(mCurRow, 14), QString("%1").arg(doc.pumpSquare));
+    mModel->setData(mModel->index(mCurRow, 15), QString("%1").arg(doc.squareUnitPrice));
+    mModel->setData(mModel->index(mCurRow, 16), QString("%1").arg(doc.pumpTimes));
+    mModel->setData(mModel->index(mCurRow, 17), QString("%1").arg(doc.pumpTimeUnitPrice));
+    mModel->setData(mModel->index(mCurRow, 18), doc.principal);
+    mModel->setData(mModel->index(mCurRow, 19), doc.principalTel);
+    mModel->setData(mModel->index(mCurRow, 20), doc.driver1);
+    mModel->setData(mModel->index(mCurRow, 21), doc.driver2);
+    mModel->setData(mModel->index(mCurRow, 22), doc.driver3);
+    mModel->setData(mModel->index(mCurRow, 23), doc.remarks);
+}
+
+void
+RentalDocumentWidget::on_docTableview_clicked(const QModelIndex &index)
+{
+    mCurRow = index.row();
 }

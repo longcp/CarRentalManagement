@@ -44,7 +44,7 @@ CarAnnualDialog::openWindow()
         ui->carNumComboBox->insertItem(i, car.number);
     }
 
-    QString number = QDateTime::currentDateTime().toString("yyyyMMddhhmmsszzz");
+    QString number = QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR);
     ui->numberLabel->setText(number);
     ui->dateDateEdit->setDate(QDate::currentDate());
 
@@ -60,7 +60,7 @@ CarAnnualDialog::on_ensureBtn_clicked()
     record.remarks = ui->textEdit->toPlainText();
     record.annualFee = ui->annualFeeDoubleSpinBox->value();
     record.travelExpenses = ui->travelExpensesDoubleSpinBox->value();
-    record.date = QDate::fromString(ui->dateDateEdit->text(), "yyyy-MM-dd");
+    record.date = QDate::fromString(ui->dateDateEdit->text(), DATE_FORMAT_STR);
     if (!mDb->insertAnnualTable(record)) {
         QMessageBox::information(this,
                                  tr("温馨提示"),

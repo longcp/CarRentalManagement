@@ -19,6 +19,8 @@ INCLUDEPATH += ui/dialog/
 INCLUDEPATH += ui/dialog/user/
 INCLUDEPATH += ui/dialog/car/
 INCLUDEPATH += ui/dialog/contract/
+INCLUDEPATH += ui/dialog/client/
+INCLUDEPATH += ui/dialog/rentaldocument/
 INCLUDEPATH += utils/
 INCLUDEPATH += common/
 
@@ -30,7 +32,6 @@ SOURCES += main.cpp\
     ui/tabwidget/receivablewidget.cpp \
     ui/tabwidget/receiptwidget.cpp \
     ui/tabwidget/contractwidget.cpp \
-    ui/dialog/clienteditdialog.cpp \
     ui/dialog/receipteditdialog.cpp \
     common/client.cpp \
     common/regularexpression.cpp \
@@ -50,8 +51,10 @@ SOURCES += main.cpp\
     ui/dialog/contract/contracteditdialog.cpp \
     common/rentaldocument.cpp \
     ui/dialog/rentaldocument/rentaldocumenteditdialog.cpp \
-    ui/dialog/contracttabledialog.cpp \
-    ui/dialog/clienttabledialog.cpp
+    ui/dialog/contract/contracttabledialog.cpp \
+    ui/dialog/client/clienteditdialog.cpp \
+    ui/dialog/client/clienttabledialog.cpp \
+    ui/dialog/car/cartabledialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -60,7 +63,6 @@ HEADERS  += ui\mainwindow.h \
     ui/tabwidget/receivablewidget.h \
     ui/tabwidget/receiptwidget.h \
     ui/tabwidget/contractwidget.h \
-    ui/dialog/clienteditdialog.h \
     ui/dialog/receipteditdialog.h \
     common/client.h \
     common/regularexpression.h \
@@ -83,8 +85,10 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/contract/contracteditdialog.h \
     common/rentaldocument.h \
     ui/dialog/rentaldocument/rentaldocumenteditdialog.h \
-    ui/dialog/contracttabledialog.h \
-    ui/dialog/clienttabledialog.h
+    ui/dialog/contract/contracttabledialog.h \
+    ui/dialog/client/clienteditdialog.h \
+    ui/dialog/client/clienttabledialog.h \
+    ui/dialog/car/cartabledialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -93,7 +97,6 @@ FORMS    += ui\mainwindow.ui \
     ui/tabwidget/receivablewidget.ui \
     ui/tabwidget/receiptwidget.ui \
     ui/tabwidget/contractwidget.ui \
-    ui/dialog/clienteditdialog.ui \
     ui/dialog/receipteditdialog.ui \
     ui/dialog/user/logindialog.ui \
     ui/dialog/user/usermanagerdialog.ui \
@@ -106,8 +109,10 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/contract/contractpricedialog.ui \
     ui/dialog/contract/contracteditdialog.ui \
     ui/dialog/rentaldocument/rentaldocumenteditdialog.ui \
-    ui/dialog/contracttabledialog.ui \
-    ui/dialog/clienttabledialog.ui
+    ui/dialog/contract/contracttabledialog.ui \
+    ui/dialog/client/clienteditdialog.ui \
+    ui/dialog/client/clienttabledialog.ui \
+    ui/dialog/car/cartabledialog.ui
 
 RESOURCES += \
     icon.qrc

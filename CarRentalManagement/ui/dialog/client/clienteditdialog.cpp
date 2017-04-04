@@ -387,7 +387,7 @@ ClientEditDialog::saveAndExitEvent()
           client.contract.toStdString().data(),
           client.remarks.toStdString().data(),
           client.creator.toStdString().data(),
-          client.createDate.toString("yyyy-MM-dd").toStdString().data(),
+          client.createDate.toString(DATE_FORMAT_STR).toStdString().data(),
           client.paytype,
           client.monthly, client.clienttype);
 
@@ -459,7 +459,7 @@ ClientEditDialog::saveUiContent(Client &client)
     client.remarks  = ui->remarksFxtEdit->toPlainText();
     client.creator  = ui->createPeopleLineEdit->text();
     client.createDate = QDate::fromString(
-                ui->createDateEdit->text(), "yyyy-MM-dd");
+                ui->createDateEdit->text(), DATE_FORMAT_STR);
     client.amount   = ui->amountDSB->value();
     client.paid     = ui->paidDSB->value();
     client.monthly = ui->monthlySpinBox->text().toInt(&ok, 10);

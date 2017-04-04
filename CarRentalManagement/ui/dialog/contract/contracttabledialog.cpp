@@ -15,6 +15,7 @@ ContractTableDialog::ContractTableDialog(QWidget *parent) :
     ui(new Ui::ContractTableDialog)
 {
     ui->setupUi(this);
+    this->setFixedSize(750, 700);
     initView();
 }
 
@@ -56,6 +57,11 @@ ContractTableDialog::initView()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
+    ui->contractTableView->setColumnWidth(0, 150);
+    ui->contractTableView->setColumnWidth(1, 150);
+    ui->contractTableView->setColumnWidth(2, 150);
+    ui->contractTableView->setColumnWidth(3, 150);
+    ui->contractTableView->setColumnWidth(4, 150);
 }
 
 void
@@ -91,7 +97,7 @@ ContractTableDialog::addContractItem(Contract &contract)
     QStandardItem* projectAddr
             = new QStandardItem(contract.projectAddress);
     QStandardItem* signedDate
-            = new QStandardItem(contract.signedDate.toString("yyyy-MM-dd"));
+            = new QStandardItem(contract.signedDate.toString(DATE_FORMAT_STR));
 
     QList<QStandardItem*> items;
     items << num << clientName << projectName << projectAddr << signedDate;

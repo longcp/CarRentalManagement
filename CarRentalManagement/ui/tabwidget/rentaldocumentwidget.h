@@ -25,9 +25,13 @@ public:
 private slots:
     void            cellDoubleClickedSlot(const QModelIndex &index);
     void            addRentalDocSlot();
+    void            addRentalDoc(RentalDocument &doc);
+    void            updateDocItemSlot(RentalDocument &doc);
+    void            on_docTableview_clicked(const QModelIndex &index);
 
 signals:
-    void            openRentalEditDialogSignal(OpenType, RentalDocument &);
+    void            openRentalEditDialogSignal(OpenType, RentalDocument &,
+                                               QString clientName, QString clientNumber);
 
 private:
     /**
@@ -38,6 +42,8 @@ private:
      * @brief 初始化界面
      */
     void            initView();
+    void            addRentalDocRows(QList<RentalDocument> &docs);
+    void            addRentalDocTableRow(RentalDocument &doc);
 
     Ui::RentalDocumentWidget *ui;
     QToolBar        *mToolBar;
@@ -52,6 +58,7 @@ private:
     QAction         *mActExport;
     QAction         *mActImport;
 
+    int              mCurRow;
     TableModel*      mModel;
 };
 

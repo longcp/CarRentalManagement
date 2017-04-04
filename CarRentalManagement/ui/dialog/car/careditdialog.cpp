@@ -992,11 +992,11 @@ CarEditDialog::saveUiContent(Car &car)
     car.creator = ui->creatorLE->text();
 
     car.drivingLicenseDate = QDate::fromString(
-                ui->drivingLicenseDateDE->text(), "yyyy-MM-dd");
+                ui->drivingLicenseDateDE->text(), DATE_FORMAT_STR);
     car.productionDate = QDate::fromString(
-                ui->productDateDE->text(), "yyyy-MM-dd");
+                ui->productDateDE->text(), DATE_FORMAT_STR);
     car.createDate = QDate::fromString(
-                ui->createDateDE->text(), "yyyy-MM-dd");
+                ui->createDateDE->text(), DATE_FORMAT_STR);
 
     car.pumpedSquare = ui->pumpedSquareDSB->value();
     car.pumpedTimes = ui->pumpedTimesDSB->value();
@@ -1088,9 +1088,9 @@ CarEditDialog::dumpCar(Car &car)
           car.totalWeight,
           car.equipmentWeight,
           car.pumptype,
-          car.drivingLicenseDate.toString("yyyy-MM-dd").toStdString().data(),
-          car.createDate.toString("yyyy-MM-dd").toStdString().data(),
-          car.productionDate.toString("yyyy-MM-dd").toStdString().data());
+          car.drivingLicenseDate.toString(DATE_FORMAT_STR).toStdString().data(),
+          car.createDate.toString(DATE_FORMAT_STR).toStdString().data(),
+          car.productionDate.toString(DATE_FORMAT_STR).toStdString().data());
 }
 
 void
@@ -1149,7 +1149,7 @@ CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
     QStandardItem* num
             = new QStandardItem(record.number);
     QStandardItem* date
-            = new QStandardItem(record.date.toString("yyyy-MM-dd"));
+            = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* annualFee
             = new QStandardItem(QString("%1").arg(record.annualFee));
     QStandardItem* travelExpenses
@@ -1171,7 +1171,7 @@ CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
     QStandardItem* num
             = new QStandardItem(record.number);
     QStandardItem* date
-            = new QStandardItem(record.date.toString("yyyy-MM-dd"));
+            = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* fee
             = new QStandardItem(QString("%1").arg(record.fee));
     QStandardItem* company
@@ -1193,7 +1193,7 @@ CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
     QStandardItem* num
             = new QStandardItem(record.number);
     QStandardItem* date
-            = new QStandardItem(record.date.toString("yyyy-MM-dd"));
+            = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* fee
             = new QStandardItem(QString("%1").arg(record.fee));
     QStandardItem* company
@@ -1215,7 +1215,7 @@ CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
     QStandardItem* num
             = new QStandardItem(record.number);
     QStandardItem* date
-            = new QStandardItem(record.date.toString("yyyy-MM-dd"));
+            = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* contractNum
             = new QStandardItem(record.contractNum);
     QStandardItem* clientNum

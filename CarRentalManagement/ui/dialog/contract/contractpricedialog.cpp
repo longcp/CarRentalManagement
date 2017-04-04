@@ -30,7 +30,7 @@ ContractPriceDialog::openWindow(OpenType type, QString contractNumber)
           contractNumber.toStdString().data());
     mContractNumber = contractNumber;
     mOpenType = type;
-    QString number = QDateTime::currentDateTime().toString("yyyyMMddhhmmsszzz");
+    QString number = QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR);
     ui->numberLabel->setText(number);
     ui->pumpTypeCB->setCurrentIndex(0);
     this->exec();

@@ -463,13 +463,13 @@ ContractEditDialog::saveUiContent(Contract &contract)
     contract.taxRate = ui->taxRateSB->value();
 
     contract.signedDate = QDate::fromString(
-                ui->signedDateDE->text(), "yyyy-MM-dd");
+                ui->signedDateDE->text(), DATE_FORMAT_STR);
     contract.beginDate = QDate::fromString(
-                ui->startDateDE->text(), "yyyy-MM-dd");
+                ui->startDateDE->text(), DATE_FORMAT_STR);
     contract.endDate = QDate::fromString(
-                ui->endDateDE->text(), "yyyy-MM-dd");
+                ui->endDateDE->text(), DATE_FORMAT_STR);
     contract.creatDate = QDate::fromString(
-                ui->createDateDE->text(), "yyyy-MM-dd");
+                ui->createDateDE->text(), DATE_FORMAT_STR);
 
     contract.isIncludeTax = ui->isIncludeTexCB->isChecked() ? true : false;
 

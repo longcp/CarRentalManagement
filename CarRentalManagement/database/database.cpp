@@ -165,7 +165,7 @@ DataBase::insertClientTable(Client &client)
     query->bindValue(":paytype", client.paytype);
     query->bindValue(":clienttype", client.clienttype);
     query->bindValue(":createDate", client
-                     .createDate.toString("yyyy-MM-dd"));
+                     .createDate.toString(DATE_FORMAT_STR));
     query->bindValue(":monthly", client.monthly);
     query->bindValue(":amount", client.amount);
     query->bindValue(":paid", client.paid);
@@ -211,7 +211,7 @@ DataBase::getClientInNumber(QString clientNum, Client &client)
         client.clienttype = query->value(10).toInt() ?
                     ClientType::CONTRACT : ClientType::TEMPORARY;
         client.createDate = QDate::fromString(query->value(11)
-                                              .toString(), "yyyy-MM-dd");
+                                              .toString(), DATE_FORMAT_STR);
         client.monthly = query->value(12).toInt();
         client.amount = query->value(13).toFloat();
         client.paid = query->value(14).toFloat();
@@ -304,7 +304,7 @@ DataBase::getAllClientData(QList<Client> &clients)
         client.clienttype = query->value(10).toInt() ?
                     ClientType::CONTRACT : ClientType::TEMPORARY;
         client.createDate = QDate::fromString(query->value(11)
-                                              .toString(), "yyyy-MM-dd");
+                                              .toString(), DATE_FORMAT_STR);
         client.monthly = query->value(12).toInt();
         client.amount = query->value(13).toFloat();
         client.paid = query->value(14).toFloat();
@@ -657,11 +657,11 @@ DataBase::insertCarTable(Car &car)
     query->bindValue(":creator", car.creator);
 
     query->bindValue(":productionDate",
-                     car.productionDate.toString("yyyy-MM-dd"));
+                     car.productionDate.toString(DATE_FORMAT_STR));
     query->bindValue(":drivingLicenseDate",
-                     car.drivingLicenseDate.toString("yyyy-MM-dd"));
+                     car.drivingLicenseDate.toString(DATE_FORMAT_STR));
     query->bindValue(":createDate",
-                     car.createDate.toString("yyyy-MM-dd"));
+                     car.createDate.toString(DATE_FORMAT_STR));
 
     query->bindValue(":pumpedSquare", car.pumpedSquare);
     query->bindValue(":pumpedTimes", car.pumpedTimes);
@@ -819,11 +819,11 @@ DataBase::getAllCarData(QList<Car> &cars)
         car.creator = query->value(20).toString();
 
         car.productionDate = QDate::fromString(query->value(21).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         car.drivingLicenseDate = QDate::fromString(query->value(22).toString(),
-                                                   "yyyy-MM-dd");
+                                                   DATE_FORMAT_STR);
         car.createDate = QDate::fromString(query->value(23).toString(),
-                                           "yyyy-MM-dd");
+                                           DATE_FORMAT_STR);
 
         car.pumpedSquare = query->value(24).toFloat();
         car.pumpedTimes = query->value(25).toFloat();
@@ -887,11 +887,11 @@ DataBase::getCarInNumber(QString number, Car &car)
         car.creator = query->value(20).toString();
 
         car.productionDate = QDate::fromString(query->value(21).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         car.drivingLicenseDate = QDate::fromString(query->value(22).toString(),
-                                                   "yyyy-MM-dd");
+                                                   DATE_FORMAT_STR);
         car.createDate = QDate::fromString(query->value(23).toString(),
-                                           "yyyy-MM-dd");
+                                           DATE_FORMAT_STR);
 
         car.pumpedSquare = query->value(24).toFloat();
         car.pumpedTimes = query->value(25).toFloat();
@@ -999,7 +999,7 @@ DataBase::insertInsuranceTable(INSURANCE_RECORD &record)
     query->bindValue(":carNumber", record.carNumber);
     query->bindValue(":company", record.company);
     query->bindValue(":remarks", record.remarks);
-    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":date", record.date.toString(DATE_FORMAT_STR));
     query->bindValue(":fee", record.fee);
 
     if (!query->exec()) {
@@ -1035,7 +1035,7 @@ DataBase::getAllInsuranceData(QList<INSURANCE_RECORD> &records)
         record.company = query->value(2).toString();
         record.remarks = query->value(3).toString();
         record.date = QDate::fromString(query->value(4).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         record.fee = query->value(5).toFloat();
 
         records.push_back(record);                              //插入list
@@ -1081,7 +1081,7 @@ DataBase::insertBusinessInsuranceTable(INSURANCE_RECORD &record)
     query->bindValue(":carNumber", record.carNumber);
     query->bindValue(":company", record.company);
     query->bindValue(":remarks", record.remarks);
-    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":date", record.date.toString(DATE_FORMAT_STR));
     query->bindValue(":fee", record.fee);
 
     if (!query->exec()) {
@@ -1117,7 +1117,7 @@ DataBase::getAllBusinessInsuranceData(QList<INSURANCE_RECORD> &records)
         record.company = query->value(2).toString();
         record.remarks = query->value(3).toString();
         record.date = QDate::fromString(query->value(4).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         record.fee = query->value(5).toFloat();
 
         records.push_back(record);                              //插入list
@@ -1163,7 +1163,7 @@ DataBase::insertAnnualTable(ANNUALFEE_RECORD &record)
     query->bindValue(":number", record.number);
     query->bindValue(":carNumber", record.carNumber);
     query->bindValue(":remarks", record.remarks);
-    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":date", record.date.toString(DATE_FORMAT_STR));
     query->bindValue(":annualFee", record.annualFee);
     query->bindValue(":travelExpenses", record.travelExpenses);
 
@@ -1199,7 +1199,7 @@ DataBase::getAllAnnualData(QList<ANNUALFEE_RECORD> &records)
         record.carNumber = query->value(1).toString();
         record.remarks = query->value(2).toString();
         record.date = QDate::fromString(query->value(3).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         record.annualFee = query->value(4).toFloat();
         record.travelExpenses = query->value(5).toFloat();
 
@@ -1251,7 +1251,7 @@ DataBase::insertProjectTable(PROJECT_RECORD &record)
     query->bindValue(":contractNum", record.contractNum);
     query->bindValue(":clientName", record.clientName);
     query->bindValue(":remarks", record.remarks);
-    query->bindValue(":date", record.date.toString("yyyy-MM-dd"));
+    query->bindValue(":date", record.date.toString(DATE_FORMAT_STR));
     query->bindValue(":amount", record.amount);
 
     if (!query->exec()) {
@@ -1290,7 +1290,7 @@ DataBase::getAllProjectData(QList<PROJECT_RECORD> &records)
         record.clientName = query->value(5).toString();
         record.remarks = query->value(6).toString();
         record.date = QDate::fromString(query->value(7).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         record.amount = query->value(8).toFloat();
 
         records.push_back(record);                              //插入list
@@ -1351,13 +1351,13 @@ DataBase::insertContractTable(Contract &contract)
     query->bindValue(":taxRate", contract.taxRate);
 
     query->bindValue(":signedDate",
-                     contract.signedDate.toString("yyyy-MM-dd"));
+                     contract.signedDate.toString(DATE_FORMAT_STR));
     query->bindValue(":beginDate",
-                     contract.beginDate.toString("yyyy-MM-dd"));
+                     contract.beginDate.toString(DATE_FORMAT_STR));
     query->bindValue(":endDate",
-                     contract.beginDate.toString("yyyy-MM-dd"));
+                     contract.beginDate.toString(DATE_FORMAT_STR));
     query->bindValue(":creatDate",
-                     contract.creatDate.toString("yyyy-MM-dd"));
+                     contract.creatDate.toString(DATE_FORMAT_STR));
 
     query->bindValue(":isIncludeTax", contract.isIncludeTax);
 
@@ -1457,13 +1457,13 @@ DataBase::getAllContractData(QList<Contract> &contracts)
         contract.taxRate = query->value(11).toInt();
 
         contract.signedDate = QDate::fromString(query->value(12).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         contract.beginDate = QDate::fromString(query->value(13).toString(),
-                                                   "yyyy-MM-dd");
+                                                   DATE_FORMAT_STR);
         contract.endDate = QDate::fromString(query->value(14).toString(),
-                                           "yyyy-MM-dd");
+                                           DATE_FORMAT_STR);
         contract.creatDate = QDate::fromString(query->value(15).toString(),
-                                           "yyyy-MM-dd");
+                                           DATE_FORMAT_STR);
 
         contract.isIncludeTax = query->value(16).toFloat();
 
@@ -1508,13 +1508,13 @@ DataBase::getContractInClientNumber(QString clientNumber,
         contract.taxRate = query->value(11).toInt();
 
         contract.signedDate = QDate::fromString(query->value(12).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         contract.beginDate = QDate::fromString(query->value(13).toString(),
-                                                   "yyyy-MM-dd");
+                                                   DATE_FORMAT_STR);
         contract.endDate = QDate::fromString(query->value(14).toString(),
-                                           "yyyy-MM-dd");
+                                           DATE_FORMAT_STR);
         contract.creatDate = QDate::fromString(query->value(15).toString(),
-                                           "yyyy-MM-dd");
+                                           DATE_FORMAT_STR);
 
         contract.isIncludeTax = query->value(16).toFloat();
 
@@ -1582,13 +1582,13 @@ DataBase::getContractInNumber(QString number, Contract &contract)
         contract.taxRate = query->value(11).toInt();
 
         contract.signedDate = QDate::fromString(query->value(12).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         contract.beginDate = QDate::fromString(query->value(13).toString(),
-                                                   "yyyy-MM-dd");
+                                                   DATE_FORMAT_STR);
         contract.endDate = QDate::fromString(query->value(14).toString(),
-                                           "yyyy-MM-dd");
+                                           DATE_FORMAT_STR);
         contract.creatDate = QDate::fromString(query->value(15).toString(),
-                                           "yyyy-MM-dd");
+                                           DATE_FORMAT_STR);
 
         contract.isIncludeTax = query->value(16).toFloat();
 
@@ -1836,7 +1836,7 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
     query->bindValue(":workingHours", doc.workingHours);
 
     query->bindValue(":date",
-                     doc.date.toString("yyyy-MM-dd"));
+                     doc.date.toString(DATE_FORMAT_STR));
     query->bindValue(":arrivalDateTime",
                      doc.arrivalDateTime.toString("yyyy-MM-dd hh:mm:ss"));
     query->bindValue(":leaveDateTime",
@@ -1977,7 +1977,7 @@ DataBase::getAllRentalDocumentData(QList<RentalDocument> &docs)
         doc.workingHours = query->value(23).toFloat();
 
         doc.date = QDate::fromString(query->value(24).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         doc.arrivalDateTime = QDateTime::fromString(query->value(25).toString(),
                                                     "yyyy-MM-dd hh:mm:ss");
         doc.leaveDateTime = QDateTime::fromString(query->value(26).toString(),
@@ -2039,7 +2039,7 @@ DataBase::getRentalDocInClientNumber(const QString clientNumber,
         doc.workingHours = query->value(23).toFloat();
 
         doc.date = QDate::fromString(query->value(24).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         doc.arrivalDateTime = QDateTime::fromString(query->value(25).toString(),
                                                    "yyyy-MM-dd hh:mm:ss");
         doc.leaveDateTime = QDateTime::fromString(query->value(26).toString(),
@@ -2141,7 +2141,7 @@ DataBase::getRentalDocumentDataInNumber(QString number, RentalDocument &doc)
         doc.workingHours = query->value(23).toFloat();
 
         doc.date = QDate::fromString(query->value(24).toString(),
-                                               "yyyy-MM-dd");
+                                               DATE_FORMAT_STR);
         doc.arrivalDateTime = QDateTime::fromString(query->value(25).toString(),
                                                    "yyyy-MM-dd hh:mm:ss");
         doc.leaveDateTime = QDateTime::fromString(query->value(26).toString(),

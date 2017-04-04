@@ -343,13 +343,13 @@ ContractWidget::addContractTableRow(Contract &contract)
                                 .arg(contract.structureLevel));
     QStandardItem* beginDate
             = new QStandardItem(contract
-                                .beginDate.toString("yyyy-MM-dd"));
+                                .beginDate.toString(DATE_FORMAT_STR));
     QStandardItem* endDate
             = new QStandardItem(contract
-                                .endDate.toString("yyyy-MM-dd"));
+                                .endDate.toString(DATE_FORMAT_STR));
     QStandardItem* signedDate
             = new QStandardItem(contract
-                                .signedDate.toString("yyyy-MM-dd"));
+                                .signedDate.toString(DATE_FORMAT_STR));
     QStandardItem* taxRate
             = new QStandardItem(QString("%1").arg(contract.taxRate));
     QStandardItem* isIncludeTax
@@ -429,11 +429,11 @@ ContractWidget::updateContractRow(Contract &contract)
     mContractModel->setData(mContractModel->index(curRow, 5),
                          QString("%1").arg(contract.structureLevel));
     mContractModel->setData(mContractModel->index(curRow, 6),
-                         contract.beginDate.toString("yyyy-MM-dd"));
+                         contract.beginDate.toString(DATE_FORMAT_STR));
     mContractModel->setData(mContractModel->index(curRow, 7),
-                         contract.endDate.toString("yyyy-MM-dd"));
+                         contract.endDate.toString(DATE_FORMAT_STR));
     mContractModel->setData(mContractModel->index(curRow, 8),
-                         contract.signedDate.toString("yyyy-MM-dd"));
+                         contract.signedDate.toString(DATE_FORMAT_STR));
     mContractModel->setData(mContractModel->index(curRow, 9),
                          QString("%1").arg(contract.taxRate));
     mContractModel->setData(mContractModel->index(curRow, 10),
