@@ -8,6 +8,7 @@
 #include <contract.h>
 #include <client.h>
 #include <car.h>
+#include <QModelIndex>
 
 #define LOG_TAG                 "CONTRACT_WIDGET_DIALOG"
 #include "utils/Log.h"
@@ -81,6 +82,10 @@ ContractWidget::ContractWidget(QWidget *parent) :
      */
     connect(mActDelete, SIGNAL(triggered()),
             this, SLOT(deleteContractItemSlot()));
+    connect(ui->contractTableView->selectionModel(),
+            SIGNAL(currentRowChanged(const QModelIndex&,const QModelIndex&)),
+            this,
+            SLOT(contractCurrentRowChangedSlot(const QModelIndex&,const QModelIndex&)));
 }
 
 ContractWidget::~ContractWidget()
@@ -489,6 +494,19 @@ ContractWidget::deleteContractItemSlot()
 }
 
 void
+ContractWidget::contractCurrentRowChangedSlot(const QModelIndex &current,const QModelIndex &prev)
+{
+    ALOGDTRACE();
+    curRow = current.row();
+    Contract contract;
+    QString number = mContractModel->index(curRow, 0).data().toString();
+    if (!mDb->getContractInNumber(number, contract)) {
+        mDb->getAllContractPriceData(contract.number, contract.prices);
+        updateContractPriceTable(contract.prices);
+    }
+}
+
+void
 ContractWidget::on_contractTableView_clicked(const QModelIndex &index)
 {
     ALOGDTRACE();
@@ -499,7 +517,6 @@ ContractWidget::on_contractTableView_clicked(const QModelIndex &index)
         mDb->getAllContractPriceData(contract.number, contract.prices);
         updateContractPriceTable(contract.prices);
     }
-
 }
 
 void 

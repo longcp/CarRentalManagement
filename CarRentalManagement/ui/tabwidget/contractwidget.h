@@ -10,6 +10,7 @@ class ContractEditDialog;
 class Contract;
 class DataBase;
 class QTreeWidgetItem;
+class QStandardItem;
 
 namespace Ui {
 class ContractWidget;
@@ -54,6 +55,7 @@ private slots:
      * @brief 删除按钮
      */
     void            deleteContractItemSlot();
+    void            contractCurrentRowChangedSlot(const QModelIndex &current, const QModelIndex &prev);
 
     void on_contractTableView_clicked(const QModelIndex &index);
 

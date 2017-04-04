@@ -178,36 +178,26 @@
        <widget class="QTreeWidget" name="clientTreeWidget">
         <property name="minimumSize">
          <size>
-          <width>200</width>
+          <width>220</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>200</width>
+          <width>220</width>
           <height>16777215</height>
          </size>
         </property>
         <column>
          <property name="text">
-          <string>全部项目</string>
+          <string>客户名称</string>
          </property>
         </column>
-        <item>
+        <column>
          <property name="text">
-          <string>项目1</string>
+          <string>客户编号</string>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>项目2</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>项目3</string>
-         </property>
-        </item>
+        </column>
        </widget>
       </item>
       <item>

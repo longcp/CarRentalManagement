@@ -5,12 +5,15 @@
 #include <tablemodel.h>
 #include <contract.h>
 #include <rentaldocument.h>
+#include <database/database.h>
+#include <client.h>
 
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
 
 RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     QWidget(parent),
+    mDb(DataBase::getInstance()),
     mCurRow(-1),
     ui(new Ui::RentalDocumentWidget)
 {
@@ -114,6 +117,13 @@ RentalDocumentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 void
 RentalDocumentWidget::initView()
 {
+    initRentalDocTableView();
+    initClientTreeWidget();
+}
+
+void
+RentalDocumentWidget::initRentalDocTableView()
+{
     //设置首行标题
     QStringList headerList;
     headerList << "签单号" << "承租单位/客户" << "工程名称" << "工程地址"
@@ -145,8 +155,36 @@ RentalDocumentWidget::initView()
     ui->docTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+}
 
-//    initTableView();
+void
+RentalDocumentWidget::initClientTreeWidget()
+{
+    ui->clientTreeWidget->setColumnWidth(0, 220);
+    mRootItem = new QTreeWidgetItem(ui->clientTreeWidget, QStringList("所有客户"));
+    mRootItem->setIcon(0, QIcon(":/menu/icon/client.png"));
+    addAllClientItem();
+}
+
+void
+RentalDocumentWidget::addAllClientItem()
+{
+    int size;
+    QList<Client> clients;
+    if (!mDb->getAllClientData(clients)) {
+        size = clients.size();
+        for (int i = 0; i < size; i++) {
+            QStringList itemList;
+            itemList << clients.at(i).name << clients.at(i).number;
+            QTreeWidgetItem *newItem =
+                    new QTreeWidgetItem(mRootItem, itemList);
+            if (mDb->isClientHasContract(clients.at(i).number))
+                newItem->setIcon(0, QIcon(":/menu/icon/contract_64.ico"));
+            else
+                newItem->setIcon(0, QIcon(":/menu/icon/empty_64.ico"));
+            mRootItem->addChild(newItem);
+        }
+    }
 }
 
 void

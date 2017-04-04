@@ -9,6 +9,8 @@ class QTableWidget;
 class RentalDocumentEditDialog;
 class TableModel;
 class RentalDocument;
+class QTreeWidgetItem;
+class DataBase;
 
 namespace Ui {
 class RentalDocumentWidget;
@@ -42,6 +44,9 @@ private:
      * @brief 初始化界面
      */
     void            initView();
+    void            initRentalDocTableView();
+    void            initClientTreeWidget();
+    void            addAllClientItem();
     void            addRentalDocRows(QList<RentalDocument> &docs);
     void            addRentalDocTableRow(RentalDocument &doc);
 
@@ -58,8 +63,10 @@ private:
     QAction         *mActExport;
     QAction         *mActImport;
 
-    int              mCurRow;
-    TableModel*      mModel;
+    DataBase*       mDb;
+    int             mCurRow;
+    TableModel*     mModel;
+    QTreeWidgetItem*    mRootItem;
 };
 
 #endif // RENTALDOCUMENTWIDGET_H
