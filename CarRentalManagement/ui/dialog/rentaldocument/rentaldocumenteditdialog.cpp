@@ -395,6 +395,7 @@ RentalDocumentEditDialog::saveAndExitEvent()
 
     RentalDocument doc;
     saveUiContent(doc);
+    ALOGD("111111111111111111");
     if (mOpenType == OpenType::CREATEITEM) {
         //插入到数据库
         if (mDb->isRentalDocumentExist(doc)) {
@@ -406,8 +407,10 @@ RentalDocumentEditDialog::saveAndExitEvent()
             return;
         }
 
+        ALOGD("22222222222222222222");
         if (!mDb->insertRentalDocumentTable(doc)) {
             resetView(doc);
+            ALOGD("4444444444444444444444");
             emit addRentalDocSignal(doc);
             QMessageBox::information(this,
                                      tr("温馨提示"),
@@ -415,6 +418,7 @@ RentalDocumentEditDialog::saveAndExitEvent()
                                      QMessageBox::Ok,
                                      QMessageBox::Ok);
         } else {
+            ALOGD("33333333333333333333");
             QMessageBox::critical(this,
                                   tr("温馨提示"),
                                   tr("添加失败!未知错误.\n"),

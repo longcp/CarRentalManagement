@@ -7,6 +7,7 @@
 #include <rentaldocument.h>
 #include <database/database.h>
 #include <client.h>
+#include <QMessageBox>
 
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
@@ -54,6 +55,11 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
      */
     connect(mActAdd, SIGNAL(triggered()),
             this, SLOT(addRentalDocSlot()));
+    /**
+     * @brief 工具栏编辑按钮
+     */
+    connect(mActEdit, SIGNAL(triggered()),
+            this, SLOT(editRentalDocItemSlot()));
     /**
      * @brief 单元格双击事件
      */
@@ -110,8 +116,7 @@ RentalDocumentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__,
           index.column(), index.row());
-    RentalDocument rentalDoc;
-//    emit openRentalEditDialogSignal(OpenType::CREATEITEM, rentalDoc);
+    editRowEvent(index.row());
 }
 
 void
@@ -217,6 +222,47 @@ RentalDocumentWidget::addRentalDocRows(QList<RentalDocument> &docs)
 }
 
 void
+RentalDocumentWidget::editRowEvent(int row)
+{
+    ALOGDTRACE();
+    RentalDocument doc;
+    QString number = mModel->index(row, 0).data().toString();
+    if (mDb->getRentalDocumentDataInNumber(number, doc)) {
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("未知错误,无法查看该项.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+        return;
+    }
+
+    emit openRentalEditDialogSignal(OpenType::SHOWITEM, doc,
+                                    doc.clientNumber, doc.clientName);
+}
+
+void
+RentalDocumentWidget::editRentalDocItemSlot()
+{
+    if (mCurRow < 0) {
+        QMessageBox::information(this,
+                                 tr("温馨提示"),
+                                 tr("请选择要编辑条目.\n"),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    editRowEvent(mCurRow);
+}
+
+void
+RentalDocumentWidget::clearRentalDocTable()
+{
+    if (mModel->rowCount())
+        mModel->removeRows(0, mModel->rowCount());
+}
+
+void
 RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
 {
     QStandardItem *docNum = new QStandardItem(doc.number);
@@ -296,4 +342,29 @@ void
 RentalDocumentWidget::on_docTableview_clicked(const QModelIndex &index)
 {
     mCurRow = index.row();
+}
+
+void RentalDocumentWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item,
+                                                           int column)
+{
+    ALOGDTRACE();
+    QList<RentalDocument> docs;
+
+    clearRentalDocTable();
+
+    if (item->parent() == NULL) {
+        //根节点
+        if (mDb->getAllRentalDocumentData(docs))
+            return;
+    } else {
+        //子节点
+        if (mDb->getRentalDocInClientNumber(item->text(mClientNumberColumn), docs))
+            return;
+    }
+
+    addRentalDocRows(docs);
+    if (mModel->rowCount() > 0) {
+        //默认显示第一行的数据
+        ui->docTableview->selectRow(0);
+    }
 }

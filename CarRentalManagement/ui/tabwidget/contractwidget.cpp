@@ -510,6 +510,9 @@ void
 ContractWidget::on_contractTableView_clicked(const QModelIndex &index)
 {
     ALOGDTRACE();
+    if (index.row() == curRow)
+        return;
+
     curRow = index.row();
     Contract contract;
     QString number = mContractModel->index(curRow, 0).data().toString();

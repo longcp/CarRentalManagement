@@ -30,6 +30,9 @@ private slots:
     void            addRentalDoc(RentalDocument &doc);
     void            updateDocItemSlot(RentalDocument &doc);
     void            on_docTableview_clicked(const QModelIndex &index);
+    void            editRentalDocItemSlot();
+
+    void on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
 signals:
     void            openRentalEditDialogSignal(OpenType, RentalDocument &,
@@ -49,6 +52,8 @@ private:
     void            addAllClientItem();
     void            addRentalDocRows(QList<RentalDocument> &docs);
     void            addRentalDocTableRow(RentalDocument &doc);
+    void            clearRentalDocTable();
+    void            editRowEvent(int row);
 
     Ui::RentalDocumentWidget *ui;
     QToolBar        *mToolBar;
@@ -67,6 +72,8 @@ private:
     int             mCurRow;
     TableModel*     mModel;
     QTreeWidgetItem*    mRootItem;
+    const static int mClientNameColumn = 0;
+    const static int mClientNumberColumn = 1;
 };
 
 #endif // RENTALDOCUMENTWIDGET_H
