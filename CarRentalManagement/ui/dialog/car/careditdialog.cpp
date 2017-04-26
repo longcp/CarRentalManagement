@@ -75,32 +75,33 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
      */
     connect(mActCancel, SIGNAL(triggered(bool)),
             this, SLOT(cancelEvent()));
-    /**
-     * @brief connect
-     */
+
     connect(ui->annualTableview->horizontalHeader(),&QHeaderView::sectionResized, this,
             &CarEditDialog::updateAnnualSumSectionWidth);
-    /**
-     * @brief connect
-     */
+
     connect(ui->paymentTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
             &CarEditDialog::updatePaymentSumSectionWidth);
-    /**
-     * @brief connect
-     */
+
     connect(ui->projectTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
             &CarEditDialog::updateProjectSumSectionWidth);
-    /**
-     * @brief connect
-     */
+
     connect(ui->businessTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
             &CarEditDialog::updateBusinessSumSectionWidth);
 
-    connect((QDialog*)ui->annualSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
-            this, SLOT(updateAnnualTableviewScrollBar(int)));
+    connect((QObject*)ui->annualSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->annualTableview->horizontalScrollBar(), SLOT(setValue(int)));
 
-    //    connect(ui->annualSumTableView->horizontalScrollBar(), SIGNAL(&QAbstractSlider::valueChanged(int)),
-    //            ui->annualTableview->horizontalScrollBar(), SLOT(&QAbstractSlider::setValue(int)));
+    connect((QObject*)ui->paymentSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->paymentTableView->horizontalScrollBar(), SLOT(setValue(int)));
+
+    connect((QObject*)ui->projectSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->projectTableView->horizontalScrollBar(), SLOT(setValue(int)));
+
+    connect((QObject*)ui->businessSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->businessTableView->horizontalScrollBar(), SLOT(setValue(int)));
+
+    //    connect((QDialog*)ui->annualSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+    //            this, SLOT(updateAnnualTableviewScrollBar(int)));
 }
 
 void
@@ -288,6 +289,8 @@ CarEditDialog::initProjectTableview()
     ui->projectTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    //隐藏滚动条
+    ui->projectTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
 
     initProjectSumTableview();
 }
@@ -311,8 +314,6 @@ CarEditDialog::initProjectSumTableview()
     ui->projectSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    //    ui->projectSumTableView->setHorizontalScrollBarPolicy(
-    //                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
     ui->projectSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
     ui->projectSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
     ui->projectSumTableView->horizontalHeader()->setStyleSheet(
@@ -379,8 +380,6 @@ CarEditDialog::initAnnualTableview()
 #endif
     ui->annualTableview->horizontalHeader()
             ->setSectionResizeMode(4, QHeaderView::Stretch);
-    //    ui->annualTableview->setHorizontalScrollBarPolicy(
-    //                Qt::ScrollBarAlwaysOff);                                 //隐藏滚动条
     ui->annualTableview->verticalHeader()->setVisible(false);           //隐藏行表头
     ui->annualTableview->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
@@ -390,6 +389,8 @@ CarEditDialog::initAnnualTableview()
     ui->annualTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    //隐藏滚动条
+    ui->annualTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     initAnnualSumTableview();
 }
@@ -411,8 +412,6 @@ CarEditDialog::initAnnualSumTableview()
     ui->annualSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    //    ui->annualSumTableView->setHorizontalScrollBarPolicy(
-    //                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
     ui->annualSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
     ui->annualSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
     ui->annualSumTableView->horizontalHeader()->setStyleSheet(
@@ -483,6 +482,8 @@ CarEditDialog::initBusinessTableview()
     ui->businessTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    //隐藏滚动条
+    ui->businessTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     initBusinessSumTableview();
 }
@@ -505,10 +506,8 @@ CarEditDialog::initBusinessSumTableview()
     ui->businessSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    //    ui->businessSumTableView->setHorizontalScrollBarPolicy(
-    //                Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
-    ui->businessSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
-    ui->businessSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
+    ui->businessSumTableView->verticalHeader()->setVisible(false);      //隐藏行表头
+    ui->businessSumTableView->horizontalHeader()->setVisible(false);    //隐藏列表头
     ui->businessSumTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
@@ -577,6 +576,8 @@ CarEditDialog::initPaymentTableview()
     ui->paymentTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    //隐藏滚动条
+    ui->paymentTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     initPaymentSumTableview();
 }
