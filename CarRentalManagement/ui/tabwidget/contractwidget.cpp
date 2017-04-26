@@ -155,6 +155,10 @@ ContractWidget::initContractTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
+    ui->contractTableView->setColumnWidth(0, 200);
+    ui->contractTableView->setColumnWidth(1, 200);
+    ui->contractTableView->setColumnWidth(2, 200);
+    ui->contractTableView->setColumnWidth(3, 200);
 //    setContractTableviewData();
 }
 

@@ -41,8 +41,8 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
     mToolBar->addAction(mActSaveExit);
     mToolBar->addAction(mActSave);
     mToolBar->addAction(mActEdit);
-    mToolBar->addAction(mActPrev);
-    mToolBar->addAction(mActNext);
+//    mToolBar->addAction(mActPrev);
+//    mToolBar->addAction(mActNext);
     mToolBar->addAction(mActCancel);
     mToolBar->addAction(mActExit);
 
