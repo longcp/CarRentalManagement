@@ -80,10 +80,10 @@ ReceivableWidget::initDetailTableview()
     headerList << "日期" << "签证单号" << "客户名称"
                << "车号" << "泵式" << "混凝土标号"
                << "方量单价" << "台班单价" << "泵送方量"
-               << "泵送台班" << "泵送台班时间" << "补油费" << "送管费"
-               << "过路费" << "总金额" << "其他费用" << "已收金额"
-               << "应收金额" << "工程名称" << "工程地址" << "浇注部位"
-               << "收款人" << "备注" << "联系人" << "联系电话"
+               << "泵送台班" << "泵送台班时间" << "总金额"
+               << "已收金额"<< "应收金额" << "工程名称"
+               << "工程地址" << "施工部位" << "收款人"
+               << "备注" << "联系人" << "联系电话"
                << "合同号";
 
     mDetailModel = new TableModel(0, headerList.size());
@@ -106,7 +106,7 @@ ReceivableWidget::initDetailTableview()
     ui->detailTableview->setAlternatingRowColors(true);
     ui->detailTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
-                "alternate-background-color:rgb(255, 255, 224);}");      //设置间隔行颜色变化
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 }
 
 void
@@ -115,9 +115,7 @@ ReceivableWidget::initSummaryTableview()
     //设置首行标题
     QStringList headerList;
     headerList << "合同号" << "客户名称" << "泵送方量" << "泵送台班"
-               << "补油费" << "送管费" << "过路费"
-               << "其他费用" << "总金额" << "已收金额"
-               << "应收金额";
+               << "总金额" << "已收金额" << "应收金额";
 
     mSummaryModel = new TableModel(0, headerList.size());
     ui->summaryTableview->setModel(mSummaryModel);
@@ -140,4 +138,16 @@ ReceivableWidget::initSummaryTableview()
     ui->summaryTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    //最后一列自适应
+    ui->summaryTableview->horizontalHeader()
+            ->setSectionResizeMode(6, QHeaderView::Stretch);
+
+    ui->summaryTableview->setColumnWidth(0, 180);
+    ui->summaryTableview->setColumnWidth(1, 180);
+    ui->summaryTableview->setColumnWidth(2, 180);
+    ui->summaryTableview->setColumnWidth(3, 180);
+    ui->summaryTableview->setColumnWidth(4, 180);
+    ui->summaryTableview->setColumnWidth(5, 180);
+    ui->summaryTableview->setColumnWidth(6, 180);
 }

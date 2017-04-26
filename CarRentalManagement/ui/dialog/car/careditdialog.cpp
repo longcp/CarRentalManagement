@@ -314,8 +314,8 @@ CarEditDialog::initProjectSumTableview()
     ui->projectSumTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    ui->projectSumTableView->verticalHeader()->setVisible(false);        //隐藏行表头
-    ui->projectSumTableView->horizontalHeader()->setVisible(false);      //隐藏列表头
+    ui->projectSumTableView->verticalHeader()->setVisible(false);       //隐藏行表头
+    ui->projectSumTableView->horizontalHeader()->setVisible(false);     //隐藏列表头
     ui->projectSumTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色

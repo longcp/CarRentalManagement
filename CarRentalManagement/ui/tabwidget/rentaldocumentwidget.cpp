@@ -151,7 +151,7 @@ RentalDocumentWidget::initRentalDocTableView()
     ui->docTableview->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    ui->docTableview->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->docTableview->verticalHeader()->setVisible(false);              //隐藏行表头
     ui->docTableview->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
