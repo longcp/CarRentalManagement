@@ -18,11 +18,19 @@ public:
     explicit ReceivableWidget(QWidget *parent = 0);
     ~ReceivableWidget();
 
+private slots:
+    void            updateDetailSumTableviewSectionWidth(int logicalIndex, int,
+                                                         int newSize);
+    void            updateTotalSumTableviewSectionWidth(int logicalIndex, int,
+                                                        int newSize);
+
 private:
     void            configToolBar();
     void            initView();
     void            initDetailTableview();
-    void            initSummaryTableview();
+    void            initDetailSumTableview();
+    void            initTotalTableview();
+    void            initTotalSumTableview();
 
     Ui::ReceivableWidget *ui;
     QToolBar        *mToolBar;
@@ -37,7 +45,9 @@ private:
     QAction         *mActImport;
 
     TableModel*     mDetailModel;
-    TableModel*     mSummaryModel;
+    TableModel*     mDetailSumModel;
+    TableModel*     mTotalModel;
+    TableModel*     mTotalSumModel;
 };
 
 #endif // RECEIVABLEWIDGET_H

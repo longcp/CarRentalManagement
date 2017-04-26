@@ -76,17 +76,17 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     connect(mActCancel, SIGNAL(triggered(bool)),
             this, SLOT(cancelEvent()));
 
-    connect(ui->annualTableview->horizontalHeader(),&QHeaderView::sectionResized, this,
-            &CarEditDialog::updateAnnualSumSectionWidth);
+    connect(ui->annualTableview->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &CarEditDialog::updateAnnualSumSectionWidth);
 
-    connect(ui->paymentTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
-            &CarEditDialog::updatePaymentSumSectionWidth);
+    connect(ui->paymentTableView->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &CarEditDialog::updatePaymentSumSectionWidth);
 
-    connect(ui->projectTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
-            &CarEditDialog::updateProjectSumSectionWidth);
+    connect(ui->projectTableView->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &CarEditDialog::updateProjectSumSectionWidth);
 
-    connect(ui->businessTableView->horizontalHeader(),&QHeaderView::sectionResized, this,
-            &CarEditDialog::updateBusinessSumSectionWidth);
+    connect(ui->businessTableView->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &CarEditDialog::updateBusinessSumSectionWidth);
 
     connect((QObject*)ui->annualSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
             (QObject*)ui->annualTableview->horizontalScrollBar(), SLOT(setValue(int)));

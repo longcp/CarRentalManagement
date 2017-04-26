@@ -2,11 +2,10 @@
 #include "ui_receivablewidget.h"
 #include <QToolBar>
 #include <tablemodel.h>
+#include <QScrollBar>
 
 ReceivableWidget::ReceivableWidget(QWidget *parent) :
     QWidget(parent),
-    mDetailModel(new TableModel()),
-    mSummaryModel(new TableModel()),
     ui(new Ui::ReceivableWidget)
 {
     ui->setupUi(this);
@@ -36,6 +35,24 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
     mToolBar->addAction(mActExport);
 
     ui->toolBarVerticalLayout->addWidget(mToolBar);
+
+    /**
+     * @brief 同步调整列宽
+     */
+    connect(ui->detailTableview->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &ReceivableWidget::updateDetailSumTableviewSectionWidth);
+
+    connect(ui->totalTableview->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &ReceivableWidget::updateTotalSumTableviewSectionWidth);
+
+    /**
+     * @brief 根据进度条值同步列表位置
+     */
+    connect((QObject*)ui->detailSummaryTablview->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->detailTableview->horizontalScrollBar(), SLOT(setValue(int)));
+
+    connect((QObject*)ui->totalSummaryTableview->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->totalTableview->horizontalScrollBar(), SLOT(setValue(int)));
 }
 
 ReceivableWidget::~ReceivableWidget()
@@ -69,7 +86,9 @@ void
 ReceivableWidget::initView()
 {
     initDetailTableview();
-    initSummaryTableview();
+    initDetailSumTableview();
+    initTotalTableview();
+    initTotalSumTableview();
 }
 
 void
@@ -81,7 +100,7 @@ ReceivableWidget::initDetailTableview()
                << "车号" << "泵式" << "混凝土标号"
                << "方量单价" << "台班单价" << "泵送方量"
                << "泵送台班" << "泵送台班时间" << "总金额"
-               << "已收金额"<< "应收金额" << "工程名称"
+               << "已收金额" << "应收金额" << "工程名称"
                << "工程地址" << "施工部位" << "收款人"
                << "备注" << "联系人" << "联系电话"
                << "合同号";
@@ -107,47 +126,173 @@ ReceivableWidget::initDetailTableview()
     ui->detailTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    //隐藏滚动条
+    ui->detailTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void
-ReceivableWidget::initSummaryTableview()
+ReceivableWidget::initDetailSumTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "日期" << "签证单号" << "客户名称"
+               << "车号" << "泵式" << "混凝土标号"
+               << "方量单价" << "台班单价" << "泵送方量"
+               << "泵送台班" << "泵送台班时间" << "总金额"
+               << "已收金额" << "应收金额" << "工程名称"
+               << "工程地址" << "施工部位" << "收款人"
+               << "备注" << "联系人" << "联系电话"
+               << "合同号";
+
+    mDetailSumModel = new TableModel(0, headerList.size());
+    ui->detailSummaryTablview->setModel(mDetailSumModel);
+    mDetailSumModel->setHorizontalHeaderLabels(headerList);
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->detailSummaryTablview->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->detailSummaryTablview->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->detailSummaryTablview->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->detailSummaryTablview->verticalHeader()->setVisible(false);     //隐藏行表头
+    ui->detailSummaryTablview->horizontalHeader()->setVisible(false);   //隐藏列表头
+    ui->detailSummaryTablview->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->detailSummaryTablview->setAlternatingRowColors(true);
+    ui->detailSummaryTablview->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    QStandardItem* sumStrItem = new QStandardItem("合计");
+    QStandardItem* nullStrItem = new QStandardItem("");
+    QList<QStandardItem*> items;
+    items << sumStrItem;
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem;
+    mDetailSumModel->appendRow(items);
+}
+
+void
+ReceivableWidget::initTotalTableview()
 {
     //设置首行标题
     QStringList headerList;
     headerList << "合同号" << "客户名称" << "泵送方量" << "泵送台班"
                << "总金额" << "已收金额" << "应收金额";
 
-    mSummaryModel = new TableModel(0, headerList.size());
-    ui->summaryTableview->setModel(mSummaryModel);
-    mSummaryModel->setHorizontalHeaderLabels(headerList);
+    mTotalModel = new TableModel(0, headerList.size());
+    ui->totalTableview->setModel(mTotalModel);
+    mTotalModel->setHorizontalHeaderLabels(headerList);
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->summaryTableview->setEditTriggers(
+    ui->totalTableview->setEditTriggers(
                 QAbstractItemView::NoEditTriggers);
-    ui->summaryTableview->setSelectionBehavior(
+    ui->totalTableview->setSelectionBehavior(
                 QAbstractItemView::SelectRows);
-    ui->summaryTableview->setSelectionMode(
+    ui->totalTableview->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    ui->summaryTableview->verticalHeader()->setVisible(false);          //隐藏行表头
-    ui->summaryTableview->horizontalHeader()->setStyleSheet(
+    ui->totalTableview->verticalHeader()->setVisible(false);            //隐藏行表头
+    ui->totalTableview->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
 
-    ui->summaryTableview->setAlternatingRowColors(true);
-    ui->summaryTableview->setStyleSheet(
+    ui->totalTableview->setAlternatingRowColors(true);
+    ui->totalTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
     //最后一列自适应
-    ui->summaryTableview->horizontalHeader()
+    ui->totalTableview->horizontalHeader()
             ->setSectionResizeMode(6, QHeaderView::Stretch);
 
-    ui->summaryTableview->setColumnWidth(0, 180);
-    ui->summaryTableview->setColumnWidth(1, 180);
-    ui->summaryTableview->setColumnWidth(2, 180);
-    ui->summaryTableview->setColumnWidth(3, 180);
-    ui->summaryTableview->setColumnWidth(4, 180);
-    ui->summaryTableview->setColumnWidth(5, 180);
-    ui->summaryTableview->setColumnWidth(6, 180);
+    ui->totalTableview->setColumnWidth(0, 180);
+    ui->totalTableview->setColumnWidth(1, 180);
+    ui->totalTableview->setColumnWidth(2, 180);
+    ui->totalTableview->setColumnWidth(3, 180);
+    ui->totalTableview->setColumnWidth(4, 180);
+    ui->totalTableview->setColumnWidth(5, 180);
+    ui->totalTableview->setColumnWidth(6, 180);
+
+    //隐藏滚动条
+    ui->totalTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
+
+void
+ReceivableWidget::initTotalSumTableview()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "合同号" << "客户名称" << "泵送方量" << "泵送台班"
+               << "总金额" << "已收金额" << "应收金额";
+
+    mTotalModel = new TableModel(0, headerList.size());
+    ui->totalSummaryTableview->setModel(mTotalModel);
+    mTotalModel->setHorizontalHeaderLabels(headerList);
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->totalSummaryTableview->setEditTriggers(
+                QAbstractItemView::NoEditTriggers);
+    ui->totalSummaryTableview->setSelectionBehavior(
+                QAbstractItemView::SelectRows);
+    ui->totalSummaryTableview->setSelectionMode(
+                QAbstractItemView::SingleSelection);
+
+    ui->totalSummaryTableview->verticalHeader()->setVisible(false);     //隐藏行表头
+    ui->totalSummaryTableview->horizontalHeader()->setVisible(false);   //隐藏列表头
+    ui->totalSummaryTableview->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->totalSummaryTableview->setAlternatingRowColors(true);
+    ui->totalSummaryTableview->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    ui->totalSummaryTableview->setColumnWidth(0, 180);
+    ui->totalSummaryTableview->setColumnWidth(1, 180);
+    ui->totalSummaryTableview->setColumnWidth(2, 180);
+    ui->totalSummaryTableview->setColumnWidth(3, 180);
+    ui->totalSummaryTableview->setColumnWidth(4, 180);
+    ui->totalSummaryTableview->setColumnWidth(5, 180);
+    ui->totalSummaryTableview->setColumnWidth(6, 180);
+
+    //最后一列自适应
+    ui->totalSummaryTableview->horizontalHeader()
+            ->setSectionResizeMode(6, QHeaderView::Stretch);
+
+    QStandardItem* sumStrItem = new QStandardItem("合计");
+    QStandardItem* nullStrItem = new QStandardItem("");
+    QList<QStandardItem*> items;
+    items << sumStrItem;
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
+//          << nullStrItem;
+    mTotalModel->appendRow(items);
+}
+
+void
+ReceivableWidget::updateDetailSumTableviewSectionWidth(int logicalIndex,
+                                                       int /*oldSize*/,
+                                                       int newSize)
+{
+    ui->detailSummaryTablview->setColumnWidth(logicalIndex, newSize);
+}
+
+void
+ReceivableWidget::updateTotalSumTableviewSectionWidth(int logicalIndex,
+                                                      int /*oldSize*/,
+                                                      int newSize)
+{
+    ui->totalSummaryTableview->setColumnWidth(logicalIndex, newSize);
 }

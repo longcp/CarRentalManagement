@@ -537,7 +537,7 @@
       <attribute name="title">
        <string>应收明细</string>
       </attribute>
-      <layout class="QHBoxLayout" name="detailHorizonLayout">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <property name="spacing">
         <number>0</number>
        </property>
@@ -556,13 +556,23 @@
        <item>
         <widget class="QTableView" name="detailTableview"/>
        </item>
+       <item>
+        <widget class="QTableView" name="detailSummaryTablview">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="summaryTab">
       <attribute name="title">
        <string>应收汇总</string>
       </attribute>
-      <layout class="QHBoxLayout" name="summaryHorizonLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="spacing">
         <number>0</number>
        </property>
@@ -579,7 +589,17 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QTableView" name="summaryTableview"/>
+        <widget class="QTableView" name="totalTableview"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="totalSummaryTableview">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
