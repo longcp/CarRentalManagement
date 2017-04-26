@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class QToolBar;
+class TableModel;
 
 namespace Ui {
 class ReceivableWidget;
@@ -18,10 +19,10 @@ public:
     ~ReceivableWidget();
 
 private:
-    /**
-     * @brief 配置工具栏
-     */
     void            configToolBar();
+    void            initView();
+    void            initDetailTableview();
+    void            initSummaryTableview();
 
     Ui::ReceivableWidget *ui;
     QToolBar        *mToolBar;
@@ -34,6 +35,9 @@ private:
     QAction         *mActPrinter;
     QAction         *mActExport;
     QAction         *mActImport;
+
+    TableModel*     mDetailModel;
+    TableModel*     mSummaryModel;
 };
 
 #endif // RECEIVABLEWIDGET_H
