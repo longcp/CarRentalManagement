@@ -127,4 +127,30 @@ typedef struct ContractPrice {
     QString remarks;
 }CONTRACT_PRICE;
 
+typedef struct ReceivableDetail {
+    QString concreateLabel;
+    QString projectName;
+    QString projectAddress;
+    QString constructPlace;
+    QString Payee;
+    QString remarks;
+    QString principal;
+    QString principalTel;
+    QString contractNumber;
+
+    float pumpSquare;
+    float squareUnitPrice;
+    float pumpTimes;
+    float pumpTimeUnitPrice;
+    float totalAmount;
+    float receivedAmount;
+
+    PumpType pumptype;
+} RECEIVABLE_DETAIL;
+
+typedef struct ReceivableTotal {
+    QString contractNumber;
+    QString clientName;
+} RECEIVABLE_TOTAL;
+
 #endif // DATATYPE_H

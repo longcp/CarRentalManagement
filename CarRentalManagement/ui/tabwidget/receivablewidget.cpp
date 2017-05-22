@@ -3,6 +3,7 @@
 #include <QToolBar>
 #include <tablemodel.h>
 #include <QScrollBar>
+#include <rentaldocument.h>
 
 ReceivableWidget::ReceivableWidget(QWidget *parent) :
     QWidget(parent),
@@ -101,7 +102,7 @@ ReceivableWidget::initDetailTableview()
                << "方量单价" << "台班单价" << "泵送方量"
                << "泵送台班" << "泵送台班时间" << "总金额"
                << "已收金额" << "应收金额" << "工程名称"
-               << "工程地址" << "施工部位" << "收款人"
+               << "工程地址" << "施工部位"
                << "备注" << "联系人" << "联系电话"
                << "合同号";
 
@@ -141,10 +142,11 @@ ReceivableWidget::initDetailSumTableview()
                << "方量单价" << "台班单价" << "泵送方量"
                << "泵送台班" << "泵送台班时间" << "总金额"
                << "已收金额" << "应收金额" << "工程名称"
-               << "工程地址" << "施工部位" << "收款人"
+               << "工程地址" << "施工部位"
                << "备注" << "联系人" << "联系电话"
                << "合同号";
 
+    ui->detailSummaryTablview->verticalHeader()->setDefaultSectionSize(20);
     mDetailSumModel = new TableModel(0, headerList.size());
     ui->detailSummaryTablview->setModel(mDetailSumModel);
     mDetailSumModel->setHorizontalHeaderLabels(headerList);
@@ -234,6 +236,7 @@ ReceivableWidget::initTotalSumTableview()
     headerList << "合同号" << "客户名称" << "泵送方量" << "泵送台班"
                << "总金额" << "已收金额" << "应收金额";
 
+    ui->totalSummaryTableview->verticalHeader()->setDefaultSectionSize(20);
     mTotalModel = new TableModel(0, headerList.size());
     ui->totalSummaryTableview->setModel(mTotalModel);
     mTotalModel->setHorizontalHeaderLabels(headerList);

@@ -5,6 +5,7 @@
 
 class QToolBar;
 class TableModel;
+class RentalDocument;
 
 namespace Ui {
 class ReceivableWidget;
@@ -17,6 +18,12 @@ class ReceivableWidget : public QWidget
 public:
     explicit ReceivableWidget(QWidget *parent = 0);
     ~ReceivableWidget();
+
+    class Receivable {
+        RentalDocument* rentalDoc;
+        float totalAmount;
+        float receivedAmount;
+    };
 
 private slots:
     void            updateDetailSumTableviewSectionWidth(int logicalIndex, int,
