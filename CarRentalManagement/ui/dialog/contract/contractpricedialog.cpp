@@ -46,8 +46,6 @@ ContractPriceDialog::on_ensureBtn_clicked()
     price.remarks = ui->remarksTextEdit->toPlainText();
     price.squarePrice = ui->squrePriceDSB->value();
     price.standardPrice = ui->standardPriceDSB->value();
-    price.within150MinPrice = ui->within150minDSB->value();
-    price.within240MinPrice = ui->within240minDSB->value();
 
     ALOGD("%s, contractNumber = %s", __FUNCTION__,
           price.contractNumber.toStdString().data());
@@ -94,8 +92,6 @@ ContractPriceDialog::clean()
     ui->pumpTypeCB->setCurrentIndex(0);
     ui->squrePriceDSB->setValue(0);
     ui->standardPriceDSB->setValue(0);
-    ui->within150minDSB->setValue(0);
-    ui->within240minDSB->setValue(0);
     ui->remarksTextEdit->setText("");
 }
 

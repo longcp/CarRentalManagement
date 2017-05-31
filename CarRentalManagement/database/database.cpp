@@ -1696,8 +1696,6 @@ DataBase::getAllContractPriceData(const QString contractNumber,
         price.pumpType = Car::getPumpType(query->value(3).toInt());
         price.squarePrice = query->value(4).toFloat();
         price.standardPrice = query->value(5).toFloat();
-        price.within150MinPrice = query->value(6).toFloat();
-        price.within240MinPrice = query->value(7).toFloat();
 
         prices.push_back(price);                              //插入list
     }
@@ -1716,28 +1714,23 @@ DataBase::insertContractPriceTable(const CONTRACT_PRICE &price)
         exit GET_DATABASE_FAIL;
 
     ALOGD("price.number = %s, price.contractNumber = %s, price.remarks = %s"
-          "price.pumpType = %s, price.squarePrice = %f, price.standardPricee = %f"
-          "price.within150MinPrice = %f, price.within240MinPrice = %f",
+          "price.pumpType = %s, price.squarePrice = %f, price.standardPricee = %f",
           price.number.toStdString().data(),
           price.contractNumber.toStdString().data(),
           price.remarks.toStdString().data(),
           Car::getPumpTypeStr(price.pumpType).toStdString().data(),
-          price.squarePrice, price.standardPrice, price.within150MinPrice,
-          price.within240MinPrice);
+          price.squarePrice, price.standardPrice);
 
     query->finish();
     query->prepare("INSERT INTO contract_price "
                    "VALUES(:number, :contractNumber, :remarks, "
-                   ":pumpType, :squarePrice, :standardPrice,"
-                   ":within150MinPrice, :within240MinPrice)");
+                   ":pumpType, :squarePrice, :standardPrice)");
     query->bindValue(":number", price.number);
     query->bindValue(":contractNumber", price.contractNumber);
     query->bindValue(":remarks", price.remarks);
     query->bindValue(":pumpType", price.pumpType);
     query->bindValue(":squarePrice", price.squarePrice);
     query->bindValue(":standardPrice", price.standardPrice);
-    query->bindValue(":within150MinPrice", price.within150MinPrice);
-    query->bindValue(":within240MinPrice", price.within240MinPrice);
 
     if (!query->exec()) {
         ALOGE("%s failed!", __FUNCTION__);

@@ -186,8 +186,7 @@ ContractEditDialog::initPriceTableView()
 {
     ALOGDTRACE();
     QStringList headerList;
-    headerList << "编号" << "泵式" << "方量价格" << "标准台班价格"
-               << "2.5小时内台班价格" << "4小时内台班价格" << "备注";
+    headerList << "编号" << "泵式" << "方量价格/方" << "台班价格/小时" << "备注";
 
     mModel = new TableModel(0, headerList.size());
     ui->priceTableView->setModel(mModel);
@@ -205,11 +204,10 @@ ContractEditDialog::initPriceTableView()
     ui->priceTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
-
-    ui->priceTableView->resizeColumnToContents(4);                      //自动适应列宽
-    ui->priceTableView->resizeColumnToContents(5);
+    ui->priceTableView->setColumnWidth(0, 200);
+    //自动适应列宽
     ui->priceTableView->horizontalHeader()
-            ->setSectionResizeMode(6, QHeaderView::Stretch);            //自动适应列宽
+            ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 }
 
 void
@@ -309,18 +307,12 @@ ContractEditDialog::setView(Contract &contract)
         QStandardItem* standardPrice =
                 new QStandardItem(QString("%1").arg(contract.prices.at(i)
                                                     .standardPrice));
-        QStandardItem* within150MinPrice =
-                new QStandardItem(QString("%1").arg(contract.prices.at(i)
-                                                    .within150MinPrice));
-        QStandardItem* within240MinPrice =
-                new QStandardItem(QString("%1").arg(contract.prices.at(i)
-                                                    .within240MinPrice));
         QStandardItem* remarks =
                 new QStandardItem(contract.prices.at(i).remarks);
         if (!items.isEmpty())
             items.clear();
         items << num << pumpType << squarePrice << standardPrice
-              << within150MinPrice << within240MinPrice << remarks;
+              << remarks;
         mModel->appendRow(items);
     }
 }
@@ -483,9 +475,7 @@ ContractEditDialog::saveUiContent(Contract &contract)
                     mModel->index(i, 1).data().toString());
         price.squarePrice = mModel->index(i, 2).data().toFloat(&ok);
         price.standardPrice = mModel->index(i, 3).data().toFloat(&ok);
-        price.within150MinPrice = mModel->index(i, 4).data().toFloat(&ok);
-        price.within240MinPrice = mModel->index(i, 5).data().toFloat(&ok);
-        price.remarks = mModel->index(i, 6).data().toString();
+        price.remarks = mModel->index(i, 4).data().toString();
 
         contract.prices.push_back(price);
     }
@@ -623,16 +613,11 @@ ContractEditDialog::addPriceItemSlot(CONTRACT_PRICE &price)
             = new QStandardItem(QString("%1").arg(price.squarePrice));
     QStandardItem* standardPrice
             = new QStandardItem(QString("%1").arg(price.standardPrice));
-    QStandardItem* within150MinPrice
-            = new QStandardItem(QString("%1").arg(price.within150MinPrice));
-    QStandardItem* within240MinPrice
-            = new QStandardItem(QString("%1").arg(price.within240MinPrice));
     QStandardItem *remarks
             = new QStandardItem(price.remarks);
 
     QList<QStandardItem*> items;
-    items << num << pumpType <<squarePrice <<standardPrice
-          << within150MinPrice <<within240MinPrice <<remarks;
+    items << num << pumpType <<squarePrice <<standardPrice <<remarks;
     mModel->appendRow(items);
     mAddRows++;
 }

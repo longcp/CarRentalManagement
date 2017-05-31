@@ -122,8 +122,6 @@ typedef struct ContractPrice {
     PumpType pumpType;
     float squarePrice;
     float standardPrice;
-    float within150MinPrice;
-    float within240MinPrice;
     QString remarks;
 }CONTRACT_PRICE;
 

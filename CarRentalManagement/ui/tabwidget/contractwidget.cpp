@@ -167,8 +167,7 @@ ContractWidget::initPriceTableview()
 {
     //设置首行标题
     QStringList headerList;
-    headerList << "编号" << "泵式" << "方量价格" << "标准台班价格"
-               << "2.5小时内台班价格" << "4小时内台班价格" << "备注";
+    headerList << "编号" << "泵式" << "方量价格/方" << "台班价格/小时"  << "备注";
 
     mPriceModel = new TableModel(0, headerList.size());
     ui->priceTableView->setModel(mPriceModel);
@@ -191,9 +190,10 @@ ContractWidget::initPriceTableview()
     ui->priceTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
-
-    ui->priceTableView->resizeColumnToContents(3);                      //自动适应列宽
-    ui->priceTableView->resizeColumnToContents(4);                      //自动适应列宽
+    ui->priceTableView->setColumnWidth(0, 200);
+    //自动适应列宽
+    ui->priceTableView->horizontalHeader()
+            ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 //    setPriceTableViewData();
 }
 
@@ -400,16 +400,11 @@ ContractWidget::addPriceTableRow(CONTRACT_PRICE price)
             = new QStandardItem(QString("%1").arg(price.squarePrice));
     QStandardItem *standardPrice
             = new QStandardItem(QString("%1").arg(price.standardPrice));
-    QStandardItem *within150MinPrice
-            = new QStandardItem(QString("%1").arg(price.within150MinPrice));
-    QStandardItem *within240MinPrice
-            = new QStandardItem(QString("%1").arg(price.within240MinPrice));
     QStandardItem *remarks
             = new QStandardItem(price.remarks);
 
     QList<QStandardItem*> items;
-    items << num << pumyType << squarePrice << standardPrice
-          << within150MinPrice << within240MinPrice << remarks;
+    items << num << pumyType << squarePrice << standardPrice << remarks;
     mPriceModel->appendRow(items);
 }
 

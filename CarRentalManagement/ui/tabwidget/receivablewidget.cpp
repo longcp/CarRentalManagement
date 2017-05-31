@@ -25,7 +25,7 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
     mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
-                              tr("导出"), this);
+                             tr("导出"), this);
 
     mToolBar = new QToolBar(tr("receivableToolBar"), this);
     this->configToolBar();
@@ -214,7 +214,7 @@ ReceivableWidget::initTotalTableview()
 
     //最后一列自适应
     ui->totalTableview->horizontalHeader()
-            ->setSectionResizeMode(6, QHeaderView::Stretch);
+            ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 
     ui->totalTableview->setColumnWidth(0, 180);
     ui->totalTableview->setColumnWidth(1, 180);
@@ -269,7 +269,7 @@ ReceivableWidget::initTotalSumTableview()
 
     //最后一列自适应
     ui->totalSummaryTableview->horizontalHeader()
-            ->setSectionResizeMode(6, QHeaderView::Stretch);
+            ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 
     QStandardItem* sumStrItem = new QStandardItem("合计");
     QStandardItem* nullStrItem = new QStandardItem("");
