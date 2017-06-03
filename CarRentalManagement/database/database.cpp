@@ -1799,7 +1799,7 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
                    ":principalTel, :driver1, :driver2, "
                    ":driver3, :projectName, :projectAddress, "
                    ":remarks, :beginFuel, :endFuel, "
-                   ":projectAmount, :pumpSquare, :squareUnitPrice, "
+                   ":projectAmount, :receivedAccounts, :pumpSquare, :squareUnitPrice, "
                    ":pumpTimes, :pumpTimeUnitPrice, :workingHours, "
                    ":date, :arrivalDateTime, :leaveDateTime, "
                    ":rentalDocState, :pumpType)");
@@ -1822,6 +1822,7 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
     query->bindValue(":beginFuel", doc.beginFuel);
     query->bindValue(":endFuel", doc.endFuel);
     query->bindValue(":projectAmount", doc.projectAmount);
+    query->bindValue(":receivedAccounts", doc.receivedAccounts);
     query->bindValue(":pumpSquare", doc.pumpSquare);
     query->bindValue(":squareUnitPrice", doc.squareUnitPrice);
     query->bindValue(":pumpTimes", doc.pumpTimes);
@@ -1875,6 +1876,7 @@ DataBase::updateRentalDocumentData(const RentalDocument &doc)
                    "beginFuel=?, "
                    "endFuel=?, "
                    "projectAmount=?, "
+                   "receivedAccounts=?, "
                    "pumpSquare=?, "
                    "squareUnitPrice=?, "
                    "pumpTimes=?, "
@@ -1904,6 +1906,7 @@ DataBase::updateRentalDocumentData(const RentalDocument &doc)
     query->addBindValue(doc.beginFuel);
     query->addBindValue(doc.endFuel);
     query->addBindValue(doc.projectAmount);
+    query->addBindValue(doc.receivedAccounts);
     query->addBindValue(doc.pumpSquare);
     query->addBindValue(doc.squareUnitPrice);
     query->addBindValue(doc.pumpTimes);
@@ -1963,20 +1966,21 @@ DataBase::getAllRentalDocumentData(QList<RentalDocument> &docs)
         doc.beginFuel = query->value(16).toFloat();
         doc.endFuel = query->value(17).toFloat();
         doc.projectAmount = query->value(18).toFloat();
-        doc.pumpSquare = query->value(19).toFloat();
-        doc.squareUnitPrice = query->value(20).toFloat();
-        doc.pumpTimes = query->value(21).toFloat();
-        doc.pumpTimeUnitPrice = query->value(22).toFloat();
-        doc.workingHours = query->value(23).toFloat();
+        doc.receivedAccounts = query->value(19).toFloat();
+        doc.pumpSquare = query->value(20).toFloat();
+        doc.squareUnitPrice = query->value(21).toFloat();
+        doc.pumpTimes = query->value(22).toFloat();
+        doc.pumpTimeUnitPrice = query->value(23).toFloat();
+        doc.workingHours = query->value(24).toFloat();
 
-        doc.date = QDate::fromString(query->value(24).toString(),
+        doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
-        doc.arrivalDateTime = QDateTime::fromString(query->value(25).toString(),
+        doc.arrivalDateTime = QDateTime::fromString(query->value(26).toString(),
                                                     "yyyy-MM-dd hh:mm:ss");
-        doc.leaveDateTime = QDateTime::fromString(query->value(26).toString(),
+        doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                                   "yyyy-MM-dd hh:mm:ss");
-        doc.rentalDocState = (RentalDocState)query->value(27).toInt();
-        doc.pumpType = (PumpType)query->value(28).toInt();
+        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.pumpType = (PumpType)query->value(29).toInt();
 
         docs.push_back(doc);                              //插入list
     }
@@ -2025,20 +2029,21 @@ DataBase::getRentalDocInClientNumber(const QString clientNumber,
         doc.beginFuel = query->value(16).toFloat();
         doc.endFuel = query->value(17).toFloat();
         doc.projectAmount = query->value(18).toFloat();
-        doc.pumpSquare = query->value(19).toFloat();
-        doc.squareUnitPrice = query->value(20).toFloat();
-        doc.pumpTimes = query->value(21).toFloat();
-        doc.pumpTimeUnitPrice = query->value(22).toFloat();
-        doc.workingHours = query->value(23).toFloat();
+        doc.receivedAccounts = query->value(19).toFloat();
+        doc.pumpSquare = query->value(20).toFloat();
+        doc.squareUnitPrice = query->value(21).toFloat();
+        doc.pumpTimes = query->value(22).toFloat();
+        doc.pumpTimeUnitPrice = query->value(23).toFloat();
+        doc.workingHours = query->value(24).toFloat();
 
-        doc.date = QDate::fromString(query->value(24).toString(),
+        doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
-        doc.arrivalDateTime = QDateTime::fromString(query->value(25).toString(),
+        doc.arrivalDateTime = QDateTime::fromString(query->value(26).toString(),
                                                    "yyyy-MM-dd hh:mm:ss");
-        doc.leaveDateTime = QDateTime::fromString(query->value(26).toString(),
+        doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                            "yyyy-MM-dd hh:mm:ss");
-        doc.rentalDocState = (RentalDocState)query->value(27).toInt();
-        doc.pumpType = (PumpType)query->value(28).toInt();
+        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.pumpType = (PumpType)query->value(29).toInt();
 
         docs.push_back(doc);                              //插入list
     }
@@ -2127,20 +2132,21 @@ DataBase::getRentalDocumentDataInNumber(QString number, RentalDocument &doc)
         doc.beginFuel = query->value(16).toFloat();
         doc.endFuel = query->value(17).toFloat();
         doc.projectAmount = query->value(18).toFloat();
-        doc.pumpSquare = query->value(19).toFloat();
-        doc.squareUnitPrice = query->value(20).toFloat();
-        doc.pumpTimes = query->value(21).toFloat();
-        doc.pumpTimeUnitPrice = query->value(22).toFloat();
-        doc.workingHours = query->value(23).toFloat();
+        doc.receivedAccounts = query->value(19).toFloat();
+        doc.pumpSquare = query->value(20).toFloat();
+        doc.squareUnitPrice = query->value(21).toFloat();
+        doc.pumpTimes = query->value(22).toFloat();
+        doc.pumpTimeUnitPrice = query->value(23).toFloat();
+        doc.workingHours = query->value(24).toFloat();
 
-        doc.date = QDate::fromString(query->value(24).toString(),
+        doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
-        doc.arrivalDateTime = QDateTime::fromString(query->value(25).toString(),
+        doc.arrivalDateTime = QDateTime::fromString(query->value(26).toString(),
                                                    "yyyy-MM-dd hh:mm:ss");
-        doc.leaveDateTime = QDateTime::fromString(query->value(26).toString(),
+        doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                            "yyyy-MM-dd hh:mm:ss");
-        doc.rentalDocState = (RentalDocState)query->value(27).toInt();
-        doc.pumpType = (PumpType)query->value(28).toInt();
+        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.pumpType = (PumpType)query->value(29).toInt();
     }
 
     return SUCCESS;

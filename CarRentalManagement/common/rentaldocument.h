@@ -38,6 +38,7 @@ public:
         squareUnitPrice = r.squareUnitPrice;
         pumpTimes = r.pumpTimes;
         pumpTimeUnitPrice = r.pumpTimeUnitPrice;
+        receivedAccounts = r.receivedAccounts;
 
         date = r.date;
         workingHours = r.workingHours;
@@ -73,6 +74,7 @@ public:
         squareUnitPrice = r.squareUnitPrice;
         pumpTimes = r.pumpTimes;
         pumpTimeUnitPrice = r.pumpTimeUnitPrice;
+        receivedAccounts = r.receivedAccounts;
 
         date = r.date;
         workingHours = r.workingHours;
@@ -108,6 +110,7 @@ public:
         squareUnitPrice = r.squareUnitPrice;
         pumpTimes = r.pumpTimes;
         pumpTimeUnitPrice = r.pumpTimeUnitPrice;
+        receivedAccounts = r.receivedAccounts;
 
         date = r.date;
         workingHours = r.workingHours;
@@ -147,6 +150,7 @@ public:
     float pumpTimes;
     float pumpTimeUnitPrice;
     float workingHours;
+    float receivedAccounts;
 
     QDate date;
     QDateTime arrivalDateTime;

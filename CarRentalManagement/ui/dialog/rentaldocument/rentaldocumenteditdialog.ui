@@ -522,6 +522,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="maximum">
+           <double>999999999.990000009536743</double>
+          </property>
          </widget>
         </item>
        </layout>
@@ -1081,6 +1084,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="maximum">
+           <double>999999999.990000009536743</double>
+          </property>
          </widget>
         </item>
         <item>
@@ -1223,6 +1229,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="maximum">
+           <double>999999999.990000009536743</double>
+          </property>
          </widget>
         </item>
         <item>
@@ -1248,6 +1257,9 @@
             <width>250</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="maximum">
+           <double>999999999.990000009536743</double>
           </property>
          </widget>
         </item>
@@ -1327,6 +1339,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="maximum">
+           <double>999999999.990000009536743</double>
+          </property>
          </widget>
         </item>
         <item>
@@ -1353,9 +1368,47 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="maximum">
+           <double>999999999.990000009536743</double>
+          </property>
          </widget>
         </item>
        </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_11" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_22">
+      <item>
+       <widget class="QLabel" name="label_28">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>已收金额:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="receivedAccountsDSB">
+        <property name="maximum">
+         <double>999999999.990000009536743</double>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

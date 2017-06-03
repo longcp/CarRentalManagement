@@ -5,7 +5,8 @@
 #include <QDate>
 
 #define DATE_FORMAT_STR         "yyyy-MM-dd"
-#define DATETIME_FORMAT_STR     "yyyyMMddhhmmsszzz"
+#define DATETIME_FORMAT_STR     "yyyy-MM-dd hh:mm:ss"
+#define DATETIME_SERIAL_NUM_FORMAT_STR     "yyyyMMddhhmmsszzz"
 
 #define USER_RIGHT_ROOT_STR     "管理员"
 #define USER_RIGHT_NORMAL_STR   "普通用户"

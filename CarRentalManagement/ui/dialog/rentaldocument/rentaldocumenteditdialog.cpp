@@ -23,6 +23,7 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
     mDb(DataBase::getInstance()),
     isSetWindowSize(false),
     mCarTableDialog(new CarTableDialog),
+    mRentalDocument(new RentalDocument()),
     mContractTableDialog(new ContractTableDialog),
     ui(new Ui::RentalDocumentEditDialog)
 {
@@ -235,9 +236,10 @@ RentalDocumentEditDialog::openWindow(OpenType type,
 QString
 RentalDocumentEditDialog::makeRentalDocNumber()
 {
-    ALOGD("curdatetime=%s", QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR)
+    ALOGD("curdatetime=%s", QDateTime::currentDateTime()
+          .toString(DATETIME_SERIAL_NUM_FORMAT_STR)
           .toStdString().data());
-    return QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR);
+    return QDateTime::currentDateTime().toString(DATETIME_SERIAL_NUM_FORMAT_STR);
 }
 
 void
@@ -312,6 +314,7 @@ RentalDocumentEditDialog::setMode(bool mode)
     ui->squareUnitPriceDSB->setEnabled(mode);
     ui->pumpTimesDSB->setEnabled(mode);
     ui->pumpTimeUnitPriceDSB->setEnabled(mode);
+    ui->receivedAccountsDSB->setEnabled(mode);
     ui->reservationRB->setEnabled(mode);
     ui->confirmedRB->setEnabled(mode);
     ui->unconfirmedRB->setEnabled(mode);
@@ -349,6 +352,7 @@ RentalDocumentEditDialog::setView(RentalDocument &doc)
     ui->squareUnitPriceDSB->setValue(doc.squareUnitPrice);
     ui->pumpTimesDSB->setValue(doc.pumpTimes);
     ui->pumpTimeUnitPriceDSB->setValue(doc.pumpTimeUnitPrice);
+    ui->receivedAccountsDSB->setValue(doc.receivedAccounts);
     ui->remarksTE->setText(doc.remarks);
     ui->pumpTypeCB->setCurrentIndex(getPumpTypePosition(doc.pumpType));
 
@@ -395,7 +399,6 @@ RentalDocumentEditDialog::saveAndExitEvent()
 
     RentalDocument doc;
     saveUiContent(doc);
-    ALOGD("111111111111111111");
     if (mOpenType == OpenType::CREATEITEM) {
         //插入到数据库
         if (mDb->isRentalDocumentExist(doc)) {
@@ -407,18 +410,17 @@ RentalDocumentEditDialog::saveAndExitEvent()
             return;
         }
 
-        ALOGD("22222222222222222222");
         if (!mDb->insertRentalDocumentTable(doc)) {
+            ALOGD("0000000000000000000000000000");
             resetView(doc);
-            ALOGD("4444444444444444444444");
             emit addRentalDocSignal(doc);
+            ALOGD("111111111111111111111111111111");
             QMessageBox::information(this,
                                      tr("温馨提示"),
                                      tr("添加成功.\n"),
                                      QMessageBox::Ok,
                                      QMessageBox::Ok);
         } else {
-            ALOGD("33333333333333333333");
             QMessageBox::critical(this,
                                   tr("温馨提示"),
                                   tr("添加失败!未知错误.\n"),
@@ -429,8 +431,10 @@ RentalDocumentEditDialog::saveAndExitEvent()
     } else {
         //更新到数据库
         if (!mDb->updateRentalDocumentData(doc)) {
+            ALOGD("9999999999999999999999999999");
             resetView(doc);
-            updateDocItemSignal(doc);
+            emit updateDocItemSignal(doc);
+            ALOGD("22222222222222222222222");
             QMessageBox::information(this,
                                      tr("温馨提示"),
                                      tr("已保存.\n"),
@@ -557,6 +561,7 @@ RentalDocumentEditDialog::isModified()
             ui->squareUnitPriceDSB->isWindowModified() ||
             ui->pumpTimesDSB->isWindowModified() ||
             ui->pumpTimeUnitPriceDSB->isWindowModified() ||
+            ui->receivedAccountsDSB->isWindowModified() ||
             ui->reservationRB->isWindowModified() ||
             ui->confirmedRB->isWindowModified() ||
             ui->unconfirmedRB->isWindowModified() ||
@@ -598,6 +603,7 @@ RentalDocumentEditDialog::saveUiContent(RentalDocument &doc)
     doc.squareUnitPrice = ui->squareUnitPriceDSB->value();
     doc.pumpTimes = ui->pumpTimesDSB->value();
     doc.pumpTimeUnitPrice = ui->pumpTimeUnitPriceDSB->value();
+    doc.receivedAccounts = ui->receivedAccountsDSB->value();
 
     doc.pumpType = Car::getPumpType(ui->pumpTypeCB->currentIndex());
     doc.date = QDate::fromString(ui->dateDE->text(), DATE_FORMAT_STR);
@@ -617,6 +623,8 @@ void
 RentalDocumentEditDialog::resetView(RentalDocument &doc)
 {
     setOriginRentalDocument(doc);
+
+    ALOGD("55555555555555555555555555555");
     resetView();
 }
 
@@ -664,6 +672,7 @@ RentalDocumentEditDialog::cleanContent()
     ui->squareUnitPriceDSB->setValue(0);
     ui->pumpTimesDSB->setValue(0);
     ui->pumpTimeUnitPriceDSB->setValue(0);
+    ui->receivedAccountsDSB->setValue(0);
     ui->reservationRB->setChecked(true);
     ui->confirmedRB->setChecked(false);
     ui->unconfirmedRB->setChecked(false);
