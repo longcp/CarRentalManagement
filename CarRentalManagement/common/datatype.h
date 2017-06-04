@@ -36,6 +36,33 @@
 #define RENTAL_DOC_STATE_UNCONFIRMED_STR    "未确认"
 #define RENTAL_DOC_STATE_UNKNOWN_STR        "未确认"
 
+#define MENU_TEXT_SYSTEM_SETTING        "系统设置"
+#define MENU_TEXT_LEASING_MANAGERMENT   "租赁管理"
+#define MENU_TEXT_CAR_MANAGERMENT       "车辆管理"
+#define MENU_TEXT_FINANCIAL_STATISTICS  "财务统计"
+#define MENU_TEXT_UPLOAD_IMAGE          "上传图片"
+#define MENU_TEXT_USER_MANAGERMENT      "用户管理"
+#define MENU_TEXT_HELP                  "帮助"
+
+#define ACTION_TEXT_EXIT_SYSTEM         "退出系统"
+#define ACTION_TEXT_CLIENT_MANAGERMENT  "客户资料"
+#define ACTION_TEXT_CONTRACT            "租赁合同"
+#define ACTION_TEXT_RENTALDOCUMENT      "泵送签证单"
+#define ACTION_TEXT_CAR_INFORMATION     "车辆档案"
+#define ACTION_TEXT_RECEIVABLE          "应收账款"
+#define ACTION_TEXT_CONTRACT_RECEIPT    "合同收款"
+#define ACTION_TEXT_USER_MANAGERMENT    "用户管理"
+#define ACTION_TEXT_ABOUT               "关于"
+
+/* tab title */
+#define TAB_TITLE_MAIN_PAGE         "主页"
+#define TAB_TITLE_CLIENTMANAGERMENT ACTION_TEXT_CLIENT_MANAGERMENT
+#define TAB_TITLE_CONTRACT          ACTION_TEXT_CONTRACT
+#define TAB_TITLE_RENTALDOCUMENT    ACTION_TEXT_RENTALDOCUMENT
+#define TAB_TITLE_CAR_INFOMATION    ACTION_TEXT_CAR_INFORMATION
+#define TAB_TITLE_RECEIVABLE        ACTION_TEXT_RECEIVABLE
+#define TAB_TITLE_RECEIPT           ACTION_TEXT_CONTRACT_RECEIPT
+
 // 错误号
 #define OK                          0
 #define SUCCESS                     0

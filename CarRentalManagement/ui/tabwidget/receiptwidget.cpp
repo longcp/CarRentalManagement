@@ -2,6 +2,7 @@
 #include "ui_receiptwidget.h"
 #include <QToolBar>
 #include <receipteditdialog.h>
+#include <datatype.h>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -13,7 +14,7 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    this->setWindowTitle("合同收款");
+    this->setWindowTitle(TAB_TITLE_RECEIVABLE);
 
     mReceiptEditDialog = new ReceiptEditDialog();
 

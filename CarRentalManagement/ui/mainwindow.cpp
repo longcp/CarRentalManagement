@@ -14,6 +14,7 @@
 #include <logindialog.h>
 #include <usermanagerdialog.h>
 #include <versiondialog.h>
+#include <datatype.h>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -52,40 +53,40 @@ MainWindow::MainWindow(QWidget *parent) :
     mOpenTabList.insert(0, ui->homePageTab);
 
     // 菜单栏
-    mMenuSystemSetting  = ui->menuBar->addMenu(tr("系统设置"));
-    mMenuRentalManagement   = ui->menuBar->addMenu(tr("租赁管理"));
-    mMenuCarManagement  = ui->menuBar->addMenu(tr("车辆管理"));
-    mMenuFinanceManagement  = ui->menuBar->addMenu(tr("财务统计"));
-    mMenuUploadPicture  = ui->menuBar->addMenu(tr("上传图片"));
-    mMenuUserManagerment= ui->menuBar->addMenu(tr("用户管理"));
-    mMenuAbout = ui->menuBar->addMenu(tr("关于"));
+    mMenuSystemSetting  = ui->menuBar->addMenu(tr(MENU_TEXT_SYSTEM_SETTING));
+    mMenuRentalManagement   = ui->menuBar->addMenu(tr(MENU_TEXT_LEASING_MANAGERMENT));
+    mMenuCarManagement  = ui->menuBar->addMenu(tr(MENU_TEXT_CAR_MANAGERMENT));
+    mMenuFinanceManagement  = ui->menuBar->addMenu(tr(MENU_TEXT_FINANCIAL_STATISTICS));
+    mMenuUploadPicture  = ui->menuBar->addMenu(tr(MENU_TEXT_UPLOAD_IMAGE));
+    mMenuUserManagerment= ui->menuBar->addMenu(tr(MENU_TEXT_USER_MANAGERMENT));
+    mMenuAbout = ui->menuBar->addMenu(tr(MENU_TEXT_HELP));
     mActExitSystem = mMenuSystemSetting->addAction(
                 QIcon(":/menu/icon/exit.png"),
-                tr("退出系统"));
+                tr(ACTION_TEXT_EXIT_SYSTEM));
     mActClient = mMenuRentalManagement->addAction(
                 QIcon(":/menu/icon/client.png"),
-                tr("客户资料"));
+                tr(ACTION_TEXT_CLIENT_MANAGERMENT));
     mActContract = mMenuRentalManagement->addAction(
                 QIcon(":/menu/icon/contract_64.ico"),
-                tr("租赁合同"));
+                tr(ACTION_TEXT_CONTRACT));
     mActPump = mMenuRentalManagement->addAction(
                 QIcon(":/menu/icon/pump_64.ico"),
-                tr("泵送"));
+                tr(ACTION_TEXT_RENTALDOCUMENT));
     mActCarfile = mMenuCarManagement->addAction(
                 QIcon(":/menu/icon/Ford_Heavy_Wreck_Truck_128.ico"),
-                tr("车辆档案"));
+                tr(ACTION_TEXT_CAR_INFORMATION));
     mActReceivable = mMenuFinanceManagement->addAction(
                 QIcon(":/menu/icon/custom-reports256.png"),
-                tr("应收"));
+                tr(ACTION_TEXT_RECEIVABLE));
     mActReceipt = mMenuFinanceManagement->addAction(
                 QIcon(":/menu/icon/calculator_64.ico"),
-                tr("收款"));
+                tr(ACTION_TEXT_CONTRACT_RECEIPT));
     mActUserManager = mMenuUserManagerment->addAction(
                 QIcon(":/menu/icon/user_64.ico"),
-                tr("用户管理"));
+                tr(ACTION_TEXT_USER_MANAGERMENT));
     mActAbout = mMenuAbout->addAction(
                 QIcon(":/menu/icon/information_64.ico"),
-                tr("关于"));
+                tr(ACTION_TEXT_ABOUT));
 
     // 工具栏
     ui->mainToolBar->setMovable(false);
@@ -173,6 +174,11 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     connect(closeTabButton, SIGNAL(clicked()),
             this, SLOT(removeCurTab()));
+    /**
+     * @brief 当前页签切换至应收账款页
+     */
+    connect(this, SIGNAL(tabChangeToReceivableSignal(int, QString)),
+            mReceivableWidget, SLOT(tabChangeToReceivableSlot(int,QString)));
 }
 
 MainWindow::~MainWindow()
@@ -221,7 +227,7 @@ MainWindow::openClientWidget()
     mOpenTabList.insert(size, mClientWidget);
     ui->mainTabWidget->addTab(mClientWidget,
                               QIcon(":/menu/icon/client.png"),
-                              tr("客户资料"));
+                              tr(TAB_TITLE_CLIENTMANAGERMENT));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -241,7 +247,7 @@ MainWindow::openCarWidget()
     mOpenTabList.insert(size, mCarWidget);
     ui->mainTabWidget->addTab(mCarWidget,
                               QIcon(":/menu/icon/Ford_Heavy_Wreck_Truck_128.ico"),
-                              tr("车辆档案"));
+                              tr(TAB_TITLE_CAR_INFOMATION));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -261,7 +267,7 @@ MainWindow::openRentalDocWidget()
     mOpenTabList.insert(size, mRentalDocWidget);
     ui->mainTabWidget->addTab(mRentalDocWidget,
                               QIcon(":/menu/icon/pump_64.ico"),
-                              tr("泵送签证单"));
+                              tr(TAB_TITLE_RENTALDOCUMENT));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -281,7 +287,7 @@ MainWindow::openReceivableWidget()
     mOpenTabList.insert(size, mReceivableWidget);
     ui->mainTabWidget->addTab(mReceivableWidget,
                               QIcon(":/menu/icon/custom-reports256.png"),
-                              tr("应收"));
+                              tr(TAB_TITLE_RECEIVABLE));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -301,7 +307,7 @@ MainWindow::openReceiptWidget()
     mOpenTabList.insert(size, mReceiptWidget);
     ui->mainTabWidget->addTab(mReceiptWidget,
                               QIcon(":/menu/icon/calculator_64.ico"),
-                              tr("收款"));
+                              tr(TAB_TITLE_RECEIPT));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -321,7 +327,7 @@ MainWindow::openContractWidget()
     mOpenTabList.insert(size, mContractWidget);
     ui->mainTabWidget->addTab(mContractWidget,
                               QIcon(":/menu/icon/contract_64.ico"),
-                              tr("租赁合同"));
+                              tr(TAB_TITLE_CONTRACT));
     ui->mainTabWidget->setCurrentIndex(size);
 }
 
@@ -359,10 +365,17 @@ MainWindow::userLoginSlot(QString curUserName)
 void
 MainWindow::on_mainTabWidget_currentChanged(int index)
 {
-    ALOGD("%s, cur tab index = %d", __FUNCTION__, index);
-    if (index == 0) {
-        // 主页
-    } else {
-        // 其他页
+    ALOGD("%s, cur tab index = %d, text = %s", __FUNCTION__,
+          index, ui->mainTabWidget->tabText(index).toStdString().data());
+
+    if (ui->mainTabWidget->tabText(index) == ACTION_TEXT_RECEIVABLE) {
+        emit tabChangeToReceivableSignal(index, ui->mainTabWidget->tabText(index));
     }
+}
+
+void MainWindow::on_mainTabWidget_tabBarClicked(int index)
+{
+    ALOGDTRACE();
+    ALOGD("current index = %d, text = %s",
+          index, ui->mainTabWidget->tabText(index).toStdString().data());
 }

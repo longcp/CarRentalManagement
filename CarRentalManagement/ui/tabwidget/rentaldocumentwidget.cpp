@@ -23,7 +23,7 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
                 "background-color: rgb(240,240,240);color:rgb(0,0,0);");
     ui->toolbarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    this->setWindowTitle("泵送签证单");
+    this->setWindowTitle(TAB_TITLE_RENTALDOCUMENT);
 
     mRentalDocEditDialog = new RentalDocumentEditDialog();
 

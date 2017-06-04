@@ -5,6 +5,9 @@
 #include <QScrollBar>
 #include <rentaldocument.h>
 
+#define LOG_TAG                         "RECEIVABLE_WIDGET"
+#include "utils/Log.h"
+
 ReceivableWidget::ReceivableWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ReceivableWidget)
@@ -12,7 +15,7 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    this->setWindowTitle("应收账款");
+    this->setWindowTitle(TAB_TITLE_RECEIVABLE);
 
     initView();
 
@@ -45,7 +48,6 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
 
     connect(ui->totalTableview->horizontalHeader(),&QHeaderView::sectionResized,
             this, &ReceivableWidget::updateTotalSumTableviewSectionWidth);
-
     /**
      * @brief 根据进度条值同步列表位置
      */
@@ -173,12 +175,6 @@ ReceivableWidget::initDetailSumTableview()
     QStandardItem* nullStrItem = new QStandardItem("");
     QList<QStandardItem*> items;
     items << sumStrItem;
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem;
     mDetailSumModel->appendRow(items);
 }
 
@@ -275,12 +271,6 @@ ReceivableWidget::initTotalSumTableview()
     QStandardItem* nullStrItem = new QStandardItem("");
     QList<QStandardItem*> items;
     items << sumStrItem;
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem << nullStrItem << nullStrItem << nullStrItem
-//          << nullStrItem;
     mTotalModel->appendRow(items);
 }
 
@@ -298,4 +288,10 @@ ReceivableWidget::updateTotalSumTableviewSectionWidth(int logicalIndex,
                                                       int newSize)
 {
     ui->totalSummaryTableview->setColumnWidth(logicalIndex, newSize);
+}
+
+void
+ReceivableWidget::tabChangeToReceivableSlot(int index, QString tabText)
+{
+    ALOGDTRACE();
 }

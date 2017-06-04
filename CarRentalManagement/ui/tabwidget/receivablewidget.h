@@ -30,6 +30,7 @@ private slots:
                                                          int newSize);
     void            updateTotalSumTableviewSectionWidth(int logicalIndex, int,
                                                         int newSize);
+    void            tabChangeToReceivableSlot(int index, QString tabText);
 
 private:
     void            configToolBar();

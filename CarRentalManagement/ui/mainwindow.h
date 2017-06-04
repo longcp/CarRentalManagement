@@ -74,7 +74,10 @@ private slots:
     void        userLoginSlot(QString curUserName);
     void        on_mainTabWidget_currentChanged(int index);
 
+    void on_mainTabWidget_tabBarClicked(int index);
+
 signals:
+    void        tabChangeToReceivableSignal(int index, QString tabText);
 
 private:
     Ui::MainWindow *ui;

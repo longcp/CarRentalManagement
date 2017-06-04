@@ -698,10 +698,3 @@ ContractEditDialog::on_priceTableView_clicked(const QModelIndex &index)
     ALOGDTRACE();
     mCurRow = index.row();
 }
-
-void
-ContractEditDialog::on_chooseClientBtn_clicked()
-{
-    ALOGDTRACE();
-    emit openClientTableWindowSignal();
-}

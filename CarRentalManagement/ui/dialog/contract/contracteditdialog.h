@@ -66,8 +66,6 @@ private slots:
 
     void            getSelectedClient(QString number);
 
-    void            on_chooseClientBtn_clicked();
-
 signals:
     void            openContractPriceWindowSignal(OpenType, QString);
     void            addContractItemSignal(Contract&);

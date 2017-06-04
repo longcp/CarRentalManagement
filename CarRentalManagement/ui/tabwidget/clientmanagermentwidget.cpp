@@ -98,7 +98,7 @@ ClientManagermentWidget::~ClientManagermentWidget()
 void
 ClientManagermentWidget::initView()
 {
-    this->setWindowTitle("客户资料");
+    this->setWindowTitle(TAB_TITLE_CLIENTMANAGERMENT);
 
     //设置首行标题
     QStringList          headerList;

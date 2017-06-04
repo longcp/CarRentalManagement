@@ -23,7 +23,7 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     ui(new Ui::CarManagermentWidget)
 {
     ui->setupUi(this);
-    this->setWindowTitle("车辆档案");
+    this->setWindowTitle(TAB_TITLE_CAR_INFOMATION);
     mDb = DataBase::getInstance();
 
     initView();
@@ -125,8 +125,6 @@ CarManagermentWidget::~CarManagermentWidget()
 void
 CarManagermentWidget::initView()
 {
-    this->setWindowTitle("车辆资料");
-
     //设置首行标题
     QStringList headerList;
     headerList << "车号" << "泵式" << "已泵送方量数" << "已泵送台班数"

@@ -24,7 +24,7 @@ ContractWidget::ContractWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
-    this->setWindowTitle("合同");
+    this->setWindowTitle(TAB_TITLE_CONTRACT);
 
     initView();
 
