@@ -3,13 +3,16 @@
 #include <QToolBar>
 #include <tablemodel.h>
 #include <QScrollBar>
+#include <contract.h>
 #include <rentaldocument.h>
+#include <database/database.h>
 
 #define LOG_TAG                         "RECEIVABLE_WIDGET"
 #include "utils/Log.h"
 
 ReceivableWidget::ReceivableWidget(QWidget *parent) :
     QWidget(parent),
+    mDb(DataBase::getInstance()),
     ui(new Ui::ReceivableWidget)
 {
     ui->setupUi(this);
@@ -101,7 +104,7 @@ ReceivableWidget::initDetailTableview()
     QStringList headerList;
     headerList << "日期" << "签证单号" << "客户名称"
                << "车号" << "泵式" << "混凝土标号"
-               << "方量单价" << "台班单价" << "泵送方量"
+               << "方量单价/方" << "台班单价/小时" << "泵送方量"
                << "泵送台班" << "泵送台班时间" << "总金额"
                << "已收金额" << "应收金额" << "工程名称"
                << "工程地址" << "施工部位"
@@ -141,7 +144,7 @@ ReceivableWidget::initDetailSumTableview()
     QStringList headerList;
     headerList << "日期" << "签证单号" << "客户名称"
                << "车号" << "泵式" << "混凝土标号"
-               << "方量单价" << "台班单价" << "泵送方量"
+               << "方量单价/方" << "台班单价/小时" << "泵送方量"
                << "泵送台班" << "泵送台班时间" << "总金额"
                << "已收金额" << "应收金额" << "工程名称"
                << "工程地址" << "施工部位"
@@ -275,6 +278,109 @@ ReceivableWidget::initTotalSumTableview()
 }
 
 void
+ReceivableWidget::clearDetailTableview()
+{
+    if (mDetailModel->rowCount())
+        mDetailModel->removeRows(0, mDetailModel->rowCount());
+}
+
+void
+ReceivableWidget::clearSumTableview()
+{
+    if (mDetailSumModel->rowCount())
+        mTotalModel->removeRows(0, mDetailSumModel->rowCount());
+}
+
+void
+ReceivableWidget::reflashDetailTableview(QList<RentalDocument> &docs)
+{
+    clearDetailTableview();
+    addDetailTableRows(docs);
+}
+
+void
+ReceivableWidget::reflashSumTableview(QList<RentalDocument> &docs)
+{
+    clearSumTableview();
+    addSumTableRows(docs);
+}
+
+
+void
+ReceivableWidget::addDetailTableRows(QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+    for (int i = 0; i < docs.size(); i++) {
+        doc = docs.at(i);
+        addDetailTableRow(doc);
+    }
+}
+
+void
+ReceivableWidget::addSumTableRows(QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+    for (int i = 0; i < docs.size(); i++) {
+        doc = docs.at(i);
+        addSumTableRow(doc);
+    }
+}
+
+void
+ReceivableWidget::addDetailTableRow(RentalDocument &doc)
+{
+    ALOGDTRACE();
+    QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
+    QStandardItem *docNum = new QStandardItem(doc.number);
+    QStandardItem *clientName = new QStandardItem(doc.clientName);
+    QStandardItem *carPlateNumber = new QStandardItem(doc.carPlateNumber);
+    QStandardItem *concreteLable = new QStandardItem(doc.concreteLable);
+    QStandardItem *squareUnitPrice = new QStandardItem(QString("%1")
+                                                       .arg(doc.squareUnitPrice));
+    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString("%1")
+                                                         .arg(doc.pumpTimeUnitPrice));
+    QStandardItem *pumpSquare = new QStandardItem(QString("%1")
+                                                  .arg(doc.pumpSquare));
+    QStandardItem *pumpTimes = new QStandardItem(QString("%1")
+                                                 .arg(doc.pumpTimes));
+
+    QStandardItem *projectName = new QStandardItem(doc.projectName);
+    QStandardItem *projectAddr = new QStandardItem(doc.projectAddress);
+    QStandardItem *pumpType = new QStandardItem(QString("%1").arg(doc.pumpType));
+    QStandardItem *constructPlace = new QStandardItem(doc.constructPlace);
+    QStandardItem *beginFuel = new QStandardItem(QString("%1")
+                                                 .arg(doc.beginFuel));
+    QStandardItem *endFuel = new QStandardItem(QString("%1").arg(doc.endFuel));
+    QStandardItem *arrivalDateTime = new QStandardItem(doc.arrivalDateTime
+                                                       .toString(DATETIME_FORMAT_STR));
+    QStandardItem *leaveDateTime = new QStandardItem(doc.leaveDateTime
+                                                     .toString(DATETIME_FORMAT_STR));
+    QStandardItem *workingHours = new QStandardItem(QString("%1")
+                                                    .arg(doc.workingHours));
+    QStandardItem *principal = new QStandardItem(doc.principal);
+    QStandardItem *principalTel = new QStandardItem(doc.principalTel);
+    QStandardItem *driver1 = new QStandardItem(doc.driver1);
+    QStandardItem *driver2 = new QStandardItem(doc.driver2);
+    QStandardItem *driver3 = new QStandardItem(doc.driver3);
+    QStandardItem *remarks = new QStandardItem(doc.remarks);
+
+    QList<QStandardItem*> items;
+    items << docNum << clientName << projectName << projectAddr << date
+          << carPlateNumber << pumpType << constructPlace << concreteLable
+          << beginFuel << endFuel << arrivalDateTime << leaveDateTime
+          << workingHours << pumpSquare << squareUnitPrice << pumpTimes
+          << pumpTimeUnitPrice << principal << principalTel << driver1
+          << driver2 << driver3 << remarks;
+    mModel->appendRow(items);
+}
+
+void
+ReceivableWidget::addSumTableRow(RentalDocument &doc)
+{
+
+}
+
+void
 ReceivableWidget::updateDetailSumTableviewSectionWidth(int logicalIndex,
                                                        int /*oldSize*/,
                                                        int newSize)
@@ -294,4 +400,12 @@ void
 ReceivableWidget::tabChangeToReceivableSlot(int index, QString tabText)
 {
     ALOGDTRACE();
+    QList<RentalDocument> docs;
+    if (mDb->getAllRentalDocumentData(docs))
+        return;
+
+    clearDetailTableview();
+    clearSumTableview();
+    reflashDetailTableview(docs);
+    reflashSumTableview(docs);
 }

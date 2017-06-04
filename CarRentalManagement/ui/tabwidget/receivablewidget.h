@@ -6,6 +6,7 @@
 class QToolBar;
 class TableModel;
 class RentalDocument;
+class DataBase;
 
 namespace Ui {
 class ReceivableWidget;
@@ -39,9 +40,18 @@ private:
     void            initDetailSumTableview();
     void            initTotalTableview();
     void            initTotalSumTableview();
+    void            clearDetailTableview();
+    void            clearSumTableview();
+    void            reflashDetailTableview(QList<RentalDocument> &docs);
+    void            reflashSumTableview(QList<RentalDocument> &docs);
+    void            addDetailTableRows(QList<RentalDocument> &docs);
+    void            addDetailTableRow(RentalDocument &doc);
+    void            addSumTableRows(QList<RentalDocument> &docs);
+    void            addSumTableRow(RentalDocument &doc);
 
     Ui::ReceivableWidget *ui;
     QToolBar        *mToolBar;
+    DataBase*       mDb;
 
     // 工具栏动作
     QAction         *mActAdd;
