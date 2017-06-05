@@ -102,14 +102,13 @@ ReceivableWidget::initDetailTableview()
 {
     //设置首行标题
     QStringList headerList;
-    headerList << "日期" << "签证单号" << "客户名称"
+    headerList << "日期" << "签证单号" << "合同号" << "客户名称"
                << "车号" << "泵式" << "混凝土标号"
                << "方量单价/方" << "台班单价/小时" << "泵送方量"
-               << "泵送台班" << "泵送台班时间" << "总金额"
+               << "泵送台班" /*<< "泵送台班时间"*/ << "总金额"
                << "已收金额" << "应收金额" << "工程名称"
-               << "工程地址" << "施工部位"
-               << "备注" << "联系人" << "联系电话"
-               << "合同号";
+               << "工程地址" << "施工部位" << "联系人"
+               << "联系电话" << "备注" ;
 
     mDetailModel = new TableModel(0, headerList.size());
     ui->detailTableview->setModel(mDetailModel);
@@ -141,15 +140,15 @@ void
 ReceivableWidget::initDetailSumTableview()
 {
     //设置首行标题
+    // TODO:确定好台班单价、台班数、泵送台班时间的关系
     QStringList headerList;
-    headerList << "日期" << "签证单号" << "客户名称"
+    headerList << "日期" << "签证单号" << "合同号" << "客户名称"
                << "车号" << "泵式" << "混凝土标号"
                << "方量单价/方" << "台班单价/小时" << "泵送方量"
-               << "泵送台班" << "泵送台班时间" << "总金额"
+               << "泵送台班" /*<< "泵送台班时间"*/ << "总金额"
                << "已收金额" << "应收金额" << "工程名称"
-               << "工程地址" << "施工部位"
-               << "备注" << "联系人" << "联系电话"
-               << "合同号";
+               << "工程地址" << "施工部位" << "联系人"
+               << "联系电话" << "备注" ;
 
     ui->detailSummaryTablview->verticalHeader()->setDefaultSectionSize(20);
     mDetailSumModel = new TableModel(0, headerList.size());
@@ -332,8 +331,10 @@ ReceivableWidget::addDetailTableRow(RentalDocument &doc)
     ALOGDTRACE();
     QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
     QStandardItem *docNum = new QStandardItem(doc.number);
+    QStandardItem *contractNumber = new QStandardItem(doc.contractNumber);
     QStandardItem *clientName = new QStandardItem(doc.clientName);
     QStandardItem *carPlateNumber = new QStandardItem(doc.carPlateNumber);
+    QStandardItem *pumpType = new QStandardItem(QString("%1").arg(doc.pumpType));
     QStandardItem *concreteLable = new QStandardItem(doc.concreteLable);
     QStandardItem *squareUnitPrice = new QStandardItem(QString("%1")
                                                        .arg(doc.squareUnitPrice));
@@ -343,41 +344,47 @@ ReceivableWidget::addDetailTableRow(RentalDocument &doc)
                                                   .arg(doc.pumpSquare));
     QStandardItem *pumpTimes = new QStandardItem(QString("%1")
                                                  .arg(doc.pumpTimes));
-
+    QStandardItem *projectAmounts =  new QStandardItem(QString("%1")
+                                                       .arg(doc.projectAmount));
+    QStandardItem *receivedAccounts = new QStandardItem(QString("%1")
+                                                        .arg(doc.receivedAccounts));
+    QStandardItem *receivable = new QStandardItem(QString("%1")
+                                                  .arg(doc.projectAmount - doc.receivedAccounts));
     QStandardItem *projectName = new QStandardItem(doc.projectName);
     QStandardItem *projectAddr = new QStandardItem(doc.projectAddress);
-    QStandardItem *pumpType = new QStandardItem(QString("%1").arg(doc.pumpType));
     QStandardItem *constructPlace = new QStandardItem(doc.constructPlace);
-    QStandardItem *beginFuel = new QStandardItem(QString("%1")
-                                                 .arg(doc.beginFuel));
-    QStandardItem *endFuel = new QStandardItem(QString("%1").arg(doc.endFuel));
-    QStandardItem *arrivalDateTime = new QStandardItem(doc.arrivalDateTime
-                                                       .toString(DATETIME_FORMAT_STR));
-    QStandardItem *leaveDateTime = new QStandardItem(doc.leaveDateTime
-                                                     .toString(DATETIME_FORMAT_STR));
-    QStandardItem *workingHours = new QStandardItem(QString("%1")
-                                                    .arg(doc.workingHours));
     QStandardItem *principal = new QStandardItem(doc.principal);
     QStandardItem *principalTel = new QStandardItem(doc.principalTel);
-    QStandardItem *driver1 = new QStandardItem(doc.driver1);
-    QStandardItem *driver2 = new QStandardItem(doc.driver2);
-    QStandardItem *driver3 = new QStandardItem(doc.driver3);
     QStandardItem *remarks = new QStandardItem(doc.remarks);
 
     QList<QStandardItem*> items;
-    items << docNum << clientName << projectName << projectAddr << date
-          << carPlateNumber << pumpType << constructPlace << concreteLable
-          << beginFuel << endFuel << arrivalDateTime << leaveDateTime
-          << workingHours << pumpSquare << squareUnitPrice << pumpTimes
-          << pumpTimeUnitPrice << principal << principalTel << driver1
-          << driver2 << driver3 << remarks;
-    mModel->appendRow(items);
+    items << date << docNum << contractNumber << clientName << carPlateNumber
+          << pumpType << concreteLable << squareUnitPrice << pumpTimeUnitPrice
+          << pumpSquare << pumpTimes << projectAmounts << receivedAccounts
+          << receivable << projectName << projectAddr << constructPlace
+          << principal << principalTel << remarks;
+    mDetailModel->appendRow(items);
 }
 
 void
 ReceivableWidget::addSumTableRow(RentalDocument &doc)
 {
-
+    QStandardItem *contractNumber = new QStandardItem(doc.contractNumber);
+    QStandardItem *clientName = new QStandardItem(doc.clientName);
+    QStandardItem *pumpSquare = new QStandardItem(QString("%1")
+                                                  .arg(doc.pumpSquare));
+    QStandardItem *pumpTimes = new QStandardItem(QString("%1")
+                                                 .arg(doc.pumpTimes));
+    QStandardItem *projectAmounts =  new QStandardItem(QString("%1")
+                                                       .arg(doc.projectAmount));
+    QStandardItem *receivedAccounts = new QStandardItem(QString("%1")
+                                                        .arg(doc.receivedAccounts));
+    QStandardItem *receivable = new QStandardItem(QString("%1")
+                                                  .arg(doc.projectAmount - doc.receivedAccounts));
+    QList<QStandardItem*> items;
+    items << contractNumber << clientName << pumpSquare << pumpTimes
+          << projectAmounts << receivedAccounts << receivable;
+    mTotalModel->appendRow(items);
 }
 
 void
@@ -401,11 +408,11 @@ ReceivableWidget::tabChangeToReceivableSlot(int index, QString tabText)
 {
     ALOGDTRACE();
     QList<RentalDocument> docs;
-    if (mDb->getAllRentalDocumentData(docs))
+
+    if (tabText != TAB_TITLE_RECEIVABLE ||
+            mDb->getAllRentalDocumentData(docs))
         return;
 
-    clearDetailTableview();
-    clearSumTableview();
     reflashDetailTableview(docs);
     reflashSumTableview(docs);
 }
