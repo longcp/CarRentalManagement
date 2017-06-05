@@ -178,6 +178,7 @@ ReceivableWidget::initDetailSumTableview()
     QList<QStandardItem*> items;
     items << sumStrItem;
     mDetailSumModel->appendRow(items);
+    // FIXME:update_column_data(column, data);此处data为0
 }
 
 void
@@ -235,9 +236,9 @@ ReceivableWidget::initTotalSumTableview()
                << "总金额" << "已收金额" << "应收金额";
 
     ui->totalSummaryTableview->verticalHeader()->setDefaultSectionSize(20);
-    mTotalModel = new TableModel(0, headerList.size());
-    ui->totalSummaryTableview->setModel(mTotalModel);
-    mTotalModel->setHorizontalHeaderLabels(headerList);
+    mTotalSumModel = new TableModel(0, headerList.size());
+    ui->totalSummaryTableview->setModel(mTotalSumModel);
+    mTotalSumModel->setHorizontalHeaderLabels(headerList);
     //设置单元格不可编辑,单击选中一行且只能选中一行
     ui->totalSummaryTableview->setEditTriggers(
                 QAbstractItemView::NoEditTriggers);
@@ -273,7 +274,8 @@ ReceivableWidget::initTotalSumTableview()
     QStandardItem* nullStrItem = new QStandardItem("");
     QList<QStandardItem*> items;
     items << sumStrItem;
-    mTotalModel->appendRow(items);
+    mTotalSumModel->appendRow(items);
+    // FIXME:update_column_data(column, data);此处data为0
 }
 
 void
@@ -321,6 +323,7 @@ ReceivableWidget::addSumTableRows(QList<RentalDocument> &docs)
     RentalDocument doc;
     for (int i = 0; i < docs.size(); i++) {
         doc = docs.at(i);
+        // FIXME:合同号一样的条目，只添加一行，数据合计到该行上
         addSumTableRow(doc);
     }
 }
