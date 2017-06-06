@@ -10,6 +10,8 @@
 #define LOG_TAG                         "RECEIVABLE_WIDGET"
 #include "utils/Log.h"
 
+// FIXME: 统计有误待修正
+
 ReceivableWidget::ReceivableWidget(QWidget *parent) :
     QWidget(parent),
     mDb(DataBase::getInstance()),
@@ -134,6 +136,11 @@ ReceivableWidget::initDetailTableview()
 
     //隐藏滚动条
     ui->detailTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->detailTableview->setColumnWidth(COLUMN_DOC_NUMBER, 200);
+    ui->detailTableview->setColumnWidth(COLUMN_CONTRACT_NUMBER, 200);
+    ui->detailTableview->setColumnWidth(COLUMN_CLIENT_NAME, 200);
+    ui->detailTableview->setColumnWidth(COLUMN_CAR_PLATE_NUMBER, 200);
 }
 
 void
@@ -173,12 +180,16 @@ ReceivableWidget::initDetailSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
+    ui->detailSummaryTablview->setColumnWidth(COLUMN_DOC_NUMBER, 200);
+    ui->detailSummaryTablview->setColumnWidth(COLUMN_CONTRACT_NUMBER, 200);
+    ui->detailSummaryTablview->setColumnWidth(COLUMN_CLIENT_NAME, 200);
+    ui->detailSummaryTablview->setColumnWidth(COLUMN_CAR_PLATE_NUMBER, 200);
+
     QStandardItem* sumStrItem = new QStandardItem("合计");
-    QStandardItem* nullStrItem = new QStandardItem("");
     QList<QStandardItem*> items;
     items << sumStrItem;
     mDetailSumModel->appendRow(items);
-    // FIXME:update_column_data(column, data);此处data为0
+    resetDetailSumTableData();
 }
 
 void
@@ -271,11 +282,112 @@ ReceivableWidget::initTotalSumTableview()
             ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 
     QStandardItem* sumStrItem = new QStandardItem("合计");
-    QStandardItem* nullStrItem = new QStandardItem("");
     QList<QStandardItem*> items;
     items << sumStrItem;
     mTotalSumModel->appendRow(items);
     // FIXME:update_column_data(column, data);此处data为0
+}
+
+void
+ReceivableWidget::resetDetailSumTableData()
+{
+    setPumpSquareCellValue(0);
+    setPumpTimeCellValue(0);
+    setProjectAmountCellValue(0);
+    setReceiptCellValue(0);
+    setReceivableValue(0);
+}
+
+void
+ReceivableWidget::resetTotalSumTableData()
+{
+
+}
+
+void
+ReceivableWidget::setPumpSquareCellValue(int value)
+{
+    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PUMP_SQUARE),
+                             QString("%1").arg(value));
+}
+
+void
+ReceivableWidget::setPumpTimeCellValue(int value)
+{
+    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PUMP_TIME),
+                             QString("%1").arg(value));
+}
+
+void
+ReceivableWidget::setProjectAmountCellValue(int value)
+{
+    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PROJECT_AMOUNT),
+                             QString("%1").arg(value));
+}
+
+void
+ReceivableWidget::setReceiptCellValue(int value)
+{
+
+    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_RECEIPT),
+                             QString("%1").arg(value));
+}
+
+void
+ReceivableWidget::setReceivableValue(int value)
+{
+    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_RECEIVABLE),
+                             QString("%1").arg(value));
+}
+
+void
+ReceivableWidget::pumpSquareCellAddValue(int value)
+{
+    bool ok;
+    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_PUMP_SQUARE)).toInt(&ok);
+    ALOGD("pumpSquareCellAddValue curValue = %d, value = %d, curValue+value=%d",
+          curValue, value, curValue+value);
+    setPumpSquareCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::pumpTimeCellAddValue(int value)
+{
+    bool ok;
+    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_PUMP_TIME)).toInt(&ok);
+    ALOGD("pumpTimeCellAddValue curValue = %d, value = %d, curValue+value=%d",
+          curValue, value, curValue+value);
+    setPumpSquareCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::projectAmountCellAddValue(int value)
+{
+    bool ok;
+    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_PROJECT_AMOUNT)).toInt(&ok);
+    ALOGD("projectAmountCellAddValue curValue = %d, value = %d, curValue+value=%d",
+          curValue, value, curValue+value);
+    setPumpSquareCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::receiptCellAddValue(int value)
+{
+    bool ok;
+    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_RECEIPT)).toInt(&ok);
+    ALOGD("receiptCellAddValue curValue = %d, value = %d, curValue+value=%d",
+          curValue, value, curValue+value);
+    setPumpSquareCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::receivableCellAddValue(int value)
+{
+    bool ok;
+    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_RECEIVABLE)).toInt(&ok);
+    ALOGD("receivableCellAddValue curValue = %d, value = %d, curValue+value=%d",
+          curValue, value, curValue+value);
+    setPumpSquareCellValue(curValue+value);
 }
 
 void
@@ -314,6 +426,11 @@ ReceivableWidget::addDetailTableRows(QList<RentalDocument> &docs)
     for (int i = 0; i < docs.size(); i++) {
         doc = docs.at(i);
         addDetailTableRow(doc);
+        pumpSquareCellAddValue(doc.pumpSquare);
+        pumpTimeCellAddValue(doc.pumpTimes);
+        projectAmountCellAddValue(doc.projectAmount);
+        receiptCellAddValue(doc.receivedAccounts);
+        receivableCellAddValue(doc.projectAmount-doc.receivedAccounts);
     }
 }
 
