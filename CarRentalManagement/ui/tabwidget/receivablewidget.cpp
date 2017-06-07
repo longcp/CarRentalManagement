@@ -305,28 +305,28 @@ ReceivableWidget::resetTotalSumTableData()
 }
 
 void
-ReceivableWidget::setPumpSquareCellValue(int value)
+ReceivableWidget::setPumpSquareCellValue(float value)
 {
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PUMP_SQUARE),
                              QString("%1").arg(value));
 }
 
 void
-ReceivableWidget::setPumpTimeCellValue(int value)
+ReceivableWidget::setPumpTimeCellValue(float value)
 {
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PUMP_TIME),
                              QString("%1").arg(value));
 }
 
 void
-ReceivableWidget::setProjectAmountCellValue(int value)
+ReceivableWidget::setProjectAmountCellValue(float value)
 {
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PROJECT_AMOUNT),
                              QString("%1").arg(value));
 }
 
 void
-ReceivableWidget::setReceiptCellValue(int value)
+ReceivableWidget::setReceiptCellValue(float value)
 {
 
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_RECEIPT),
@@ -334,60 +334,45 @@ ReceivableWidget::setReceiptCellValue(int value)
 }
 
 void
-ReceivableWidget::setReceivableValue(int value)
+ReceivableWidget::setReceivableValue(float value)
 {
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_RECEIVABLE),
                              QString("%1").arg(value));
 }
 
 void
-ReceivableWidget::pumpSquareCellAddValue(int value)
+ReceivableWidget::pumpSquareCellAddValue(float value)
 {
-    bool ok;
-    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_PUMP_SQUARE)).toInt(&ok);
-    ALOGD("pumpSquareCellAddValue curValue = %d, value = %d, curValue+value=%d",
-          curValue, value, curValue+value);
+    float curValue = mDetailSumModel->index(0, COLUMN_PUMP_SQUARE).data().toFloat();
     setPumpSquareCellValue(curValue+value);
 }
 
 void
-ReceivableWidget::pumpTimeCellAddValue(int value)
+ReceivableWidget::pumpTimeCellAddValue(float value)
 {
-    bool ok;
-    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_PUMP_TIME)).toInt(&ok);
-    ALOGD("pumpTimeCellAddValue curValue = %d, value = %d, curValue+value=%d",
-          curValue, value, curValue+value);
-    setPumpSquareCellValue(curValue+value);
+    float curValue = mDetailSumModel->index(0, COLUMN_PUMP_TIME).data().toFloat();
+    setPumpTimeCellValue(curValue+value);
 }
 
 void
-ReceivableWidget::projectAmountCellAddValue(int value)
+ReceivableWidget::projectAmountCellAddValue(float value)
 {
-    bool ok;
-    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_PROJECT_AMOUNT)).toInt(&ok);
-    ALOGD("projectAmountCellAddValue curValue = %d, value = %d, curValue+value=%d",
-          curValue, value, curValue+value);
-    setPumpSquareCellValue(curValue+value);
+    float curValue = mDetailSumModel->index(0, COLUMN_PROJECT_AMOUNT).data().toFloat();
+    setProjectAmountCellValue(curValue+value);
 }
 
 void
-ReceivableWidget::receiptCellAddValue(int value)
+ReceivableWidget::receiptCellAddValue(float value)
 {
-    bool ok;
-    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_RECEIPT)).toInt(&ok);
-    ALOGD("receiptCellAddValue curValue = %d, value = %d, curValue+value=%d",
-          curValue, value, curValue+value);
-    setPumpSquareCellValue(curValue+value);
+    float curValue = mDetailSumModel->index(0, COLUMN_RECEIPT).data().toFloat();
+    setReceiptCellValue(curValue+value);
 }
 
 void
-ReceivableWidget::receivableCellAddValue(int value)
+ReceivableWidget::receivableCellAddValue(float value)
 {
-    bool ok;
-    int curValue = mDetailSumModel->data(mDetailSumModel->index(0, COLUMN_RECEIVABLE)).toInt(&ok);
-    ALOGD("receivableCellAddValue curValue = %d, value = %d, curValue+value=%d",
-          curValue, value, curValue+value);
-    setPumpSquareCellValue(curValue+value);
+    float curValue = mDetailSumModel->index(0, COLUMN_RECEIVABLE).data().toFloat();
+    setReceivableValue(curValue+value);
 }
 
 void

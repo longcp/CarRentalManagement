@@ -48,16 +48,16 @@ private:
     void            addDetailTableRow(RentalDocument &doc);
     void            addSumTableRows(QList<RentalDocument> &docs);
     void            addSumTableRow(RentalDocument &doc);
-    void            setPumpSquareCellValue(int value);
-    void            setPumpTimeCellValue(int value);
-    void            setProjectAmountCellValue(int value);
-    void            setReceiptCellValue(int value);
-    void            setReceivableValue(int value);
-    void            pumpSquareCellAddValue(int value);
-    void            pumpTimeCellAddValue(int value);
-    void            projectAmountCellAddValue(int value);
-    void            receiptCellAddValue(int value);
-    void            receivableCellAddValue(int value);
+    void            setPumpSquareCellValue(float value);
+    void            setPumpTimeCellValue(float value);
+    void            setProjectAmountCellValue(float value);
+    void            setReceiptCellValue(float value);
+    void            setReceivableValue(float value);
+    void            pumpSquareCellAddValue(float value);
+    void            pumpTimeCellAddValue(float value);
+    void            projectAmountCellAddValue(float value);
+    void            receiptCellAddValue(float value);
+    void            receivableCellAddValue(float value);
     void            resetDetailSumTableData();
     void            resetTotalSumTableData();
 
