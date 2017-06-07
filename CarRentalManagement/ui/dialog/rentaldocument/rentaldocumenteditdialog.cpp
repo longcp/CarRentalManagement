@@ -393,7 +393,7 @@ RentalDocumentEditDialog::saveAndExitEvent()
     }
 
     if (!isModified()) {
-        ALOGD("33939393939393939393");
+        ALOGD("111111111");
         closeDialog();
         return;
     }
@@ -412,10 +412,8 @@ RentalDocumentEditDialog::saveAndExitEvent()
         }
 
         if (!mDb->insertRentalDocumentTable(doc)) {
-            ALOGD("0000000000000000000000000000");
             resetView(doc);
             emit addRentalDocSignal(doc);
-            ALOGD("111111111111111111111111111111");
             QMessageBox::information(this,
                                      tr("温馨提示"),
                                      tr("添加成功.\n"),
@@ -432,10 +430,8 @@ RentalDocumentEditDialog::saveAndExitEvent()
     } else {
         //更新到数据库
         if (!mDb->updateRentalDocumentData(doc)) {
-            ALOGD("9999999999999999999999999999");
             resetView(doc);
             emit updateDocItemSignal(doc);
-            ALOGD("22222222222222222222222");
             QMessageBox::information(this,
                                      tr("温馨提示"),
                                      tr("已保存.\n"),
@@ -512,7 +508,7 @@ RentalDocumentEditDialog::editEvent()
 void
 RentalDocumentEditDialog::closeDialog()
 {
-    ALOGD("closeDialog");
+    ALOGDTRACE();
     this->close();
 }
 
@@ -522,6 +518,7 @@ RentalDocumentEditDialog::getCar(QString number)
     Car car;
     if (!mDb->getCarInNumber(number, car)) {
         ui->carNumberLabel->setText(car.carNumber);
+//        ui->carNumberLabel->setWindowModified(true);
         mCarNumber = car.number;
     }
 }
@@ -538,6 +535,8 @@ RentalDocumentEditDialog::getContract(QString number)
 bool
 RentalDocumentEditDialog::isModified()
 {
+    // FIXME:解决isWindowModified不生效问题，可在控件改变时用setWindowModified进行标记，关闭
+    // 窗口时，在清除标志，修复各个dialog的isWindowModified问题
     if (ui->clientNameLabel->isWindowModified() ||
             ui->contractNumberLabel->isWindowModified() ||
             ui->carNumberLabel->isWindowModified() ||
@@ -625,7 +624,6 @@ RentalDocumentEditDialog::resetView(RentalDocument &doc)
 {
     setOriginRentalDocument(doc);
 
-    ALOGD("55555555555555555555555555555");
     resetView();
 }
 
