@@ -380,6 +380,8 @@ ReceivableWidget::clearDetailTableview()
 {
     if (mDetailModel->rowCount())
         mDetailModel->removeRows(0, mDetailModel->rowCount());
+
+    resetDetailSumTableData();
 }
 
 void
@@ -387,6 +389,8 @@ ReceivableWidget::clearSumTableview()
 {
     if (mDetailSumModel->rowCount())
         mTotalModel->removeRows(0, mDetailSumModel->rowCount());
+
+    // FIXME: reset
 }
 
 void
