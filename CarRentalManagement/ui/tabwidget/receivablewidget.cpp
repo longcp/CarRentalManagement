@@ -308,21 +308,21 @@ void
 ReceivableWidget::setPumpSquareCellValue(float value)
 {
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PUMP_SQUARE),
-                             QString("%1").arg(value));
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
 ReceivableWidget::setPumpTimeCellValue(float value)
 {
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PUMP_TIME),
-                             QString("%1").arg(value));
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
 ReceivableWidget::setProjectAmountCellValue(float value)
 {
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PROJECT_AMOUNT),
-                             QString("%1").arg(value));
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
@@ -330,14 +330,14 @@ ReceivableWidget::setReceiptCellValue(float value)
 {
 
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_RECEIPT),
-                             QString("%1").arg(value));
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
 ReceivableWidget::setReceivableValue(float value)
 {
     mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_RECEIVABLE),
-                             QString("%1").arg(value));
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
