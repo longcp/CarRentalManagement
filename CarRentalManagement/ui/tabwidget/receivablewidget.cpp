@@ -137,10 +137,10 @@ ReceivableWidget::initDetailTableview()
     //隐藏滚动条
     ui->detailTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    ui->detailTableview->setColumnWidth(COLUMN_DOC_NUMBER, 200);
-    ui->detailTableview->setColumnWidth(COLUMN_CONTRACT_NUMBER, 200);
-    ui->detailTableview->setColumnWidth(COLUMN_CLIENT_NAME, 200);
-    ui->detailTableview->setColumnWidth(COLUMN_CAR_PLATE_NUMBER, 200);
+    ui->detailTableview->setColumnWidth(DETAILTABLE_COLUMN_DOC_NUMBER, 200);
+    ui->detailTableview->setColumnWidth(DETAILTABLE_COLUMN_CONTRACT_NUMBER, 200);
+    ui->detailTableview->setColumnWidth(DETAILTABLE_COLUMN_CLIENT_NAME, 200);
+    ui->detailTableview->setColumnWidth(DETAILTABLE_COLUMN_CAR_PLATE_NUMBER, 200);
 }
 
 void
@@ -180,10 +180,10 @@ ReceivableWidget::initDetailSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    ui->detailSummaryTablview->setColumnWidth(COLUMN_DOC_NUMBER, 200);
-    ui->detailSummaryTablview->setColumnWidth(COLUMN_CONTRACT_NUMBER, 200);
-    ui->detailSummaryTablview->setColumnWidth(COLUMN_CLIENT_NAME, 200);
-    ui->detailSummaryTablview->setColumnWidth(COLUMN_CAR_PLATE_NUMBER, 200);
+    ui->detailSummaryTablview->setColumnWidth(DETAILTABLE_COLUMN_DOC_NUMBER, 200);
+    ui->detailSummaryTablview->setColumnWidth(DETAILTABLE_COLUMN_CONTRACT_NUMBER, 200);
+    ui->detailSummaryTablview->setColumnWidth(DETAILTABLE_COLUMN_CLIENT_NAME, 200);
+    ui->detailSummaryTablview->setColumnWidth(DETAILTABLE_COLUMN_CAR_PLATE_NUMBER, 200);
 
     QStandardItem* sumStrItem = new QStandardItem("合计");
     QList<QStandardItem*> items;
@@ -291,88 +291,164 @@ ReceivableWidget::initTotalSumTableview()
 void
 ReceivableWidget::resetDetailSumTableData()
 {
-    setPumpSquareCellValue(0);
-    setPumpTimeCellValue(0);
-    setProjectAmountCellValue(0);
-    setReceiptCellValue(0);
-    setReceivableValue(0);
+    setDetailPumpSquareCellValue(0);
+    setDetailPumpTimeCellValue(0);
+    setDetailProjectAmountCellValue(0);
+    setDetailReceiptCellValue(0);
+    setDetailReceivableValue(0);
 }
 
 void
 ReceivableWidget::resetTotalSumTableData()
 {
-
+    setSumPumpSquareCellValue(0);
+    setSumPumpTimeCellValue(0);
+    setSumProjectAmountCellValue(0);
+    setSumReceiptCellValue(0);
+    setSumReceivableValue(0);
 }
 
 void
-ReceivableWidget::setPumpSquareCellValue(float value)
+ReceivableWidget::setDetailPumpSquareCellValue(float value)
 {
-    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PUMP_SQUARE),
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_PUMP_SQUARE),
                              QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::setPumpTimeCellValue(float value)
+ReceivableWidget::setDetailPumpTimeCellValue(float value)
 {
-    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PUMP_TIME),
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_PUMP_TIME),
                              QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::setProjectAmountCellValue(float value)
+ReceivableWidget::setDetailProjectAmountCellValue(float value)
 {
-    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_PROJECT_AMOUNT),
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_PROJECT_AMOUNT),
                              QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::setReceiptCellValue(float value)
+ReceivableWidget::setDetailReceiptCellValue(float value)
 {
 
-    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_RECEIPT),
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_RECEIPT),
                              QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::setReceivableValue(float value)
+ReceivableWidget::setDetailReceivableValue(float value)
 {
-    mDetailSumModel->setData(mDetailSumModel->index(0, COLUMN_RECEIVABLE),
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_RECEIVABLE),
                              QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::pumpSquareCellAddValue(float value)
+ReceivableWidget::setSumReceivableValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, COLUMN_PUMP_SQUARE).data().toFloat();
-    setPumpSquareCellValue(curValue+value);
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_RECEIVABLE),
+                             QString("%1").arg(value, 0, 'f', 2));
+}
+
+
+void
+ReceivableWidget::setSumPumpSquareCellValue(float value)
+{
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_PUMP_SQUARE),
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::pumpTimeCellAddValue(float value)
+ReceivableWidget::setSumPumpTimeCellValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, COLUMN_PUMP_TIME).data().toFloat();
-    setPumpTimeCellValue(curValue+value);
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_PUMP_TIME),
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::projectAmountCellAddValue(float value)
+ReceivableWidget::setSumProjectAmountCellValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, COLUMN_PROJECT_AMOUNT).data().toFloat();
-    setProjectAmountCellValue(curValue+value);
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_PROJECT_AMOUNT),
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::receiptCellAddValue(float value)
+ReceivableWidget::setSumReceiptCellValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, COLUMN_RECEIPT).data().toFloat();
-    setReceiptCellValue(curValue+value);
+
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_RECEIPT),
+                             QString("%1").arg(value, 0, 'f', 2));
 }
 
 void
-ReceivableWidget::receivableCellAddValue(float value)
+ReceivableWidget::detailPumpSquareCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, COLUMN_RECEIVABLE).data().toFloat();
-    setReceivableValue(curValue+value);
+    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_PUMP_SQUARE).data().toFloat();
+    setDetailPumpSquareCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::detailPumpTimeCellAddValue(float value)
+{
+    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_PUMP_TIME).data().toFloat();
+    setDetailPumpTimeCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::detailProjectAmountCellAddValue(float value)
+{
+    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_PROJECT_AMOUNT).data().toFloat();
+    setDetailProjectAmountCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::detailReceiptCellAddValue(float value)
+{
+    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_RECEIPT).data().toFloat();
+    setDetailReceiptCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::detailReceivableCellAddValue(float value)
+{
+    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_RECEIVABLE).data().toFloat();
+    setDetailReceivableValue(curValue+value);
+}
+
+void
+ReceivableWidget::sumPumpSquareCellAddValue(float value)
+{
+    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_PUMP_SQUARE).data().toFloat();
+    setSumPumpSquareCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::sumPumpTimeCellAddValue(float value)
+{
+    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_PUMP_TIME).data().toFloat();
+    setSumPumpTimeCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::sumProjectAmountCellAddValue(float value)
+{
+    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_PROJECT_AMOUNT).data().toFloat();
+    setSumProjectAmountCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::sumReceiptCellAddValue(float value)
+{
+    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_RECEIPT).data().toFloat();
+    setSumReceiptCellValue(curValue+value);
+}
+
+void
+ReceivableWidget::sumReceivableCellAddValue(float value)
+{
+    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_RECEIVABLE).data().toFloat();
+    setSumReceivableValue(curValue+value);
 }
 
 void
@@ -390,7 +466,7 @@ ReceivableWidget::clearSumTableview()
     if (mDetailSumModel->rowCount())
         mTotalModel->removeRows(0, mDetailSumModel->rowCount());
 
-    // FIXME: reset
+    resetTotalSumTableData();
 }
 
 void
@@ -415,22 +491,40 @@ ReceivableWidget::addDetailTableRows(QList<RentalDocument> &docs)
     for (int i = 0; i < docs.size(); i++) {
         doc = docs.at(i);
         addDetailTableRow(doc);
-        pumpSquareCellAddValue(doc.pumpSquare);
-        pumpTimeCellAddValue(doc.pumpTimes);
-        projectAmountCellAddValue(doc.projectAmount);
-        receiptCellAddValue(doc.receivedAccounts);
-        receivableCellAddValue(doc.projectAmount-doc.receivedAccounts);
+        detailPumpSquareCellAddValue(doc.pumpSquare);
+        detailPumpTimeCellAddValue(doc.pumpTimes);
+        detailProjectAmountCellAddValue(doc.projectAmount);
+        detailReceiptCellAddValue(doc.receivedAccounts);
+        detailReceivableCellAddValue(doc.projectAmount-doc.receivedAccounts);
     }
 }
 
 void
 ReceivableWidget::addSumTableRows(QList<RentalDocument> &docs)
 {
-    RentalDocument doc;
-    for (int i = 0; i < docs.size(); i++) {
-        doc = docs.at(i);
-        // FIXME:合同号一样的条目，只添加一行，数据合计到该行上
-        addSumTableRow(doc);
+    RentalDocument doc1, doc2;
+    QList<RentalDocument> docsTemp;
+    while (docs.size() > 0) {
+        doc1 = docs.takeFirst();
+        for (int i = 0; i < docs.size(); i++) {
+            if (doc1.contractNumber == docs.at(i).contractNumber) {
+                docsTemp.push_back(docs.takeAt(i--));
+            }
+        }
+
+        for (int i = 0; i < docsTemp.size(); i++) {
+            doc1.pumpSquare += docsTemp.at(i).pumpSquare;
+            doc1.pumpTimes += docsTemp.at(i).pumpTimes;
+            doc1.projectAmount += docsTemp.at(i).projectAmount;
+            doc1.receivedAccounts += docsTemp.at(i).receivedAccounts;
+        }
+        sumPumpSquareCellAddValue(doc1.pumpSquare);
+        sumPumpTimeCellAddValue(doc1.pumpTimes);
+        sumProjectAmountCellAddValue(doc1.projectAmount);
+        sumReceiptCellAddValue(doc1.receivedAccounts);
+        sumReceivableCellAddValue(doc1.projectAmount-doc1.receivedAccounts);
+        addSumTableRow(doc1);
+        docsTemp.clear();
     }
 }
 

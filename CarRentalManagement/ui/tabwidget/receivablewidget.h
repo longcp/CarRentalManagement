@@ -40,24 +40,40 @@ private:
     void            initDetailSumTableview();
     void            initTotalTableview();
     void            initTotalSumTableview();
+
     void            clearDetailTableview();
     void            clearSumTableview();
+
     void            reflashDetailTableview(QList<RentalDocument> &docs);
     void            reflashSumTableview(QList<RentalDocument> &docs);
+
     void            addDetailTableRows(QList<RentalDocument> &docs);
     void            addDetailTableRow(RentalDocument &doc);
     void            addSumTableRows(QList<RentalDocument> &docs);
     void            addSumTableRow(RentalDocument &doc);
-    void            setPumpSquareCellValue(float value);
-    void            setPumpTimeCellValue(float value);
-    void            setProjectAmountCellValue(float value);
-    void            setReceiptCellValue(float value);
-    void            setReceivableValue(float value);
-    void            pumpSquareCellAddValue(float value);
-    void            pumpTimeCellAddValue(float value);
-    void            projectAmountCellAddValue(float value);
-    void            receiptCellAddValue(float value);
-    void            receivableCellAddValue(float value);
+
+    void            setDetailPumpSquareCellValue(float value);
+    void            setDetailPumpTimeCellValue(float value);
+    void            setDetailProjectAmountCellValue(float value);
+    void            setDetailReceiptCellValue(float value);
+    void            setDetailReceivableValue(float value);
+    void            setSumPumpSquareCellValue(float value);
+    void            setSumPumpTimeCellValue(float value);
+    void            setSumProjectAmountCellValue(float value);
+    void            setSumReceiptCellValue(float value);
+    void            setSumReceivableValue(float value);
+
+    void            detailPumpSquareCellAddValue(float value);
+    void            detailPumpTimeCellAddValue(float value);
+    void            detailProjectAmountCellAddValue(float value);
+    void            detailReceiptCellAddValue(float value);
+    void            detailReceivableCellAddValue(float value);
+    void            sumPumpSquareCellAddValue(float value);
+    void            sumPumpTimeCellAddValue(float value);
+    void            sumProjectAmountCellAddValue(float value);
+    void            sumReceiptCellAddValue(float value);
+    void            sumReceivableCellAddValue(float value);
+
     void            resetDetailSumTableData();
     void            resetTotalSumTableData();
 
@@ -80,26 +96,36 @@ private:
     TableModel*     mTotalSumModel;
 
     enum DetailTableColumn {
-        COLUMN_DATE,
-        COLUMN_DOC_NUMBER,
-        COLUMN_CONTRACT_NUMBER,
-        COLUMN_CLIENT_NAME,
-        COLUMN_CAR_PLATE_NUMBER,
-        COLUMN_PUMPTYPE,
-        COLUMN_CONCRETE_LABLE,
-        COLUMN_SQUARE_UNIT_PRICE,
-        COLUMN_PUMPTIME_UNIT_PRICE,
-        COLUMN_PUMP_SQUARE,
-        COLUMN_PUMP_TIME,
-        COLUMN_PROJECT_AMOUNT,
-        COLUMN_RECEIPT,
-        COLUMN_RECEIVABLE,
-        COLUMN_PROJECT_NAME,
-        COLUMN_PROJECT_ADDRESS,
-        COLUMN_CONSTRUCT_PLACE,
-        COLUMN_PRINCIPLE,
-        COLUMN_PRINCIPLE_TEL,
-        COLUMN_REMARKS
+        DETAILTABLE_COLUMN_DATE,
+        DETAILTABLE_COLUMN_DOC_NUMBER,
+        DETAILTABLE_COLUMN_CONTRACT_NUMBER,
+        DETAILTABLE_COLUMN_CLIENT_NAME,
+        DETAILTABLE_COLUMN_CAR_PLATE_NUMBER,
+        DETAILTABLE_COLUMN_PUMPTYPE,
+        DETAILTABLE_COLUMN_CONCRETE_LABLE,
+        DETAILTABLE_COLUMN_SQUARE_UNIT_PRICE,
+        DETAILTABLE_COLUMN_PUMPTIME_UNIT_PRICE,
+        DETAILTABLE_COLUMN_PUMP_SQUARE,
+        DETAILTABLE_COLUMN_PUMP_TIME,
+        DETAILTABLE_COLUMN_PROJECT_AMOUNT,
+        DETAILTABLE_COLUMN_RECEIPT,
+        DETAILTABLE_COLUMN_RECEIVABLE,
+        DETAILTABLE_COLUMN_PROJECT_NAME,
+        DETAILTABLE_COLUMN_PROJECT_ADDRESS,
+        DETAILTABLE_COLUMN_CONSTRUCT_PLACE,
+        DETAILTABLE_COLUMN_PRINCIPLE,
+        DETAILTABLE_COLUMN_PRINCIPLE_TEL,
+        DETAILTABLE_COLUMN_REMARKS
+    };
+
+    enum SumTableColumn {
+        SUMTABLE_COLUMN_CONTRACT_NUMBER,
+        SUMTABLE_COLUMN_CLIENT_NAME,
+        SUMTABLE_COLUMN_PUMP_SQUARE,
+        SUMTABLE_COLUMN_PUMP_TIME,
+        SUMTABLE_COLUMN_PROJECT_AMOUNT,
+        SUMTABLE_COLUMN_RECEIPT,
+        SUMTABLE_COLUMN_RECEIVABLE,
     };
 };
 
