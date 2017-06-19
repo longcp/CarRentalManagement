@@ -6,6 +6,8 @@
 class QToolBar;
 class ReceiptEditDialog;
 class TableModel;
+class DataBase;
+class RentalDocument;
 
 namespace Ui {
 class ReceiptWidget;
@@ -29,6 +31,7 @@ private slots:
     void            updateReceiptSumTableSectionWidth(int logicalIndex,
                                                       int /*oldSize*/,
                                                       int newSize);
+    void            tabChangeToReceiptSlot(int index, QString tabText);
 
 signals:
     /**
@@ -41,6 +44,7 @@ private:
     void            initView();
     void            initReceiptTable();
     void            initReceiptSumTable();
+    void            reflashView(QList<RentalDocument> docs);
 
     Ui::ReceiptWidget *ui;
     QToolBar        *mToolBar;
@@ -59,6 +63,31 @@ private:
 
     TableModel*     mReceiptModel;
     TableModel*     mReceiptSumModel;
+
+    DataBase*       mDb;
+
+    enum ReceiptTableColumn {
+        RECEIPTTABLE_COLUMN_DATE,
+        RECEIPTTABLE_COLUMN_DOC_NUMBER,
+        RECEIPTTABLE_COLUMN_CONTRACT_NUMBER,
+        RECEIPTTABLE_COLUMN_CLIENT_NAME,
+        RECEIPTTABLE_COLUMN_CAR_PLATE_NUMBER,
+        RECEIPTTABLE_COLUMN_PUMPTYPE,
+        RECEIPTTABLE_COLUMN_CONCRETE_LABLE,
+        RECEIPTTABLE_COLUMN_SQUARE_UNIT_PRICE,
+        RECEIPTTABLE_COLUMN_PUMPTIME_UNIT_PRICE,
+        RECEIPTTABLE_COLUMN_PUMP_SQUARE,
+        RECEIPTTABLE_COLUMN_PUMP_TIME,
+        RECEIPTTABLE_COLUMN_PROJECT_AMOUNT,
+        RECEIPTTABLE_COLUMN_RECEIPT,
+        RECEIPTTABLE_COLUMN_RECEIVABLE,
+        RECEIPTTABLE_COLUMN_PROJECT_NAME,
+        RECEIPTTABLE_COLUMN_PROJECT_ADDRESS,
+        RECEIPTTABLE_COLUMN_CONSTRUCT_PLACE,
+        RECEIPTTABLE_COLUMN_PRINCIPLE,
+        RECEIPTTABLE_COLUMN_PRINCIPLE_TEL,
+        RECEIPTTABLE_COLUMN_REMARKS
+    };
 };
 
 #endif // RECEIPTWIDGET_H

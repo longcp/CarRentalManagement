@@ -4,12 +4,17 @@
 #include <receipteditdialog.h>
 #include <datatype.h>
 #include <tablemodel.h>
+#include <QScrollBar>
+#include <contract.h>
+#include <rentaldocument.h>
+#include <database/database.h>
 
-#define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
+#define LOG_TAG                         "RECEIPT_WIDGET"
 #include "utils/Log.h"
 
 ReceiptWidget::ReceiptWidget(QWidget *parent) :
     QWidget(parent),
+    mDb(DataBase::getInstance()),
     ui(new Ui::ReceiptWidget)
 {
     ui->setupUi(this);
@@ -192,4 +197,23 @@ ReceiptWidget::cellDoubleClickedSlot(int a,int b)
 {
     ALOGD("%s, a = %d, b = %d", __FUNCTION__, a, b);
     emit openReceiptEditDialogSignal();
+}
+
+void
+ReceiptWidget::reflashView(QList<RentalDocument> docs)
+{
+
+}
+
+void
+ReceiptWidget::tabChangeToReceiptSlot(int index, QString tabText)
+{
+    ALOGDTRACE();
+    QList<RentalDocument> docs;
+
+    if (tabText != TAB_TITLE_RECEIPT ||
+            mDb->getAllRentalDocumentData(docs))
+        return;
+
+    reflashView(docs);
 }
