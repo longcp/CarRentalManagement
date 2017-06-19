@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1142</width>
+    <width>1257</width>
     <height>744</height>
    </rect>
   </property>
@@ -101,6 +101,9 @@
       <item>
        <widget class="QWidget" name="chooseTopWidget" native="true">
         <layout class="QHBoxLayout" name="chooseUpHorizonLayout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
          <property name="bottomMargin">
           <number>0</number>
          </property>
@@ -130,13 +133,13 @@
           <widget class="QDateEdit" name="fromDateEdit">
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>120</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>200</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
            </property>
@@ -146,21 +149,21 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="toLabel">
+          <widget class="QLabel" name="label">
            <property name="minimumSize">
             <size>
-             <width>20</width>
+             <width>60</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>20</width>
+             <width>60</width>
              <height>16777215</height>
             </size>
            </property>
            <property name="text">
-            <string>到</string>
+            <string>签证单号:</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -168,9 +171,18 @@
           </widget>
          </item>
          <item>
-          <widget class="QDateEdit" name="toDateEdit">
-           <property name="calendarPopup">
-            <bool>true</bool>
+          <widget class="QComboBox" name="comboBox">
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -178,13 +190,13 @@
           <widget class="QLabel" name="contractNumLabel">
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>70</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>70</width>
              <height>16777215</height>
             </size>
            </property>
@@ -197,7 +209,20 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="ContractNumComboBox"/>
+          <widget class="QComboBox" name="ContractNumComboBox">
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="clientNameLabel">
@@ -222,23 +247,20 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="clientNameComboBox"/>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+          <widget class="QComboBox" name="clientNameComboBox">
+           <property name="minimumSize">
             <size>
-             <width>10</width>
-             <height>10</height>
+             <width>150</width>
+             <height>0</height>
             </size>
            </property>
-          </spacer>
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QFrame" name="clientTypeFrame">
@@ -246,6 +268,12 @@
             <size>
              <width>250</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>250</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="frameShape">
@@ -304,25 +332,47 @@
            </layout>
           </widget>
          </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
       </item>
       <item>
        <widget class="QWidget" name="chooseBottomWidget" native="true">
         <layout class="QHBoxLayout" name="chooseBottomHorizontalLayout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
          <property name="topMargin">
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="toLabel">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
-             <width>60</width>
+             <width>20</width>
              <height>16777215</height>
             </size>
            </property>
            <property name="text">
-            <string>签证单号:</string>
+            <string>到</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -330,69 +380,32 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="docNumLineEdit">
+          <widget class="QDateEdit" name="toDateEdit">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
-             <width>16777215</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="maximumSize">
-            <size>
-             <width>50</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>业务员:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="salesmanLineEdit">
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="maximumSize">
-            <size>
-             <width>70</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>混泥土公司:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="companyLineEdit">
-           <property name="maximumSize">
-            <size>
-             <width>200</width>
-             <height>16777215</height>
-            </size>
+           <property name="calendarPopup">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_3">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>60</width>
@@ -408,19 +421,70 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="pumpTypeComboBox"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="carNumLabel">
+          <widget class="QComboBox" name="pumpTypeComboBox">
            <property name="minimumSize">
             <size>
-             <width>30</width>
+             <width>150</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>30</width>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>70</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>混泥土公司:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_3">
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="carNumLabel">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
              <height>16777215</height>
             </size>
            </property>
@@ -440,23 +504,13 @@
              <height>0</height>
             </size>
            </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+           <property name="maximumSize">
             <size>
-             <width>15</width>
-             <height>10</height>
+             <width>150</width>
+             <height>16777215</height>
             </size>
            </property>
-          </spacer>
+          </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="receivableCheckBox">
@@ -472,152 +526,83 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="detailTableWidget">
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>新建行</string>
-      </property>
-     </row>
-     <column>
-      <property name="text">
-       <string>日期</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>单号</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>合同号</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>客户名称</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>车号</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>泵式</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>方量单价</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>台班单价</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>泵送方量</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>泵送台班</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>补油费</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>送管费</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>过路费</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>总金额</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>已收金额</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>应收金额</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>工程名称</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>工程地址</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>浇注部位</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>签证单号</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>进场时间</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>出场时间</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>混泥土公司</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>业务员</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>备注</string>
-      </property>
-     </column>
+    <widget class="QTabWidget" name="summaryTableWidget">
+     <property name="tabPosition">
+      <enum>QTabWidget::South</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="detailTab">
+      <attribute name="title">
+       <string>应收明细</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTableView" name="receiptTable"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="receiptSumTable">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="summaryTab">
+      <attribute name="title">
+       <string>应收汇总</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTableView" name="totalTableview"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="totalSummaryTableview">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

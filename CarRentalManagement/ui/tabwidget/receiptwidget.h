@@ -5,6 +5,7 @@
 
 class QToolBar;
 class ReceiptEditDialog;
+class TableModel;
 
 namespace Ui {
 class ReceiptWidget;
@@ -25,6 +26,9 @@ private slots:
      * @param b
      */
     void            cellDoubleClickedSlot(int a,int b);
+    void            updateReceiptSumTableSectionWidth(int logicalIndex,
+                                                      int /*oldSize*/,
+                                                      int newSize);
 
 signals:
     /**
@@ -33,10 +37,10 @@ signals:
     void            openReceiptEditDialogSignal();
 
 private:
-    /**
-     * @brief 配置工具栏
-     */
     void            configToolBar();
+    void            initView();
+    void            initReceiptTable();
+    void            initReceiptSumTable();
 
     Ui::ReceiptWidget *ui;
     QToolBar        *mToolBar;
@@ -52,6 +56,9 @@ private:
     QAction         *mActPrinter;
     QAction         *mActExport;
     QAction         *mActImport;
+
+    TableModel*     mReceiptModel;
+    TableModel*     mReceiptSumModel;
 };
 
 #endif // RECEIPTWIDGET_H
