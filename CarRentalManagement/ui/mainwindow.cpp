@@ -179,6 +179,12 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     connect(this, SIGNAL(tabChangeToReceivableSignal(int, QString)),
             mReceivableWidget, SLOT(tabChangeToReceivableSlot(int,QString)));
+    /**
+     * @brief 当前页签切换至合同收款页
+     */
+    connect(this, SIGNAL(tabChangeToReceivableSignal(int, QString)),
+            mReceiptWidget, SLOT(tabChangeToReceiptSlot(int,QString)));
+
 }
 
 MainWindow::~MainWindow()
@@ -369,6 +375,8 @@ MainWindow::on_mainTabWidget_currentChanged(int index)
           index, ui->mainTabWidget->tabText(index).toStdString().data());
 
     if (ui->mainTabWidget->tabText(index) == ACTION_TEXT_RECEIVABLE) {
+        emit tabChangeToReceivableSignal(index, ui->mainTabWidget->tabText(index));
+    } else if(ui->mainTabWidget->tabText(index) == ACTION_TEXT_CONTRACT_RECEIPT) {
         emit tabChangeToReceivableSignal(index, ui->mainTabWidget->tabText(index));
     }
 }

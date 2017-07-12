@@ -44,7 +44,21 @@ private:
     void            initView();
     void            initReceiptTable();
     void            initReceiptSumTable();
-    void            reflashView(QList<RentalDocument> docs);
+    void            reflashView(QList<RentalDocument> docs);   
+    void            clearTableview();
+    void            addTableRows(QList<RentalDocument> &docs);
+    void            addTableRow(RentalDocument &doc);
+    void            resetReceiptSumTableData();
+    void            pumpSquareCellAddValue(float value);
+    void            pumpTimeCellAddValue(float value);
+    void            projectAmountCellAddValue(float value);
+    void            receiptCellAddValue(float value);
+    void            receivableCellAddValue(float value);
+    void            setPumpSquareCellValue(float value);
+    void            setPumpTimeCellValue(float value);
+    void            setProjectAmountCellValue(float value);
+    void            setReceiptCellValue(float value);
+    void            setReceivableValue(float value);
 
     Ui::ReceiptWidget *ui;
     QToolBar        *mToolBar;
@@ -73,7 +87,6 @@ private:
         RECEIPTTABLE_COLUMN_CLIENT_NAME,
         RECEIPTTABLE_COLUMN_CAR_PLATE_NUMBER,
         RECEIPTTABLE_COLUMN_PUMPTYPE,
-        RECEIPTTABLE_COLUMN_CONCRETE_LABLE,
         RECEIPTTABLE_COLUMN_SQUARE_UNIT_PRICE,
         RECEIPTTABLE_COLUMN_PUMPTIME_UNIT_PRICE,
         RECEIPTTABLE_COLUMN_PUMP_SQUARE,

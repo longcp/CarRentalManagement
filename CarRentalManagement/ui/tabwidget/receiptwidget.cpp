@@ -139,6 +139,11 @@ ReceiptWidget::initReceiptTable()
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
     //隐藏滚动条
     ui->receiptTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_DOC_NUMBER, 200);
+    ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CONTRACT_NUMBER, 200);
+    ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CLIENT_NAME, 200);
+    ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CAR_PLATE_NUMBER, 200);
 }
 
 void
@@ -177,11 +182,16 @@ ReceiptWidget::initReceiptSumTable()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
+    ui->receiptSumTable->setColumnWidth(RECEIPTTABLE_COLUMN_DOC_NUMBER, 200);
+    ui->receiptSumTable->setColumnWidth(RECEIPTTABLE_COLUMN_CONTRACT_NUMBER, 200);
+    ui->receiptSumTable->setColumnWidth(RECEIPTTABLE_COLUMN_CLIENT_NAME, 200);
+    ui->receiptSumTable->setColumnWidth(RECEIPTTABLE_COLUMN_CAR_PLATE_NUMBER, 200);
+
     QStandardItem* sumStrItem = new QStandardItem("合计");
     QList<QStandardItem*> items;
     items << sumStrItem;
     mReceiptSumModel->appendRow(items);
-//    resetReceiptSumTableData();
+    resetReceiptSumTableData();
 }
 
 void
@@ -200,9 +210,155 @@ ReceiptWidget::cellDoubleClickedSlot(int a,int b)
 }
 
 void
-ReceiptWidget::reflashView(QList<RentalDocument> docs)
+ReceiptWidget::setPumpSquareCellValue(float value)
+{
+    mReceiptSumModel->setData(mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PUMP_SQUARE),
+                             QString("%1").arg(value, 0, 'f', 2));
+}
+
+void
+ReceiptWidget::setPumpTimeCellValue(float value)
+{
+    mReceiptSumModel->setData(mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PUMP_TIME),
+                             QString("%1").arg(value, 0, 'f', 2));
+}
+
+void
+ReceiptWidget::setProjectAmountCellValue(float value)
+{
+    mReceiptSumModel->setData(mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PROJECT_AMOUNT),
+                             QString("%1").arg(value, 0, 'f', 2));
+}
+
+void
+ReceiptWidget::setReceiptCellValue(float value)
 {
 
+    mReceiptSumModel->setData(mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_RECEIPT),
+                             QString("%1").arg(value, 0, 'f', 2));
+}
+
+void
+ReceiptWidget::setReceivableValue(float value)
+{
+    mReceiptSumModel->setData(mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_RECEIVABLE),
+                             QString("%1").arg(value, 0, 'f', 2));
+}
+
+void
+ReceiptWidget::resetReceiptSumTableData()
+{
+    setPumpSquareCellValue(0);
+    setPumpTimeCellValue(0);
+    setProjectAmountCellValue(0);
+    setReceiptCellValue(0);
+    setReceivableValue(0);
+}
+
+void
+ReceiptWidget::addTableRow(RentalDocument &doc)
+{
+    ALOGDTRACE();
+    QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
+    QStandardItem *docNum = new QStandardItem(doc.number);
+    QStandardItem *contractNumber = new QStandardItem(doc.contractNumber);
+    QStandardItem *clientName = new QStandardItem(doc.clientName);
+    QStandardItem *carPlateNumber = new QStandardItem(doc.carPlateNumber);
+    QStandardItem *pumpType = new QStandardItem(QString("%1").arg(doc.pumpType));
+    QStandardItem *squareUnitPrice = new QStandardItem(QString("%1")
+                                                       .arg(doc.squareUnitPrice));
+    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString("%1")
+                                                         .arg(doc.pumpTimeUnitPrice));
+    QStandardItem *pumpSquare = new QStandardItem(QString("%1")
+                                                  .arg(doc.pumpSquare));
+    QStandardItem *pumpTimes = new QStandardItem(QString("%1")
+                                                 .arg(doc.pumpTimes));
+    QStandardItem *projectAmounts =  new QStandardItem(QString("%1")
+                                                       .arg(doc.projectAmount));
+    QStandardItem *receivedAccounts = new QStandardItem(QString("%1")
+                                                        .arg(doc.receivedAccounts));
+    QStandardItem *receivable = new QStandardItem(QString("%1")
+                                                  .arg(doc.projectAmount - doc.receivedAccounts));
+    QStandardItem *projectName = new QStandardItem(doc.projectName);
+    QStandardItem *projectAddr = new QStandardItem(doc.projectAddress);
+    QStandardItem *constructPlace = new QStandardItem(doc.constructPlace);
+    QStandardItem *principal = new QStandardItem(doc.principal);
+    QStandardItem *principalTel = new QStandardItem(doc.principalTel);
+    QStandardItem *remarks = new QStandardItem(doc.remarks);
+
+    QList<QStandardItem*> items;
+    items << date << docNum << contractNumber << clientName << carPlateNumber
+          << pumpType << squareUnitPrice << pumpTimeUnitPrice
+          << pumpSquare << pumpTimes << projectAmounts << receivedAccounts
+          << receivable << projectName << projectAddr << constructPlace
+          << principal << principalTel << remarks;
+    mReceiptModel->appendRow(items);
+}
+
+void
+ReceiptWidget::pumpSquareCellAddValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PUMP_SQUARE).data().toFloat();
+    setPumpSquareCellValue(curValue+value);
+}
+
+void
+ReceiptWidget::pumpTimeCellAddValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PUMP_TIME).data().toFloat();
+    setPumpTimeCellValue(curValue+value);
+}
+
+void
+ReceiptWidget::projectAmountCellAddValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PROJECT_AMOUNT).data().toFloat();
+    setProjectAmountCellValue(curValue+value);
+}
+
+void
+ReceiptWidget::receiptCellAddValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_RECEIPT).data().toFloat();
+    setReceiptCellValue(curValue+value);
+}
+
+void
+ReceiptWidget::receivableCellAddValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_RECEIVABLE).data().toFloat();
+    setReceivableValue(curValue+value);
+}
+
+void
+ReceiptWidget::addTableRows(QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+    for (int i = 0; i < docs.size(); i++) {
+        doc = docs.at(i);
+        addTableRow(doc);
+        pumpSquareCellAddValue(doc.pumpSquare);
+        pumpTimeCellAddValue(doc.pumpTimes);
+        projectAmountCellAddValue(doc.projectAmount);
+        receiptCellAddValue(doc.receivedAccounts);
+        receivableCellAddValue(doc.projectAmount-doc.receivedAccounts);
+    }
+}
+
+void
+ReceiptWidget::clearTableview()
+{
+    if (mReceiptModel->rowCount())
+        mReceiptModel->removeRows(0, mReceiptModel->rowCount());
+
+    resetReceiptSumTableData();
+}
+
+void
+ReceiptWidget::reflashView(QList<RentalDocument> docs)
+{
+    clearTableview();
+    addTableRows(docs);
 }
 
 void

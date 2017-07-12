@@ -463,8 +463,8 @@ ReceivableWidget::clearDetailTableview()
 void
 ReceivableWidget::clearSumTableview()
 {
-    if (mDetailSumModel->rowCount())
-        mTotalModel->removeRows(0, mDetailSumModel->rowCount());
+    if (mTotalModel->rowCount())
+        mTotalModel->removeRows(0, mTotalModel->rowCount());
 
     resetTotalSumTableData();
 }
