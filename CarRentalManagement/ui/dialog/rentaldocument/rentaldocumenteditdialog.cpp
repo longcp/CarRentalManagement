@@ -393,7 +393,6 @@ RentalDocumentEditDialog::saveAndExitEvent()
     }
 
     if (!isModified()) {
-        ALOGD("111111111");
         closeDialog();
         return;
     }
