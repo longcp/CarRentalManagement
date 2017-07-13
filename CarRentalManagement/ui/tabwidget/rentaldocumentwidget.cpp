@@ -64,6 +64,11 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     connect(mActEdit, SIGNAL(triggered()),
             this, SLOT(editRentalDocItemSlot()));
     /**
+     * @brief 工具栏删除按钮
+     */
+    connect(mActDelete, SIGNAL(triggered()),
+            this, SLOT(deleteRentalDocItemSlot()));
+    /**
      * @brief 单元格双击事件
      */
     connect(ui->docTableview, SIGNAL(doubleClicked(const QModelIndex &)),
@@ -244,7 +249,6 @@ RentalDocumentWidget::addRentalDocRows(QList<RentalDocument> &docs)
     for (int i = 0; i < docs.size(); i++) {
         doc = docs.at(i);
         addRentalDocTableRow(doc);
-        ALOGD("clientName = %s", doc.clientName.toStdString().data());
     }
 }
 
@@ -280,6 +284,33 @@ RentalDocumentWidget::editRentalDocItemSlot()
     }
 
     editRowEvent(mCurRow);
+}
+
+void
+RentalDocumentWidget::deleteRentalDocItemSlot()
+{
+    if (mCurRow < 0) {
+        QMessageBox::warning(this,
+                             tr("温馨提示"),
+                             tr("请选择要删除条目.\n"),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+        return;
+    }
+
+    int ret = QMessageBox::warning(this,
+                                   tr("温馨提示"),
+                                   tr("确定要删除该条目吗？\n"),
+                                   QMessageBox::Yes |
+                                   QMessageBox::No,
+                                   QMessageBox::No);
+    if (ret == QMessageBox::No)
+        return;
+    QString num = mModel->index(mCurRow, 0).data().toString();
+    if (!mDb->deleteRentalDocumentInNumber(num)) {
+        ALOGD("%s, delete ok", __FUNCTION__);
+        mModel->removeRow(mCurRow);
+    }
 }
 
 void
@@ -381,6 +412,7 @@ void RentalDocumentWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item
     if (item->parent() == NULL) {
         //根节点
         mCurClientNumber = "";
+        mCurRow = -1;
         if (mDb->getAllRentalDocumentData(docs))
             return;
     } else {
@@ -391,8 +423,8 @@ void RentalDocumentWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item
     }
 
     addRentalDocRows(docs);
-    if (mModel->rowCount() > 0) {
-        //默认显示第一行的数据
-        ui->docTableview->selectRow(0);
-    }
+//    if (mModel->rowCount() > 0) {
+//        //默认显示第一行的数据
+//        ui->docTableview->selectRow(0);
+//    }
 }

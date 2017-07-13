@@ -31,8 +31,8 @@ private slots:
     void            updateDocItemSlot(RentalDocument &doc);
     void            on_docTableview_clicked(const QModelIndex &index);
     void            editRentalDocItemSlot();
-
-    void on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
+    void            deleteRentalDocItemSlot();
+    void            on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
 signals:
     void            openRentalEditDialogSignal(OpenType, RentalDocument &,
