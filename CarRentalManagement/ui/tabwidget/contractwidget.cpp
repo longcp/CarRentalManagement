@@ -477,7 +477,7 @@ ContractWidget::deleteContractItemSlot()
 
     int ret = QMessageBox::warning(this,
                                    tr("温馨提示"),
-                                   tr("确定要删除该条目吗？.\n"),
+                                   tr("确定要删除该条目吗？\n"),
                                    QMessageBox::Yes |
                                    QMessageBox::No,
                                    QMessageBox::No);

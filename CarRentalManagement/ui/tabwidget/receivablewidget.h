@@ -33,6 +33,9 @@ private slots:
                                                         int newSize);
     void            tabChangeToReceivableSlot(int index, QString tabText);
 
+    void            deleteRentalDocumentSlot(QString docNum);
+    void            addRentalDocumentSlot(RentalDocument &doc);
+
 private:
     void            configToolBar();
     void            initView();
@@ -51,12 +54,14 @@ private:
     void            addDetailTableRow(RentalDocument &doc);
     void            addSumTableRows(QList<RentalDocument> &docs);
     void            addSumTableRow(RentalDocument &doc);
+    void            addRowAndUpdateDetailSumTable(RentalDocument &doc);
 
     void            setDetailPumpSquareCellValue(float value);
     void            setDetailPumpTimeCellValue(float value);
     void            setDetailProjectAmountCellValue(float value);
     void            setDetailReceiptCellValue(float value);
     void            setDetailReceivableValue(float value);
+
     void            setSumPumpSquareCellValue(float value);
     void            setSumPumpTimeCellValue(float value);
     void            setSumProjectAmountCellValue(float value);
@@ -68,6 +73,7 @@ private:
     void            detailProjectAmountCellAddValue(float value);
     void            detailReceiptCellAddValue(float value);
     void            detailReceivableCellAddValue(float value);
+
     void            sumPumpSquareCellAddValue(float value);
     void            sumPumpTimeCellAddValue(float value);
     void            sumProjectAmountCellAddValue(float value);

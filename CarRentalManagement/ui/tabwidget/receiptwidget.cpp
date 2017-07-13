@@ -24,12 +24,6 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
 
     mReceiptEditDialog = new ReceiptEditDialog();
 
-    mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
-                          tr("增加"), this);
-    mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
-                           tr("修改"), this);
-    mActDelete = new QAction(QIcon(":/menu/icon/delete_64.ico"),
-                             tr("删除"), this);
     mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
@@ -39,9 +33,6 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
 
     mToolBar = new QToolBar(tr("receiptToolBar"), this);
     this->configToolBar();
-    mToolBar->addAction(mActAdd);
-    mToolBar->addAction(mActDelete);
-    mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
 
@@ -104,6 +95,10 @@ ReceiptWidget::initView()
 {
     initReceiptTable();
     initReceiptSumTable();
+
+    QList<RentalDocument> docs;
+    if (!mDb->getAllRentalDocumentData(docs))
+        reflashView(docs);
 }
 
 void
@@ -146,7 +141,7 @@ ReceiptWidget::initReceiptTable()
     ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CONTRACT_NUMBER, 200);
     ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CLIENT_NAME, 200);
     ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CAR_PLATE_NUMBER, 200);
-//    ui->receiptTable->setSortingEnabled(true);
+    ui->receiptTable->setSortingEnabled(true);
 }
 
 void
@@ -341,6 +336,74 @@ ReceiptWidget::receivableCellAddValue(float value)
 }
 
 void
+ReceiptWidget::pumpSquareCellDelValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PUMP_SQUARE).data().toFloat();
+    setPumpSquareCellValue(curValue-value);
+}
+
+void
+ReceiptWidget::pumpTimeCellDelValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PUMP_TIME).data().toFloat();
+    setPumpTimeCellValue(curValue-value);
+}
+
+void
+ReceiptWidget::projectAmountCellDelValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_PROJECT_AMOUNT).data().toFloat();
+    setProjectAmountCellValue(curValue-value);
+}
+
+void
+ReceiptWidget::receiptCellDelValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_RECEIPT).data().toFloat();
+    setReceiptCellValue(curValue-value);
+}
+
+void
+ReceiptWidget::receivableCellDelValue(float value)
+{
+    float curValue = mReceiptSumModel->index(0, RECEIPTTABLE_COLUMN_RECEIVABLE).data().toFloat();
+    setReceivableValue(curValue-value);
+}
+
+void
+ReceiptWidget::deleteRentalDocumentSlot(QString docNum)
+{
+    ALOGDTRACE();
+    int row;
+    RentalDocument doc;
+    for (int i = 0; i < mReceiptModel->rowCount(); i++) {
+        ALOGD("docNum = %s", docNum.toStdString().data());
+        ALOGD("other = %s", mReceiptModel->index(i, RECEIPTTABLE_COLUMN_DOC_NUMBER).data().toString().toStdString().data());
+        if (docNum != mReceiptModel->index(i, RECEIPTTABLE_COLUMN_DOC_NUMBER).data().toString())
+            continue;
+        if (!mDb->getRentalDocumentDataInNumber(docNum, doc))
+            delRowAndUpdateSumTable(i, doc);
+    }
+}
+
+void
+ReceiptWidget::delRowAndUpdateSumTable(int row, RentalDocument &doc)
+{
+    pumpSquareCellDelValue(doc.pumpSquare);
+    pumpTimeCellDelValue(doc.pumpTimes);
+    projectAmountCellDelValue(doc.projectAmount);
+    receiptCellDelValue(doc.receivedAccounts);
+    receivableCellDelValue(doc.projectAmount-doc.receivedAccounts);
+    mReceiptModel->removeRow(row);
+}
+
+void
+ReceiptWidget::addRentalDocumentSlot(RentalDocument &doc)
+{
+    addRowAndUpdateSumTable(doc);
+}
+
+void
 ReceiptWidget::addRowAndUpdateSumTable(RentalDocument &doc)
 {
     addTableRow(doc);
@@ -381,6 +444,7 @@ void
 ReceiptWidget::tabChangeToReceiptSlot(int index, QString tabText)
 {
     ALOGDTRACE();
+#if 0
     QList<RentalDocument> docs;
 
     if (tabText != TAB_TITLE_RECEIPT ||
@@ -388,4 +452,5 @@ ReceiptWidget::tabChangeToReceiptSlot(int index, QString tabText)
         return;
 
     reflashView(docs);
+#endif
 }

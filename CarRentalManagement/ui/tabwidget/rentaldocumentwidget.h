@@ -37,6 +37,8 @@ private slots:
 signals:
     void            openRentalEditDialogSignal(OpenType, RentalDocument &,
                                                QString clientName, QString clientNumber);
+    void            deleteRentalDocumentSignal(QString  docNum);
+    void            addRentalDocumentSignal(RentalDocument &doc);
 
 private:
     /**

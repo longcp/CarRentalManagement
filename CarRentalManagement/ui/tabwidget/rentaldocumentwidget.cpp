@@ -238,6 +238,7 @@ RentalDocumentWidget::addRentalDoc(RentalDocument &doc)
 {
     ALOGDTRACE();
     addRentalDocTableRow(doc);
+    emit addRentalDocumentSignal(doc);
     ui->docTableview->selectRow(mModel->rowCount() - 1);
 }
 
@@ -310,6 +311,7 @@ RentalDocumentWidget::deleteRentalDocItemSlot()
     if (!mDb->deleteRentalDocumentInNumber(num)) {
         ALOGD("%s, delete ok", __FUNCTION__);
         mModel->removeRow(mCurRow);
+        emit deleteRentalDocumentSignal(num);
     }
 }
 
@@ -423,8 +425,4 @@ void RentalDocumentWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item
     }
 
     addRentalDocRows(docs);
-//    if (mModel->rowCount() > 0) {
-//        //默认显示第一行的数据
-//        ui->docTableview->selectRow(0);
-//    }
 }

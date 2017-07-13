@@ -184,7 +184,20 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     connect(this, SIGNAL(tabChangeToReceivableSignal(int, QString)),
             mReceiptWidget, SLOT(tabChangeToReceiptSlot(int,QString)));
-
+    /**
+     * @brief 删除签证单
+     */
+    connect(mRentalDocWidget, SIGNAL(deleteRentalDocumentSignal(QString)),
+            mReceiptWidget, SLOT(deleteRentalDocumentSlot(QString)));
+    connect(mRentalDocWidget, SIGNAL(deleteRentalDocumentSignal(QString)),
+            mReceivableWidget, SLOT(deleteRentalDocumentSlot(QString)));
+    /**
+     * @brief 添加签证单
+     */
+    connect(mRentalDocWidget, SIGNAL(addRentalDocumentSignal(RentalDocument &)),
+            mReceiptWidget, SLOT(addRentalDocumentSlot(RentalDocument &)));
+    connect(mRentalDocWidget, SIGNAL(addRentalDocumentSignal(RentalDocument &)),
+            mReceivableWidget, SLOT(addRentalDocumentSlot(RentalDocument &)));
 }
 
 MainWindow::~MainWindow()

@@ -24,12 +24,6 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
 
     initView();
 
-    mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
-                          tr("增加"), this);
-    mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
-                          tr("修改"), this);
-    mActDelete = new QAction(QIcon(":/menu/icon/delete_64.ico"),
-                             tr("删除"), this);
     mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
@@ -37,9 +31,6 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
 
     mToolBar = new QToolBar(tr("receivableToolBar"), this);
     this->configToolBar();
-    mToolBar->addAction(mActAdd);
-    mToolBar->addAction(mActDelete);
-    mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
 
@@ -452,6 +443,18 @@ ReceivableWidget::sumReceivableCellAddValue(float value)
 }
 
 void
+ReceivableWidget::deleteRentalDocumentSlot(QString docNum)
+{
+
+}
+
+void
+ReceivableWidget::addRentalDocumentSlot(RentalDocument &doc)
+{
+
+}
+
+void
 ReceivableWidget::clearDetailTableview()
 {
     if (mDetailModel->rowCount())
@@ -490,13 +493,19 @@ ReceivableWidget::addDetailTableRows(QList<RentalDocument> &docs)
     RentalDocument doc;
     for (int i = 0; i < docs.size(); i++) {
         doc = docs.at(i);
-        addDetailTableRow(doc);
-        detailPumpSquareCellAddValue(doc.pumpSquare);
-        detailPumpTimeCellAddValue(doc.pumpTimes);
-        detailProjectAmountCellAddValue(doc.projectAmount);
-        detailReceiptCellAddValue(doc.receivedAccounts);
-        detailReceivableCellAddValue(doc.projectAmount-doc.receivedAccounts);
+        addRowAndUpdateDetailSumTable(doc);
     }
+}
+
+void
+ReceivableWidget::addRowAndUpdateDetailSumTable(RentalDocument &doc)
+{
+    addDetailTableRow(doc);
+    detailPumpSquareCellAddValue(doc.pumpSquare);
+    detailPumpTimeCellAddValue(doc.pumpTimes);
+    detailProjectAmountCellAddValue(doc.projectAmount);
+    detailReceiptCellAddValue(doc.receivedAccounts);
+    detailReceivableCellAddValue(doc.projectAmount-doc.receivedAccounts);
 }
 
 void
