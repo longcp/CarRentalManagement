@@ -32,6 +32,7 @@ private slots:
                                                       int /*oldSize*/,
                                                       int newSize);
     void            tabChangeToReceiptSlot(int index, QString tabText);
+    void            sectionClickedSlot(int index);
 
 signals:
     /**
@@ -48,6 +49,7 @@ private:
     void            clearTableview();
     void            addTableRows(QList<RentalDocument> &docs);
     void            addTableRow(RentalDocument &doc);
+    void            addRowAndUpdateSumTable(RentalDocument &doc);
     void            resetReceiptSumTableData();
     void            pumpSquareCellAddValue(float value);
     void            pumpTimeCellAddValue(float value);

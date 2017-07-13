@@ -68,6 +68,8 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
      */
     connect((QObject*)ui->receiptSumTable->horizontalScrollBar(), SIGNAL(valueChanged(int)),
             (QObject*)ui->receiptTable->horizontalScrollBar(), SLOT(setValue(int)));
+    connect(ui->receiptTable->horizontalHeader(), &QHeaderView::sectionClicked,
+            this, &ReceiptWidget::sectionClickedSlot);
 }
 
 ReceiptWidget::~ReceiptWidget()
@@ -144,6 +146,7 @@ ReceiptWidget::initReceiptTable()
     ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CONTRACT_NUMBER, 200);
     ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CLIENT_NAME, 200);
     ui->receiptTable->setColumnWidth(RECEIPTTABLE_COLUMN_CAR_PLATE_NUMBER, 200);
+//    ui->receiptTable->setSortingEnabled(true);
 }
 
 void
@@ -192,6 +195,13 @@ ReceiptWidget::initReceiptSumTable()
     items << sumStrItem;
     mReceiptSumModel->appendRow(items);
     resetReceiptSumTableData();
+}
+
+void
+ReceiptWidget::sectionClickedSlot(int index)
+{
+    ALOGD("index = %d", index);
+//    mReceiptModel->sort(index, Qt::AscendingOrder);
 }
 
 void
@@ -331,17 +341,23 @@ ReceiptWidget::receivableCellAddValue(float value)
 }
 
 void
+ReceiptWidget::addRowAndUpdateSumTable(RentalDocument &doc)
+{
+    addTableRow(doc);
+    pumpSquareCellAddValue(doc.pumpSquare);
+    pumpTimeCellAddValue(doc.pumpTimes);
+    projectAmountCellAddValue(doc.projectAmount);
+    receiptCellAddValue(doc.receivedAccounts);
+    receivableCellAddValue(doc.projectAmount-doc.receivedAccounts);
+}
+
+void
 ReceiptWidget::addTableRows(QList<RentalDocument> &docs)
 {
     RentalDocument doc;
     for (int i = 0; i < docs.size(); i++) {
         doc = docs.at(i);
-        addTableRow(doc);
-        pumpSquareCellAddValue(doc.pumpSquare);
-        pumpTimeCellAddValue(doc.pumpTimes);
-        projectAmountCellAddValue(doc.projectAmount);
-        receiptCellAddValue(doc.receivedAccounts);
-        receivableCellAddValue(doc.projectAmount-doc.receivedAccounts);
+        addRowAndUpdateSumTable(doc);
     }
 }
 

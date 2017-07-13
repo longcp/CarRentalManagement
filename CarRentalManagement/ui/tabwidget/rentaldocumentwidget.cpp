@@ -12,8 +12,11 @@
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
 
+// TODO:完成删除接口
+
 RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     QWidget(parent),
+    mCurClientNumber(""),
     mDb(DataBase::getInstance()),
     mCurRow(-1),
     ui(new Ui::RentalDocumentWidget)
@@ -203,10 +206,26 @@ void
 RentalDocumentWidget::addRentalDocSlot()
 {
     RentalDocument rentalDoc;
-    QString name = "123123123";
-    QString number = "123123123134534";
+    if (mCurClientNumber == "") {
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("请指定一位客户.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+        return;
+    }
+
+    Client c;
+    if (mDb->getClientInNumber(mCurClientNumber, c)) {
+        QMessageBox::critical(this,
+                              tr("温馨提示"),
+                              tr("未知错误，无法为该客户添加签证单.\n"),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok);
+        return;
+    }
     emit openRentalEditDialogSignal(OpenType::CREATEITEM, rentalDoc,
-                                    name, number);
+                                    c.name, mCurClientNumber);
 }
 
 void
@@ -225,6 +244,7 @@ RentalDocumentWidget::addRentalDocRows(QList<RentalDocument> &docs)
     for (int i = 0; i < docs.size(); i++) {
         doc = docs.at(i);
         addRentalDocTableRow(doc);
+        ALOGD("clientName = %s", doc.clientName.toStdString().data());
     }
 }
 
@@ -358,13 +378,14 @@ void RentalDocumentWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item
     QList<RentalDocument> docs;
 
     clearRentalDocTable();
-
     if (item->parent() == NULL) {
         //根节点
+        mCurClientNumber = "";
         if (mDb->getAllRentalDocumentData(docs))
             return;
     } else {
         //子节点
+        mCurClientNumber = item->text(mClientNumberColumn);
         if (mDb->getRentalDocInClientNumber(item->text(mClientNumberColumn), docs))
             return;
     }

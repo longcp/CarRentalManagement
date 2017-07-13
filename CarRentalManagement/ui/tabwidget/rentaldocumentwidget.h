@@ -72,6 +72,7 @@ private:
     int             mCurRow;
     TableModel*     mModel;
     QTreeWidgetItem*    mRootItem;
+    QString         mCurClientNumber;
     const static int mClientNameColumn = 0;
     const static int mClientNumberColumn = 1;
 };
