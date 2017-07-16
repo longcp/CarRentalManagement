@@ -49,6 +49,46 @@ Contract::dump()
           QString::number(isIncludeTax));
 }
 
+bool
+Contract::isValueEqual(Contract &c)
+{
+    if (number != c.number ||
+        clientName != c.clientName ||
+        clientNumber != c.clientNumber ||
+        projectName != c.projectName ||
+        projectAddress != c.projectAddress ||
+        requirement != c.requirement ||
+        supplement != c.supplement ||
+        remarks != c.remarks ||
+        creator != c.creator ||
+        deliverySizes != c.deliverySizes ||
+        structureLevel != c.structureLevel ||
+        taxRate != c.taxRate ||
+        signedDate != c.signedDate ||
+        beginDate != c.beginDate ||
+        endDate != c.endDate ||
+        creatDate != c.creatDate ||
+        isIncludeTax != c.isIncludeTax) {
+        return false;
+    }
+    if (prices.size() != c.prices.size()) {
+        return false;
+    }
+
+    for (int i = 0; i < c.prices.size(); i++) {
+        if (prices.at(i).number != c.prices.at(i).number ||
+                prices.at(i).contractNumber != c.prices.at(i).contractNumber ||
+                prices.at(i).pumpType != c.prices.at(i).pumpType ||
+                prices.at(i).squarePrice != c.prices.at(i).squarePrice ||
+                prices.at(i).standardPrice != c.prices.at(i).standardPrice ||
+                prices.at(i).remarks != c.prices.at(i).remarks) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 const QString
 Contract::makeNewestContractNumber(int count)
 {

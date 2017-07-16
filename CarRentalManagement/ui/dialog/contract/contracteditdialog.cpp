@@ -151,6 +151,7 @@ ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
     ALOGDTRACE();
     int count = 0;
     QList<Contract> contracts;
+    Contract tmp;
     mOpenType = opentype;
     ui->clientNameLable->setText(clientName);
     ui->clientNumberLebel->setText(clientNumber);
@@ -166,6 +167,8 @@ ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
         setEditMode();
         mActSave->setDisabled(true);
         mActCancel->setDisabled(true);
+        saveUiContent(tmp);
+        setOriginContract(tmp);
         if (!mDb->getAllContractData(contracts))
             count = contracts.size();
         ui->contractNumberLabel->setText(Contract::makeNewestContractNumber(count));
@@ -340,29 +343,12 @@ bool
 ContractEditDialog::isModified()
 {
     ALOGDTRACE();
-    if (ui->contractNumberLabel->isWindowModified() ||
-            ui->signedDateDE->isWindowModified() ||
-            ui->clientNameLable->isWindowModified() ||
-            ui->clientNumberLebel->isWindowModified() ||
-            ui->projectNameLE->isModified() ||
-            ui->projectAddrLE->isModified() ||
-            ui->deliveryDSB->isWindowModified() ||
-            ui->structureLevelDSB->isWindowModified() ||
-            ui->startDateDE->isWindowModified() ||
-            ui->endDateDE->isWindowModified() ||
-            ui->requireTE->isWindowModified() ||
-            ui->supplementTE->isWindowModified() ||
-            ui->remarksTE->isWindowModified() ||
-            ui->isIncludeTexCB->isWindowModified() ||
-            ui->taxRateSB->isWindowModified() ||
-            ui->creatorLE->isModified() ||
-            ui->createDateDE->isWindowModified() ||
-            mAddRows) {
-        ALOGD("is modified!");
-        return true;
+    Contract tmp;
+    saveUiContent(tmp);
+    if (mOriginContract->isValueEqual(tmp)) {
+        return false;
     }
-
-    return false;
+    return true;
 }
 
 void

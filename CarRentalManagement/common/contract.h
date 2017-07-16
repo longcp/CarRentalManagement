@@ -123,6 +123,7 @@ public:
 
 
     void            dump();
+    bool            isValueEqual(Contract &c);
     const static QString makeNewestContractNumber(int count);
 
     QString number;
