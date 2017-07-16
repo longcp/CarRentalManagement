@@ -122,6 +122,7 @@ public:
     }
 
     void    dump();
+    bool    isValueEqual(RentalDocument &r);
     const static QString getRentalDocStatStr(RentalDocState stat);
     const static RentalDocState getRentalDocStat(QString stat);
 

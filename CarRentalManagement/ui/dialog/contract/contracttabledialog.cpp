@@ -86,8 +86,6 @@ ContractTableDialog::initTableView()
 void
 ContractTableDialog::addContractItem(Contract &contract)
 {
-
-    ALOGDTRACE();
     QStandardItem* num
             = new QStandardItem(contract.number);
     QStandardItem* clientName

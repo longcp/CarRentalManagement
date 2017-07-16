@@ -199,6 +199,7 @@ RentalDocumentEditDialog::openWindow(OpenType type,
                                      QString clientName,
                                      QString clientNumber)
 {
+    RentalDocument tmp;
     mOpenType = type;
     if (type == OpenType::CREATEITEM) {
         //已创建条目方式打开
@@ -213,6 +214,10 @@ RentalDocumentEditDialog::openWindow(OpenType type,
         ui->arrivalTimeDTE->setDateTime(QDateTime::currentDateTime());
         ui->leaveTimeDTE->setDateTime(QDateTime::currentDateTime());
         ui->numberLabel->setText(makeRentalDocNumber());
+        mClientNumber = clientNumber;
+        ui->clientNameLabel->setText(clientName);
+        saveUiContent(tmp);
+        setOriginRentalDocument(tmp);
     } else {
         //以查看方式打开
         mActSave->setEnabled(true);
@@ -222,9 +227,8 @@ RentalDocumentEditDialog::openWindow(OpenType type,
         setOriginRentalDocument(doc);
         setView(doc);
         mCarNumber = doc.carNumber;
+        mClientNumber = doc.clientNumber;
     }
-    ui->clientNameLabel->setText(clientName);
-    mClientNumber = clientNumber;
 
     if (!isSetWindowSize)
         setWindowSize();
@@ -340,6 +344,9 @@ RentalDocumentEditDialog::setView(RentalDocument &doc)
     ui->beginFuelDSB->setValue(doc.beginFuel);
     ui->endFuelDSB->setValue(doc.endFuel);
     ui->dateDE->setDate(doc.date);
+    ui->projectNameLE->setText(doc.projectName);
+    ui->projectAddressLE->setText(doc.projectAddress);
+    ui->projectAmountDSB->setValue(doc.projectAmount);
     ui->principalLE->setText(doc.principal);
     ui->principalTelLE->setText(doc.principalTel);
     ui->arrivalTimeDTE->setDateTime(doc.arrivalDateTime);
@@ -410,8 +417,9 @@ RentalDocumentEditDialog::saveAndExitEvent()
             return;
         }
 
+        ALOGDTRACE();
+        doc.dump();
         if (!mDb->insertRentalDocumentTable(doc)) {
-            resetView(doc);
             emit addRentalDocSignal(doc);
             QMessageBox::information(this,
                                      tr("温馨提示"),
@@ -428,8 +436,8 @@ RentalDocumentEditDialog::saveAndExitEvent()
         }
     } else {
         //更新到数据库
+        doc.dump();
         if (!mDb->updateRentalDocumentData(doc)) {
-            resetView(doc);
             emit updateDocItemSignal(doc);
             QMessageBox::information(this,
                                      tr("温馨提示"),
@@ -461,12 +469,9 @@ RentalDocumentEditDialog::closeEvent(QCloseEvent *)
         int ret = QMessageBox::warning(this, tr("温馨提示"),
                                        tr("是否保存修改？\n"),
                                        QMessageBox::Yes |
-                                       QMessageBox::No |
-                                       QMessageBox::Cancel,
+                                       QMessageBox::No,
                                        QMessageBox::Yes);
-        if (ret == QMessageBox::Cancel)
-            return;
-        else if (ret == QMessageBox::Yes)
+        if (ret == QMessageBox::Yes)
             saveEvent();
     }
     clean();
@@ -479,8 +484,8 @@ RentalDocumentEditDialog::saveEvent()
 
     saveUiContent(doc);
     //更新数据到数据库、更新界面数据
+    doc.dump();
     if (!mDb->updateRentalDocumentData(doc)) {
-        resetView(doc);
         emit updateDocItemSignal(doc);
     } else {
         QMessageBox::critical(this,
@@ -534,42 +539,17 @@ RentalDocumentEditDialog::getContract(QString number)
 bool
 RentalDocumentEditDialog::isModified()
 {
-    // FIXME:解决isWindowModified不生效问题，可在控件改变时用setWindowModified进行标记，关闭
-    // 窗口时，在清除标志，修复各个dialog的isWindowModified问题
-    if (ui->clientNameLabel->isWindowModified() ||
-            ui->contractNumberLabel->isWindowModified() ||
-            ui->carNumberLabel->isWindowModified() ||
-            ui->pumpTypeCB->isWindowModified() ||
-            ui->constructPlaceLE->isModified() ||
-            ui->concreteLableLE->isModified() ||
-            ui->beginFuelDSB->isWindowModified() ||
-            ui->endFuelDSB->isWindowModified() ||
-            ui->dateDE->isWindowModified() ||
-            ui->principalLE->isModified() ||
-            ui->principalTelLE->isModified() ||
-            ui->arrivalTimeDTE->isWindowModified() ||
-            ui->leaveTimeDTE->isWindowModified() ||
-            ui->workingHoursDSB->isWindowModified() ||
-            ui->driver1LE->isModified() ||
-            ui->driver2LE->isModified() ||
-            ui->driver3LE->isModified() ||
-            ui->projectAmountDSB->isWindowModified() ||
-            ui->projectNameLE->isModified() ||
-            ui->projectAddressLE->isModified() ||
-            ui->pumpSquareDSB->isWindowModified() ||
-            ui->squareUnitPriceDSB->isWindowModified() ||
-            ui->pumpTimesDSB->isWindowModified() ||
-            ui->pumpTimeUnitPriceDSB->isWindowModified() ||
-            ui->receivedAccountsDSB->isWindowModified() ||
-            ui->reservationRB->isWindowModified() ||
-            ui->confirmedRB->isWindowModified() ||
-            ui->unconfirmedRB->isWindowModified() ||
-            ui->remarksTE->isWindowModified()) {
-        ALOGD("is modified!");
-        return true;
+    RentalDocument tmp;
+    saveUiContent(tmp);
+    tmp.dump();
+    ALOGD("------------------");
+    mRentalDocument->dump();
+    if (mRentalDocument->isValueEqual(tmp)) {
+        ALOGD("1111111111111111111");
+        return false;
     }
-
-    return false;
+    ALOGD("222222222222222222222");
+    return true;
 }
 
 void
@@ -607,9 +587,9 @@ RentalDocumentEditDialog::saveUiContent(RentalDocument &doc)
     doc.pumpType = Car::getPumpType(ui->pumpTypeCB->currentIndex());
     doc.date = QDate::fromString(ui->dateDE->text(), DATE_FORMAT_STR);
     doc.arrivalDateTime = QDateTime::fromString(ui->arrivalTimeDTE->text(),
-                                                "yyyy-MM-dd hh:mm:ss");
+                                                DATETIME_FORMAT_STR);
     doc.leaveDateTime = QDateTime::fromString(ui->leaveTimeDTE->text(),
-                                              "yyyy-MM-dd hh:mm:ss");
+                                              DATETIME_FORMAT_STR);
     if (ui->reservationRB->isChecked())
         doc.rentalDocState = RentalDocState::RESERVATION_STATE;
     else if (ui->confirmedRB->isChecked())
@@ -622,7 +602,6 @@ void
 RentalDocumentEditDialog::resetView(RentalDocument &doc)
 {
     setOriginRentalDocument(doc);
-
     resetView();
 }
 

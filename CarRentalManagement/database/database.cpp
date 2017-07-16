@@ -1837,8 +1837,12 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
                      doc.leaveDateTime.toString("yyyy-MM-dd hh:mm:ss"));
     query->bindValue(":rentalDocState",
                      (int)doc.rentalDocState);
-    query->bindValue(":isIncludeTax", (int)doc.pumpType);
+    query->bindValue(":pumpType", (int)doc.pumpType);
 
+    ALOGD("----------------------------");
+    ALOGD("doc.rentaldocstate = %d", (int)doc.rentalDocState);
+    ALOGD("doc.pumpType = %d", (int)doc.pumpType);
+    ALOGD("----------------------------");
     if (!query->exec()) {
         ALOGE("%s failed!", __FUNCTION__);
         errorno = INSERT_DOC_ITEM_FAIL;
@@ -1851,6 +1855,7 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
 int
 DataBase::updateRentalDocumentData(const RentalDocument &doc)
 {
+    ALOGDTRACE();
     QMutexLocker locker(pmMutex);
 
     QSqlQuery *query = getDataBaseQuery();
@@ -1872,6 +1877,7 @@ DataBase::updateRentalDocumentData(const RentalDocument &doc)
                    "driver2=?, "
                    "driver3=?, "
                    "projectName=?, "
+                   "projectAddress=?, "
                    "remarks=?, "
                    "beginFuel=?, "
                    "endFuel=?, "
@@ -1918,6 +1924,8 @@ DataBase::updateRentalDocumentData(const RentalDocument &doc)
     query->addBindValue(doc.rentalDocState);
     query->addBindValue(doc.pumpType);
     query->addBindValue(doc.number);
+    ALOGD("arrival = %s", doc.arrivalDateTime.toString(DATETIME_FORMAT_STR).toStdString().data());
+    ALOGD("leave = %s", doc.leaveDateTime.toString(DATETIME_FORMAT_STR).toStdString().data());
     if (!query->exec()) {
         ALOGE("%s fail", __FUNCTION__);
         errorno = UPDATE_DOC_ITEM_FAIL;
@@ -1976,9 +1984,9 @@ DataBase::getAllRentalDocumentData(QList<RentalDocument> &docs)
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
         doc.arrivalDateTime = QDateTime::fromString(query->value(26).toString(),
-                                                    "yyyy-MM-dd hh:mm:ss");
+                                                    DATETIME_FORMAT_STR);
         doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
-                                                  "yyyy-MM-dd hh:mm:ss");
+                                                  DATETIME_FORMAT_STR);
         doc.rentalDocState = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
 

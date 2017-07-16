@@ -363,12 +363,9 @@ ContractEditDialog::closeEvent(QCloseEvent *event)
         int ret = QMessageBox::warning(this, tr("温馨提示"),
                                        tr("是否保存修改？\n"),
                                        QMessageBox::Yes |
-                                       QMessageBox::No |
-                                       QMessageBox::Cancel,
+                                       QMessageBox::No,
                                        QMessageBox::Yes);
-        if (ret == QMessageBox::Cancel)
-            return;
-        else if (ret == QMessageBox::Yes)
+        if (ret == QMessageBox::Yes)
             saveEvent();
     }
     clean();
