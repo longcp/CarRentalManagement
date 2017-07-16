@@ -64,3 +64,26 @@ Client::getPayTypeStr(PayType type)
 
     return "";
 }
+
+bool
+Client::isValueEqual(Client &c)
+{
+    if (name == c.name &&
+        number == c.number &&
+        telephone == c.telephone &&
+        address == c.address &&
+        email == c.email &&
+        fax == c.fax &&
+        contract == c.contract &&
+        remarks == c.remarks &&
+        creator == c.creator &&
+        clienttype == c.clienttype &&
+        paytype == c.paytype &&
+        createDate == c.createDate &&
+        monthly == c.monthly &&
+        amount == c.amount &&
+        paid == c.paid)
+        return true;
+
+    return false;
+}

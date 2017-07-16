@@ -70,6 +70,8 @@ public:
      */
     PayType     getPayType(QString type);
 
+    bool        isValueEqual(Client &c);
+
 
     QString     name;
     QString     number;

@@ -137,6 +137,7 @@ void
 ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
                                            Client & client)
 {
+    Client tmp;
     mOpenType = opentype;
     if (opentype == OpenType::CREATEITEM) {
         //以创建条目方式打开
@@ -149,6 +150,8 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
         setEditMode();                                                  //编辑模式
         mActSave->setDisabled(true);
         mActCancel->setDisabled(true);
+        saveUiContent(tmp);
+        setOriginClient(tmp);
     } else {
         //以查看内容方式打开
         mActSave->setEnabled(true);
@@ -231,20 +234,16 @@ ClientEditDialog::setView(Client &client)
                                                  - client.paid));
     ui->monthlySpinBox->setValue(client.monthly);
     if (client.paytype == PayType::CASH) {
-        ALOGD("%s, client.paytype == CASH", __FUNCTION__);
         ui->cashRadioButton->setChecked(true);
         ui->monthlyRadioButton->setChecked(false);
     } else if (client.paytype == PayType::MONTHLY) {
-        ALOGD("%s, client.paytype == MONTHLY", __FUNCTION__);
         ui->cashRadioButton->setChecked(false);
         ui->monthlyRadioButton->setChecked(true);
     }
     if (client.clienttype == ClientType::CONTRACT) {
-        ALOGD("%s, client.clienttype == CONTRACT", __FUNCTION__);
         ui->contractRadioButton->setChecked(true);
         ui->temporaryRadioButton->setChecked(false);
     } else if (client.clienttype == ClientType::TEMPORARY) {
-        ALOGD("%s, client.clienttype == TEMPORARY", __FUNCTION__);
         ui->contractRadioButton->setChecked(false);
         ui->temporaryRadioButton->setChecked(true);
     }
@@ -327,28 +326,12 @@ ClientEditDialog::cleanContent()
 bool
 ClientEditDialog::isModified()
 {
-    if (ui->telLineEdit->isModified() ||
-            ui->faxLineEdit->isModified() ||
-            ui->paidDSB->isWindowModified() ||
-            ui->emailLineEdit->isModified() ||
-            ui->monthlySpinBox->isWindowModified() ||
-            ui->remarksFxtEdit->isWindowModified() ||
-            ui->amountDSB->isWindowModified() ||
-            ui->addressLineEdit->isModified() ||
-            ui->cashRadioButton->isWindowModified() ||
-            ui->balanceLineEdit->isModified() ||
-            ui->contractLineEdit->isModified() ||
-            ui->clientNumLineEdit->isModified() ||
-            ui->clientNameLineEdit->isModified() ||
-            ui->monthlyRadioButton->isWindowModified() ||
-            ui->contractRadioButton->isWindowModified() ||
-            ui->temporaryRadioButton->isWindowModified() ||
-            ui->createPeopleLineEdit->isWindowModified()) {
-        ALOGD("is modified!!!!");
-        return true;
+    Client tmp;
+    saveUiContent(tmp);
+    if (mOriginClient->isValueEqual(tmp)) {
+        return false;
     }
-
-    return false;
+    return true;
 }
 
 void
