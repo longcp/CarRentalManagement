@@ -249,7 +249,6 @@ RentalDocumentWidget::addRentalDocRows(QList<RentalDocument> &docs)
 
     for (int i = 0; i < docs.size(); i++) {
         doc = docs.at(i);
-        doc.dump();
         addRentalDocTableRow(doc);
     }
 }
@@ -269,7 +268,6 @@ RentalDocumentWidget::editRowEvent(int row)
         return;
     }
 
-    doc.dump();
     emit openRentalEditDialogSignal(OpenType::SHOWITEM, doc,
                                     doc.clientName, doc.clientNumber);
 }

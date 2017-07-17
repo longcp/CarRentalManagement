@@ -417,9 +417,8 @@ RentalDocumentEditDialog::saveAndExitEvent()
             return;
         }
 
-        ALOGDTRACE();
-        doc.dump();
         if (!mDb->insertRentalDocumentTable(doc)) {
+            setOriginRentalDocument(doc);                               //用作退出前比较
             emit addRentalDocSignal(doc);
             QMessageBox::information(this,
                                      tr("温馨提示"),
@@ -436,8 +435,8 @@ RentalDocumentEditDialog::saveAndExitEvent()
         }
     } else {
         //更新到数据库
-        doc.dump();
         if (!mDb->updateRentalDocumentData(doc)) {
+            setOriginRentalDocument(doc);                               //用作退出前比较
             emit updateDocItemSignal(doc);
             QMessageBox::information(this,
                                      tr("温馨提示"),
@@ -484,8 +483,8 @@ RentalDocumentEditDialog::saveEvent()
 
     saveUiContent(doc);
     //更新数据到数据库、更新界面数据
-    doc.dump();
     if (!mDb->updateRentalDocumentData(doc)) {
+        setOriginRentalDocument(doc);                               //用作退出前比较
         emit updateDocItemSignal(doc);
     } else {
         QMessageBox::critical(this,
@@ -541,14 +540,9 @@ RentalDocumentEditDialog::isModified()
 {
     RentalDocument tmp;
     saveUiContent(tmp);
-    tmp.dump();
-    ALOGD("------------------");
-    mRentalDocument->dump();
     if (mRentalDocument->isValueEqual(tmp)) {
-        ALOGD("1111111111111111111");
         return false;
     }
-    ALOGD("222222222222222222222");
     return true;
 }
 

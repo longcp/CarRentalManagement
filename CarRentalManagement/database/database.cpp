@@ -2179,4 +2179,3 @@ DataBase::isRentalDocumentExist(RentalDocument &doc)
 
     return true;
 }
-//UPDATE rentaldocument SET clientName=?, clientNumber=?, contractNumber=?, carNumber=?, carPlateNumber=?, contructPlace=?, concreteLable=?, principal=?, principalTel=?, driver1=?, driver2=?, driver3=?, projectName=?, projectAddress=?, remarks=?, beginFuel=?, endFuel=?, projectAmount=?, receivedAccounts=?, pumpSquare=?, squareUnitPrice=?, pumpTimes=?, pumpTimeUnitPrice=?, workingHours=?, date=?, arrivalDateTime=?, leaveDateTime=?, rentalDocState=?, pumpType=? WHERE number=?;
