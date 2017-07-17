@@ -323,6 +323,8 @@ RentalDocumentEditDialog::setMode(bool mode)
     ui->confirmedRB->setEnabled(mode);
     ui->unconfirmedRB->setEnabled(mode);
     ui->remarksTE->setEnabled(mode);
+    ui->contractNumToolButton->setEnabled(mode);
+    ui->carNumToolButton->setEnabled(mode);
 }
 
 void
