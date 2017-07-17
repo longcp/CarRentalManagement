@@ -269,6 +269,7 @@ RentalDocumentWidget::editRowEvent(int row)
         return;
     }
 
+    doc.dump();
     emit openRentalEditDialogSignal(OpenType::SHOWITEM, doc,
                                     doc.clientName, doc.clientNumber);
 }

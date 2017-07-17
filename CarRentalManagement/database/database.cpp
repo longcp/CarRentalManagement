@@ -1832,17 +1832,13 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
     query->bindValue(":date",
                      doc.date.toString(DATE_FORMAT_STR));
     query->bindValue(":arrivalDateTime",
-                     doc.arrivalDateTime.toString("yyyy-MM-dd hh:mm:ss"));
+                     doc.arrivalDateTime.toString(DATETIME_FORMAT_STR));
     query->bindValue(":leaveDateTime",
-                     doc.leaveDateTime.toString("yyyy-MM-dd hh:mm:ss"));
+                     doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
     query->bindValue(":rentalDocState",
                      (int)doc.rentalDocState);
     query->bindValue(":pumpType", (int)doc.pumpType);
 
-    ALOGD("----------------------------");
-    ALOGD("doc.rentaldocstate = %d", (int)doc.rentalDocState);
-    ALOGD("doc.pumpType = %d", (int)doc.pumpType);
-    ALOGD("----------------------------");
     if (!query->exec()) {
         ALOGE("%s failed!", __FUNCTION__);
         errorno = INSERT_DOC_ITEM_FAIL;
@@ -1918,14 +1914,12 @@ DataBase::updateRentalDocumentData(const RentalDocument &doc)
     query->addBindValue(doc.pumpTimes);
     query->addBindValue(doc.pumpTimeUnitPrice);
     query->addBindValue(doc.workingHours);
-    query->addBindValue(doc.date);
-    query->addBindValue(doc.arrivalDateTime);
-    query->addBindValue(doc.leaveDateTime);
+    query->addBindValue(doc.date.toString(DATE_FORMAT_STR));
+    query->addBindValue(doc.arrivalDateTime.toString(DATETIME_FORMAT_STR));
+    query->addBindValue(doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
     query->addBindValue(doc.rentalDocState);
     query->addBindValue(doc.pumpType);
     query->addBindValue(doc.number);
-    ALOGD("arrival = %s", doc.arrivalDateTime.toString(DATETIME_FORMAT_STR).toStdString().data());
-    ALOGD("leave = %s", doc.leaveDateTime.toString(DATETIME_FORMAT_STR).toStdString().data());
     if (!query->exec()) {
         ALOGE("%s fail", __FUNCTION__);
         errorno = UPDATE_DOC_ITEM_FAIL;
@@ -2150,9 +2144,9 @@ DataBase::getRentalDocumentDataInNumber(QString number, RentalDocument &doc)
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
         doc.arrivalDateTime = QDateTime::fromString(query->value(26).toString(),
-                                                   "yyyy-MM-dd hh:mm:ss");
+                                                   DATETIME_FORMAT_STR);
         doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
-                                           "yyyy-MM-dd hh:mm:ss");
+                                           DATETIME_FORMAT_STR);
         doc.rentalDocState = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
     }
@@ -2185,3 +2179,4 @@ DataBase::isRentalDocumentExist(RentalDocument &doc)
 
     return true;
 }
+//UPDATE rentaldocument SET clientName=?, clientNumber=?, contractNumber=?, carNumber=?, carPlateNumber=?, contructPlace=?, concreteLable=?, principal=?, principalTel=?, driver1=?, driver2=?, driver3=?, projectName=?, projectAddress=?, remarks=?, beginFuel=?, endFuel=?, projectAmount=?, receivedAccounts=?, pumpSquare=?, squareUnitPrice=?, pumpTimes=?, pumpTimeUnitPrice=?, workingHours=?, date=?, arrivalDateTime=?, leaveDateTime=?, rentalDocState=?, pumpType=? WHERE number=?;
