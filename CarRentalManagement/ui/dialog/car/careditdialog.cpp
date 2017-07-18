@@ -1248,9 +1248,6 @@ CarEditDialog::updateAnnualTableView()
     ANNUALFEE_RECORD record;
     QList<ANNUALFEE_RECORD> records;
 
-    ALOGD("%s", __FUNCTION__);
-    ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
-
     if (mAnnualModel->rowCount()) {
         mAnnualModel->removeRows(0, mAnnualModel->rowCount());
     }
@@ -1274,9 +1271,6 @@ CarEditDialog::updateInsuranceTableView()
     INSURANCE_RECORD record;
     QList<INSURANCE_RECORD> records;
 
-    ALOGD("%s", __FUNCTION__);
-    ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
-
     if (mPaymentModel->rowCount()) {
         mPaymentModel->removeRows(0, mPaymentModel->rowCount());
     }
@@ -1299,9 +1293,6 @@ CarEditDialog::updateBusinessInsuanceTableView()
     int size;
     INSURANCE_RECORD record;
     QList<INSURANCE_RECORD> records;
-
-    ALOGD("%s", __FUNCTION__);
-    ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
 
     if (mBusinessModel->rowCount()) {
         //删除所有行
@@ -1327,24 +1318,16 @@ CarEditDialog::updateProjectTableView()
     QList<RentalDocument> docs;
     int count = 0;
 
-    ALOGD("%s", __FUNCTION__);
-    ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
-
     if (mBusinessModel->rowCount()) {
         //删除所有行
         mProjectModel->removeRows(0, mProjectModel->rowCount());
     }
 
-    ALOGD("0000000000000");
     if (!mDb->getRentalDocumentDataInCarNumber(mCarNumber, docs)) {
-        ALOGD("2222222222222222");
         if (docs.isEmpty())
             return;
 
-        ALOGD("3333333333333333333");
         for (RentalDocument doc : docs) {
-
-            ALOGD("4444444444444444");
             record = getProjectFromRentaldoc(doc);
             record.number = ++count;
             addProjectItemSlot(record);
