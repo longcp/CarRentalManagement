@@ -1045,6 +1045,40 @@ DataBase::getAllInsuranceData(QList<INSURANCE_RECORD> &records)
 }
 
 int
+DataBase::getInsuranceDataInCarNumber(QString carNumber, QList<INSURANCE_RECORD> &records)
+{
+    INSURANCE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM insurance_record WHERE carNumber=?");
+    query->addBindValue(carNumber);
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM insurance_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.company = query->value(2).toString();
+        record.remarks = query->value(3).toString();
+        record.date = QDate::fromString(query->value(4).toString(),
+                                               DATE_FORMAT_STR);
+        record.fee = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
 DataBase::delInsuranceDataInNumber(QString number)
 {
     QMutexLocker locker(pmMutex);
@@ -1106,6 +1140,40 @@ DataBase::getAllBusinessInsuranceData(QList<INSURANCE_RECORD> &records)
 
     query->finish();
     query->prepare("SELECT * FROM business_insurance_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM business_insurance_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.company = query->value(2).toString();
+        record.remarks = query->value(3).toString();
+        record.date = QDate::fromString(query->value(4).toString(),
+                                               DATE_FORMAT_STR);
+        record.fee = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getBusinessInsuranceDataInCarNumber(QString carNumber, QList<INSURANCE_RECORD> &records)
+{
+    INSURANCE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM business_insurance_record WHERE carNumber=?");
+    query->addBindValue(carNumber);
     if (!query->exec()) {
         ALOGE("SELECT * FROM business_insurance_record!");
         return SELECT_DATABASE_FAIL;
@@ -1210,6 +1278,40 @@ DataBase::getAllAnnualData(QList<ANNUALFEE_RECORD> &records)
 }
 
 int
+DataBase::getAnnualDataInCarNumber(QString carNumber, QList<ANNUALFEE_RECORD> &records)
+{
+    ANNUALFEE_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM annual_fee_record WHERE carNumber=?");
+    query->addBindValue(carNumber);
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM annual_fee_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.remarks = query->value(2).toString();
+        record.date = QDate::fromString(query->value(3).toString(),
+                                               DATE_FORMAT_STR);
+        record.annualFee = query->value(4).toFloat();
+        record.travelExpenses = query->value(5).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
 DataBase::delAnnualDataInNumber(QString number)
 {
     QMutexLocker locker(pmMutex);
@@ -1276,6 +1378,43 @@ DataBase::getAllProjectData(QList<PROJECT_RECORD> &records)
 
     query->finish();
     query->prepare("SELECT * FROM project_record");
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM project_record!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        record.number = query->value(0).toString();
+        record.carNumber = query->value(1).toString();
+        record.clientNum = query->value(2).toString();
+        record.rentalDocNum = query->value(3).toString();
+        record.contractNum = query->value(4).toString();
+        record.clientName = query->value(5).toString();
+        record.remarks = query->value(6).toString();
+        record.date = QDate::fromString(query->value(7).toString(),
+                                               DATE_FORMAT_STR);
+        record.amount = query->value(8).toFloat();
+
+        records.push_back(record);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getProjectDataInCarNumber(QString carNumber, QList<PROJECT_RECORD> &records)
+{
+    PROJECT_RECORD record;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM project_record WHERE carNumber=?");
+    query->addBindValue(carNumber);
     if (!query->exec()) {
         ALOGE("SELECT * FROM project_record!");
         return SELECT_DATABASE_FAIL;

@@ -203,6 +203,7 @@ private:
 
     OpenType        mOpenType;
     Car*            mOriginCar;
+    QString         mCarNumber;
     DataBase        *mDb;
 };
 

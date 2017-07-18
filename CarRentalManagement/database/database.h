@@ -62,21 +62,25 @@ public:
 
     // insurance表
     int                 getAllInsuranceData(QList<INSURANCE_RECORD> &records);
+    int                 getInsuranceDataInCarNumber(QString carNumber, QList<INSURANCE_RECORD> &records);
     int                 insertInsuranceTable(INSURANCE_RECORD &record);
     int                 delInsuranceDataInNumber(QString number);
 
     // business insurance表
     int                 getAllBusinessInsuranceData(QList<INSURANCE_RECORD> &records);
+    int                 getBusinessInsuranceDataInCarNumber(QString carNumber, QList<INSURANCE_RECORD> &records);
     int                 insertBusinessInsuranceTable(INSURANCE_RECORD &record);
     int                 delBusinessInsuranceDataInNumber(QString number);
 
     // annual
     int                 getAllAnnualData(QList<ANNUALFEE_RECORD> &records);
+    int                 getAnnualDataInCarNumber(QString carNumber, QList<ANNUALFEE_RECORD> &records);
     int                 insertAnnualTable(ANNUALFEE_RECORD &record);
     int                 delAnnualDataInNumber(QString number);
 
     // project表
     int                 getAllProjectData(QList<PROJECT_RECORD> &records);
+    int                 getProjectDataInCarNumber(QString carNumber, QList<PROJECT_RECORD> &records);
     int                 insertProjectTable(PROJECT_RECORD &record);
     int                 delProjectDataInNumber(QString number);
 

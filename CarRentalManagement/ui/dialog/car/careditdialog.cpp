@@ -15,6 +15,7 @@
 CarEditDialog::CarEditDialog(QWidget *parent) :
     QDialog(parent),
     mOriginCar(new Car()),
+    mCarNumber(""),
     ui(new Ui::CarEditDialog)
 {
     ui->setupUi(this);
@@ -27,10 +28,6 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
                            tr("保存"), this);
     mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
                            tr("修改"), this);
-    mActPrev = new QAction(QIcon(":/menu/icon/arrow_left_64.ico"),
-                           tr("上一条"), this);
-    mActNext = new QAction(QIcon(":/menu/icon/arrow_right_64.ico"),
-                           tr("下一条"), this);
     mActExit = new QAction(QIcon(":/menu/icon/exit_out_64.ico"),
                            tr("退出"), this);
     mActCancel = new QAction(QIcon(":/menu/icon/cancel_64.ico"),
@@ -43,8 +40,6 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     mToolBar->addAction(mActSaveExit);
     mToolBar->addAction(mActSave);
     mToolBar->addAction(mActEdit);
-//    mToolBar->addAction(mActPrev);
-//    mToolBar->addAction(mActNext);
     mToolBar->addAction(mActCancel);
     mToolBar->addAction(mActExit);
 
@@ -147,8 +142,6 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
     mOpenType = type;
     if (type == OpenType::CREATEITEM) {
         mActEdit->setDisabled(true);
-        mActPrev->setDisabled(true);
-        mActNext->setDisabled(true);
         ui->pumpTypeCbBox->setCurrentIndex(0);
         ui->createDateDE->setDate(QDate::currentDate());
         ui->drivingLicenseDateDE->setDate(QDate::currentDate());
@@ -160,9 +153,8 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         ui->mainTabWidget->removeTab(1);
     } else {
         //已查看内容方式打开
+        mCarNumber = car.number;
         mActSave->setEnabled(true);
-        mActPrev->setEnabled(true);
-        mActNext->setEnabled(true);
         ui->numLE->setDisabled(true);
         setViewMode();
         setOriginCar(car);
@@ -208,7 +200,7 @@ CarEditDialog::configToolBar()
 }
 
 void
-CarEditDialog:: initView()
+CarEditDialog::initView()
 {
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
@@ -911,6 +903,7 @@ CarEditDialog::closeEvent(QCloseEvent *event)
             saveEvent();
     }
     clean();
+    mCarNumber = "";
 }
 
 void
@@ -1254,24 +1247,20 @@ CarEditDialog::updateAnnualTableView()
     QList<ANNUALFEE_RECORD> records;
 
     ALOGD("%s", __FUNCTION__);
+    ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
 
     if (mAnnualModel->rowCount()) {
-        //删除所有行
         mAnnualModel->removeRows(0, mAnnualModel->rowCount());
     }
 
-    if (!mDb->getAllAnnualData(records)) {
-        if (!records.isEmpty()) {
-            size = records.size();
-            for (int i = 0; i < size; i++) {
-                record = records.at(i);
-                ALOGD("%s, record.carNumber = %s, mOriginCar->number = %s",
-                      __FUNCTION__, record.carNumber.toStdString().data(),
-                      mOriginCar->number.toStdString().data());
-                if (record.carNumber == mOriginCar->number) {
-                    addAnnualItemSlot(record);
-                }
-            }
+    if (!mDb->getAnnualDataInCarNumber(mCarNumber, records)) {
+        if (records.isEmpty())
+            return;
+
+        size = records.size();
+        for (int i = 0; i < size; i++) {
+            record = records.at(i);
+            addAnnualItemSlot(record);
         }
     }
 }
@@ -1284,23 +1273,20 @@ CarEditDialog::updateInsuranceTableView()
     QList<INSURANCE_RECORD> records;
 
     ALOGD("%s", __FUNCTION__);
+    ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
 
     if (mPaymentModel->rowCount()) {
-        //删除所有行
         mPaymentModel->removeRows(0, mPaymentModel->rowCount());
     }
 
-    if (!mDb->getAllInsuranceData(records)) {
-        if (!records.isEmpty()) {
-            size = records.size();
-            for (int i = 0; i < size; i++) {
-                record = records.at(i);
-                ALOGD("%s, record.carNumber = %s, mOriginCar->number = %s",
-                      __FUNCTION__, record.carNumber.toStdString().data(),
-                      mOriginCar->number.toStdString().data());
-                if (record.carNumber == mOriginCar->number)
-                    addInsuranceItemSlot(record);
-            }
+    if (!mDb->getInsuranceDataInCarNumber(mCarNumber, records)) {
+        if (records.isEmpty())
+            return;
+
+        size = records.size();
+        for (int i = 0; i < size; i++) {
+            record = records.at(i);
+            addInsuranceItemSlot(record);
         }
     }
 }
@@ -1313,23 +1299,21 @@ CarEditDialog::updateBusinessInsuanceTableView()
     QList<INSURANCE_RECORD> records;
 
     ALOGD("%s", __FUNCTION__);
+    ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
 
     if (mBusinessModel->rowCount()) {
         //删除所有行
         mBusinessModel->removeRows(0, mBusinessModel->rowCount());
     }
 
-    if (!mDb->getAllBusinessInsuranceData(records)) {
-        if (!records.isEmpty()) {
-            size = records.size();
-            for (int i = 0; i < size; i++) {
-                record = records.at(i);
-                ALOGD("%s, record.carNumber = %s, mOriginCar->number = %s",
-                      __FUNCTION__, record.carNumber.toStdString().data(),
-                      mOriginCar->number.toStdString().data());
-                if (record.carNumber == mOriginCar->number)
-                    addBusinessInsuranceItemSlot(record);
-            }
+    if (!mDb->getBusinessInsuranceDataInCarNumber(mCarNumber, records)) {
+        if (records.isEmpty())
+            return;
+
+        size = records.size();
+        for (int i = 0; i < size; i++) {
+            record = records.at(i);
+            addBusinessInsuranceItemSlot(record);
         }
     }
 }
@@ -1342,23 +1326,21 @@ CarEditDialog::updateProjectTableView()
     QList<PROJECT_RECORD> records;
 
     ALOGD("%s", __FUNCTION__);
+    ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
 
     if (mBusinessModel->rowCount()) {
         //删除所有行
         mProjectModel->removeRows(0, mProjectModel->rowCount());
     }
 
-    if (!mDb->getAllProjectData(records)) {
-        if (!records.isEmpty()) {
-            size = records.size();
-            for (int i = 0; i < size; i++) {
-                record = records.at(i);
-                ALOGD("%s, record.carNumber = %s, mOriginCar->number = %s",
-                      __FUNCTION__, record.carNumber.toStdString().data(),
-                      mOriginCar->number.toStdString().data());
-                if (record.carNumber == mOriginCar->number)
-                    addProjectItemSlot(record);
-            }
+    if (!mDb->getProjectDataInCarNumber(mCarNumber, records)) {
+        if (records.isEmpty())
+            return;
+
+        size = records.size();
+        for (int i = 0; i < size; i++) {
+            record = records.at(i);
+            addProjectItemSlot(record);
         }
     }
 }
