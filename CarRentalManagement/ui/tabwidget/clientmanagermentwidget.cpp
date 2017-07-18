@@ -234,8 +234,6 @@ ClientManagermentWidget::addClientSlot()
 void
 ClientManagermentWidget::addClientItemSlot(Client &client)
 {
-    ALOGD("ClientManagermentWidget enter!\n");
-
     QStandardItem* num
             = new QStandardItem(client.number);
     QStandardItem* clientype
@@ -273,7 +271,6 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
 void
 ClientManagermentWidget::updateClientItemSlog(Client &client)
 {
-    ALOGD("%s enter", __FUNCTION__);
     mModel->setData(mModel->index(curRow, 0),
                     client.number);
     mModel->setData(mModel->index(curRow, 1),

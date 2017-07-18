@@ -110,9 +110,11 @@ public:
     int                 getAllRentalDocumentData(QList<RentalDocument> &docs);
     int                 getRentalDocInClientNumber(const QString clientNumber,
                                                    QList<RentalDocument> &docs);
+    int                 getRentalDocumentDataInCarNumber(const QString carNumber,
+                                                         QList<RentalDocument> &docs);
     int                 clearRentalDocumentTable();
     int                 deleteRentalDocumentInNumber(const QString number);
-    int                 getRentalDocumentDataInNumber(QString number, RentalDocument &doc);
+    int                 getRentalDocumentDataInNumber(const QString number, RentalDocument &doc);
     bool                isRentalDocumentExist(RentalDocument &doc);
 
 private:

@@ -613,7 +613,6 @@ RentalDocumentEditDialog::resetView()
 void
 RentalDocumentEditDialog::clean()
 {
-    ALOGD("%s enter", __FUNCTION__);
     cleanContent();
 }
 

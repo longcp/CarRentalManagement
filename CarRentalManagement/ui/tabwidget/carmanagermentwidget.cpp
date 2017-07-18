@@ -268,7 +268,6 @@ CarManagermentWidget::on_carTableView_clicked(const QModelIndex &index)
 void
 CarManagermentWidget::addCarItemSlot(Car &car)
 {
-    ALOGD("%s enter", __FUNCTION__);
     QStandardItem* number
             = new QStandardItem(car.number);
     QStandardItem* pumptype
@@ -347,7 +346,6 @@ CarManagermentWidget::addCarItemSlot(Car &car)
 void
 CarManagermentWidget::updateCarItemSlot(Car &car)
 {
-    ALOGD("%s enter", __FUNCTION__);
     mModel->setData(mModel->index(curRow, 0),
                     car.number);
     mModel->setData(mModel->index(curRow, 1),

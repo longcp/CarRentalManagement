@@ -133,7 +133,7 @@ typedef struct AnnualFeeRecord {
 }ANNUALFEE_RECORD;
 
 typedef struct ProjectRecord {
-    QString number;
+    int number;
     QString carNumber;
     QString rentalDocNum;
     QDate date;

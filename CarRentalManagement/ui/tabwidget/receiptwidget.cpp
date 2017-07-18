@@ -263,7 +263,6 @@ ReceiptWidget::resetReceiptSumTableData()
 void
 ReceiptWidget::addTableRow(RentalDocument &doc)
 {
-    ALOGDTRACE();
     QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
     QStandardItem *docNum = new QStandardItem(doc.number);
     QStandardItem *contractNumber = new QStandardItem(doc.contractNumber);

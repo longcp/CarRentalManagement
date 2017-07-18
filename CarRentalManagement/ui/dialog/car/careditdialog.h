@@ -8,6 +8,7 @@ class QToolBar;
 class Car;
 class TableModel;
 class DataBase;
+class RentalDocument;
 
 namespace Ui {
 class CarEditDialog;
@@ -177,6 +178,7 @@ private:
     void            updateInsuranceTableView();
     void            updateBusinessInsuanceTableView();
     void            updateProjectTableView();
+    PROJECT_RECORD  getProjectFromRentaldoc(const RentalDocument &doc);
 
     Ui::CarEditDialog *ui;
     // 工具栏

@@ -298,7 +298,6 @@ ClientEditDialog::closeDialog()
 void
 ClientEditDialog::clean()
 {
-    ALOGD("%s enter.", __FUNCTION__);
     cleanContent();
 }
 

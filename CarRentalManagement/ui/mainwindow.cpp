@@ -378,7 +378,7 @@ void
 MainWindow::userLoginSlot(QString curUserName)
 {
     // do something according to current user
-    ALOGD("%s enter.", __FUNCTION__);
+    ALOGDTRACE();
 }
 
 void

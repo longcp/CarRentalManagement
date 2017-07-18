@@ -5,6 +5,7 @@
 #include <tablemodel.h>
 #include <QDebug>
 #include <QMessageBox>
+#include <rentaldocument.h>
 #include <database/database.h>
 
 #define LOG_TAG                 "CAR_EDIT_DIALOG"
@@ -909,7 +910,6 @@ CarEditDialog::closeEvent(QCloseEvent *event)
 void
 CarEditDialog::clean()
 {
-    ALOGD("%s enter", __FUNCTION__);
     cleanContent();
 }
 
@@ -1205,9 +1205,9 @@ CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
 void
 CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
 {
-    ALOGD("%s", __FUNCTION__);
+    ALOGDTRACE();
     QStandardItem* num
-            = new QStandardItem(record.number);
+            = new QStandardItem(QString::number(record.number));
     QStandardItem* date
             = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* contractNum
@@ -1220,11 +1220,13 @@ CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
             = new QStandardItem(QString("%1").arg(record.amount));
     QStandardItem* remarks
             = new QStandardItem(QString("%1").arg(record.remarks));
+    QStandardItem* rentalDocNum
+            = new QStandardItem(QString("%1").arg(record.rentalDocNum));
 
     QList<QStandardItem*> items;
     items << num << date << contractNum << clientNum << clientName
-          << amount<< remarks;
-    mPaymentModel->appendRow(items);
+          << amount << remarks << rentalDocNum;
+    mProjectModel->appendRow(items);
 
     //update sum tableview
 }
@@ -1321,9 +1323,9 @@ CarEditDialog::updateBusinessInsuanceTableView()
 void
 CarEditDialog::updateProjectTableView()
 {
-    int size;
     PROJECT_RECORD record;
-    QList<PROJECT_RECORD> records;
+    QList<RentalDocument> docs;
+    int count = 0;
 
     ALOGD("%s", __FUNCTION__);
     ALOGD("11111111111111111, carNumber=%s", mCarNumber.toStdString().data());
@@ -1333,14 +1335,34 @@ CarEditDialog::updateProjectTableView()
         mProjectModel->removeRows(0, mProjectModel->rowCount());
     }
 
-    if (!mDb->getProjectDataInCarNumber(mCarNumber, records)) {
-        if (records.isEmpty())
+    ALOGD("0000000000000");
+    if (!mDb->getRentalDocumentDataInCarNumber(mCarNumber, docs)) {
+        ALOGD("2222222222222222");
+        if (docs.isEmpty())
             return;
 
-        size = records.size();
-        for (int i = 0; i < size; i++) {
-            record = records.at(i);
+        ALOGD("3333333333333333333");
+        for (RentalDocument doc : docs) {
+
+            ALOGD("4444444444444444");
+            record = getProjectFromRentaldoc(doc);
+            record.number = ++count;
             addProjectItemSlot(record);
         }
     }
+}
+
+PROJECT_RECORD
+CarEditDialog::getProjectFromRentaldoc(const RentalDocument &doc)
+{
+    PROJECT_RECORD record;
+    record.carNumber = doc.carNumber;
+    record.rentalDocNum = doc.number;
+    record.date = doc.date;
+    record.contractNum = doc.contractNumber;
+    record.clientNum = doc.clientNumber;
+    record.clientName = doc.clientName;
+    record.amount = doc.projectAmount;
+    record.remarks = doc.remarks;
+    return record;
 }
