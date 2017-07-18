@@ -190,6 +190,7 @@ public:
     const static PumpType getPumpType(int type);
     const static int getPumpTypePosition(PumpType type);
     void            dump();
+    bool            isValueEqual(Car &c);
 
     QString         number;
     QString         carNumber;

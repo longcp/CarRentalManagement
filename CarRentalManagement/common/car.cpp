@@ -201,3 +201,95 @@ Car::dump()
           createDate.toString(DATE_FORMAT_STR).toStdString().data(),
           productionDate.toString(DATE_FORMAT_STR).toStdString().data());
 }
+
+bool
+Car::isValueEqual(Car &c)
+{
+    if (number != c.number ||
+        carNumber != c.carNumber ||
+        bankAccount != c.bankAccount ||
+        owner != c.owner ||
+        carBrand != c.carBrand ||
+        chassisBrand != c.chassisBrand ||
+        fuelCarNumber != c.fuelCarNumber ||
+        frameNumber != c.frameNumber ||
+        identificationNumber != c.identificationNumber ||
+        productNumber != c.productNumber ||
+        insuranceCardNumber != c.insuranceCardNumber ||
+        engineNumber != c.engineNumber ||
+        dimensions != c.dimensions ||
+        factoryCode != c.factoryCode ||
+        operator1 != c.operator1 ||
+        operator2 != c.operator2 ||
+        operator3 != c.operator3 ||
+        operator4 != c.operator4 ||
+        operator5 != c.operator5 ||
+        remarks != c.remarks ||
+        creator != c.creator ||
+        productionDate.toString(DATETIME_FORMAT_STR) != c.productionDate.toString(DATE_FORMAT_STR) ||
+        drivingLicenseDate.toString(DATE_FORMAT_STR) != c.drivingLicenseDate.toString(DATE_FORMAT_STR) ||
+        createDate.toString(DATE_FORMAT_STR) != c.createDate.toString(DATE_FORMAT_STR) ||
+        pumpedSquare != c.pumpedSquare ||
+        pumpedTimes != c.pumpedTimes ||
+        milage != c.milage ||
+        worth != c.worth ||
+        enginePower != c.enginePower ||
+        maxDeliverySizes != c.maxDeliverySizes ||
+        maxOutputPressure != c.maxOutputPressure ||
+        boomVerticalLen != c.boomVerticalLen ||
+        boomHorizontalLen != c.boomHorizontalLen ||
+        totalWeight != c.totalWeight ||
+        equipmentWeight != c.equipmentWeight ||
+        pumptype != c.pumptype)
+        return false;
+
+    if (insuranceRecords.size() != c.insuranceRecords.size() ||
+        businessInsuranceRecords.size() != c.businessInsuranceRecords.size() ||
+        annualFeeRecords.size() != c.annualFeeRecords.size() ||
+        projectRecords.size() != c.projectRecords.size())
+        return false;
+
+    for (int i = 0; i < c.insuranceRecords.size(); i++) {
+        if (insuranceRecords.at(i).number != c.insuranceRecords.at(i).number ||
+            insuranceRecords.at(i).carNumber != c.insuranceRecords.at(i).carNumber ||
+            insuranceRecords.at(i).fee != c.insuranceRecords.at(i).fee ||
+            insuranceRecords.at(i).company != c.insuranceRecords.at(i).company ||
+            insuranceRecords.at(i).remarks != c.insuranceRecords.at(i).remarks ||
+            insuranceRecords.at(i).date.toString(DATE_FORMAT_STR) != c.insuranceRecords.at(i).date.toString(DATE_FORMAT_STR))
+            return false;
+    }
+
+    for (int i = 0; i < c.businessInsuranceRecords.size(); i++) {
+        if (businessInsuranceRecords.at(i).number != c.businessInsuranceRecords.at(i).number ||
+            businessInsuranceRecords.at(i).carNumber != c.businessInsuranceRecords.at(i).carNumber ||
+            businessInsuranceRecords.at(i).fee != c.businessInsuranceRecords.at(i).fee ||
+            businessInsuranceRecords.at(i).company != c.businessInsuranceRecords.at(i).company ||
+            businessInsuranceRecords.at(i).remarks != c.businessInsuranceRecords.at(i).remarks ||
+            businessInsuranceRecords.at(i).date.toString(DATE_FORMAT_STR) != c.businessInsuranceRecords.at(i).date.toString(DATE_FORMAT_STR))
+            return false;
+    }
+
+    for (int i = 0; i < c.annualFeeRecords.size(); i++) {
+        if (annualFeeRecords.at(i).number != c.annualFeeRecords.at(i).number ||
+            annualFeeRecords.at(i).carNumber != c.annualFeeRecords.at(i).carNumber ||
+            annualFeeRecords.at(i).annualFee != c.annualFeeRecords.at(i).annualFee ||
+            annualFeeRecords.at(i).travelExpenses != c.annualFeeRecords.at(i).travelExpenses ||
+            annualFeeRecords.at(i).remarks != c.annualFeeRecords.at(i).remarks ||
+            annualFeeRecords.at(i).date.toString(DATE_FORMAT_STR) != c.annualFeeRecords.at(i).date.toString(DATE_FORMAT_STR))
+            return false;
+    }
+
+    for (int i = 0; i < c.projectRecords.size(); i++) {
+        if (projectRecords.at(i).number != c.projectRecords.at(i).number ||
+            projectRecords.at(i).carNumber != c.projectRecords.at(i).carNumber ||
+            projectRecords.at(i).rentalDocNum != c.projectRecords.at(i).rentalDocNum ||
+            projectRecords.at(i).contractNum != c.projectRecords.at(i).contractNum ||
+            projectRecords.at(i).clientNum != c.projectRecords.at(i).clientNum ||
+            projectRecords.at(i).clientName != c.projectRecords.at(i).clientName ||
+            projectRecords.at(i).amount != c.projectRecords.at(i).amount ||
+            projectRecords.at(i).remarks != c.projectRecords.at(i).remarks ||
+            projectRecords.at(i).date.toString(DATE_FORMAT_STR) != c.projectRecords.at(i).date.toString(DATE_FORMAT_STR))
+            return false;
+    }
+    return true;
+}
