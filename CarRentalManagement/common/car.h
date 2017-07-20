@@ -190,7 +190,7 @@ public:
     const static PumpType getPumpType(int type);
     const static int getPumpTypePosition(PumpType type);
     void            dump();
-    bool            isValueEqual(Car &c);
+    bool            isValueEqualWithoutRecords(Car &c);
 
     QString         number;
     QString         carNumber;
@@ -241,6 +241,7 @@ signals:
 public slots:
 
 private:
+    bool            isValueEqual(Car &c, bool isWithoutRecords);
 };
 
 #endif // CAR_H

@@ -125,85 +125,52 @@ Car::getPumpType(int type)
 void
 Car::dump()
 {
-    ALOGD("number = %s\n"
-          "owner = %s\n"
-          "bankAccount = %s\n"
-          "carNumber = %s\n"
-          "carBrand = %s\n"
-          "chassisBrand = %s\n"
-          "fuelCarNumber = %s\n"
-          "frameNumber = %s\n"
-          "identificationNumber = %s\n"
-          "engineNumber = %s\n"
-          "insuranceCardNumber = %s\n"
-          "factoryCode = %s\n"
-          "productNumber = %s\n"
-          "dimensions = %s\n"
-          "operator1 = %s\n"
-          "operator2 = %s\n"
-          "operator3 = %s\n"
-          "operator4 = %s\n"
-          "operator5 = %s\n"
-          "remarks = %s\n"
-          "creator = %s\n"
-          "pumpedSquare = %f\n"
-          "pumpedTimes = %f\n"
-          "milage = %f\n"
-          "worth = %f\n"
-          "enginePower = %f\n"
-          "maxDeliverySizes = %f\n"
-          "maxOutputPressure = %f\n"
-          "boomVerticalLen = %f\n"
-          "boomHorizontalLen = %f\n"
-          "totalWeight = %f\n"
-          "equipmentWeight = %f\n"
-          "pumptype = %d\n",
-          "pumptype = %d\n",
-          "pumptype = %d\n",
-          "pumptype = %d\n",
-          "drivingLicenseDate",
-          "createDate",
-          "productionDate",
-          number.toStdString().data(),
-          owner.toStdString().data(),
-          bankAccount.toStdString().data(),
-          carNumber.toStdString().data(),
-          carBrand.toStdString().data(),
-          chassisBrand.toStdString().data(),
-          fuelCarNumber.toStdString().data(),
-          frameNumber.toStdString().data(),
-          identificationNumber.toStdString().data(),
-          engineNumber.toStdString().data(),
-          insuranceCardNumber.toStdString().data(),
-          factoryCode.toStdString().data(),
-          productNumber.toStdString().data(),
-          dimensions.toStdString().data(),
-          operator1.toStdString().data(),
-          operator2.toStdString().data(),
-          operator3.toStdString().data(),
-          operator4.toStdString().data(),
-          operator5.toStdString().data(),
-          remarks.toStdString().data(),
-          creator.toStdString().data(),
-          pumpedSquare,
-          pumpedTimes,
-          milage,
-          worth,
-          enginePower,
-          maxDeliverySizes,
-          maxOutputPressure,
-          boomVerticalLen,
-          boomHorizontalLen,
-          totalWeight,
-          equipmentWeight,
-          pumptype,
-          drivingLicenseDate.toString(DATE_FORMAT_STR).toStdString().data(),
-          createDate.toString(DATE_FORMAT_STR).toStdString().data(),
-          productionDate.toString(DATE_FORMAT_STR).toStdString().data());
+    ALOGD("number = %s", number.toStdString().data());
+    ALOGD("owner = %s", owner.toStdString().data());
+    ALOGD("bankAccount = %s", bankAccount.toStdString().data());
+    ALOGD("carNumber = %s", carNumber.toStdString().data());
+    ALOGD("carBrand = %s", carBrand.toStdString().data());
+    ALOGD("chassisBrand = %s", chassisBrand.toStdString().data());
+    ALOGD("fuelCarNumber = %s", fuelCarNumber.toStdString().data());
+    ALOGD("frameNumber = %s", frameNumber.toStdString().data());
+    ALOGD("identificationNumber = %s", identificationNumber.toStdString().data());
+    ALOGD("engineNumber = %s", engineNumber.toStdString().data());
+    ALOGD("insuranceCardNumber = %s", insuranceCardNumber.toStdString().data());
+    ALOGD("factoryCode = %s", factoryCode.toStdString().data());
+    ALOGD("productNumber = %s", productNumber.toStdString().data());
+    ALOGD("dimensions = %s", dimensions.toStdString().data());
+    ALOGD("operator1 = %s", operator1.toStdString().data());
+    ALOGD("operator2 = %s", operator2.toStdString().data());
+    ALOGD("operator3 = %s", operator3.toStdString().data());
+    ALOGD("operator4 = %s", operator4.toStdString().data());
+    ALOGD("operator5 = %s", operator5.toStdString().data());
+    ALOGD("remarks = %s", remarks.toStdString().data());
+    ALOGD("creator = %s", creator.toStdString().data());
+    ALOGD("pumpedSquare = %f", pumpedSquare);
+    ALOGD("pumpedTimes = %f", pumpedTimes);
+    ALOGD("milage = %f", milage);
+    ALOGD("worth = %f", worth);
+    ALOGD("enginePower = %f", enginePower);
+    ALOGD("maxDeliverySizes = %f", maxDeliverySizes);
+    ALOGD("maxOutputPressure = %f", maxOutputPressure);
+    ALOGD("boomVerticalLen = %f", boomVerticalLen);
+    ALOGD("boomHorizontalLen = %f", boomHorizontalLen);
+    ALOGD("totalWeight = %f", totalWeight);
+    ALOGD("equipmentWeight = %f", equipmentWeight);
+    ALOGD("pumptype = %d\n", pumptype);
+    ALOGD("drivingLicenseDate = ", drivingLicenseDate.toString(DATE_FORMAT_STR).toStdString().data());
+    ALOGD("createDate = ", createDate.toString(DATE_FORMAT_STR).toStdString().data());
+    ALOGD("productionDate = ", productionDate.toString(DATE_FORMAT_STR).toStdString().data());
 }
 
 bool
-Car::isValueEqual(Car &c)
+Car::isValueEqualWithoutRecords(Car &c)
+{
+    return isValueEqual(c, true);
+}
+
+bool
+Car::isValueEqual(Car &c, bool isWithoutRecords)
 {
     if (number != c.number ||
         carNumber != c.carNumber ||
@@ -226,9 +193,9 @@ Car::isValueEqual(Car &c)
         operator5 != c.operator5 ||
         remarks != c.remarks ||
         creator != c.creator ||
-        productionDate.toString(DATETIME_FORMAT_STR) != c.productionDate.toString(DATE_FORMAT_STR) ||
-        drivingLicenseDate.toString(DATE_FORMAT_STR) != c.drivingLicenseDate.toString(DATE_FORMAT_STR) ||
-        createDate.toString(DATE_FORMAT_STR) != c.createDate.toString(DATE_FORMAT_STR) ||
+        productionDate != c.productionDate ||
+        drivingLicenseDate != c.drivingLicenseDate ||
+        createDate != c.createDate ||
         pumpedSquare != c.pumpedSquare ||
         pumpedTimes != c.pumpedTimes ||
         milage != c.milage ||
@@ -240,8 +207,12 @@ Car::isValueEqual(Car &c)
         boomHorizontalLen != c.boomHorizontalLen ||
         totalWeight != c.totalWeight ||
         equipmentWeight != c.equipmentWeight ||
-        pumptype != c.pumptype)
+        pumptype != c.pumptype) {
         return false;
+    }
+
+    if (isWithoutRecords)
+        return true;
 
     if (insuranceRecords.size() != c.insuranceRecords.size() ||
         businessInsuranceRecords.size() != c.businessInsuranceRecords.size() ||
@@ -255,7 +226,7 @@ Car::isValueEqual(Car &c)
             insuranceRecords.at(i).fee != c.insuranceRecords.at(i).fee ||
             insuranceRecords.at(i).company != c.insuranceRecords.at(i).company ||
             insuranceRecords.at(i).remarks != c.insuranceRecords.at(i).remarks ||
-            insuranceRecords.at(i).date.toString(DATE_FORMAT_STR) != c.insuranceRecords.at(i).date.toString(DATE_FORMAT_STR))
+            insuranceRecords.at(i).date != c.insuranceRecords.at(i).date)
             return false;
     }
 
@@ -265,7 +236,7 @@ Car::isValueEqual(Car &c)
             businessInsuranceRecords.at(i).fee != c.businessInsuranceRecords.at(i).fee ||
             businessInsuranceRecords.at(i).company != c.businessInsuranceRecords.at(i).company ||
             businessInsuranceRecords.at(i).remarks != c.businessInsuranceRecords.at(i).remarks ||
-            businessInsuranceRecords.at(i).date.toString(DATE_FORMAT_STR) != c.businessInsuranceRecords.at(i).date.toString(DATE_FORMAT_STR))
+            businessInsuranceRecords.at(i).date != c.businessInsuranceRecords.at(i).date)
             return false;
     }
 
@@ -275,7 +246,7 @@ Car::isValueEqual(Car &c)
             annualFeeRecords.at(i).annualFee != c.annualFeeRecords.at(i).annualFee ||
             annualFeeRecords.at(i).travelExpenses != c.annualFeeRecords.at(i).travelExpenses ||
             annualFeeRecords.at(i).remarks != c.annualFeeRecords.at(i).remarks ||
-            annualFeeRecords.at(i).date.toString(DATE_FORMAT_STR) != c.annualFeeRecords.at(i).date.toString(DATE_FORMAT_STR))
+            annualFeeRecords.at(i).date != c.annualFeeRecords.at(i).date)
             return false;
     }
 
@@ -288,7 +259,7 @@ Car::isValueEqual(Car &c)
             projectRecords.at(i).clientName != c.projectRecords.at(i).clientName ||
             projectRecords.at(i).amount != c.projectRecords.at(i).amount ||
             projectRecords.at(i).remarks != c.projectRecords.at(i).remarks ||
-            projectRecords.at(i).date.toString(DATE_FORMAT_STR) != c.projectRecords.at(i).date.toString(DATE_FORMAT_STR))
+            projectRecords.at(i).date != c.projectRecords.at(i).date)
             return false;
     }
     return true;

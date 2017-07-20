@@ -163,6 +163,7 @@ CarEditDialog::~CarEditDialog()
 void
 CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
 {
+    Car tmp;
     mOpenType = type;
     if (type == OpenType::CREATEITEM) {
         mActEdit->setDisabled(true);
@@ -175,6 +176,8 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         mActCancel->setDisabled(true);
         ui->mainTabWidget->removeTab(2);
         ui->mainTabWidget->removeTab(1);
+        saveUiContent(tmp);
+        setOriginCar(tmp);
     } else {
         //已查看内容方式打开
         mCarNumber = car.number;
@@ -187,7 +190,6 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         ui->mainTabWidget->addTab(ui->projectRecordTab, "工程记录");
         updateAllTableView();
     }
-    ALOGD("%s, mCarNumber = %s", __FUNCTION__, mCarNumber.toStdString().data());
     updateProjectTableView();
     ui->mainTabWidget->setCurrentIndex(0);
     ui->insuranceTabWidget->setCurrentIndex(0);
@@ -868,47 +870,12 @@ CarEditDialog::saveAndExitEvent()
 bool
 CarEditDialog::isModified()
 {
-    if (ui->numLE->isModified() ||
-            ui->ownerLE->isModified() ||
-            ui->bankAccountLE->isModified() ||
-            ui->pumpTypeCbBox->isWindowModified() ||
-            ui->carNumberLE->isModified() ||
-            ui->carBrandLE->isModified() ||
-            ui->chassisBrandLE->isModified() ||
-            ui->drivingLicenseDateDE->isWindowModified() ||
-            ui->fuelCarNumberLE->isModified() ||
-            ui->frameNumberLE->isModified() ||
-            ui->identificationNumberLE->isModified() ||
-            ui->engineNumberLE->isModified() ||
-            ui->worthDSB->isWindowModified() ||
-            ui->insuranceCardNumberLE->isModified() ||
-            ui->factoryCodeLE->isModified() ||
-            ui->productNumberLE->isModified() ||
-            ui->enginePowerDSB->isWindowModified() ||
-            ui->maxDeliverySizesDSB->isWindowModified() ||
-            ui->maxOutputPressureDSB->isWindowModified() ||
-            ui->dimensionsLE->isModified() ||
-            ui->boomVerticalLenDSB->isWindowModified() ||
-            ui->boomHorizontalLenDSB->isWindowModified() ||
-            ui->totalWeightDSB->isWindowModified() ||
-            ui->equipmentWeightDSB->isWindowModified() ||
-            ui->productDateDE->isWindowModified() ||
-            ui->operator1LE->isModified() ||
-            ui->operator2LE->isModified() ||
-            ui->operator3LE->isModified() ||
-            ui->operator4LE->isModified() ||
-            ui->operator5LE->isModified() ||
-            ui->remarksTextEdit->isWindowModified() ||
-            ui->pumpedSquareDSB->isWindowModified() ||
-            ui->pumpedTimesDSB->isWindowModified() ||
-            ui->milageDSB->isWindowModified() ||
-            ui->creatorLE->isModified() ||
-            ui->createDateDE->isWindowModified()) {
-        ALOGD("is modified!!!");
-        return true;
-    }
+    Car tmp;
+    saveUiContent(tmp);
+    if (mOriginCar->isValueEqualWithoutRecords(tmp))
+        return false;
 
-    return false;
+    return true;
 }
 
 void
@@ -922,12 +889,9 @@ CarEditDialog::closeEvent(QCloseEvent *event)
         int ret = QMessageBox::warning(this, tr("温馨提示"),
                                        tr("是否保存修改？\n"),
                                        QMessageBox::Yes |
-                                       QMessageBox::No |
-                                       QMessageBox::Cancel,
+                                       QMessageBox::No,
                                        QMessageBox::Yes);
-        if (ret == QMessageBox::Cancel)
-            return;
-        else if (ret == QMessageBox::Yes)
+        if (ret == QMessageBox::Yes)
             saveEvent();
     }
     clean();
@@ -1229,7 +1193,6 @@ CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
 void
 CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
 {
-    ALOGDTRACE();
     QStandardItem* num
             = new QStandardItem(QString::number(record.number));
     QStandardItem* date
@@ -1347,7 +1310,6 @@ CarEditDialog::updateProjectTableView()
         mProjectModel->removeRows(0, mProjectModel->rowCount());
     }
 
-    ALOGD("%s, mCarNumber = %s", __FUNCTION__, mCarNumber.toStdString().data());
     if (!mDb->getRentalDocumentDataInCarNumber(mCarNumber, docs)) {
         if (docs.isEmpty())
             return;
@@ -1378,7 +1340,12 @@ CarEditDialog::getProjectFromRentaldoc(const RentalDocument &doc)
 void
 CarEditDialog::delAnnualTableItem()
 {
-    if (mCurRow < 0)
+    int ret = QMessageBox::warning(this, tr("温馨提示"),
+                                   tr("该操作为不可撤回操作，是否确定删除?\n"),
+                                   QMessageBox::Yes |
+                                   QMessageBox::No,
+                                   QMessageBox::No);
+    if (ret == QMessageBox::No)
         return;
 
     QString number = mAnnualModel->index(mCurRow, 0).data().toString();
@@ -1392,7 +1359,12 @@ CarEditDialog::delAnnualTableItem()
 void
 CarEditDialog::delBusinessTableItem()
 {
-    if (mCurRow < 0)
+    int ret = QMessageBox::warning(this, tr("温馨提示"),
+                                   tr("该操作为不可撤回操作，是否确定删除?\n"),
+                                   QMessageBox::Yes |
+                                   QMessageBox::No,
+                                   QMessageBox::No);
+    if (ret == QMessageBox::No)
         return;
 
     QString number = mBusinessModel->index(mCurRow, 0).data().toString();
@@ -1405,7 +1377,12 @@ CarEditDialog::delBusinessTableItem()
 void
 CarEditDialog::delPaymentTableItem()
 {
-    if (mCurRow < 0)
+    int ret = QMessageBox::warning(this, tr("温馨提示"),
+                                   tr("该操作为不可撤回操作，是否确定删除?\n"),
+                                   QMessageBox::Yes |
+                                   QMessageBox::No,
+                                   QMessageBox::No);
+    if (ret == QMessageBox::No)
         return;
 
     QString number = mPaymentModel->index(mCurRow, 0).data().toString();

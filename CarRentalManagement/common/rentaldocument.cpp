@@ -37,10 +37,10 @@ RentalDocument::isValueEqual(RentalDocument &r)
         pumpTimes == r.pumpTimes &&
         pumpTimeUnitPrice == r.pumpTimeUnitPrice &&
         receivedAccounts == r.receivedAccounts &&
-        date.toString(DATE_FORMAT_STR) == r.date.toString(DATE_FORMAT_STR) &&
+        date == r.date &&
         workingHours == r.workingHours &&
-        arrivalDateTime.toString(DATETIME_FORMAT_STR) == r.arrivalDateTime.toString(DATETIME_FORMAT_STR) &&
-        leaveDateTime.toString(DATETIME_FORMAT_STR) == r.leaveDateTime.toString(DATETIME_FORMAT_STR) &&
+        arrivalDateTime == r.arrivalDateTime &&
+        leaveDateTime == r.leaveDateTime &&
         rentalDocState == r.rentalDocState &&
         pumpType == r.pumpType) {
         return true;
