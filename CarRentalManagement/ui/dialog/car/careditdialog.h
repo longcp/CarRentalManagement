@@ -9,6 +9,8 @@ class Car;
 class TableModel;
 class DataBase;
 class RentalDocument;
+class QMenu;
+class QAction;
 
 namespace Ui {
 class CarEditDialog;
@@ -73,6 +75,22 @@ private slots:
     void            addInsuranceItemSlot(INSURANCE_RECORD &record);
     void            addBusinessInsuranceItemSlot(INSURANCE_RECORD &record);
     void            addProjectItemSlot(PROJECT_RECORD &record);
+
+    void            delAnnualTableItem();
+    void            delBusinessTableItem();
+    void            delPaymentTableItem();
+
+    void            on_annualTableview_clicked(const QModelIndex &index);
+
+    void            on_businessTableView_clicked(const QModelIndex &index);
+
+    void            on_paymentTableView_clicked(const QModelIndex &index);
+
+    void            on_annualTableview_customContextMenuRequested(const QPoint &pos);
+
+    void            on_businessTableView_customContextMenuRequested(const QPoint &pos);
+
+    void            on_paymentTableView_customContextMenuRequested(const QPoint &pos);
 
 signals:
     void            addCarItemSignal(Car &car);
@@ -206,7 +224,15 @@ private:
     OpenType        mOpenType;
     Car*            mOriginCar;
     QString         mCarNumber;
-    DataBase        *mDb;
+    DataBase*       mDb;
+    QMenu*          mAnnualMenu;
+    QMenu*          mBusinessMenu;
+    QMenu*          mPaymentMenu;
+    QAction*        mAnnualDelAct;
+    QAction*        mBusinessDelAct;
+    QAction*        mPaymentDelAct;
+    int             mCurRow;
+    bool            mIsModifing;
 };
 
 #endif // CAREDITDIALOG_H

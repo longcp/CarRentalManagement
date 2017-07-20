@@ -7,6 +7,8 @@
 #include <QMessageBox>
 #include <rentaldocument.h>
 #include <database/database.h>
+#include <QMenu>
+#include <QAction>
 
 #define LOG_TAG                 "CAR_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -17,13 +19,23 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     QDialog(parent),
     mOriginCar(new Car()),
     mCarNumber(""),
+    mCurRow(-1),
     ui(new Ui::CarEditDialog)
 {
     ui->setupUi(this);
+    ui->annualTableview->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->businessTableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->paymentTableView->setContextMenuPolicy(Qt::CustomContextMenu);
     this->setWindowFlags(this->windowFlags()
                          &~Qt::WindowMaximizeButtonHint);               //去掉最大化按钮
+
     mDb = DataBase::getInstance();
-    initView();
+    mAnnualMenu = new QMenu(ui->annualTableview);
+    mBusinessMenu = new QMenu(ui->businessTableView);
+    mPaymentMenu = new QMenu(ui->paymentTableView);
+    mAnnualDelAct = new QAction("删除", this);
+    mBusinessDelAct = new QAction("删除", this);
+    mPaymentDelAct = new QAction("删除", this);
 
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
                            tr("保存"), this);
@@ -45,6 +57,7 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
     mToolBar->addAction(mActExit);
 
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+    initView();
 
     /**
      * @brief 保存退出
@@ -71,6 +84,16 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
      */
     connect(mActCancel, SIGNAL(triggered(bool)),
             this, SLOT(cancelEvent()));
+
+    /**
+     * @brief 右键删除
+     */
+    connect(mAnnualDelAct,    SIGNAL(triggered()),
+            this, SLOT(delAnnualTableItem()));
+    connect(mBusinessDelAct,    SIGNAL(triggered()),
+            this, SLOT(delBusinessTableItem()));
+    connect(mPaymentDelAct,    SIGNAL(triggered()),
+            this, SLOT(delPaymentTableItem()));
 
     connect(ui->annualTableview->horizontalHeader(),&QHeaderView::sectionResized,
             this, &CarEditDialog::updateAnnualSumSectionWidth);
@@ -648,6 +671,8 @@ CarEditDialog::setViewMode()
 void
 CarEditDialog::setMode(bool mode)
 {
+    qDebug() << "mIsModifing = " << mIsModifing;
+    mIsModifing = mode;
     ui->numLE->setEnabled(mode);
     ui->ownerLE->setEnabled(mode);
     ui->bankAccountLE->setEnabled(mode);
@@ -1348,4 +1373,104 @@ CarEditDialog::getProjectFromRentaldoc(const RentalDocument &doc)
     record.amount = doc.projectAmount;
     record.remarks = doc.remarks;
     return record;
+}
+
+void
+CarEditDialog::delAnnualTableItem()
+{
+    if (mCurRow < 0)
+        return;
+
+    QString number = mAnnualModel->index(mCurRow, 0).data().toString();
+    if (!mDb->delAnnualDataInNumber(number)) {
+        ALOGD("%s, delete (%s)", __FUNCTION__, number.toStdString().data());
+        mAnnualModel->removeRow(mCurRow);
+        // FIXME:同步更新合计表
+    }
+}
+
+void
+CarEditDialog::delBusinessTableItem()
+{
+    if (mCurRow < 0)
+        return;
+
+    QString number = mBusinessModel->index(mCurRow, 0).data().toString();
+    if (!mDb->delBusinessInsuranceDataInNumber(number)) {
+        ALOGD("%s, delete (%s)", __FUNCTION__, number.toStdString().data());
+        mBusinessModel->removeRow(mCurRow);
+    }
+}
+
+void
+CarEditDialog::delPaymentTableItem()
+{
+    if (mCurRow < 0)
+        return;
+
+    QString number = mPaymentModel->index(mCurRow, 0).data().toString();
+    if (!mDb->delInsuranceDataInNumber(number)) {
+        ALOGD("%s, delete (%s)", __FUNCTION__, number.toStdString().data());
+        mPaymentModel->removeRow(mCurRow);
+    }
+}
+
+void
+CarEditDialog::on_annualTableview_clicked(const QModelIndex &index)
+{
+    mCurRow = index.row();
+    ALOGD("%s, mCurRow = %d", __FUNCTION__, mCurRow);
+}
+
+void
+CarEditDialog::on_businessTableView_clicked(const QModelIndex &index)
+{
+    mCurRow = index.row();
+    ALOGD("%s, mCurRow = %d", __FUNCTION__, mCurRow);
+}
+
+void
+CarEditDialog::on_paymentTableView_clicked(const QModelIndex &index)
+{
+    mCurRow = index.row();
+    ALOGD("%s, mCurRow = %d", __FUNCTION__, mCurRow);
+}
+
+void
+CarEditDialog::on_annualTableview_customContextMenuRequested(const QPoint &pos)
+{
+    QModelIndex index = ui->annualTableview->indexAt(pos);
+    if (!index.isValid() || !mIsModifing)
+        return;
+
+    mCurRow = index.row();
+    mAnnualMenu->clear();
+    mAnnualMenu->addAction(mAnnualDelAct);
+    mAnnualMenu->exec(QCursor::pos());
+}
+
+void
+CarEditDialog::on_businessTableView_customContextMenuRequested(const QPoint &pos)
+{
+    QModelIndex index = ui->businessTableView->indexAt(pos);
+    if (!index.isValid() || !mIsModifing)
+        return;
+
+    mCurRow = index.row();
+    mBusinessMenu->clear();
+    mBusinessMenu->addAction(mBusinessDelAct);
+    mBusinessMenu->exec(QCursor::pos());
+}
+
+void
+CarEditDialog::on_paymentTableView_customContextMenuRequested(const QPoint &pos)
+{
+    QModelIndex index = ui->paymentTableView->indexAt(pos);
+    if (!index.isValid() || !mIsModifing)
+        return;
+
+    mCurRow = index.row();
+    mPaymentMenu->clear();
+    mPaymentMenu->addAction(mPaymentDelAct);
+    mPaymentMenu->exec(QCursor::pos());
 }
