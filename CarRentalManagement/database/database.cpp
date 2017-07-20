@@ -2326,7 +2326,7 @@ DataBase::getRentalDocumentDataInCarNumber(const QString carNumber, QList<Rental
         return SELECT_DATABASE_FAIL;
     }
 
-    if (query->next()) {
+    while (query->next()) {
         doc.number = query->value(0).toString();
         doc.clientName = query->value(1).toString();
         doc.clientNumber = query->value(2).toString();

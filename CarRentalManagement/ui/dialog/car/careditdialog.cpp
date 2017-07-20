@@ -187,6 +187,8 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
         ui->mainTabWidget->addTab(ui->projectRecordTab, "工程记录");
         updateAllTableView();
     }
+    ALOGD("%s, mCarNumber = %s", __FUNCTION__, mCarNumber.toStdString().data());
+    updateProjectTableView();
     ui->mainTabWidget->setCurrentIndex(0);
     ui->insuranceTabWidget->setCurrentIndex(0);
     this->exec();
@@ -1164,7 +1166,6 @@ CarEditDialog::resetView()
 void
 CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
 {
-    ALOGD("%s", __FUNCTION__);
     QStandardItem* num
             = new QStandardItem(record.number);
     QStandardItem* date
@@ -1186,7 +1187,6 @@ CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
 void
 CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
 {
-    ALOGD("%s", __FUNCTION__);
     QStandardItem* num
             = new QStandardItem(record.number);
     QStandardItem* date
@@ -1208,7 +1208,6 @@ CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
 void
 CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
 {
-    ALOGD("%s", __FUNCTION__);
     QStandardItem* num
             = new QStandardItem(record.number);
     QStandardItem* date
@@ -1348,6 +1347,7 @@ CarEditDialog::updateProjectTableView()
         mProjectModel->removeRows(0, mProjectModel->rowCount());
     }
 
+    ALOGD("%s, mCarNumber = %s", __FUNCTION__, mCarNumber.toStdString().data());
     if (!mDb->getRentalDocumentDataInCarNumber(mCarNumber, docs)) {
         if (docs.isEmpty())
             return;
@@ -1419,21 +1419,18 @@ void
 CarEditDialog::on_annualTableview_clicked(const QModelIndex &index)
 {
     mCurRow = index.row();
-    ALOGD("%s, mCurRow = %d", __FUNCTION__, mCurRow);
 }
 
 void
 CarEditDialog::on_businessTableView_clicked(const QModelIndex &index)
 {
     mCurRow = index.row();
-    ALOGD("%s, mCurRow = %d", __FUNCTION__, mCurRow);
 }
 
 void
 CarEditDialog::on_paymentTableView_clicked(const QModelIndex &index)
 {
     mCurRow = index.row();
-    ALOGD("%s, mCurRow = %d", __FUNCTION__, mCurRow);
 }
 
 void
