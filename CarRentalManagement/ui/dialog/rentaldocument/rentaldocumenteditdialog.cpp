@@ -97,8 +97,8 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
     /**
      * @brief 选择contract
      */
-    connect(this, SIGNAL(openContractTableDialogSignal()),
-            mContractTableDialog, SLOT(openWindow()));
+    connect(this, SIGNAL(openContractTableDialogSignal(QString)),
+            mContractTableDialog, SLOT(openWindow(QString)));
     /**
      * @brief 选择contract
      */
@@ -137,6 +137,8 @@ void
 RentalDocumentEditDialog::initView()
 {
     setPumpTypeView();
+    //pumpType值由客户选择的车辆决定
+    ui->pumpTypeCB->setEnabled(false);
 }
 
 void
@@ -297,7 +299,7 @@ RentalDocumentEditDialog::setMode(bool mode)
     ui->clientNameLabel->setEnabled(mode);
     ui->contractNumberLabel->setEnabled(mode);
     ui->carNumberLabel->setEnabled(mode);
-    ui->pumpTypeCB->setEnabled(mode);
+//    ui->pumpTypeCB->setEnabled(mode);
     ui->constructPlaceLE->setEnabled(mode);
     ui->concreteLableLE->setEnabled(mode);
     ui->beginFuelDSB->setEnabled(mode);
@@ -521,10 +523,13 @@ void
 RentalDocumentEditDialog::getCar(QString number)
 {
     Car car;
+    int pos;
     if (!mDb->getCarInNumber(number, car)) {
         ui->carNumberLabel->setText(car.carNumber);
 //        ui->carNumberLabel->setWindowModified(true);
         mCarNumber = car.number;
+        pos = car.getPumpTypePosition(car.pumptype);
+        ui->pumpTypeCB->setCurrentIndex(pos);
     }
 }
 
@@ -654,7 +659,7 @@ RentalDocumentEditDialog::cleanContent()
 void
 RentalDocumentEditDialog::on_contractNumToolButton_clicked()
 {
-    emit openContractTableDialogSignal();
+    emit openContractTableDialogSignal(mClientNumber);
 }
 
 void

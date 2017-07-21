@@ -65,7 +65,7 @@ signals:
     void            addRentalDocSignal(RentalDocument &doc);
     void            updateDocItemSignal(RentalDocument &doc);
     void            openCarTableDialogSignal();
-    void            openContractTableDialogSignal();
+    void            openContractTableDialogSignal(QString clientNumber);
 
 private:
     /**

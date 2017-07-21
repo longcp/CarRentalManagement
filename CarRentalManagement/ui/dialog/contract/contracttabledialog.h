@@ -20,7 +20,7 @@ public:
     ~ContractTableDialog();
 
 private slots:
-    void            openWindow();
+    void            openWindow(QString clientNumber);
 
     void            on_contractTableView_doubleClicked(const QModelIndex &index);
 
@@ -35,7 +35,7 @@ private:
     /**
      * @brief 初始化表，插入已有数据
      */
-    void            initTableView();
+    void            initTableView(QString clientNumber);
     /**
      * @brief 添加条目
      */
