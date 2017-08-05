@@ -325,6 +325,8 @@ RentalDocumentWidget::clearRentalDocTable()
 void
 RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
 {
+    char buf[64];
+
     QStandardItem *docNum = new QStandardItem(doc.number);
     QStandardItem *clientName = new QStandardItem(doc.clientName);
     QStandardItem *projectName = new QStandardItem(doc.projectName);
@@ -334,29 +336,44 @@ RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
     QStandardItem *pumpType = new QStandardItem(QString("%1").arg(doc.pumpType));
     QStandardItem *constructPlace = new QStandardItem(doc.constructPlace);
     QStandardItem *concreteLable = new QStandardItem(doc.concreteLable);
-    QStandardItem *beginFuel = new QStandardItem(QString("%1")
-                                                 .arg(doc.beginFuel));
-    QStandardItem *endFuel = new QStandardItem(QString("%1").arg(doc.endFuel));
     QStandardItem *arrivalDateTime = new QStandardItem(doc.arrivalDateTime
                                                        .toString(DATETIME_FORMAT_STR));
     QStandardItem *leaveDateTime = new QStandardItem(doc.leaveDateTime
                                                      .toString(DATETIME_FORMAT_STR));
-    QStandardItem *workingHours = new QStandardItem(QString("%1")
-                                                    .arg(doc.workingHours));
-    QStandardItem *pumpSquare = new QStandardItem(QString("%1")
-                                                  .arg(doc.pumpSquare));
-    QStandardItem *squareUnitPrice = new QStandardItem(QString("%1")
-                                                       .arg(doc.squareUnitPrice));
-    QStandardItem *pumpTimes = new QStandardItem(QString("%1")
-                                                 .arg(doc.pumpTimes));
-    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString("%1")
-                                                         .arg(doc.pumpTimeUnitPrice));
     QStandardItem *principal = new QStandardItem(doc.principal);
     QStandardItem *principalTel = new QStandardItem(doc.principalTel);
     QStandardItem *driver1 = new QStandardItem(doc.driver1);
     QStandardItem *driver2 = new QStandardItem(doc.driver2);
     QStandardItem *driver3 = new QStandardItem(doc.driver3);
     QStandardItem *remarks = new QStandardItem(doc.remarks);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.beginFuel);
+    QStandardItem *beginFuel = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.endFuel);
+    QStandardItem *endFuel = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.workingHours);
+    QStandardItem *workingHours = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpSquare);
+    QStandardItem *pumpSquare = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.squareUnitPrice);
+    QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpTimes);
+    QStandardItem *pumpTimes = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpTimeUnitPrice);
+    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << docNum << clientName << projectName << projectAddr << date
@@ -371,7 +388,9 @@ RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
 void
 RentalDocumentWidget::updateDocItemSlot(RentalDocument &doc)
 {
+    char buf[64];
     ALOGDTRACE();
+
     mModel->setData(mModel->index(mCurRow, 0), doc.number);
     mModel->setData(mModel->index(mCurRow, 1), doc.clientName);
     mModel->setData(mModel->index(mCurRow, 2), doc.projectName);
@@ -381,15 +400,38 @@ RentalDocumentWidget::updateDocItemSlot(RentalDocument &doc)
     mModel->setData(mModel->index(mCurRow, 6), QString("%1").arg(doc.pumpType));
     mModel->setData(mModel->index(mCurRow, 7), doc.constructPlace);
     mModel->setData(mModel->index(mCurRow, 8), doc.concreteLable);
-    mModel->setData(mModel->index(mCurRow, 9), QString("%1").arg(doc.beginFuel));
-    mModel->setData(mModel->index(mCurRow, 10), QString("%1").arg(doc.endFuel));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.beginFuel);
+    mModel->setData(mModel->index(mCurRow, 9), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.endFuel);
+    mModel->setData(mModel->index(mCurRow, 10), QString(buf));
+
     mModel->setData(mModel->index(mCurRow, 11), doc.arrivalDateTime.toString(DATETIME_FORMAT_STR));
     mModel->setData(mModel->index(mCurRow, 12), doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
-    mModel->setData(mModel->index(mCurRow, 13), QString("%1").arg(doc.workingHours));
-    mModel->setData(mModel->index(mCurRow, 14), QString("%1").arg(doc.pumpSquare));
-    mModel->setData(mModel->index(mCurRow, 15), QString("%1").arg(doc.squareUnitPrice));
-    mModel->setData(mModel->index(mCurRow, 16), QString("%1").arg(doc.pumpTimes));
-    mModel->setData(mModel->index(mCurRow, 17), QString("%1").arg(doc.pumpTimeUnitPrice));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.workingHours);
+    mModel->setData(mModel->index(mCurRow, 13), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpSquare);
+    mModel->setData(mModel->index(mCurRow, 14), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.squareUnitPrice);
+    mModel->setData(mModel->index(mCurRow, 15), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpTimes);
+    mModel->setData(mModel->index(mCurRow, 16), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpTimeUnitPrice);
+    mModel->setData(mModel->index(mCurRow, 17), QString(buf));
+
     mModel->setData(mModel->index(mCurRow, 18), doc.principal);
     mModel->setData(mModel->index(mCurRow, 19), doc.principalTel);
     mModel->setData(mModel->index(mCurRow, 20), doc.driver1);

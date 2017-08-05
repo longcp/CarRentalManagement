@@ -28,9 +28,9 @@ private slots:
     void            cellClickedSlot(const QModelIndex &index);
     void            addClientSlot();
     void            addClientItemSlot(Client &client);
-    void            updateClientItemSlog(Client &client);
+    void            updateClientItemSlot(Client &client);
     void            deleteClientItemSlog();
-    void            editClientItemSlog();
+    void            editClientItemSlot();
 
 signals:
     void            openClientEditDialogSignal(OpenType type,

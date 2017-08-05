@@ -6,6 +6,7 @@
 #include <contract.h>
 #include <rentaldocument.h>
 #include <database/database.h>
+#include <stdio.h>
 
 #define LOG_TAG                         "RECEIVABLE_WIDGET"
 #include "utils/Log.h"
@@ -128,10 +129,10 @@ ReceivableWidget::initDetailTableview()
     //隐藏滚动条
     ui->detailTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    ui->detailTableview->setColumnWidth(DETAILTABLE_COLUMN_DOC_NUMBER, 200);
-    ui->detailTableview->setColumnWidth(DETAILTABLE_COLUMN_CONTRACT_NUMBER, 200);
-    ui->detailTableview->setColumnWidth(DETAILTABLE_COLUMN_CLIENT_NAME, 200);
-    ui->detailTableview->setColumnWidth(DETAILTABLE_COLUMN_CAR_PLATE_NUMBER, 200);
+    ui->detailTableview->setColumnWidth(DETAIL_COL_DOC_NUMBER, 200);
+    ui->detailTableview->setColumnWidth(DETAIL_COL_CONTRACT_NUMBER, 200);
+    ui->detailTableview->setColumnWidth(DETAIL_COL_CLIENT_NAME, 200);
+    ui->detailTableview->setColumnWidth(DETAIL_COL_CAR_PLATE_NUMBER, 200);
 }
 
 void
@@ -171,10 +172,10 @@ ReceivableWidget::initDetailSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    ui->detailSummaryTablview->setColumnWidth(DETAILTABLE_COLUMN_DOC_NUMBER, 200);
-    ui->detailSummaryTablview->setColumnWidth(DETAILTABLE_COLUMN_CONTRACT_NUMBER, 200);
-    ui->detailSummaryTablview->setColumnWidth(DETAILTABLE_COLUMN_CLIENT_NAME, 200);
-    ui->detailSummaryTablview->setColumnWidth(DETAILTABLE_COLUMN_CAR_PLATE_NUMBER, 200);
+    ui->detailSummaryTablview->setColumnWidth(DETAIL_COL_DOC_NUMBER, 200);
+    ui->detailSummaryTablview->setColumnWidth(DETAIL_COL_CONTRACT_NUMBER, 200);
+    ui->detailSummaryTablview->setColumnWidth(DETAIL_COL_CLIENT_NAME, 200);
+    ui->detailSummaryTablview->setColumnWidth(DETAIL_COL_CAR_PLATE_NUMBER, 200);
 
     QStandardItem* sumStrItem = new QStandardItem("合计");
     QList<QStandardItem*> items;
@@ -217,13 +218,13 @@ ReceivableWidget::initTotalTableview()
     ui->totalTableview->horizontalHeader()
             ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 
-    ui->totalTableview->setColumnWidth(0, 180);
-    ui->totalTableview->setColumnWidth(1, 180);
-    ui->totalTableview->setColumnWidth(2, 180);
-    ui->totalTableview->setColumnWidth(3, 180);
-    ui->totalTableview->setColumnWidth(4, 180);
-    ui->totalTableview->setColumnWidth(5, 180);
-    ui->totalTableview->setColumnWidth(6, 180);
+    ui->totalTableview->setColumnWidth(SUM_COL_CONTRACT_NUMBER, 180);
+    ui->totalTableview->setColumnWidth(SUM_COL_CLIENT_NAME, 180);
+    ui->totalTableview->setColumnWidth(SUM_COL_PUMP_SQUARE, 180);
+    ui->totalTableview->setColumnWidth(SUM_COL_PUMP_TIME, 180);
+    ui->totalTableview->setColumnWidth(SUM_COL_PROJECT_AMOUNT, 180);
+    ui->totalTableview->setColumnWidth(SUM_COL_RECEIPT, 180);
+    ui->totalTableview->setColumnWidth(SUM_COL_RECEIVABLE, 180);
 
     //隐藏滚动条
     ui->totalTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -260,13 +261,13 @@ ReceivableWidget::initTotalSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    ui->totalSummaryTableview->setColumnWidth(0, 180);
-    ui->totalSummaryTableview->setColumnWidth(1, 180);
-    ui->totalSummaryTableview->setColumnWidth(2, 180);
-    ui->totalSummaryTableview->setColumnWidth(3, 180);
-    ui->totalSummaryTableview->setColumnWidth(4, 180);
-    ui->totalSummaryTableview->setColumnWidth(5, 180);
-    ui->totalSummaryTableview->setColumnWidth(6, 180);
+    ui->totalSummaryTableview->setColumnWidth(SUM_COL_CONTRACT_NUMBER, 180);
+    ui->totalSummaryTableview->setColumnWidth(SUM_COL_CLIENT_NAME, 180);
+    ui->totalSummaryTableview->setColumnWidth(SUM_COL_PUMP_SQUARE, 180);
+    ui->totalSummaryTableview->setColumnWidth(SUM_COL_PUMP_TIME, 180);
+    ui->totalSummaryTableview->setColumnWidth(SUM_COL_PROJECT_AMOUNT, 180);
+    ui->totalSummaryTableview->setColumnWidth(SUM_COL_RECEIPT, 180);
+    ui->totalSummaryTableview->setColumnWidth(SUM_COL_RECEIVABLE, 180);
 
     //最后一列自适应
     ui->totalSummaryTableview->horizontalHeader()
@@ -302,143 +303,161 @@ ReceivableWidget::resetTotalSumTableData()
 void
 ReceivableWidget::setDetailPumpSquareCellValue(float value)
 {
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_PUMP_SQUARE),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_SQUARE),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::setDetailPumpTimeCellValue(float value)
 {
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_PUMP_TIME),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_TIME),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::setDetailProjectAmountCellValue(float value)
 {
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_PROJECT_AMOUNT),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PROJECT_AMOUNT),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::setDetailReceiptCellValue(float value)
 {
-
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_RECEIPT),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIPT),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::setDetailReceivableValue(float value)
 {
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAILTABLE_COLUMN_RECEIVABLE),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIVABLE),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::setSumReceivableValue(float value)
 {
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_RECEIVABLE),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIVABLE),
+                             QString(buf));
 }
 
 
 void
 ReceivableWidget::setSumPumpSquareCellValue(float value)
 {
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_PUMP_SQUARE),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_SQUARE),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::setSumPumpTimeCellValue(float value)
 {
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_PUMP_TIME),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_TIME),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::setSumProjectAmountCellValue(float value)
 {
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_PROJECT_AMOUNT),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PROJECT_AMOUNT),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::setSumReceiptCellValue(float value)
 {
-
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUMTABLE_COLUMN_RECEIPT),
-                             QString("%1").arg(value, 0, 'f', 2));
+    char buf[64];
+    sprintf(buf, "%0.2f", sizeof(value));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIPT),
+                             QString(buf));
 }
 
 void
 ReceivableWidget::detailPumpSquareCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_PUMP_SQUARE).data().toFloat();
+    float curValue = mDetailSumModel->index(0, DETAIL_COL_PUMP_SQUARE).data().toFloat();
     setDetailPumpSquareCellValue(curValue+value);
 }
 
 void
 ReceivableWidget::detailPumpTimeCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_PUMP_TIME).data().toFloat();
+    float curValue = mDetailSumModel->index(0, DETAIL_COL_PUMP_TIME).data().toFloat();
     setDetailPumpTimeCellValue(curValue+value);
 }
 
 void
 ReceivableWidget::detailProjectAmountCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_PROJECT_AMOUNT).data().toFloat();
+    float curValue = mDetailSumModel->index(0, DETAIL_COL_PROJECT_AMOUNT).data().toFloat();
     setDetailProjectAmountCellValue(curValue+value);
 }
 
 void
 ReceivableWidget::detailReceiptCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_RECEIPT).data().toFloat();
+    float curValue = mDetailSumModel->index(0, DETAIL_COL_RECEIPT).data().toFloat();
     setDetailReceiptCellValue(curValue+value);
 }
 
 void
 ReceivableWidget::detailReceivableCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAILTABLE_COLUMN_RECEIVABLE).data().toFloat();
+    float curValue = mDetailSumModel->index(0, DETAIL_COL_RECEIVABLE).data().toFloat();
     setDetailReceivableValue(curValue+value);
 }
 
 void
 ReceivableWidget::sumPumpSquareCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_PUMP_SQUARE).data().toFloat();
+    float curValue = mTotalSumModel->index(0, SUM_COL_PUMP_SQUARE).data().toFloat();
     setSumPumpSquareCellValue(curValue+value);
 }
 
 void
 ReceivableWidget::sumPumpTimeCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_PUMP_TIME).data().toFloat();
+    float curValue = mTotalSumModel->index(0, SUM_COL_PUMP_TIME).data().toFloat();
     setSumPumpTimeCellValue(curValue+value);
 }
 
 void
 ReceivableWidget::sumProjectAmountCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_PROJECT_AMOUNT).data().toFloat();
+    float curValue = mTotalSumModel->index(0, SUM_COL_PROJECT_AMOUNT).data().toFloat();
     setSumProjectAmountCellValue(curValue+value);
 }
 
 void
 ReceivableWidget::sumReceiptCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_RECEIPT).data().toFloat();
+    float curValue = mTotalSumModel->index(0, SUM_COL_RECEIPT).data().toFloat();
     setSumReceiptCellValue(curValue+value);
 }
 
 void
 ReceivableWidget::sumReceivableCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUMTABLE_COLUMN_RECEIVABLE).data().toFloat();
+    float curValue = mTotalSumModel->index(0, SUM_COL_RECEIVABLE).data().toFloat();
     setSumReceivableValue(curValue+value);
 }
 
@@ -540,7 +559,9 @@ ReceivableWidget::addSumTableRows(QList<RentalDocument> &docs)
 void
 ReceivableWidget::addDetailTableRow(RentalDocument &doc)
 {
+    char buf[64];
     ALOGDTRACE();
+
     QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
     QStandardItem *docNum = new QStandardItem(doc.number);
     QStandardItem *contractNumber = new QStandardItem(doc.contractNumber);
@@ -548,26 +569,40 @@ ReceivableWidget::addDetailTableRow(RentalDocument &doc)
     QStandardItem *carPlateNumber = new QStandardItem(doc.carPlateNumber);
     QStandardItem *pumpType = new QStandardItem(QString("%1").arg(doc.pumpType));
     QStandardItem *concreteLable = new QStandardItem(doc.concreteLable);
-    QStandardItem *squareUnitPrice = new QStandardItem(QString("%1")
-                                                       .arg(doc.squareUnitPrice));
-    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString("%1")
-                                                         .arg(doc.pumpTimeUnitPrice));
-    QStandardItem *pumpSquare = new QStandardItem(QString("%1")
-                                                  .arg(doc.pumpSquare));
-    QStandardItem *pumpTimes = new QStandardItem(QString("%1")
-                                                 .arg(doc.pumpTimes));
-    QStandardItem *projectAmounts =  new QStandardItem(QString("%1")
-                                                       .arg(doc.projectAmount));
-    QStandardItem *receivedAccounts = new QStandardItem(QString("%1")
-                                                        .arg(doc.receivedAccounts));
-    QStandardItem *receivable = new QStandardItem(QString("%1")
-                                                  .arg(doc.projectAmount - doc.receivedAccounts));
     QStandardItem *projectName = new QStandardItem(doc.projectName);
     QStandardItem *projectAddr = new QStandardItem(doc.projectAddress);
     QStandardItem *constructPlace = new QStandardItem(doc.constructPlace);
     QStandardItem *principal = new QStandardItem(doc.principal);
     QStandardItem *principalTel = new QStandardItem(doc.principalTel);
     QStandardItem *remarks = new QStandardItem(doc.remarks);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.squareUnitPrice);
+    QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpTimeUnitPrice);
+    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpSquare);
+    QStandardItem *pumpSquare = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpTimes);
+    QStandardItem *pumpTimes = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.projectAmount);
+    QStandardItem *projectAmounts =  new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.receivedAccounts);
+    QStandardItem *receivedAccounts = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.projectAmount - doc.receivedAccounts);
+    QStandardItem *receivable = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << date << docNum << contractNumber << clientName << carPlateNumber
@@ -581,18 +616,31 @@ ReceivableWidget::addDetailTableRow(RentalDocument &doc)
 void
 ReceivableWidget::addSumTableRow(RentalDocument &doc)
 {
+    char buf[64];
+
     QStandardItem *contractNumber = new QStandardItem(doc.contractNumber);
     QStandardItem *clientName = new QStandardItem(doc.clientName);
-    QStandardItem *pumpSquare = new QStandardItem(QString("%1")
-                                                  .arg(doc.pumpSquare));
-    QStandardItem *pumpTimes = new QStandardItem(QString("%1")
-                                                 .arg(doc.pumpTimes));
-    QStandardItem *projectAmounts =  new QStandardItem(QString("%1")
-                                                       .arg(doc.projectAmount));
-    QStandardItem *receivedAccounts = new QStandardItem(QString("%1")
-                                                        .arg(doc.receivedAccounts));
-    QStandardItem *receivable = new QStandardItem(QString("%1")
-                                                  .arg(doc.projectAmount - doc.receivedAccounts));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpSquare);
+    QStandardItem *pumpSquare = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.pumpTimes);
+    QStandardItem *pumpTimes = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.projectAmount);
+    QStandardItem *projectAmounts =  new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.receivedAccounts);
+    QStandardItem *receivedAccounts = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", doc.projectAmount - doc.receivedAccounts);
+    QStandardItem *receivable = new QStandardItem(QString(buf));
+
     QList<QStandardItem*> items;
     items << contractNumber << clientName << pumpSquare << pumpTimes
           << projectAmounts << receivedAccounts << receivable;

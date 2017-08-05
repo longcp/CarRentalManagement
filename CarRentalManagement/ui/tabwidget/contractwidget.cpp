@@ -336,6 +336,8 @@ void
 ContractWidget::addContractTableRow(Contract &contract)
 {
     ALOGDTRACE();
+    char buf[64];
+
     QStandardItem *num
             = new QStandardItem(contract.number);
     QStandardItem *clientName
@@ -344,12 +346,6 @@ ContractWidget::addContractTableRow(Contract &contract)
             = new QStandardItem(contract.projectName);
     QStandardItem *projectAddr
             = new QStandardItem(contract.projectAddress);
-    QStandardItem* deliverySizes
-            = new QStandardItem(QString("%1")
-                                .arg(contract.deliverySizes));
-    QStandardItem* structureLevel
-            = new QStandardItem(QString("%1")
-                                .arg(contract.structureLevel));
     QStandardItem* beginDate
             = new QStandardItem(contract
                                 .beginDate.toString(DATE_FORMAT_STR));
@@ -369,6 +365,16 @@ ContractWidget::addContractTableRow(Contract &contract)
             = new QStandardItem(contract.supplement);
     QStandardItem *remarks
             = new QStandardItem(contract.remarks);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", contract.deliverySizes);
+    QStandardItem* deliverySizes
+            = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", contract.structureLevel);
+    QStandardItem* structureLevel
+            = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << num << clientName << projectName << projectAddr
@@ -392,14 +398,21 @@ void
 ContractWidget::addPriceTableRow(CONTRACT_PRICE price)
 {
     ALOGDTRACE();
+    char buf[64];
     QStandardItem *num
             = new QStandardItem(price.number);
     QStandardItem *pumyType
             = new QStandardItem(Car::getPumpTypeStr(price.pumpType));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", price.squarePrice);
     QStandardItem *squarePrice
-            = new QStandardItem(QString("%1").arg(price.squarePrice));
+            = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", price.standardPrice);
     QStandardItem *standardPrice
-            = new QStandardItem(QString("%1").arg(price.standardPrice));
+            = new QStandardItem(QString(buf));
     QStandardItem *remarks
             = new QStandardItem(price.remarks);
 
@@ -420,6 +433,8 @@ void
 ContractWidget::updateContractRow(Contract &contract)
 {
     ALOGDTRACE();
+    char buf[64];
+
     mContractModel->setData(mContractModel->index(curRow, 0),
                          contract.number);
     mContractModel->setData(mContractModel->index(curRow, 1),
@@ -428,10 +443,12 @@ ContractWidget::updateContractRow(Contract &contract)
                          contract.projectName);
     mContractModel->setData(mContractModel->index(curRow, 3),
                          contract.projectAddress);
-    mContractModel->setData(mContractModel->index(curRow, 4),
-                         QString("%1").arg(contract.deliverySizes));
-    mContractModel->setData(mContractModel->index(curRow, 5),
-                         QString("%1").arg(contract.structureLevel));
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", contract.deliverySizes);
+    mContractModel->setData(mContractModel->index(curRow, 4), QString(buf));
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", contract.structureLevel);
+    mContractModel->setData(mContractModel->index(curRow, 5), QString(buf));
     mContractModel->setData(mContractModel->index(curRow, 6),
                          contract.beginDate.toString(DATE_FORMAT_STR));
     mContractModel->setData(mContractModel->index(curRow, 7),
@@ -493,7 +510,8 @@ ContractWidget::deleteContractItemSlot()
 }
 
 void
-ContractWidget::contractCurrentRowChangedSlot(const QModelIndex &current,const QModelIndex &prev)
+ContractWidget::contractCurrentRowChangedSlot(const QModelIndex &current,
+                                              const QModelIndex &prev)
 {
     ALOGDTRACE();
     curRow = current.row();
@@ -528,7 +546,8 @@ ContractWidget::on_contractTableView_doubleClicked(const QModelIndex &index)
     editRowEvent(index.row());
 }
 
-void ContractWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
+void ContractWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item,
+                                                     int column)
 {
     ALOGDTRACE();
     ALOGD("%s name=%s, number=%s, column=%d",

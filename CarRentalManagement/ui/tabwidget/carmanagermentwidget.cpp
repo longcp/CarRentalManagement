@@ -268,68 +268,72 @@ CarManagermentWidget::on_carTableView_clicked(const QModelIndex &index)
 void
 CarManagermentWidget::addCarItemSlot(Car &car)
 {
-    QStandardItem* number
-            = new QStandardItem(car.number);
-    QStandardItem* pumptype
-            = new QStandardItem(car.getPumpTypeStr(car.pumptype));
-    QStandardItem* pumpedSquare
-            = new QStandardItem(QString("%1").arg(car.pumpedSquare));
-    QStandardItem* pumpedTimes
-            = new QStandardItem(QString("%1").arg(car.pumpedTimes));
-    QStandardItem* milage
-            = new QStandardItem(QString("%1").arg(car.milage));
-    QStandardItem* carBrand
-            = new QStandardItem(car.carBrand);
-    QStandardItem* chassisBrand
-            = new QStandardItem(car.chassisBrand);
-    QStandardItem* drivingLicenseDate
-            = new QStandardItem(car.drivingLicenseDate.toString(DATE_FORMAT_STR));
-    QStandardItem* fuelCarNumber
-            = new QStandardItem(car.fuelCarNumber);
-    QStandardItem* frameNumber
-            = new QStandardItem(car.frameNumber);
-    QStandardItem* identificationNumber
-            = new QStandardItem(car.identificationNumber);
-    QStandardItem* productNumber
-            = new QStandardItem(car.productNumber);
-    QStandardItem* insuranceCardNumber
-            = new QStandardItem(car.insuranceCardNumber);
-    QStandardItem* engineNumber
-            = new QStandardItem(car.engineNumber);
-    QStandardItem* worth
-            = new QStandardItem(QString("%1").arg(car.worth));
-    QStandardItem* enginePower
-            = new QStandardItem(QString("%1").arg(car.enginePower));
-    QStandardItem* maxDeliverySizes
-            = new QStandardItem(QString("%1").arg(car.maxDeliverySizes));
-    QStandardItem* maxOutputPressure
-            = new QStandardItem(QString("%1").arg(car.maxOutputPressure));
-    QStandardItem* dimensions
-            = new QStandardItem(car.dimensions);
-    QStandardItem* boomVerticalLen
-            = new QStandardItem(QString("%1").arg(car.boomVerticalLen));
-    QStandardItem* boomHorizontalLen
-            = new QStandardItem(QString("%1").arg(car.boomHorizontalLen));
-    QStandardItem* totalWeight
-            = new QStandardItem(QString("%1").arg(car.totalWeight));
-    QStandardItem* equipmentWeight
-            = new QStandardItem(QString("%1").arg(car.equipmentWeight));
-    QStandardItem* productionDate
-            = new QStandardItem(car.productionDate.toString(DATE_FORMAT_STR));
-    QStandardItem* factoryCode
-            = new QStandardItem(car.factoryCode);
-    QStandardItem* operator1
-            = new QStandardItem(car.operator1);
-    QStandardItem* operator2
-            = new QStandardItem(car.operator2);
-    QStandardItem* operator3
-            = new QStandardItem(car.operator3);
-    QStandardItem* operator4
-            = new QStandardItem(car.operator4);
-    QStandardItem* operator5
-            = new QStandardItem(car.operator5);
-    QStandardItem* remarks
-            = new QStandardItem(car.remarks);
+    char buf[64];
+
+    QStandardItem* number = new QStandardItem(car.number);
+    QStandardItem* pumptype = new QStandardItem(car.getPumpTypeStr(car.pumptype));
+    QStandardItem* carBrand = new QStandardItem(car.carBrand);
+    QStandardItem* chassisBrand = new QStandardItem(car.chassisBrand);
+    QStandardItem* drivingLicenseDate = new QStandardItem(car.drivingLicenseDate.toString(DATE_FORMAT_STR));
+    QStandardItem* fuelCarNumber = new QStandardItem(car.fuelCarNumber);
+    QStandardItem* frameNumber = new QStandardItem(car.frameNumber);
+    QStandardItem* identificationNumber = new QStandardItem(car.identificationNumber);
+    QStandardItem* productNumber = new QStandardItem(car.productNumber);
+    QStandardItem* insuranceCardNumber = new QStandardItem(car.insuranceCardNumber);
+    QStandardItem* engineNumber = new QStandardItem(car.engineNumber);
+    QStandardItem* dimensions = new QStandardItem(car.dimensions);
+    QStandardItem* productionDate = new QStandardItem(car.productionDate.toString(DATE_FORMAT_STR));
+    QStandardItem* factoryCode = new QStandardItem(car.factoryCode);
+    QStandardItem* operator1 = new QStandardItem(car.operator1);
+    QStandardItem* operator2 = new QStandardItem(car.operator2);
+    QStandardItem* operator3 = new QStandardItem(car.operator3);
+    QStandardItem* operator4 = new QStandardItem(car.operator4);
+    QStandardItem* operator5 = new QStandardItem(car.operator5);
+    QStandardItem* remarks = new QStandardItem(car.remarks);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.pumpedSquare);
+    QStandardItem* pumpedSquare = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.pumpedTimes);
+    QStandardItem* pumpedTimes  = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.milage);
+    QStandardItem* milage = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.worth);
+    QStandardItem* worth = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.enginePower);
+    QStandardItem* enginePower = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.maxDeliverySizes);
+    QStandardItem* maxDeliverySizes = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.maxOutputPressure);
+    QStandardItem* maxOutputPressure = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.boomVerticalLen);
+    QStandardItem* boomVerticalLen = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.boomHorizontalLen);
+    QStandardItem* boomHorizontalLen = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.totalWeight);
+    QStandardItem* totalWeight = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.equipmentWeight);
+    QStandardItem* equipmentWeight = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << number << pumptype << pumpedSquare << pumpedTimes << milage
@@ -346,68 +350,76 @@ CarManagermentWidget::addCarItemSlot(Car &car)
 void
 CarManagermentWidget::updateCarItemSlot(Car &car)
 {
-    mModel->setData(mModel->index(curRow, 0),
-                    car.number);
-    mModel->setData(mModel->index(curRow, 1),
-                    car.getPumpTypeStr(car.pumptype));
-    mModel->setData(mModel->index(curRow, 2),
-                    QString("%1").arg(car.pumpedSquare));
-    mModel->setData(mModel->index(curRow, 3),
-                    QString("%1").arg(car.pumpedTimes));
-    mModel->setData(mModel->index(curRow, 4),
-                    QString("%1").arg(car.milage));
-    mModel->setData(mModel->index(curRow, 5),
-                    car.carBrand);
-    mModel->setData(mModel->index(curRow, 6),
-                    car.chassisBrand);
+    char buf[64];
+
+    mModel->setData(mModel->index(curRow, 0), car.number);
+    mModel->setData(mModel->index(curRow, 1), car.getPumpTypeStr(car.pumptype));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.pumpedSquare);
+    mModel->setData(mModel->index(curRow, 2), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.pumpedTimes);
+    mModel->setData(mModel->index(curRow, 3), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.milage);
+    mModel->setData(mModel->index(curRow, 4), QString(buf));
+
+    mModel->setData(mModel->index(curRow, 5), car.carBrand);
+    mModel->setData(mModel->index(curRow, 6), car.chassisBrand);
     mModel->setData(mModel->index(curRow, 7),
                     car.drivingLicenseDate.toString(DATE_FORMAT_STR));
-    mModel->setData(mModel->index(curRow, 8),
-                    car.fuelCarNumber);
-    mModel->setData(mModel->index(curRow, 9),
-                    car.frameNumber);
-    mModel->setData(mModel->index(curRow, 10),
-                    car.identificationNumber);
-    mModel->setData(mModel->index(curRow, 11),
-                    car.productNumber);
-    mModel->setData(mModel->index(curRow, 12),
-                    car.insuranceCardNumber);
-    mModel->setData(mModel->index(curRow, 13),
-                    car.engineNumber);
-    mModel->setData(mModel->index(curRow, 14),
-                    QString("%1").arg(car.worth));
-    mModel->setData(mModel->index(curRow, 15),
-                    QString("%1").arg(car.enginePower));
-    mModel->setData(mModel->index(curRow, 16),
-                    QString("%1").arg(car.maxDeliverySizes));
-    mModel->setData(mModel->index(curRow, 17),
-                    QString("%1").arg(car.maxOutputPressure));
-    mModel->setData(mModel->index(curRow, 18),
-                    car.dimensions);
-    mModel->setData(mModel->index(curRow, 19),
-                    QString("%1").arg(car.boomVerticalLen));
-    mModel->setData(mModel->index(curRow, 20),
-                    QString("%1").arg(car.boomHorizontalLen));
-    mModel->setData(mModel->index(curRow, 21),
-                    QString("%1").arg(car.totalWeight));
-    mModel->setData(mModel->index(curRow, 22),
-                    QString("%1").arg(car.equipmentWeight));
-    mModel->setData(mModel->index(curRow, 23),
-                    car.productionDate.toString(DATE_FORMAT_STR));
-    mModel->setData(mModel->index(curRow, 24),
-                    car.factoryCode);
-    mModel->setData(mModel->index(curRow, 25),
-                    car.operator1);
-    mModel->setData(mModel->index(curRow, 26),
-                    car.operator2);
-    mModel->setData(mModel->index(curRow, 27),
-                    car.operator3);
-    mModel->setData(mModel->index(curRow, 28),
-                    car.operator4);
-    mModel->setData(mModel->index(curRow, 29),
-                    car.operator5);
-    mModel->setData(mModel->index(curRow, 30),
-                    car.remarks);
+    mModel->setData(mModel->index(curRow, 8), car.fuelCarNumber);
+    mModel->setData(mModel->index(curRow, 9), car.frameNumber);
+    mModel->setData(mModel->index(curRow, 10), car.identificationNumber);
+    mModel->setData(mModel->index(curRow, 11), car.productNumber);
+    mModel->setData(mModel->index(curRow, 12), car.insuranceCardNumber);
+    mModel->setData(mModel->index(curRow, 13), car.engineNumber);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.worth);
+    mModel->setData(mModel->index(curRow, 14), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.enginePower);
+    mModel->setData(mModel->index(curRow, 15), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.maxDeliverySizes);
+    mModel->setData(mModel->index(curRow, 16), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.maxOutputPressure);
+    mModel->setData(mModel->index(curRow, 17), QString(buf));
+
+    mModel->setData(mModel->index(curRow, 18), car.dimensions);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.boomVerticalLen);
+    mModel->setData(mModel->index(curRow, 19), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.boomHorizontalLen);
+    mModel->setData(mModel->index(curRow, 20), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.totalWeight);
+    mModel->setData(mModel->index(curRow, 21), QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", car.totalWeight);
+    mModel->setData(mModel->index(curRow, 22), QString(buf));
+
+    mModel->setData(mModel->index(curRow, 23), car.productionDate.toString(DATE_FORMAT_STR));
+    mModel->setData(mModel->index(curRow, 24), car.factoryCode);
+    mModel->setData(mModel->index(curRow, 25), car.operator1);
+    mModel->setData(mModel->index(curRow, 26), car.operator2);
+    mModel->setData(mModel->index(curRow, 27), car.operator3);
+    mModel->setData(mModel->index(curRow, 28), car.operator4);
+    mModel->setData(mModel->index(curRow, 29), car.operator5);
+    mModel->setData(mModel->index(curRow, 30), car.remarks);
 }
 
 void

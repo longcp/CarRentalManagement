@@ -76,7 +76,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
      * @brief 更新条目
      */
     connect(mClientEditDialog, SIGNAL(updateClientItemSignal(Client &)),
-            this, SLOT(updateClientItemSlog(Client &)));
+            this, SLOT(updateClientItemSlot(Client &)));
     /**
      * @brief 删除条目
      */
@@ -86,7 +86,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
      * @brief 编辑条目
      */
     connect(mActEdit, SIGNAL(triggered()),
-            this, SLOT(editClientItemSlog()));
+            this, SLOT(editClientItemSlot()));
 
 }
 
@@ -234,6 +234,7 @@ ClientManagermentWidget::addClientSlot()
 void
 ClientManagermentWidget::addClientItemSlot(Client &client)
 {
+    char buf[64];
     QStandardItem* num
             = new QStandardItem(client.number);
     QStandardItem* clientype
@@ -252,14 +253,23 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
             = new QStandardItem(client.getPayTypeStr(client.paytype));
     QStandardItem* monthly
             = new QStandardItem(QString::number(client.monthly));
-    QStandardItem* amount
-            = new QStandardItem(QString("%1").arg(client.amount));
-    QStandardItem* paid
-            = new QStandardItem(QString("%1").arg(client.paid));
-    QStandardItem* balance
-            = new QStandardItem(QString("%1").arg(client.amount - client.paid));
     QStandardItem* remarks
             = new QStandardItem(client.remarks);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", client.amount);
+    QStandardItem* amount
+            = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", client.paid);
+    QStandardItem* paid
+            = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", client.amount - client.paid);
+    QStandardItem* balance
+            = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << num << clientype << name << addr << telephone
@@ -269,8 +279,9 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
 }
 
 void
-ClientManagermentWidget::updateClientItemSlog(Client &client)
+ClientManagermentWidget::updateClientItemSlot(Client &client)
 {
+    char buf[64];
     mModel->setData(mModel->index(curRow, 0),
                     client.number);
     mModel->setData(mModel->index(curRow, 1),
@@ -289,14 +300,23 @@ ClientManagermentWidget::updateClientItemSlog(Client &client)
                     client.getPayTypeStr(client.paytype));
     mModel->setData(mModel->index(curRow, 8),
                     QString::number(client.monthly));
-    mModel->setData(mModel->index(curRow, 9),
-                    QString("%1").arg(client.amount));
-    mModel->setData(mModel->index(curRow, 10),
-                    QString("%1").arg(client.paid));
-    mModel->setData(mModel->index(curRow, 11),
-                    QString("%1").arg(client.amount - client.paid));
     mModel->setData(mModel->index(curRow, 12),
                     client.remarks);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", client.amount);
+    mModel->setData(mModel->index(curRow, 9),
+                    QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", client.paid);
+    mModel->setData(mModel->index(curRow, 10),
+                    QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", client.amount - client.paid);
+    mModel->setData(mModel->index(curRow, 11),
+                    QString(buf));
 }
 
 void
@@ -329,7 +349,7 @@ ClientManagermentWidget::deleteClientItemSlog()
 }
 
 void
-ClientManagermentWidget::editClientItemSlog()
+ClientManagermentWidget::editClientItemSlot()
 {
     if (curRow < 0) {
         QMessageBox::information(this,
