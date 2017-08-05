@@ -345,24 +345,9 @@ CarEditDialog::initProjectSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    QStandardItem* sumStr
-            = new QStandardItem("合计");
-    QStandardItem* a1
-            = new QStandardItem("100");
-    QStandardItem* a2
-            = new QStandardItem("100");
-    QStandardItem* a3
-            = new QStandardItem("100");
-    QStandardItem* a4
-            = new QStandardItem("100");
-    QStandardItem* a5
-            = new QStandardItem("100");
-    QStandardItem* a6
-            = new QStandardItem("100");
-    QStandardItem* a7
-            = new QStandardItem("100");
+    QStandardItem* sumStr = new QStandardItem("合计");
     QList<QStandardItem*> items;
-    items << sumStr << a1 << a2 << a3 << a4 << a5 << a6 << a7;
+    items << sumStr;
     mProjectSumModel->appendRow(items);
 }
 
@@ -443,18 +428,9 @@ CarEditDialog::initAnnualSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    QStandardItem* sum
-            = new QStandardItem("合计");
-    QStandardItem* a1
-            = new QStandardItem("100");
-    QStandardItem* a2
-            = new QStandardItem("100");
-    QStandardItem* a3
-            = new QStandardItem("100");
-    QStandardItem* a4
-            = new QStandardItem("100");
+    QStandardItem* sum = new QStandardItem("合计");
     QList<QStandardItem*> items;
-    items << sum << a1 << a2 << a3 << a4;
+    items << sum;
     mAnnualSumModel->appendRow(items);
 }
 
@@ -537,18 +513,9 @@ CarEditDialog::initBusinessSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
-    QStandardItem* sum
-            = new QStandardItem("合计");
-    QStandardItem* a1
-            = new QStandardItem("100");
-    QStandardItem* a2
-            = new QStandardItem("100");
-    QStandardItem* a3
-            = new QStandardItem("100");
-    QStandardItem* a4
-            = new QStandardItem("100");
+    QStandardItem* sum = new QStandardItem("合计");
     QList<QStandardItem*> items;
-    items << sum << a1 << a2 << a3 << a4;
+    items << sum;
     mBusinessSumModel->appendRow(items);
 }
 
@@ -635,16 +602,8 @@ CarEditDialog::initPaymentSumTableview()
 
     QStandardItem* sum
             = new QStandardItem("合计");
-    QStandardItem* a1
-            = new QStandardItem("100");
-    QStandardItem* a2
-            = new QStandardItem("100");
-    QStandardItem* a3
-            = new QStandardItem("100");
-    QStandardItem* a4
-            = new QStandardItem("100");
     QList<QStandardItem*> items;
-    items << sum << a1 << a2 << a3 << a4;
+    items << sum;
     mPaymentSumModel->appendRow(items);
 }
 
@@ -1130,16 +1089,19 @@ CarEditDialog::resetView()
 void
 CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
 {
-    QStandardItem* num
-            = new QStandardItem(record.number);
-    QStandardItem* date
-            = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
-    QStandardItem* annualFee
-            = new QStandardItem(QString("%1").arg(record.annualFee));
-    QStandardItem* travelExpenses
-            = new QStandardItem(QString("%1").arg(record.travelExpenses));
-    QStandardItem* remarks
-            = new QStandardItem(QString("%1").arg(record.remarks));
+    char buf[64];
+
+    QStandardItem* num = new QStandardItem(record.number);
+    QStandardItem* date = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
+    QStandardItem* remarks = new QStandardItem(record.remarks);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", record.annualFee);
+    QStandardItem* annualFee = new QStandardItem(QString(buf));
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", record.travelExpenses);
+    QStandardItem* travelExpenses = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << num << date << annualFee << travelExpenses << remarks;
@@ -1151,16 +1113,16 @@ CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
 void
 CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
 {
-    QStandardItem* num
-            = new QStandardItem(record.number);
-    QStandardItem* date
-            = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
-    QStandardItem* fee
-            = new QStandardItem(QString("%1").arg(record.fee));
-    QStandardItem* company
-            = new QStandardItem(record.company);
-    QStandardItem* remarks
-            = new QStandardItem(QString("%1").arg(record.remarks));
+    char buf[64];
+
+    QStandardItem* num = new QStandardItem(record.number);
+    QStandardItem* date = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
+    QStandardItem* remarks = new QStandardItem(record.remarks);
+    QStandardItem* company = new QStandardItem(record.company);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", record.fee);
+    QStandardItem* fee = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << num << date << fee << company << remarks;
@@ -1172,16 +1134,16 @@ CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
 void
 CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
 {
-    QStandardItem* num
-            = new QStandardItem(record.number);
-    QStandardItem* date
-            = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
-    QStandardItem* fee
-            = new QStandardItem(QString("%1").arg(record.fee));
-    QStandardItem* company
-            = new QStandardItem(record.company);
-    QStandardItem* remarks
-            = new QStandardItem(QString("%1").arg(record.remarks));
+    char buf[64];
+
+    QStandardItem* num = new QStandardItem(record.number);
+    QStandardItem* date = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
+    QStandardItem* company = new QStandardItem(record.company);
+    QStandardItem* remarks = new QStandardItem(record.remarks);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", record.fee);
+    QStandardItem* fee = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << num << date << fee << company << remarks;
@@ -1193,22 +1155,19 @@ CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
 void
 CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
 {
-    QStandardItem* num
-            = new QStandardItem(QString::number(record.number));
-    QStandardItem* date
-            = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
-    QStandardItem* contractNum
-            = new QStandardItem(record.contractNum);
-    QStandardItem* clientNum
-            = new QStandardItem(record.clientNum);
-    QStandardItem* clientName
-            = new QStandardItem(record.clientName);
-    QStandardItem* amount
-            = new QStandardItem(QString("%1").arg(record.amount));
-    QStandardItem* remarks
-            = new QStandardItem(QString("%1").arg(record.remarks));
-    QStandardItem* rentalDocNum
-            = new QStandardItem(QString("%1").arg(record.rentalDocNum));
+    char buf[64];
+
+    QStandardItem* num = new QStandardItem(QString::number(record.number));
+    QStandardItem* date = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
+    QStandardItem* contractNum = new QStandardItem(record.contractNum);
+    QStandardItem* clientNum = new QStandardItem(record.clientNum);
+    QStandardItem* clientName = new QStandardItem(record.clientName);
+
+    memset(buf, 0, sizeof(buf));
+    sprintf(buf, "%0.2f", record.amount);
+    QStandardItem* amount = new QStandardItem(QString(buf));
+    QStandardItem* remarks = new QStandardItem(record.remarks);
+    QStandardItem* rentalDocNum = new QStandardItem(record.rentalDocNum);
 
     QList<QStandardItem*> items;
     items << num << date << contractNum << clientNum << clientName
