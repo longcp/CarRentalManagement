@@ -304,7 +304,7 @@ void
 ReceivableWidget::setDetailPumpSquareCellValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_SQUARE),
                              QString(buf));
 }
@@ -313,7 +313,7 @@ void
 ReceivableWidget::setDetailPumpTimeCellValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_TIME),
                              QString(buf));
 }
@@ -322,7 +322,7 @@ void
 ReceivableWidget::setDetailProjectAmountCellValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PROJECT_AMOUNT),
                              QString(buf));
 }
@@ -331,7 +331,7 @@ void
 ReceivableWidget::setDetailReceiptCellValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIPT),
                              QString(buf));
 }
@@ -340,7 +340,7 @@ void
 ReceivableWidget::setDetailReceivableValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIVABLE),
                              QString(buf));
 }
@@ -349,7 +349,7 @@ void
 ReceivableWidget::setSumReceivableValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIVABLE),
                              QString(buf));
 }
@@ -359,7 +359,7 @@ void
 ReceivableWidget::setSumPumpSquareCellValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_SQUARE),
                              QString(buf));
 }
@@ -368,7 +368,7 @@ void
 ReceivableWidget::setSumPumpTimeCellValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_TIME),
                              QString(buf));
 }
@@ -377,7 +377,7 @@ void
 ReceivableWidget::setSumProjectAmountCellValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PROJECT_AMOUNT),
                              QString(buf));
 }
@@ -386,7 +386,7 @@ void
 ReceivableWidget::setSumReceiptCellValue(float value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", sizeof(value));
+    sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIPT),
                              QString(buf));
 }
