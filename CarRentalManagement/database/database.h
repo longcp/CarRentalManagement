@@ -37,6 +37,7 @@ public:
                                           Client &client);
     int                 getAllClientsNumber(QList<QString> &numbers);
     int                 getAllClientData(QList<Client> &clients);
+    int                 getClientInFilter(QList<Client> &clients, QString filter);
     int                 updateClientTableItem(Client &client);
     int                 clearClientTable();
     bool                isClientExist(Client &client);

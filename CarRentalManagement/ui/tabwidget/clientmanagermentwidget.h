@@ -32,6 +32,18 @@ private slots:
     void            deleteClientItemSlog();
     void            editClientItemSlot();
 
+    void on_cashRadioButton_toggled(bool checked);
+
+    void on_monthlyRadioButton_toggled(bool checked);
+
+    void on_paytypeTotalRadioButton_toggled(bool checked);
+
+    void on_contractRadioButton_toggled(bool checked);
+
+    void on_temporaryRadioButton_toggled(bool checked);
+
+    void on_clientTypeTotalRadioButton_toggled(bool checked);
+
 signals:
     void            openClientEditDialogSignal(OpenType type,
                                                Client &client);
@@ -50,15 +62,26 @@ private:
      */
     void            initTableView();
     /**
+     * @brief 更新表格
+     */
+    void            updateTableView();
+    /**
      * @brief ui
      */
     void            editRowEvent(int row);
+
+    void            disableFilterView();
+    void            enableFilterView();
+    void            setFilterViewState(bool state);
 
     Ui::ClientManagermentWidget *ui;
     QToolBar        *mToolBar;
 
     // 编辑客户资料窗口
     ClientEditDialog    *mClientEditDialog;
+
+    enum PayTypeFilter {CASH, MONTHLY, PAYTYPE_TOTAL};
+    enum ClientTypeFilter {CONTRACT, TEMPORARY, CLIENTTYPE_TOTAL};
 
     // 工具栏动作
     QAction         *mActAdd;
@@ -72,6 +95,8 @@ private:
     TableModel      *mModel;
     int             curRow;
     int             lastShowRow;
+    PayTypeFilter   mCurPayTypeFilter;
+    ClientTypeFilter mCurClientTypeFilter;
 
     const static int      mColumnCount = 9;
 };

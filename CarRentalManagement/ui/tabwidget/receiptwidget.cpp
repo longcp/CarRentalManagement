@@ -41,8 +41,8 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
     /**
      * @brief 单元格双击事件
      */
-    connect(ui->receiptTable, SIGNAL(cellDoubleClicked(int,int)),
-            this, SLOT(cellDoubleClickedSlot(int,int)));
+//    connect(ui->receiptTable, SIGNAL(cellDoubleClicked(int,int)),
+//            this, SLOT(cellDoubleClickedSlot(int,int)));
     /**
      * @brief 单元格双击事件
      */

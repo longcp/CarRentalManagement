@@ -9,6 +9,7 @@
 #include <database/database.h>
 #include <tablemodel.h>
 #include <QMessageBox>
+#include <QDebug>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -134,6 +135,10 @@ ClientManagermentWidget::initView()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
+    mCurPayTypeFilter = PayTypeFilter::PAYTYPE_TOTAL;
+    mCurClientTypeFilter = ClientTypeFilter::CLIENTTYPE_TOTAL;
+    ui->paytypeTotalRadioButton->setChecked(true);
+    ui->clientTypeTotalRadioButton->setChecked(true);
     initTableView();
 }
 
@@ -361,4 +366,152 @@ ClientManagermentWidget::editClientItemSlot()
     }
 
     editRowEvent(curRow);
+}
+
+void
+ClientManagermentWidget::setFilterViewState(bool state)
+{
+    ui->cashRadioButton->setEnabled(state);
+    ui->monthlyRadioButton->setEnabled(state);
+    ui->paytypeTotalRadioButton->setEnabled(state);
+    ui->contractRadioButton->setEnabled(state);
+    ui->temporaryRadioButton->setEnabled(state);
+    ui->clientTypeTotalRadioButton->setEnabled(state);
+}
+
+void
+ClientManagermentWidget::disableFilterView()
+{
+    setFilterViewState(false);
+}
+
+void
+ClientManagermentWidget::enableFilterView()
+{
+    setFilterViewState(true);
+}
+
+void
+ClientManagermentWidget::updateTableView()
+{
+    int ret, size;
+    QString payTypeFilter = "";
+    QString clientTypeFilter = "";
+    QString whereStr = " WHERE ";
+    QString andstr = " AND ";
+    QString filter = "";
+    QList<Client> clients;
+    Client client;
+    
+    disableFilterView();
+    
+    switch (mCurPayTypeFilter) {
+    case PayTypeFilter::CASH:
+        payTypeFilter = "paytype=0";
+        break;
+
+    case PayTypeFilter::MONTHLY:
+        payTypeFilter = "paytype=1";
+        break;
+
+    default:
+        break;
+    }
+
+    switch (mCurClientTypeFilter) {
+    case ClientTypeFilter::CONTRACT:
+        clientTypeFilter += "clienttype=0;";
+        break;
+
+    case ClientTypeFilter::TEMPORARY:
+        clientTypeFilter += "clienttype=1;";
+        break;
+
+    default:
+        break;
+    }
+
+    if (payTypeFilter != "" && clientTypeFilter != "")
+        filter = whereStr + payTypeFilter + andstr + clientTypeFilter;
+    else if (payTypeFilter != "" || clientTypeFilter != "")
+        filter = whereStr + payTypeFilter + clientTypeFilter;
+
+    if(!mDb->getClientInFilter(clients, filter)) {
+        if (mModel->rowCount() > 0)
+            mModel->removeRows(0, mModel->rowCount());
+
+        size = clients.size();
+        for (int i = 0; i < size; i++) {
+            client = clients.at(i);
+            addClientItemSlot(client);
+        }
+    }
+    
+    enableFilterView();
+}
+
+void ClientManagermentWidget::on_cashRadioButton_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurPayTypeFilter = PayTypeFilter::CASH;
+    updateTableView();
+}
+
+void ClientManagermentWidget::on_monthlyRadioButton_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurPayTypeFilter = PayTypeFilter::MONTHLY;
+    updateTableView();
+}
+
+void ClientManagermentWidget::on_paytypeTotalRadioButton_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurPayTypeFilter = PayTypeFilter::PAYTYPE_TOTAL;
+    updateTableView();
+}
+
+void ClientManagermentWidget::on_contractRadioButton_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurClientTypeFilter = ClientTypeFilter::CONTRACT;
+    updateTableView();
+}
+
+void ClientManagermentWidget::on_temporaryRadioButton_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurClientTypeFilter = ClientTypeFilter::TEMPORARY;
+    updateTableView();
+}
+
+void ClientManagermentWidget::on_clientTypeTotalRadioButton_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurClientTypeFilter = ClientTypeFilter::CLIENTTYPE_TOTAL;
+    updateTableView();
 }

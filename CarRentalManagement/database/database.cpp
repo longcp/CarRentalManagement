@@ -207,9 +207,9 @@ DataBase::getClientInNumber(QString clientNum, Client &client)
         client.remarks = query->value(7).toString();
         client.creator = query->value(8).toString();
         client.paytype = query->value(9).toInt() ?
-                    PayType::CASH : PayType::MONTHLY;
+                    PayType::MONTHLY : PayType::CASH;
         client.clienttype = query->value(10).toInt() ?
-                    ClientType::CONTRACT : ClientType::TEMPORARY;
+                    ClientType::TEMPORARY : ClientType::CONTRACT;
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), DATE_FORMAT_STR);
         client.monthly = query->value(12).toInt();
@@ -247,6 +247,53 @@ DataBase::getAllClientsNumber(QList<QString> &numbers)
     }
 
     ALOGD("getAllClientsNumber SUCCESS");
+    return SUCCESS;
+}
+
+int
+DataBase::getClientInFilter(QList<Client> &clients, QString filter)
+{
+    ALOGDTRACE();
+    QString number;
+    Client client;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    QString sqlStr = "SELECT * FROM client " + filter;
+    query->finish();
+    query->prepare(sqlStr);
+    if (!query->exec()) {
+        ALOGE("%s", sqlStr.toStdString().data());
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        client.name = query->value(0).toString();
+        client.number = query->value(1).toString();
+        client.telephone = query->value(2).toString();
+        client.address = query->value(3).toString();
+        client.email = query->value(4).toString();
+        client.fax = query->value(5).toString();
+        client.contract = query->value(6).toString();
+        client.remarks = query->value(7).toString();
+        client.creator = query->value(8).toString();
+        client.paytype = query->value(9).toInt() ?
+                     PayType::MONTHLY : PayType::CASH;
+        client.clienttype = query->value(10).toInt() ?
+                    ClientType::TEMPORARY : ClientType::CONTRACT;
+        client.createDate = QDate::fromString(query->value(11)
+                                              .toString(), DATE_FORMAT_STR);
+        client.monthly = query->value(12).toInt();
+        client.amount = query->value(13).toFloat();
+        client.paid = query->value(14).toFloat();
+
+        clients.push_back(client);                              //插入list
+    }
+
     return SUCCESS;
 }
 
@@ -300,9 +347,9 @@ DataBase::getAllClientData(QList<Client> &clients)
         client.remarks = query->value(7).toString();
         client.creator = query->value(8).toString();
         client.paytype = query->value(9).toInt() ?
-                    PayType::CASH : PayType::MONTHLY;
+                    PayType::MONTHLY : PayType::CASH;
         client.clienttype = query->value(10).toInt() ?
-                    ClientType::CONTRACT : ClientType::TEMPORARY;
+                    ClientType::TEMPORARY : ClientType::CONTRACT;
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), DATE_FORMAT_STR);
         client.monthly = query->value(12).toInt();
