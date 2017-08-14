@@ -34,6 +34,14 @@ private slots:
     void            deleteRentalDocItemSlot();
     void            on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_reservationRadio_toggled(bool checked);
+
+    void on_unconfirmedRadio_toggled(bool checked);
+
+    void on_confirmedRadio_toggled(bool checked);
+
+    void on_totalRadio_toggled(bool checked);
+
 signals:
     void            openRentalEditDialogSignal(OpenType, RentalDocument &,
                                                QString clientName, QString clientNumber);
@@ -57,9 +65,12 @@ private:
     void            clearRentalDocTable();
     void            editRowEvent(int row);
 
+    enum RentalDocStateFilter {RESERVATION, CONFIRMED, UNCONFIRMED, RENTALDOCSTATE_TOTAL};
+
     Ui::RentalDocumentWidget *ui;
     QToolBar        *mToolBar;
     RentalDocumentEditDialog    *mRentalDocEditDialog;
+    RentalDocState  *mCurDocState;
 
     // 工具栏动作
     QAction         *mActAdd;
@@ -70,6 +81,7 @@ private:
     QAction         *mActExport;
     QAction         *mActImport;
 
+    RentalDocStateFilter mCurDocStateFilter;
     DataBase*       mDb;
     int             mCurRow;
     TableModel*     mModel;

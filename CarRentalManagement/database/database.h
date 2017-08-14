@@ -113,6 +113,10 @@ public:
                                                    QList<RentalDocument> &docs);
     int                 getRentalDocumentDataInCarNumber(const QString carNumber,
                                                          QList<RentalDocument> &docs);
+    int                 getRentalDocInStateAndClientNum(const QString clientNumber,
+                                                        const RentalDocState state,
+                                                        QList<RentalDocument> &docs);
+    int                 getAllRenDocInState(const RentalDocState state, QList<RentalDocument> &docs);
     int                 clearRentalDocumentTable();
     int                 deleteRentalDocumentInNumber(const QString number);
     int                 getRentalDocumentDataInNumber(const QString number, RentalDocument &doc);

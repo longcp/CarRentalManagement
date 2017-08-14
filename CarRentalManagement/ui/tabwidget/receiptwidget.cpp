@@ -398,7 +398,6 @@ void
 ReceiptWidget::deleteRentalDocumentSlot(QString docNum)
 {
     ALOGDTRACE();
-    int row;
     RentalDocument doc;
     for (int i = 0; i < mReceiptModel->rowCount(); i++) {
         if (docNum != mReceiptModel->index(i, COL_DOC_NUMBER).data().toString())

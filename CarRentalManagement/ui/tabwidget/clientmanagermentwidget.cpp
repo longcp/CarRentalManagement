@@ -450,7 +450,8 @@ ClientManagermentWidget::updateTableView()
     enableFilterView();
 }
 
-void ClientManagermentWidget::on_cashRadioButton_toggled(bool checked)
+void 
+ClientManagermentWidget::on_cashRadioButton_toggled(bool checked)
 {
     ALOGDTRACE();
     qDebug() << checked;
@@ -461,7 +462,8 @@ void ClientManagermentWidget::on_cashRadioButton_toggled(bool checked)
     updateTableView();
 }
 
-void ClientManagermentWidget::on_monthlyRadioButton_toggled(bool checked)
+void
+ClientManagermentWidget::on_monthlyRadioButton_toggled(bool checked)
 {
     ALOGDTRACE();
     qDebug() << checked;
@@ -472,7 +474,8 @@ void ClientManagermentWidget::on_monthlyRadioButton_toggled(bool checked)
     updateTableView();
 }
 
-void ClientManagermentWidget::on_paytypeTotalRadioButton_toggled(bool checked)
+void
+ClientManagermentWidget::on_paytypeTotalRadioButton_toggled(bool checked)
 {
     ALOGDTRACE();
     qDebug() << checked;
@@ -483,7 +486,8 @@ void ClientManagermentWidget::on_paytypeTotalRadioButton_toggled(bool checked)
     updateTableView();
 }
 
-void ClientManagermentWidget::on_contractRadioButton_toggled(bool checked)
+void
+ClientManagermentWidget::on_contractRadioButton_toggled(bool checked)
 {
     ALOGDTRACE();
     qDebug() << checked;
@@ -494,7 +498,8 @@ void ClientManagermentWidget::on_contractRadioButton_toggled(bool checked)
     updateTableView();
 }
 
-void ClientManagermentWidget::on_temporaryRadioButton_toggled(bool checked)
+void
+ClientManagermentWidget::on_temporaryRadioButton_toggled(bool checked)
 {
     ALOGDTRACE();
     qDebug() << checked;
@@ -505,7 +510,8 @@ void ClientManagermentWidget::on_temporaryRadioButton_toggled(bool checked)
     updateTableView();
 }
 
-void ClientManagermentWidget::on_clientTypeTotalRadioButton_toggled(bool checked)
+void
+ClientManagermentWidget::on_clientTypeTotalRadioButton_toggled(bool checked)
 {
     ALOGDTRACE();
     qDebug() << checked;

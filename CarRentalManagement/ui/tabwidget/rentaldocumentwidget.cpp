@@ -8,6 +8,7 @@
 #include <database/database.h>
 #include <client.h>
 #include <QMessageBox>
+#include <QDebug>
 
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
@@ -130,6 +131,8 @@ RentalDocumentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 void
 RentalDocumentWidget::initView()
 {
+    ui->totalRadio->setEnabled(true);
+    mCurDocStateFilter = RentalDocStateFilter::RENTALDOCSTATE_TOTAL;
     initRentalDocTableView();
     initClientTreeWidget();
 }
@@ -449,16 +452,21 @@ RentalDocumentWidget::on_docTableview_clicked(const QModelIndex &index)
 void RentalDocumentWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item,
                                                            int column)
 {
-    ALOGDTRACE();
+    int ret;
     QList<RentalDocument> docs;
 
+    ALOGDTRACE();
     clearRentalDocTable();
     if (item->parent() == NULL) {
         //根节点
         mCurClientNumber = "";
         mCurRow = -1;
-        if (mDb->getAllRentalDocumentData(docs))
-            return;
+        if (mCurDocStateFilter == RentalDocStateFilter::RENTALDOCSTATE_TOTAL) {
+            if (mDb->getAllRentalDocumentData(docs))
+                return;
+        } else {
+//            if (mDb->getAllRenDocInState())
+        }
     } else {
         //子节点
         mCurClientNumber = item->text(mClientNumberColumn);
@@ -467,4 +475,52 @@ void RentalDocumentWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item
     }
 
     addRentalDocRows(docs);
+}
+
+void
+RentalDocumentWidget::on_reservationRadio_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurDocStateFilter = RentalDocStateFilter::RESERVATION;
+//    updateTableView();
+}
+
+void
+RentalDocumentWidget::on_unconfirmedRadio_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurDocStateFilter = RentalDocStateFilter::UNCONFIRMED;
+//    updateTableView();
+}
+
+void
+RentalDocumentWidget::on_confirmedRadio_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurDocStateFilter = RentalDocStateFilter::CONFIRMED;
+//    updateTableView();
+}
+
+void
+RentalDocumentWidget::on_totalRadio_toggled(bool checked)
+{
+    ALOGDTRACE();
+    qDebug() << checked;
+    if (!checked)
+        return;
+
+    mCurDocStateFilter = RentalDocStateFilter::RENTALDOCSTATE_TOTAL;
+//    updateTableView();
 }

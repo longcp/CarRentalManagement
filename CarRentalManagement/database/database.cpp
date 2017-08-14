@@ -2355,6 +2355,134 @@ DataBase::getRentalDocumentDataInNumber(QString number, RentalDocument &doc)
 }
 
 int
+DataBase::getRentalDocInStateAndClientNum(const QString clientNumber,
+                                          const RentalDocState state,
+                                          QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM rentaldocument WHERE clientNumber=? AND rentalDocState=?");
+    query->addBindValue(clientNumber);
+    query->addBindValue(state);
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM rentaldocument!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        doc.number = query->value(0).toString();
+        doc.clientName = query->value(1).toString();
+        doc.clientNumber = query->value(2).toString();
+        doc.contractNumber = query->value(3).toString();
+        doc.carNumber = query->value(4).toString();
+        doc.carPlateNumber = query->value(5).toString();
+        doc.constructPlace = query->value(6).toString();
+        doc.concreteLable = query->value(7).toString();
+        doc.principal = query->value(8).toString();
+        doc.principalTel = query->value(9).toString();
+        doc.driver1 = query->value(10).toString();
+        doc.driver2 = query->value(11).toString();
+        doc.driver3 = query->value(12).toString();
+        doc.projectName = query->value(13).toString();
+        doc.projectAddress = query->value(14).toString();
+        doc.remarks = query->value(15).toString();
+
+        doc.beginFuel = query->value(16).toFloat();
+        doc.endFuel = query->value(17).toFloat();
+        doc.projectAmount = query->value(18).toFloat();
+        doc.receivedAccounts = query->value(19).toFloat();
+        doc.pumpSquare = query->value(20).toFloat();
+        doc.squareUnitPrice = query->value(21).toFloat();
+        doc.pumpTimes = query->value(22).toFloat();
+        doc.pumpTimeUnitPrice = query->value(23).toFloat();
+        doc.workingHours = query->value(24).toFloat();
+
+        doc.date = QDate::fromString(query->value(25).toString(),
+                                               DATE_FORMAT_STR);
+        doc.arrivalDateTime = QDateTime::fromString(query->value(26).toString(),
+                                                   "yyyy-MM-dd hh:mm:ss");
+        doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
+                                           "yyyy-MM-dd hh:mm:ss");
+        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.pumpType = (PumpType)query->value(29).toInt();
+
+        docs.push_back(doc);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getAllRenDocInState(const RentalDocState state, QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM rentaldocument WHERE rentalDocState=?");
+    query->addBindValue(state);
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM rentaldocument WHERE rentalDocState=%d error",
+              (int)state);
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        doc.number = query->value(0).toString();
+        doc.clientName = query->value(1).toString();
+        doc.clientNumber = query->value(2).toString();
+        doc.contractNumber = query->value(3).toString();
+        doc.carNumber = query->value(4).toString();
+        doc.carPlateNumber = query->value(5).toString();
+        doc.constructPlace = query->value(6).toString();
+        doc.concreteLable = query->value(7).toString();
+        doc.principal = query->value(8).toString();
+        doc.principalTel = query->value(9).toString();
+        doc.driver1 = query->value(10).toString();
+        doc.driver2 = query->value(11).toString();
+        doc.driver3 = query->value(12).toString();
+        doc.projectName = query->value(13).toString();
+        doc.projectAddress = query->value(14).toString();
+        doc.remarks = query->value(15).toString();
+
+        doc.beginFuel = query->value(16).toFloat();
+        doc.endFuel = query->value(17).toFloat();
+        doc.projectAmount = query->value(18).toFloat();
+        doc.receivedAccounts = query->value(19).toFloat();
+        doc.pumpSquare = query->value(20).toFloat();
+        doc.squareUnitPrice = query->value(21).toFloat();
+        doc.pumpTimes = query->value(22).toFloat();
+        doc.pumpTimeUnitPrice = query->value(23).toFloat();
+        doc.workingHours = query->value(24).toFloat();
+
+        doc.date = QDate::fromString(query->value(25).toString(),
+                                               DATE_FORMAT_STR);
+        doc.arrivalDateTime = QDateTime::fromString(query->value(26).toString(),
+                                                   "yyyy-MM-dd hh:mm:ss");
+        doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
+                                           "yyyy-MM-dd hh:mm:ss");
+        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.pumpType = (PumpType)query->value(29).toInt();
+
+        docs.push_back(doc);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
 DataBase::getRentalDocumentDataInCarNumber(const QString carNumber, QList<RentalDocument> &docs)
 {
     RentalDocument doc;
