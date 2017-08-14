@@ -367,7 +367,7 @@ RentalDocumentEditDialog::setView(RentalDocument &doc)
     ui->remarksTE->setText(doc.remarks);
     ui->pumpTypeCB->setCurrentIndex(getPumpTypePosition(doc.pumpType));
 
-    switch (doc.rentalDocState) {
+    switch (doc.state) {
     case RentalDocState::RESERVATION_STATE:
         ui->reservationRB->setChecked(true);
         ui->confirmedRB->setChecked(false);
@@ -592,11 +592,11 @@ RentalDocumentEditDialog::saveUiContent(RentalDocument &doc)
     doc.leaveDateTime = QDateTime::fromString(ui->leaveTimeDTE->text(),
                                               DATETIME_FORMAT_STR);
     if (ui->reservationRB->isChecked())
-        doc.rentalDocState = RentalDocState::RESERVATION_STATE;
+        doc.state = RentalDocState::RESERVATION_STATE;
     else if (ui->confirmedRB->isChecked())
-        doc.rentalDocState = RentalDocState::CONFIRMED_STATE;
+        doc.state = RentalDocState::CONFIRMED_STATE;
     else
-        doc.rentalDocState = RentalDocState::UNCONFIRMED_STATE;
+        doc.state = RentalDocState::UNCONFIRMED_STATE;
 }
 
 void

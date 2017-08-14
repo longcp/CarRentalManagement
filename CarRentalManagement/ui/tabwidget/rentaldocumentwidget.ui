@@ -129,14 +129,14 @@
          <item>
           <widget class="QRadioButton" name="unconfirmedRadio">
            <property name="text">
-            <string>1.已确认</string>
+            <string>1.未确认</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QRadioButton" name="confirmedRadio">
            <property name="text">
-            <string>2.未确认</string>
+            <string>2.已确认</string>
            </property>
           </widget>
          </item>

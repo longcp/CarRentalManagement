@@ -59,18 +59,17 @@ private:
     void            initView();
     void            initRentalDocTableView();
     void            initClientTreeWidget();
+    void            updateTableView();
     void            addAllClientItem();
     void            addRentalDocRows(QList<RentalDocument> &docs);
     void            addRentalDocTableRow(RentalDocument &doc);
     void            clearRentalDocTable();
     void            editRowEvent(int row);
 
-    enum RentalDocStateFilter {RESERVATION, CONFIRMED, UNCONFIRMED, RENTALDOCSTATE_TOTAL};
-
     Ui::RentalDocumentWidget *ui;
     QToolBar        *mToolBar;
     RentalDocumentEditDialog    *mRentalDocEditDialog;
-    RentalDocState  *mCurDocState;
+    RentalDocState  mCurDocState;
 
     // 工具栏动作
     QAction         *mActAdd;
@@ -81,12 +80,12 @@ private:
     QAction         *mActExport;
     QAction         *mActImport;
 
-    RentalDocStateFilter mCurDocStateFilter;
     DataBase*       mDb;
     int             mCurRow;
     TableModel*     mModel;
     QTreeWidgetItem*    mRootItem;
     QString         mCurClientNumber;
+    bool            mCurItemIsParentItem;
     const static int mClientNameColumn = 0;
     const static int mClientNumberColumn = 1;
 };

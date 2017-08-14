@@ -131,8 +131,8 @@ RentalDocumentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 void
 RentalDocumentWidget::initView()
 {
-    ui->totalRadio->setEnabled(true);
-    mCurDocStateFilter = RentalDocStateFilter::RENTALDOCSTATE_TOTAL;
+    ui->totalRadio->setChecked(true);
+    mCurDocState = RentalDocState::UNKNOWN_STATE;
     initRentalDocTableView();
     initClientTreeWidget();
 }
@@ -240,6 +240,11 @@ void
 RentalDocumentWidget::addRentalDoc(RentalDocument &doc)
 {
     ALOGDTRACE();
+
+    if (doc.state != mCurDocState &&
+            mCurDocState != RentalDocState::UNKNOWN_STATE)
+        return;
+
     addRentalDocTableRow(doc);
     emit addRentalDocumentSignal(doc);
     ui->docTableview->selectRow(mModel->rowCount() - 1);
@@ -461,17 +466,37 @@ void RentalDocumentWidget::on_clientTreeWidget_itemClicked(QTreeWidgetItem *item
         //根节点
         mCurClientNumber = "";
         mCurRow = -1;
-        if (mCurDocStateFilter == RentalDocStateFilter::RENTALDOCSTATE_TOTAL) {
-            if (mDb->getAllRentalDocumentData(docs))
-                return;
-        } else {
-//            if (mDb->getAllRenDocInState())
-        }
+        mCurItemIsParentItem = true;
     } else {
         //子节点
+        mCurItemIsParentItem = false;
         mCurClientNumber = item->text(mClientNumberColumn);
-        if (mDb->getRentalDocInClientNumber(item->text(mClientNumberColumn), docs))
-            return;
+    }
+
+    updateTableView();
+}
+
+void
+RentalDocumentWidget::updateTableView()
+{
+    QList<RentalDocument> docs;
+
+    if (mCurItemIsParentItem) {
+        clearRentalDocTable();
+        if (mCurDocState == RentalDocState::UNKNOWN_STATE)
+            mDb->getAllRentalDocumentData(docs);
+        else
+            mDb->getAllRenDocInState(mCurDocState, docs);
+    } else {
+        if (mCurClientNumber != "") {
+            clearRentalDocTable();
+            if (mCurDocState == RentalDocState::UNKNOWN_STATE)
+                mDb->getRentalDocInClientNumber(mCurClientNumber, docs);
+            else
+                mDb->getRentalDocInStateAndClientNum(mCurClientNumber,
+                                                     mCurDocState,
+                                                     docs);
+        }
     }
 
     addRentalDocRows(docs);
@@ -485,8 +510,8 @@ RentalDocumentWidget::on_reservationRadio_toggled(bool checked)
     if (!checked)
         return;
 
-    mCurDocStateFilter = RentalDocStateFilter::RESERVATION;
-//    updateTableView();
+    mCurDocState = RentalDocState::RESERVATION_STATE;
+    updateTableView();
 }
 
 void
@@ -497,8 +522,8 @@ RentalDocumentWidget::on_unconfirmedRadio_toggled(bool checked)
     if (!checked)
         return;
 
-    mCurDocStateFilter = RentalDocStateFilter::UNCONFIRMED;
-//    updateTableView();
+    mCurDocState = RentalDocState::UNCONFIRMED_STATE;
+    updateTableView();
 }
 
 void
@@ -509,8 +534,8 @@ RentalDocumentWidget::on_confirmedRadio_toggled(bool checked)
     if (!checked)
         return;
 
-    mCurDocStateFilter = RentalDocStateFilter::CONFIRMED;
-//    updateTableView();
+    mCurDocState = RentalDocState::CONFIRMED_STATE;
+    updateTableView();
 }
 
 void
@@ -521,6 +546,6 @@ RentalDocumentWidget::on_totalRadio_toggled(bool checked)
     if (!checked)
         return;
 
-    mCurDocStateFilter = RentalDocStateFilter::RENTALDOCSTATE_TOTAL;
-//    updateTableView();
+    mCurDocState = RentalDocState::UNKNOWN_STATE;
+    updateTableView();
 }

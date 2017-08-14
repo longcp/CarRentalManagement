@@ -45,7 +45,7 @@ public:
         arrivalDateTime = r.arrivalDateTime;
         leaveDateTime = r.leaveDateTime;
 
-        rentalDocState = r.rentalDocState;
+        state = r.state;
         pumpType = r.pumpType;
     }
 
@@ -81,7 +81,7 @@ public:
         arrivalDateTime = r.arrivalDateTime;
         leaveDateTime = r.leaveDateTime;
 
-        rentalDocState = r.rentalDocState;
+        state = r.state;
         pumpType = r.pumpType;
     }
 
@@ -117,7 +117,7 @@ public:
         arrivalDateTime = r.arrivalDateTime;
         leaveDateTime = r.leaveDateTime;
 
-        rentalDocState = r.rentalDocState;
+        state = r.state;
         pumpType = r.pumpType;
     }
 
@@ -157,7 +157,7 @@ public:
     QDateTime arrivalDateTime;
     QDateTime leaveDateTime;
 
-    RentalDocState rentalDocState;
+    RentalDocState state;
     PumpType pumpType;
 };
 

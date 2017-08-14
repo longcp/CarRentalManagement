@@ -2036,7 +2036,7 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
     query->bindValue(":leaveDateTime",
                      doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
     query->bindValue(":rentalDocState",
-                     (int)doc.rentalDocState);
+                     (int)doc.state);
     query->bindValue(":pumpType", (int)doc.pumpType);
 
     if (!query->exec()) {
@@ -2117,7 +2117,7 @@ DataBase::updateRentalDocumentData(const RentalDocument &doc)
     query->addBindValue(doc.date.toString(DATE_FORMAT_STR));
     query->addBindValue(doc.arrivalDateTime.toString(DATETIME_FORMAT_STR));
     query->addBindValue(doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
-    query->addBindValue(doc.rentalDocState);
+    query->addBindValue(doc.state);
     query->addBindValue(doc.pumpType);
     query->addBindValue(doc.number);
     if (!query->exec()) {
@@ -2181,7 +2181,7 @@ DataBase::getAllRentalDocumentData(QList<RentalDocument> &docs)
                                                     DATETIME_FORMAT_STR);
         doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                                   DATETIME_FORMAT_STR);
-        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
 
         docs.push_back(doc);                              //插入list
@@ -2244,7 +2244,7 @@ DataBase::getRentalDocInClientNumber(const QString clientNumber,
                                                    "yyyy-MM-dd hh:mm:ss");
         doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                            "yyyy-MM-dd hh:mm:ss");
-        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
 
         docs.push_back(doc);                              //插入list
@@ -2347,7 +2347,7 @@ DataBase::getRentalDocumentDataInNumber(QString number, RentalDocument &doc)
                                                    DATETIME_FORMAT_STR);
         doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                            DATETIME_FORMAT_STR);
-        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
     }
 
@@ -2410,7 +2410,7 @@ DataBase::getRentalDocInStateAndClientNum(const QString clientNumber,
                                                    "yyyy-MM-dd hh:mm:ss");
         doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                            "yyyy-MM-dd hh:mm:ss");
-        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
 
         docs.push_back(doc);                              //插入list
@@ -2473,7 +2473,7 @@ DataBase::getAllRenDocInState(const RentalDocState state, QList<RentalDocument> 
                                                    "yyyy-MM-dd hh:mm:ss");
         doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                            "yyyy-MM-dd hh:mm:ss");
-        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
 
         docs.push_back(doc);                              //插入list
@@ -2535,7 +2535,7 @@ DataBase::getRentalDocumentDataInCarNumber(const QString carNumber, QList<Rental
                                                    "yyyy-MM-dd hh:mm:ss");
         doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
                                            "yyyy-MM-dd hh:mm:ss");
-        doc.rentalDocState = (RentalDocState)query->value(28).toInt();
+        doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
 
         docs.push_back(doc);                              //插入list
