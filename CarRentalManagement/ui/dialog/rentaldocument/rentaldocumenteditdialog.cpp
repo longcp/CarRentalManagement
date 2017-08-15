@@ -48,12 +48,10 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
                           tr("保存退出"), this);
 
     mToolBar = new QToolBar(tr("rentalDoasdascEditToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActSaveExit);
     mToolBar->addAction(mActSave);
     mToolBar->addAction(mActEdit);
-//    mToolBar->addAction(mActPrev);
-//    mToolBar->addAction(mActNext);
     mToolBar->addAction(mActCancel);
     mToolBar->addAction(mActExit);
 
@@ -471,8 +469,7 @@ RentalDocumentEditDialog::closeEvent(QCloseEvent *)
         ALOGD("isModified");
         int ret = QMessageBox::warning(this, tr("温馨提示"),
                                        tr("是否保存修改？\n"),
-                                       QMessageBox::Yes |
-                                       QMessageBox::No,
+                                       QMessageBox::Yes | QMessageBox::No,
                                        QMessageBox::Yes);
         if (ret == QMessageBox::Yes)
             saveEvent();

@@ -27,8 +27,6 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    initView();
-
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
                            tr("保存"), this);
     mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -45,15 +43,14 @@ ContractEditDialog::ContractEditDialog(QWidget *parent) :
                                tr("保存退出"), this);
 
     mToolBar = new QToolBar(tr("contractEditToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActSaveExit);
     mToolBar->addAction(mActSave);
     mToolBar->addAction(mActEdit);
-//    mToolBar->addAction(mActPrev);
-//    mToolBar->addAction(mActNext);
     mToolBar->addAction(mActCancel);
     mToolBar->addAction(mActExit);
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+    initView();
 
     /**
      * @brief 编辑
@@ -302,16 +299,12 @@ ContractEditDialog::setView(Contract &contract)
         QStandardItem* num =
                 new QStandardItem(contract.prices.at(i).number);
         QStandardItem* pumpType =
-                new QStandardItem(Car::getPumpTypeStr(contract.prices.at(i)
-                                                      .pumpType));
+                new QStandardItem(Car::getPumpTypeStr(contract.prices.at(i).pumpType));
         QStandardItem* squarePrice =
-                new QStandardItem(QString("%1").arg(contract.prices.at(i)
-                                                    .squarePrice));
+                new QStandardItem(QString("%1").arg(contract.prices.at(i).squarePrice));
         QStandardItem* standardPrice =
-                new QStandardItem(QString("%1").arg(contract.prices.at(i)
-                                                    .standardPrice));
-        QStandardItem* remarks =
-                new QStandardItem(contract.prices.at(i).remarks);
+                new QStandardItem(QString("%1").arg(contract.prices.at(i).standardPrice));
+        QStandardItem* remarks = new QStandardItem(contract.prices.at(i).remarks);
         if (!items.isEmpty())
             items.clear();
         items << num << pumpType << squarePrice << standardPrice
@@ -362,8 +355,7 @@ ContractEditDialog::closeEvent(QCloseEvent *event)
         ALOGD("isModified");
         int ret = QMessageBox::warning(this, tr("温馨提示"),
                                        tr("是否保存修改？\n"),
-                                       QMessageBox::Yes |
-                                       QMessageBox::No,
+                                       QMessageBox::Yes | QMessageBox::No,
                                        QMessageBox::Yes);
         if (ret == QMessageBox::Yes)
             saveEvent();
@@ -621,8 +613,7 @@ void
 ContractEditDialog::on_addBtn_clicked()
 {
     ALOGDTRACE();
-    emit openContractPriceWindowSignal(mOpenType,
-                                       ui->contractNumberLabel->text());
+    emit openContractPriceWindowSignal(mOpenType, ui->contractNumberLabel->text());
 }
 
 void

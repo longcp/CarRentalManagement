@@ -26,8 +26,6 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     this->setWindowTitle(TAB_TITLE_CAR_INFOMATION);
     mDb = DataBase::getInstance();
 
-    initView();
-
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
     mActEdit= new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -44,7 +42,7 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
                              tr("车辆年审"), this);
 
     mToolBar = new QToolBar(tr("carToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
@@ -52,8 +50,9 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActExport);
     mToolBar->addAction(mActInsurance);
     mToolBar->addAction(mActAnnual);
-
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+
+    initView();
 
     /**
      * @brief 单元格双击事件
@@ -68,8 +67,7 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     /**
      * @brief 打开编辑窗口
      */
-    connect(mActAdd, SIGNAL(triggered()),
-            this, SLOT(addCarSlot()));
+    connect(mActAdd, SIGNAL(triggered()), this, SLOT(addCarSlot()));
     /**
      * @brief 打开购买保险窗口
      */
@@ -93,8 +91,7 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     /**
      * @brief 编辑条目
      */
-    connect(mActEdit, SIGNAL(triggered()),
-            this, SLOT(editCarItemSlot()));
+    connect(mActEdit, SIGNAL(triggered()), this, SLOT(editCarItemSlot()));
     /**
      * @brief 删除条目
      */
@@ -144,12 +141,9 @@ CarManagermentWidget::initView()
     mModel->setHorizontalHeaderLabels(headerList);
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->carTableView->setEditTriggers(
-                QAbstractItemView::NoEditTriggers);
-    ui->carTableView->setSelectionBehavior(
-                QAbstractItemView::SelectRows);
-    ui->carTableView->setSelectionMode(
-                QAbstractItemView::SingleSelection);
+    ui->carTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->carTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->carTableView->setSelectionMode(QAbstractItemView::SingleSelection);
 
     ui->carTableView->verticalHeader()->setVisible(false);           //隐藏行表头
     ui->carTableView->horizontalHeader()->setStyleSheet(
@@ -413,7 +407,8 @@ CarManagermentWidget::updateCarItemSlot(Car &car)
     sprintf(buf, "%0.2f", car.totalWeight);
     mModel->setData(mModel->index(curRow, 22), QString(buf));
 
-    mModel->setData(mModel->index(curRow, 23), car.productionDate.toString(DATE_FORMAT_STR));
+    mModel->setData(mModel->index(curRow, 23),
+                    car.productionDate.toString(DATE_FORMAT_STR));
     mModel->setData(mModel->index(curRow, 24), car.factoryCode);
     mModel->setData(mModel->index(curRow, 25), car.operator1);
     mModel->setData(mModel->index(curRow, 26), car.operator2);

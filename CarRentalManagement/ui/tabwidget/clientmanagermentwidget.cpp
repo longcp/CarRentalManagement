@@ -24,8 +24,6 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     mDb = DataBase::getInstance();
     mClientEditDialog = new ClientEditDialog();
 
-    initView();
-
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
     mActEdit= new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -38,14 +36,15 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
                              tr("导出"), this);
 
     mToolBar = new QToolBar(tr("clientToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
-
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
+
+    initView();
 
     /**
      * @brief 单元格双击事件
@@ -266,8 +265,10 @@ ClientManagermentWidget::updateClientItemSlot(Client &client)
     mModel->setData(mModel->index(curRow, 4), client.telephone);
     mModel->setData(mModel->index(curRow, 5), client.fax);
     mModel->setData(mModel->index(curRow, 6), client.contract);
-    mModel->setData(mModel->index(curRow, 7), client.getPayTypeStr(client.paytype));
-    mModel->setData(mModel->index(curRow, 8), QString::number(client.monthly));
+    mModel->setData(mModel->index(curRow, 7),
+                    client.getPayTypeStr(client.paytype));
+    mModel->setData(mModel->index(curRow, 8),
+                    QString::number(client.monthly));
     mModel->setData(mModel->index(curRow, 12), client.remarks);
 
     memset(buf, 0, sizeof(buf));
@@ -301,8 +302,7 @@ ClientManagermentWidget::deleteClientItemSlog()
     int ret = QMessageBox::warning(this,
                                    tr("温馨提示"),
                                    tr("确定要删除该条目吗？.\n"),
-                                   QMessageBox::Yes |
-                                   QMessageBox::No,
+                                   QMessageBox::Yes | QMessageBox::No,
                                    QMessageBox::No);
     if (ret == QMessageBox::No)
         return;

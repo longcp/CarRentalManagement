@@ -26,8 +26,6 @@ ContractWidget::ContractWidget(QWidget *parent) :
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle(TAB_TITLE_CONTRACT);
 
-    initView();
-
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
     mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -40,15 +38,15 @@ ContractWidget::ContractWidget(QWidget *parent) :
                               tr("导出"), this);
 
     mToolBar = new QToolBar(tr("contractToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
-
     ui->toolBarHorizonLayout->addWidget(mToolBar);
 
+    initView();
 
     /**
      * @brief 打开编辑窗口
@@ -138,12 +136,9 @@ ContractWidget::initContractTableview()
     mContractModel->setHorizontalHeaderLabels(headerList);
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->contractTableView->setEditTriggers(
-                QAbstractItemView::NoEditTriggers);
-    ui->contractTableView->setSelectionBehavior(
-                QAbstractItemView::SelectRows);
-    ui->contractTableView->setSelectionMode(
-                QAbstractItemView::SingleSelection);
+    ui->contractTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->contractTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->contractTableView->setSelectionMode(QAbstractItemView::SingleSelection);
 
     ui->contractTableView->verticalHeader()->setVisible(false);         //隐藏行表头
     ui->contractTableView->horizontalHeader()->setStyleSheet(
@@ -160,7 +155,6 @@ ContractWidget::initContractTableview()
     ui->contractTableView->setColumnWidth(1, 200);
     ui->contractTableView->setColumnWidth(2, 200);
     ui->contractTableView->setColumnWidth(3, 200);
-//    setContractTableviewData();
 }
 
 void
@@ -445,12 +439,15 @@ ContractWidget::updateContractRow(Contract &contract)
                          contract.projectName);
     mContractModel->setData(mContractModel->index(curRow, 3),
                          contract.projectAddress);
+
     memset(buf, 0, sizeof(buf));
     sprintf(buf, "%0.2f", contract.deliverySizes);
     mContractModel->setData(mContractModel->index(curRow, 4), QString(buf));
+
     memset(buf, 0, sizeof(buf));
     sprintf(buf, "%0.2f", contract.structureLevel);
     mContractModel->setData(mContractModel->index(curRow, 5), QString(buf));
+
     mContractModel->setData(mContractModel->index(curRow, 6),
                          contract.beginDate.toString(DATE_FORMAT_STR));
     mContractModel->setData(mContractModel->index(curRow, 7),

@@ -29,14 +29,13 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
                              tr("导出"), this);
 
-    initView();
-
     mToolBar = new QToolBar(tr("receiptToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
-
     ui->toolBarVerticalLayout->addWidget(mToolBar);
+
+    initView();
 
     /**
      * @brief 单元格双击事件

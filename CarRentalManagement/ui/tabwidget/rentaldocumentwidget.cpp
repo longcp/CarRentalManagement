@@ -31,8 +31,6 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
 
     mRentalDocEditDialog = new RentalDocumentEditDialog();
 
-    initView();
-
     mActAdd = new QAction(QIcon(":/menu/icon/add_64.ico"),
                           tr("增加"), this);
     mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -45,14 +43,15 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
                               tr("导出"), this);
 
     mToolBar = new QToolBar(tr("rentalDocToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
-
     ui->toolBarHorizonLayout->addWidget(mToolBar);
+
+    initView();
 
     /**
      * @brief 打开编辑窗口

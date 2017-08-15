@@ -19,8 +19,6 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
     mDb = DataBase::getInstance();
     mOriginClient = new Client();
 
-    initView();
-
     mActSave = new QAction(QIcon(":/menu/icon/save_64.ico"),
                           tr("保存"), this);
     mActEdit = new QAction(QIcon(":/menu/icon/edit_64.ico"),
@@ -37,16 +35,14 @@ ClientEditDialog::ClientEditDialog(QWidget *parent) :
                           tr("保存退出"), this);
 
     mToolBar = new QToolBar(tr("clientEditToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActSaveExit);
     mToolBar->addAction(mActSave);
     mToolBar->addAction(mActEdit);
-//    mToolBar->addAction(mActPrev);
-//    mToolBar->addAction(mActNext);
     mToolBar->addAction(mActCancel);
     mToolBar->addAction(mActExit);
-
     ui->toolBarVerticalLayout->addWidget(mToolBar);
+    initView();
     initParam();
 
     /**
@@ -103,33 +99,29 @@ ClientEditDialog::initView()
     ui->createPeopleLineEdit->setMaxLength(16);
 
     /* 输入格式限制 */
-    QValidator *letterAndValidator = new QRegExpValidator(
-                                        RegularExpression::getLetterAndNumRegExp(),
-                                        this);                          //英文字母+数字
+    QValidator *letterAndValidator
+            = new QRegExpValidator(RegularExpression::getLetterAndNumRegExp(), this);   //英文字母+数字
+
+    QValidator *emailValidator
+            = new QRegExpValidator(RegularExpression::getEmailRegExp(), this);  //email
+
+    QValidator *nameValidator
+            = new QRegExpValidator(RegularExpression::getNameRegExp(), this);   //英文字母+数字+中文
+
+    QValidator *telValidator
+            = new QRegExpValidator(RegularExpression::getTelRegExp(), this);    //手机+固话+传真
+
+    QValidator *moneyValidator
+            = new QRegExpValidator(RegularExpression::getMoneyRegExp(), this);  //金额
+
     ui->clientNumLineEdit->setValidator(letterAndValidator);
-
-    QValidator *emailValidator = new QRegExpValidator(
-                                        RegularExpression::getEmailRegExp(),
-                                        this);                          //email
     ui->emailLineEdit->setValidator(emailValidator);
-
-    QValidator *nameValidator = new QRegExpValidator(
-                                        RegularExpression::getNameRegExp(),
-                                        this);                          //英文字母+数字+中文
     ui->clientNameLineEdit->setValidator(nameValidator);
     ui->addressLineEdit->setValidator(nameValidator);
     ui->contractLineEdit->setValidator(nameValidator);
     ui->createPeopleLineEdit->setValidator(nameValidator);
-
-    QValidator *telValidator = new QRegExpValidator(
-                                        RegularExpression::getTelRegExp(),
-                                        this);                          //手机+固话+传真
     ui->telLineEdit->setValidator(telValidator);
     ui->faxLineEdit->setValidator(telValidator);
-
-    QValidator *moneyValidator = new QRegExpValidator(
-                                        RegularExpression::getMoneyRegExp(),
-                                        this);                          //金额
     ui->balanceLineEdit->setValidator(moneyValidator);
 }
 
@@ -279,8 +271,7 @@ ClientEditDialog::closeEvent(QCloseEvent *event)
         ALOGD("isModified");
         int ret = QMessageBox::warning(this, tr("温馨提示"),
                                        tr("是否保存修改？\n"),
-                                       QMessageBox::Yes |
-                                       QMessageBox::No,
+                                       QMessageBox::Yes | QMessageBox::No,
                                        QMessageBox::Yes);
         if (ret == QMessageBox::Yes)
             saveEvent();
@@ -352,23 +343,6 @@ ClientEditDialog::saveAndExitEvent()
 
     Client client;
     saveUiContent(client);
-    ALOGD("name = %s, number = %s, telephone = %s, \n"
-          "address = %s, email = %s, fax = %s, \n"
-          "contract = %s, remarks = %s, creator = %s, \n"
-          "createDate = %s, paytype = %d, monthly = %d, \n"
-          "clienttype = %d\n",
-          client.name.toStdString().data(),
-          client.number.toStdString().data(),
-          client.telephone.toStdString().data(),
-          client.address.toStdString().data(),
-          client.email.toStdString().data(),
-          client.fax.toStdString().data(),
-          client.contract.toStdString().data(),
-          client.remarks.toStdString().data(),
-          client.creator.toStdString().data(),
-          client.createDate.toString(DATE_FORMAT_STR).toStdString().data(),
-          client.paytype,
-          client.monthly, client.clienttype);
 
     if (mOpenType == CREATEITEM) {
         // 添加条目
@@ -409,8 +383,6 @@ ClientEditDialog::saveAndExitEvent()
                                            tr("已保存.\n"),
                                            QMessageBox::Ok,
                                            QMessageBox::Ok);
-//            if (ret == QMessageBox::Ok)
-//                clean();
         } else {
             QMessageBox::critical(this,
                                   tr("温馨提示"),
@@ -442,6 +414,7 @@ ClientEditDialog::saveUiContent(Client &client)
     client.amount   = ui->amountDSB->value();
     client.paid     = ui->paidDSB->value();
     client.monthly = ui->monthlySpinBox->text().toInt(&ok, 10);
+
     if (ui->cashRadioButton->isChecked())
         client.paytype = PayType::CASH;
     else

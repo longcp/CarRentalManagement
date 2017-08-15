@@ -23,19 +23,18 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
     this->setWindowTitle(TAB_TITLE_RECEIVABLE);
 
-    initView();
-
     mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
                              tr("查询"), this);
     mActExport = new QAction(QIcon(":/menu/icon/export_64.ico"),
                              tr("导出"), this);
 
     mToolBar = new QToolBar(tr("receivableToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
-
     ui->toolBarVerticalLayout->addWidget(mToolBar);
+
+    initView();
 
     /**
      * @brief 同步调整列宽
