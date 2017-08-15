@@ -113,12 +113,9 @@ ClientManagermentWidget::initView()
     mModel->setHorizontalHeaderLabels(headerList);
 
     //设置单元格不可编辑,单击选中一行且只能选中一行
-    ui->clientTableView->setEditTriggers(
-                QAbstractItemView::NoEditTriggers);
-    ui->clientTableView->setSelectionBehavior(
-                QAbstractItemView::SelectRows);
-    ui->clientTableView->setSelectionMode(
-                QAbstractItemView::SingleSelection);
+    ui->clientTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->clientTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->clientTableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->clientTableView->horizontalHeader()
             ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 
@@ -134,6 +131,7 @@ ClientManagermentWidget::initView()
     ui->clientTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    ui->clientTableView->setSortingEnabled(true);
 
     mCurPayTypeFilter = PayTypeFilter::PAYTYPE_TOTAL;
     mCurClientTypeFilter = ClientTypeFilter::CLIENTTYPE_TOTAL;
@@ -203,23 +201,7 @@ ClientManagermentWidget::editRowEvent(int row)
                               QMessageBox::Ok);
         return;
     }
-#if 0
-    ALOGD("name = %s, number = %s, telephone = %s, \n"
-          "address = %s, email = %s, fax = %s, \n"
-          "contract = %s, remarks = %s, \n"
-          "paytype = %d, monthly = %d, \n"
-          "clienttype = %d\n",
-          client.name.toStdString().data(),
-          client.number.toStdString().data(),
-          client.telephone.toStdString().data(),
-          client.address.toStdString().data(),
-          client.email.toStdString().data(),
-          client.fax.toStdString().data(),
-          client.contract.toStdString().data(),
-          client.remarks.toStdString().data(),
-          client.paytype,
-          client.monthly, client.clienttype);
-#endif
+
     emit openClientEditDialogSignal(SHOWITEM, client);
 }
 
@@ -240,41 +222,31 @@ void
 ClientManagermentWidget::addClientItemSlot(Client &client)
 {
     char buf[64];
-    QStandardItem* num
-            = new QStandardItem(client.number);
+    QStandardItem* num = new QStandardItem(client.number);
     QStandardItem* clientype
             = new QStandardItem(client.getClientTypeStr(client.clienttype));
-    QStandardItem* name
-            = new QStandardItem(client.name);
-    QStandardItem* addr
-            = new QStandardItem(client.address);
-    QStandardItem* telephone
-            = new QStandardItem(client.telephone);
-    QStandardItem* fax
-            = new QStandardItem(client.fax);
-    QStandardItem* contract
-            = new QStandardItem(client.contract);
+    QStandardItem* name = new QStandardItem(client.name);
+    QStandardItem* addr = new QStandardItem(client.address);
+    QStandardItem* telephone = new QStandardItem(client.telephone);
+    QStandardItem* fax = new QStandardItem(client.fax);
+    QStandardItem* contract = new QStandardItem(client.contract);
     QStandardItem* paytype
             = new QStandardItem(client.getPayTypeStr(client.paytype));
     QStandardItem* monthly
             = new QStandardItem(QString::number(client.monthly));
-    QStandardItem* remarks
-            = new QStandardItem(client.remarks);
+    QStandardItem* remarks = new QStandardItem(client.remarks);
 
     memset(buf, 0, sizeof(buf));
     sprintf(buf, "%0.2f", client.amount);
-    QStandardItem* amount
-            = new QStandardItem(QString(buf));
+    QStandardItem* amount = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
     sprintf(buf, "%0.2f", client.paid);
-    QStandardItem* paid
-            = new QStandardItem(QString(buf));
+    QStandardItem* paid = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
     sprintf(buf, "%0.2f", client.amount - client.paid);
-    QStandardItem* balance
-            = new QStandardItem(QString(buf));
+    QStandardItem* balance = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
     items << num << clientype << name << addr << telephone
@@ -287,26 +259,17 @@ void
 ClientManagermentWidget::updateClientItemSlot(Client &client)
 {
     char buf[64];
-    mModel->setData(mModel->index(curRow, 0),
-                    client.number);
+    mModel->setData(mModel->index(curRow, 0), client.number);
     mModel->setData(mModel->index(curRow, 1),
                     client.getClientTypeStr(client.clienttype));
-    mModel->setData(mModel->index(curRow, 2),
-                    client.name);
-    mModel->setData(mModel->index(curRow, 3),
-                    client.address);
-    mModel->setData(mModel->index(curRow, 4),
-                    client.telephone);
-    mModel->setData(mModel->index(curRow, 5),
-                    client.fax);
-    mModel->setData(mModel->index(curRow, 6),
-                    client.contract);
-    mModel->setData(mModel->index(curRow, 7),
-                    client.getPayTypeStr(client.paytype));
-    mModel->setData(mModel->index(curRow, 8),
-                    QString::number(client.monthly));
-    mModel->setData(mModel->index(curRow, 12),
-                    client.remarks);
+    mModel->setData(mModel->index(curRow, 2), client.name);
+    mModel->setData(mModel->index(curRow, 3), client.address);
+    mModel->setData(mModel->index(curRow, 4), client.telephone);
+    mModel->setData(mModel->index(curRow, 5), client.fax);
+    mModel->setData(mModel->index(curRow, 6), client.contract);
+    mModel->setData(mModel->index(curRow, 7), client.getPayTypeStr(client.paytype));
+    mModel->setData(mModel->index(curRow, 8), QString::number(client.monthly));
+    mModel->setData(mModel->index(curRow, 12), client.remarks);
 
     memset(buf, 0, sizeof(buf));
     sprintf(buf, "%0.2f", client.amount);

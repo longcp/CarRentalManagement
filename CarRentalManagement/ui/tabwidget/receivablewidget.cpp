@@ -133,6 +133,7 @@ ReceivableWidget::initDetailTableview()
     ui->detailTableview->setColumnWidth(DETAIL_COL_CONTRACT_NUMBER, 200);
     ui->detailTableview->setColumnWidth(DETAIL_COL_CLIENT_NAME, 200);
     ui->detailTableview->setColumnWidth(DETAIL_COL_CAR_PLATE_NUMBER, 200);
+    ui->detailTableview->setSortingEnabled(true);
 }
 
 void
@@ -228,6 +229,7 @@ ReceivableWidget::initTotalTableview()
 
     //隐藏滚动条
     ui->totalTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->totalTableview->setSortingEnabled(true);                        //点击表头排序
 }
 
 void

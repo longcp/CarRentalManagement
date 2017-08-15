@@ -136,12 +136,12 @@ ReceiptWidget::initReceiptTable()
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
     //隐藏滚动条
     ui->receiptTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->receiptTable->setSortingEnabled(true);                          //点击表头排序
 
     ui->receiptTable->setColumnWidth(COL_DOC_NUMBER, 200);
     ui->receiptTable->setColumnWidth(COL_CONTRACT_NUMBER, 200);
     ui->receiptTable->setColumnWidth(COL_CLIENT_NAME, 200);
     ui->receiptTable->setColumnWidth(COL_CAR_PLATE_NUMBER, 200);
-    ui->receiptTable->setSortingEnabled(true);
 }
 
 void

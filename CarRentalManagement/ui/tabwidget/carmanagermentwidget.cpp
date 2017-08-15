@@ -160,6 +160,7 @@ CarManagermentWidget::initView()
     ui->carTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");  //设置间隔行颜色变化
+    ui->carTableView->setSortingEnabled(true);
 
     ui->carTableView->setColumnWidth(15, 200);
     ui->carTableView->setColumnWidth(16, 200);

@@ -171,6 +171,7 @@ RentalDocumentWidget::initRentalDocTableView()
     ui->docTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    ui->docTableview->setSortingEnabled(true);                          //点击表头排序
 
     ui->docTableview->setColumnWidth(0, 200);
     ui->docTableview->setColumnWidth(1, 200);

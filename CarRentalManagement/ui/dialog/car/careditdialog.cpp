@@ -310,7 +310,8 @@ CarEditDialog::initProjectTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
     //隐藏滚动条
-    ui->projectTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);                                //隐藏滚动条
+    ui->projectTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); //隐藏滚动条
+    ui->projectTableView->setSortingEnabled(true);
 
     initProjectSumTableview();
 }
@@ -396,6 +397,7 @@ CarEditDialog::initAnnualTableview()
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
     //隐藏滚动条
     ui->annualTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->annualTableview->setSortingEnabled(true);
 
     initAnnualSumTableview();
 }
@@ -480,6 +482,7 @@ CarEditDialog::initBusinessTableview()
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
     //隐藏滚动条
     ui->businessTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->businessTableView->setSortingEnabled(true);
 
     initBusinessSumTableview();
 }
@@ -565,6 +568,7 @@ CarEditDialog::initPaymentTableview()
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
     //隐藏滚动条
     ui->paymentTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->paymentTableView->setSortingEnabled(true);
 
     initPaymentSumTableview();
 }
