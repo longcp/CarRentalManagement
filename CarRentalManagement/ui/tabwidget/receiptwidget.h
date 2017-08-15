@@ -36,6 +36,14 @@ private slots:
     void            deleteRentalDocumentSlot(QString docNum);
     void            addRentalDocumentSlot(RentalDocument &doc);
 
+    void on_screeningBtn_clicked();
+
+    void on_clearBtn_clicked();
+
+    void on_fromDateCb_toggled(bool checked);
+
+    void on_toDateCb_toggled(bool checked);
+
 signals:
     /**
      * @brief 打开收入编辑窗口
@@ -45,6 +53,7 @@ signals:
 private:
     void            configToolBar();
     void            initView();
+    void            initChooseWidget();
     void            initReceiptTable();
     void            initReceiptSumTable();
     void            reflashView(QList<RentalDocument> docs);   

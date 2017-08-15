@@ -174,6 +174,18 @@ typedef struct ReceivableDetail {
     PumpType pumptype;
 } RECEIVABLE_DETAIL;
 
+typedef struct ReceiptFilter {
+    QDate fromDate;
+    QDate toDate;
+    QString rentalDocNumber;
+    QString contractNumber;
+    QString clientName;
+    QString carNumber;
+    ClientType clientType;
+    PumpType pumpType;
+    bool    isAccountPositive;//应收大于0
+} RECEIPT_FILTER;
+
 typedef struct ReceivableTotal {
     QString contractNumber;
     QString clientName;

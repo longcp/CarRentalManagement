@@ -36,9 +36,18 @@ private slots:
     void            deleteRentalDocumentSlot(QString docNum);
     void            addRentalDocumentSlot(RentalDocument &doc);
 
+    void on_screeningBtn_clicked();
+
+    void on_clearBtn_clicked();
+
+    void on_fromDateCb_toggled(bool checked);
+
+    void on_toDateCb_toggled(bool checked);
+
 private:
     void            configToolBar();
     void            initView();
+    void            initChooseWidget();
     void            initDetailTableview();
     void            initDetailSumTableview();
     void            initTotalTableview();

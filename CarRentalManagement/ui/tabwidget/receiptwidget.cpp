@@ -20,6 +20,8 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
+    ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
+    ui->clearBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
     this->setWindowTitle(TAB_TITLE_RECEIVABLE);
 
     mReceiptEditDialog = new ReceiptEditDialog();
@@ -92,12 +94,23 @@ ReceiptWidget::configToolBar()
 void
 ReceiptWidget::initView()
 {
+    initChooseWidget();
     initReceiptTable();
     initReceiptSumTable();
 
     QList<RentalDocument> docs;
     if (!mDb->getAllRentalDocumentData(docs))
         reflashView(docs);
+}
+
+void
+ReceiptWidget::initChooseWidget()
+{
+    ui->fromDateCb->setChecked(false);
+    ui->toDateCb->setChecked(false);
+    ui->fromDateEdit->setEnabled(false);
+    ui->toDateEdit->setEnabled(false);
+    //设置起止日期为本月起止日，应收大于0默认选上
 }
 
 void
@@ -473,4 +486,26 @@ ReceiptWidget::tabChangeToReceiptSlot(int index, QString tabText)
 
     reflashView(docs);
 #endif
+}
+
+void
+ReceiptWidget::on_screeningBtn_clicked()
+{
+    ui->screeningBtn->setStyleSheet("background-color: rgb(70, 130, 180);");
+}
+
+void
+ReceiptWidget::on_clearBtn_clicked()
+{
+    ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
+}
+
+void ReceiptWidget::on_fromDateCb_toggled(bool checked)
+{
+    ui->fromDateEdit->setEnabled(checked);
+}
+
+void ReceiptWidget::on_toDateCb_toggled(bool checked)
+{
+    ui->toDateEdit->setEnabled(checked);
 }

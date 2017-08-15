@@ -21,6 +21,8 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->toolBarWidget->setStyleSheet(
                 "background-color: rgb(234,234,234);color:rgb(0,0,0);");
+    ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
+    ui->clearBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
     this->setWindowTitle(TAB_TITLE_RECEIVABLE);
 
     mActSearch = new QAction(QIcon(":/menu/icon/search_64.ico"),
@@ -84,10 +86,21 @@ ReceivableWidget::configToolBar()
 void
 ReceivableWidget::initView()
 {
+    initChooseWidget();
     initDetailTableview();
     initDetailSumTableview();
     initTotalTableview();
     initTotalSumTableview();
+}
+
+void
+ReceivableWidget::initChooseWidget()
+{
+    ui->fromDateCb->setChecked(false);
+    ui->toDateCb->setChecked(false);
+    ui->fromDateEdit->setEnabled(false);
+    ui->toDateEdit->setEnabled(false);
+    //设置起止日期为本月起止日，应收大于0默认选上
 }
 
 void
@@ -676,4 +689,28 @@ ReceivableWidget::tabChangeToReceivableSlot(int index, QString tabText)
 
     reflashDetailTableview(docs);
     reflashSumTableview(docs);
+}
+
+void
+ReceivableWidget::on_screeningBtn_clicked()
+{
+    ui->screeningBtn->setStyleSheet("background-color: rgb(70, 130, 180);");
+}
+
+void
+ReceivableWidget::on_clearBtn_clicked()
+{
+    ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
+}
+
+void
+ReceivableWidget::on_fromDateCb_toggled(bool checked)
+{
+    ui->fromDateEdit->setEnabled(checked);
+}
+
+void
+ReceivableWidget::on_toDateCb_toggled(bool checked)
+{
+    ui->toDateEdit->setEnabled(checked);
 }
