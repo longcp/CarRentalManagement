@@ -137,7 +137,6 @@ ClientManagermentWidget::initView()
     mCurClientTypeFilter = ClientTypeFilter::CLIENTTYPE_TOTAL;
     ui->paytypeTotalRadioButton->setChecked(true);
     ui->clientTypeTotalRadioButton->setChecked(true);
-    initTableView();
 }
 
 void
