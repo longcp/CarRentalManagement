@@ -46,7 +46,7 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
-    mToolBar->addAction(mActSearch);
+//    mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
     mToolBar->addAction(mActInsurance);
     mToolBar->addAction(mActAnnual);

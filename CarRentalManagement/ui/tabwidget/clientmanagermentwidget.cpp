@@ -40,7 +40,7 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
-    mToolBar->addAction(mActSearch);
+//    mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
 

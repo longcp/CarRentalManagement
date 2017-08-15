@@ -42,7 +42,7 @@ ContractWidget::ContractWidget(QWidget *parent) :
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
-    mToolBar->addAction(mActSearch);
+//    mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
     ui->toolBarHorizonLayout->addWidget(mToolBar);
 
@@ -297,14 +297,14 @@ ContractWidget::editContractItemSlot()
 void
 ContractWidget::clearContractTable()
 {
-    if (mContractModel->rowCount())
+    if (mContractModel->rowCount() > 0)
         mContractModel->removeRows(0, mContractModel->rowCount());
 }
 
 void
 ContractWidget::clearPriceTable()
 {
-    if (mPriceModel->rowCount())
+    if (mPriceModel->rowCount() > 0)
         mPriceModel->removeRows(0, mPriceModel->rowCount());
 }
 
@@ -469,7 +469,7 @@ ContractWidget::updateContractRow(Contract &contract)
 void
 ContractWidget::updateContractPriceTable(QList<CONTRACT_PRICE> prices)
 {
-    if (mPriceModel->rowCount()) {
+    if (mPriceModel->rowCount() > 0) {
         // 删除所有行并清除item内存
         mPriceModel->removeRows(0, mPriceModel->rowCount());
     }

@@ -47,7 +47,7 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     mToolBar->addAction(mActAdd);
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
-    mToolBar->addAction(mActSearch);
+//    mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
     ui->toolBarHorizonLayout->addWidget(mToolBar);
 
@@ -130,10 +130,10 @@ RentalDocumentWidget::cellDoubleClickedSlot(const QModelIndex &index)
 void
 RentalDocumentWidget::initView()
 {
-    ui->totalRadio->setChecked(true);
-    mCurDocState = RentalDocState::UNKNOWN_STATE;
     initRentalDocTableView();
     initClientTreeWidget();
+    ui->totalRadio->setChecked(true);
+    mCurDocState = RentalDocState::UNKNOWN_STATE;
 }
 
 void
@@ -326,7 +326,7 @@ RentalDocumentWidget::deleteRentalDocItemSlot()
 void
 RentalDocumentWidget::clearRentalDocTable()
 {
-    if (mModel->rowCount())
+    if (mModel->rowCount() > 0)
         mModel->removeRows(0, mModel->rowCount());
 }
 

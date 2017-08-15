@@ -31,7 +31,7 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
 
     mToolBar = new QToolBar(tr("receiptToolBar"), this);
     configToolBar();
-    mToolBar->addAction(mActSearch);
+//    mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
     ui->toolBarVerticalLayout->addWidget(mToolBar);
 
@@ -447,7 +447,7 @@ ReceiptWidget::addTableRows(QList<RentalDocument> &docs)
 void
 ReceiptWidget::clearTableview()
 {
-    if (mReceiptModel->rowCount())
+    if (mReceiptModel->rowCount() > 0)
         mReceiptModel->removeRows(0, mReceiptModel->rowCount());
 
     resetReceiptSumTableData();

@@ -30,7 +30,7 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
 
     mToolBar = new QToolBar(tr("receivableToolBar"), this);
     configToolBar();
-    mToolBar->addAction(mActSearch);
+//    mToolBar->addAction(mActSearch);
     mToolBar->addAction(mActExport);
     ui->toolBarVerticalLayout->addWidget(mToolBar);
 
@@ -477,7 +477,7 @@ ReceivableWidget::addRentalDocumentSlot(RentalDocument &doc)
 void
 ReceivableWidget::clearDetailTableview()
 {
-    if (mDetailModel->rowCount())
+    if (mDetailModel->rowCount() > 0)
         mDetailModel->removeRows(0, mDetailModel->rowCount());
 
     resetDetailSumTableData();

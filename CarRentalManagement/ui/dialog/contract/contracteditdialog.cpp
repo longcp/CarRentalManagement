@@ -289,7 +289,7 @@ ContractEditDialog::setView(Contract &contract)
     ui->creatorLE->setText(contract.creator);
     ui->createDateDE->setDate(contract.creatDate);
 
-    if (mModel->rowCount()) {
+    if (mModel->rowCount() > 0) {
         // 删除所有行并清除item内存
         mModel->removeRows(0, mModel->rowCount());
     }
@@ -403,7 +403,7 @@ void
 ContractEditDialog::clearPriceTable()
 {
     ALOGDTRACE();
-    if (mModel->rowCount()) {
+    if (mModel->rowCount() > 0) {
         // 删除所有行并清除item内存
         mModel->removeRows(0, mModel->rowCount());
     }

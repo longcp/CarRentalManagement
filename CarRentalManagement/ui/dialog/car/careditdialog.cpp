@@ -1198,7 +1198,7 @@ CarEditDialog::updateAnnualTableView()
     ANNUALFEE_RECORD record;
     QList<ANNUALFEE_RECORD> records;
 
-    if (mAnnualModel->rowCount()) {
+    if (mAnnualModel->rowCount() > 0) {
         mAnnualModel->removeRows(0, mAnnualModel->rowCount());
     }
 
@@ -1221,7 +1221,7 @@ CarEditDialog::updateInsuranceTableView()
     INSURANCE_RECORD record;
     QList<INSURANCE_RECORD> records;
 
-    if (mPaymentModel->rowCount()) {
+    if (mPaymentModel->rowCount() > 0) {
         mPaymentModel->removeRows(0, mPaymentModel->rowCount());
     }
 
@@ -1244,7 +1244,7 @@ CarEditDialog::updateBusinessInsuanceTableView()
     INSURANCE_RECORD record;
     QList<INSURANCE_RECORD> records;
 
-    if (mBusinessModel->rowCount()) {
+    if (mBusinessModel->rowCount() > 0) {
         //删除所有行
         mBusinessModel->removeRows(0, mBusinessModel->rowCount());
     }
@@ -1268,7 +1268,7 @@ CarEditDialog::updateProjectTableView()
     QList<RentalDocument> docs;
     int count = 0;
 
-    if (mBusinessModel->rowCount()) {
+    if (mBusinessModel->rowCount() > 0) {
         //删除所有行
         mProjectModel->removeRows(0, mProjectModel->rowCount());
     }
