@@ -106,11 +106,17 @@ ReceiptWidget::initView()
 void
 ReceiptWidget::initChooseWidget()
 {
+    QDate curDate = QDate::currentDate();
+    int curDateNum = curDate.toString("d").toInt();
+    QDate startDay = curDate.addDays(-curDateNum+1);
+    QDate endDay = curDate.addMonths(1).addDays(-curDateNum);
+    ui->fromDateEdit->setDate(startDay);
+    ui->toDateEdit->setDate(endDay);
     ui->fromDateCb->setChecked(false);
     ui->toDateCb->setChecked(false);
     ui->fromDateEdit->setEnabled(false);
     ui->toDateEdit->setEnabled(false);
-    //设置起止日期为本月起止日，应收大于0默认选上
+    ui->receivableCheckBox->setChecked(true);
 }
 
 void
