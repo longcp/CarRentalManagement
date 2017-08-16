@@ -140,13 +140,13 @@
           <widget class="QDateEdit" name="fromDateEdit">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>100</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>120</width>
+             <width>100</width>
              <height>16777215</height>
             </size>
            </property>
@@ -178,18 +178,34 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox">
+          <widget class="QLineEdit" name="docNumEt">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>120</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="docNumTb">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>...</string>
            </property>
           </widget>
          </item>
@@ -197,13 +213,13 @@
           <widget class="QLabel" name="contractNumLabel">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>60</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>70</width>
+             <width>60</width>
              <height>16777215</height>
             </size>
            </property>
@@ -216,18 +232,34 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="ContractNumComboBox">
+          <widget class="QLineEdit" name="contractNumEt">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>120</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="contractNumTb">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>...</string>
            </property>
           </widget>
          </item>
@@ -254,18 +286,34 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="clientNameComboBox">
+          <widget class="QLineEdit" name="clientNameEt">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>120</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="clientNameTb">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>...</string>
            </property>
           </widget>
          </item>
@@ -397,13 +445,13 @@
           <widget class="QDateEdit" name="toDateEdit">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>100</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>120</width>
+             <width>100</width>
              <height>16777215</height>
             </size>
            </property>
@@ -438,13 +486,13 @@
           <widget class="QComboBox" name="pumpTypeComboBox">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>155</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>155</width>
              <height>16777215</height>
             </size>
            </property>
@@ -454,13 +502,13 @@
           <widget class="QLabel" name="carNumLabel">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>60</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>70</width>
+             <width>60</width>
              <height>16777215</height>
             </size>
            </property>
@@ -473,18 +521,34 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="carNumComboBox">
+          <widget class="QLineEdit" name="carNumEt">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>120</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="carNumTb">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>...</string>
            </property>
           </widget>
          </item>
@@ -492,13 +556,13 @@
           <widget class="QCheckBox" name="receivableCheckBox">
            <property name="minimumSize">
             <size>
-             <width>220</width>
+             <width>225</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>220</width>
+             <width>225</width>
              <height>16777215</height>
             </size>
            </property>

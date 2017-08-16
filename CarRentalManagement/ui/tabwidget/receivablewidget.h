@@ -7,6 +7,9 @@ class QToolBar;
 class TableModel;
 class RentalDocument;
 class DataBase;
+class CarTableDialog;
+class ContractTableDialog;
+class ClientTableDialog;
 
 namespace Ui {
 class ReceivableWidget;
@@ -35,14 +38,23 @@ private slots:
 
     void            deleteRentalDocumentSlot(QString docNum);
     void            addRentalDocumentSlot(RentalDocument &doc);
+    void            getContract(QString number);
+    void            getClient(QString client);
+    void            getCar(QString number);
 
-    void on_screeningBtn_clicked();
+    void            on_screeningBtn_clicked();
+    void            on_clearBtn_clicked();
+    void            on_fromDateCb_toggled(bool checked);
+    void            on_toDateCb_toggled(bool checked);
+    void            on_docNumTb_clicked();
+    void            on_contractNumTb_clicked();
+    void            on_clientNameTb_clicked();
+    void            on_carNumTb_clicked();
 
-    void on_clearBtn_clicked();
-
-    void on_fromDateCb_toggled(bool checked);
-
-    void on_toDateCb_toggled(bool checked);
+signals:
+    void            openCarDialogSig();
+    void            openClientDialogSig();
+    void            openContractDialogSig();
 
 private:
     void            configToolBar();
@@ -109,6 +121,10 @@ private:
     TableModel*     mDetailSumModel;
     TableModel*     mTotalModel;
     TableModel*     mTotalSumModel;
+
+    CarTableDialog*         mCarDialog;
+    ContractTableDialog*    mContractDialog;
+    ClientTableDialog*      mClientDialog;
 
     enum DetailTableColumn {
         DETAIL_COL_DATE,

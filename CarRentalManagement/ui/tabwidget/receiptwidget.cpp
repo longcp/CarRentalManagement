@@ -117,6 +117,7 @@ ReceiptWidget::initChooseWidget()
     ui->fromDateEdit->setEnabled(false);
     ui->toDateEdit->setEnabled(false);
     ui->receivableCheckBox->setChecked(true);
+    ui->totalRadioButton->setChecked(true);
 }
 
 void

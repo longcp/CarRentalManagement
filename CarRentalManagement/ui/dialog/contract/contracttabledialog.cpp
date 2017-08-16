@@ -67,19 +67,25 @@ ContractTableDialog::initView()
 void
 ContractTableDialog::initTableView(QString clientNumber)
 {
-    int size;
+    int size, ret;
     QList<Contract>contracts;
     Contract contract;
 
     if (mModel->rowCount() > 0)
         mModel->removeRows(0, mModel->rowCount());
 
-    if (!mDb->getContractInClientNumber(clientNumber, contracts)) {
-        size = contracts.size();
-        for (int i = 0; i < size; i++) {
-            contract = contracts.at(i);
-            addContractItem(contract);
-        }
+    if (clientNumber != "")
+        ret = mDb->getContractInClientNumber(clientNumber, contracts);
+    else
+        ret = mDb->getAllContractData(contracts);
+
+    if (ret)
+        return;
+
+    size = contracts.size();
+    for (int i = 0; i < size; i++) {
+        contract = contracts.at(i);
+        addContractItem(contract);
     }
 }
 
@@ -107,6 +113,14 @@ ContractTableDialog::openWindow(QString clientNumber)
 {
     ALOGDTRACE();
     initTableView(clientNumber);
+    this->exec();
+}
+
+void
+ContractTableDialog::openWindow()
+{
+    ALOGDTRACE();
+    initTableView("");
     this->exec();
 }
 

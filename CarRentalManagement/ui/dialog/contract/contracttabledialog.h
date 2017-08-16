@@ -22,6 +22,8 @@ public:
 private slots:
     void            openWindow(QString clientNumber);
 
+    void            openWindow();
+
     void            on_contractTableView_doubleClicked(const QModelIndex &index);
 
 signals:

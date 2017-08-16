@@ -6,6 +6,9 @@
 #include <contract.h>
 #include <rentaldocument.h>
 #include <database/database.h>
+#include <clienttabledialog.h>
+#include <contracttabledialog.h>
+#include <cartabledialog.h>
 #include <stdio.h>
 
 #define LOG_TAG                         "RECEIVABLE_WIDGET"
@@ -16,6 +19,9 @@
 ReceivableWidget::ReceivableWidget(QWidget *parent) :
     QWidget(parent),
     mDb(DataBase::getInstance()),
+    mCarDialog(new CarTableDialog()),
+    mClientDialog(new ClientTableDialog()),
+    mContractDialog(new ContractTableDialog()),
     ui(new Ui::ReceivableWidget)
 {
     ui->setupUi(this);
@@ -54,6 +60,36 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
 
     connect((QObject*)ui->totalSummaryTableview->horizontalScrollBar(), SIGNAL(valueChanged(int)),
             (QObject*)ui->totalTableview->horizontalScrollBar(), SLOT(setValue(int)));
+    /**
+     * @brief 选择car
+     */
+    connect(this, SIGNAL(openCarDialogSig()),
+            mCarDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择car
+     */
+    connect(mCarDialog, SIGNAL(selectedCar(QString)),
+            this, SLOT(getCar(QString)));
+    /**
+     * @brief 选择contract
+     */
+    connect(this, SIGNAL(openContractDialogSig()),
+            mContractDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择contract
+     */
+    connect(mContractDialog, SIGNAL(selectedContract(QString)),
+            this, SLOT(getContract(QString)));
+    /**
+     * @brief 选择client
+     */
+    connect(this, SIGNAL(openClientDialogSig()),
+            mClientDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择client
+     */
+    connect(mClientDialog, SIGNAL(selectedClient(QString)),
+            this, SLOT(getClient(QString)));
 }
 
 ReceivableWidget::~ReceivableWidget()
@@ -107,6 +143,7 @@ ReceivableWidget::initChooseWidget()
     ui->fromDateEdit->setEnabled(false);
     ui->toDateEdit->setEnabled(false);
     ui->receivableCheckBox->setChecked(true);
+    ui->totalRadioButton->setChecked(true);
 }
 
 void
@@ -719,4 +756,42 @@ void
 ReceivableWidget::on_toDateCb_toggled(bool checked)
 {
     ui->toDateEdit->setEnabled(checked);
+}
+
+void
+ReceivableWidget::getContract(QString number)
+{
+    ui->contractNumEt->setText(number);
+}
+
+void
+ReceivableWidget::getCar(QString number)
+{
+    ui->carNumEt->setText(number);
+}
+
+void
+ReceivableWidget::getClient(QString client)
+{
+    ui->clientNameEt->setText(client);
+}
+
+void ReceivableWidget::on_docNumTb_clicked()
+{
+
+}
+
+void ReceivableWidget::on_contractNumTb_clicked()
+{
+    emit openContractDialogSig();
+}
+
+void ReceivableWidget::on_clientNameTb_clicked()
+{
+    emit openClientDialogSig();
+}
+
+void ReceivableWidget::on_carNumTb_clicked()
+{
+    emit openCarDialogSig();
 }
