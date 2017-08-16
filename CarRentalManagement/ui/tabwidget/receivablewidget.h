@@ -10,6 +10,7 @@ class DataBase;
 class CarTableDialog;
 class ContractTableDialog;
 class ClientTableDialog;
+class RentalDocTableDialog;
 
 namespace Ui {
 class ReceivableWidget;
@@ -41,6 +42,7 @@ private slots:
     void            getContract(QString number);
     void            getClientName(QString name);
     void            getCar(QString number);
+    void            getDoc(QString number);
 
     void            on_screeningBtn_clicked();
     void            on_clearBtn_clicked();
@@ -55,6 +57,7 @@ signals:
     void            openCarDialogSig();
     void            openClientDialogSig();
     void            openContractDialogSig();
+    void            openRentalDocDialogSig();
 
 private:
     void            configToolBar();
@@ -125,6 +128,7 @@ private:
     CarTableDialog*         mCarDialog;
     ContractTableDialog*    mContractDialog;
     ClientTableDialog*      mClientDialog;
+    RentalDocTableDialog*   mRentalDocDialog;
 
     enum DetailTableColumn {
         DETAIL_COL_DATE,

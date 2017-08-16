@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     ui/dialog/contract/contracttabledialog.cpp \
     ui/dialog/client/clienteditdialog.cpp \
     ui/dialog/client/clienttabledialog.cpp \
-    ui/dialog/car/cartabledialog.cpp
+    ui/dialog/car/cartabledialog.cpp \
+    ui/dialog/rentaldocument/rentaldoctabledialog.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -88,7 +89,8 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/contract/contracttabledialog.h \
     ui/dialog/client/clienteditdialog.h \
     ui/dialog/client/clienttabledialog.h \
-    ui/dialog/car/cartabledialog.h
+    ui/dialog/car/cartabledialog.h \
+    ui/dialog/rentaldocument/rentaldoctabledialog.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \
@@ -112,7 +114,8 @@ FORMS    += ui\mainwindow.ui \
     ui/dialog/contract/contracttabledialog.ui \
     ui/dialog/client/clienteditdialog.ui \
     ui/dialog/client/clienttabledialog.ui \
-    ui/dialog/car/cartabledialog.ui
+    ui/dialog/car/cartabledialog.ui \
+    ui/dialog/rentaldocument/rentaldoctabledialog.ui
 
 RESOURCES += \
     icon.qrc

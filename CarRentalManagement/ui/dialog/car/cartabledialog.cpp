@@ -55,6 +55,10 @@ CarTableDialog::initView()
     ui->carTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    ui->carTableview->setSortingEnabled(true);
+
+//    ui->carTableview->horizontalHeader()
+//            ->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     ui->carTableview->setColumnWidth(0, 150);
     ui->carTableview->setColumnWidth(1, 150);

@@ -27,7 +27,7 @@ ClientTableDialog::initView()
     this->setWindowTitle("选择客户");
 
     //设置首行标题
-    QStringList          headerList;
+    QStringList headerList;
     headerList << "客户编号" << "客户类型" << "客户名称" << "地址"
                << "联系电话";
 
@@ -53,6 +53,10 @@ ClientTableDialog::initView()
     ui->clientTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    ui->clientTableView->setSortingEnabled(true);
+    ui->clientTableView->horizontalHeader()
+            ->setSectionResizeMode(QHeaderView::ResizeToContents);
+
 }
 
 void

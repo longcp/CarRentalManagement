@@ -56,6 +56,7 @@ ContractTableDialog::initView()
     ui->contractTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    ui->contractTableView->setSortingEnabled(true);
 
     ui->contractTableView->setColumnWidth(0, 150);
     ui->contractTableView->setColumnWidth(1, 150);

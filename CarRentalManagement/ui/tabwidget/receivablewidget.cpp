@@ -9,6 +9,7 @@
 #include <clienttabledialog.h>
 #include <contracttabledialog.h>
 #include <cartabledialog.h>
+#include <rentaldoctabledialog.h>
 #include <stdio.h>
 
 #define LOG_TAG                         "RECEIVABLE_WIDGET"
@@ -22,6 +23,7 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
     mCarDialog(new CarTableDialog()),
     mClientDialog(new ClientTableDialog()),
     mContractDialog(new ContractTableDialog()),
+    mRentalDocDialog(new RentalDocTableDialog()),
     ui(new Ui::ReceivableWidget)
 {
     ui->setupUi(this);
@@ -90,6 +92,16 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
      */
     connect(mClientDialog, SIGNAL(selectedClientName(QString)),
             this, SLOT(getClientName(QString)));
+    /**
+     * @brief 选择doc
+     */
+    connect(this, SIGNAL(openRentalDocDialogSig()),
+            mRentalDocDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择doc
+     */
+    connect(mRentalDocDialog, SIGNAL(selectedDoc(QString)),
+            this, SLOT(getDoc(QString)));
 }
 
 ReceivableWidget::~ReceivableWidget()
@@ -776,9 +788,16 @@ ReceivableWidget::getClientName(QString name)
     ui->clientNameEt->setText(name);
 }
 
+void
+ReceivableWidget::getDoc(QString number)
+{
+    ALOGD("111111111111111111111111111111");
+    ui->docNumEt->setText(number);
+}
+
 void ReceivableWidget::on_docNumTb_clicked()
 {
-
+    emit openRentalDocDialogSig();
 }
 
 void ReceivableWidget::on_contractNumTb_clicked()
