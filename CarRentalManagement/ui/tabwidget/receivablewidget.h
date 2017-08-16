@@ -63,6 +63,7 @@ private:
     void            configToolBar();
     void            initView();
     void            initChooseWidget();
+    void            setPumpTypeView();
     void            initDetailTableview();
     void            initDetailSumTableview();
     void            initTotalTableview();

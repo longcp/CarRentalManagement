@@ -134,6 +134,7 @@ ReceivableWidget::configToolBar()
 void
 ReceivableWidget::initView()
 {
+    setPumpTypeView();
     initChooseWidget();
     initDetailTableview();
     initDetailSumTableview();
@@ -156,6 +157,23 @@ ReceivableWidget::initChooseWidget()
     ui->toDateEdit->setEnabled(false);
     ui->receivableCheckBox->setChecked(true);
     ui->totalRadioButton->setChecked(true);
+    ui->pumpTypeComboBox->setCurrentIndex(0);
+    ui->carNumEt->setText("");
+    ui->docNumEt->setText("");
+    ui->contractNumEt->setText("");
+    ui->clientNameEt->setText("");
+}
+
+void
+ReceivableWidget::setPumpTypeView()
+{
+    ui->pumpTypeComboBox->insertItem(0, "");
+    ui->pumpTypeComboBox->insertItem(1, PUMP_TYPE_37M1_STR);
+    ui->pumpTypeComboBox->insertItem(2, PUMP_TYPE_48M_STR);
+    ui->pumpTypeComboBox->insertItem(3, PUMP_TYPE_52M_STR);
+    ui->pumpTypeComboBox->insertItem(4, PUMP_TYPE_56M_STR);
+    ui->pumpTypeComboBox->insertItem(5, PUMP_TYPE_60M_STR);
+    ui->pumpTypeComboBox->insertItem(6, PUMP_TYPE_CAR_PUMP_STR);
 }
 
 void
@@ -756,6 +774,7 @@ void
 ReceivableWidget::on_clearBtn_clicked()
 {
     ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
+    initChooseWidget();
 }
 
 void
@@ -791,7 +810,6 @@ ReceivableWidget::getClientName(QString name)
 void
 ReceivableWidget::getDoc(QString number)
 {
-    ALOGD("111111111111111111111111111111");
     ui->docNumEt->setText(number);
 }
 

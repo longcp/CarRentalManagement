@@ -49,7 +49,7 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
                                tr("保存退出"), this);
 
     mToolBar = new QToolBar(tr("carEditToolBar"), this);
-    this->configToolBar();
+    configToolBar();
     mToolBar->addAction(mActSaveExit);
     mToolBar->addAction(mActSave);
     mToolBar->addAction(mActEdit);

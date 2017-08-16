@@ -14,6 +14,7 @@ RentalDocTableDialog::RentalDocTableDialog(QWidget *parent) :
     ui(new Ui::RentalDocTableDialog)
 {
     ui->setupUi(this);
+    setFixedSize(1000, 700);
     setWindowTitle("选择签证单");
     initView();
 }
@@ -54,8 +55,15 @@ RentalDocTableDialog::initView()
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
     ui->rentablDocTableView->setSortingEnabled(true);                          //点击表头排序
 
-    ui->rentablDocTableView->horizontalHeader()
-            ->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    ui->rentablDocTableView->horizontalHeader()
+//            ->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->rentablDocTableView->setColumnWidth(0, 200);
+    ui->rentablDocTableView->setColumnWidth(1, 200);
+    ui->rentablDocTableView->setColumnWidth(2, 200);
+    ui->rentablDocTableView->setColumnWidth(3, 100);
+    ui->rentablDocTableView->setColumnWidth(4, 100);
+    ui->rentablDocTableView->setColumnWidth(5, 100);
+    ui->rentablDocTableView->setColumnWidth(6, 100);
 }
 
 void
