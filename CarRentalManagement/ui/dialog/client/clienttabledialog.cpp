@@ -108,5 +108,6 @@ ClientTableDialog::on_clientTableView_doubleClicked(const QModelIndex &index)
     ALOGDTRACE();
     int curRow = ui->clientTableView->currentIndex().row();
     emit selectedClient(mModel->index(curRow, 0).data().toString());
+    emit selectedClientName(mModel->index(curRow, 2).data().toString());
     this->close();
 }

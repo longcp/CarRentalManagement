@@ -39,7 +39,7 @@ private slots:
     void            deleteRentalDocumentSlot(QString docNum);
     void            addRentalDocumentSlot(RentalDocument &doc);
     void            getContract(QString number);
-    void            getClient(QString client);
+    void            getClientName(QString name);
     void            getCar(QString number);
 
     void            on_screeningBtn_clicked();

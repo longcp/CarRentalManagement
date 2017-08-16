@@ -26,6 +26,7 @@ private slots:
 
 signals:
     void            selectedClient(QString number);
+    void            selectedClientName(QString Name);
 
 private:
     /**

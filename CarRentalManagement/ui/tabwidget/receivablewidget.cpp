@@ -88,8 +88,8 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
     /**
      * @brief 选择client
      */
-    connect(mClientDialog, SIGNAL(selectedClient(QString)),
-            this, SLOT(getClient(QString)));
+    connect(mClientDialog, SIGNAL(selectedClientName(QString)),
+            this, SLOT(getClientName(QString)));
 }
 
 ReceivableWidget::~ReceivableWidget()
@@ -771,9 +771,9 @@ ReceivableWidget::getCar(QString number)
 }
 
 void
-ReceivableWidget::getClient(QString client)
+ReceivableWidget::getClientName(QString name)
 {
-    ui->clientNameEt->setText(client);
+    ui->clientNameEt->setText(name);
 }
 
 void ReceivableWidget::on_docNumTb_clicked()
