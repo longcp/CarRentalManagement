@@ -134,6 +134,17 @@ private:
     ClientTableDialog*      mClientDialog;
     RentalDocTableDialog*   mRentalDocDialog;
 
+    float           curPumpSquareValue;
+    float           curPumpTimeValue;
+    float           curProjectAmountValue;
+    float           curReceiptValue;
+    float           curReceivableValue;
+    float           curPumpSquareSumValue;
+    float           curPumpTimeSumValue;
+    float           curProjectAmountSumValue;
+    float           curReceiptSumValue;
+    float           curReceivableSumValue;
+
     enum DetailTableColumn {
         DETAIL_COL_DATE,
         DETAIL_COL_DOC_NUMBER,

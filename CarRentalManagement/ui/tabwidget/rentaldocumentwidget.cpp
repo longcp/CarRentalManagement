@@ -14,6 +14,7 @@
 #include "utils/Log.h"
 
 // TODO:完成删除接口
+// TODO:界面显示与数据同步问题，如签证单更新、删除、添加，应收实收界面也应相应删除、添加、更新
 
 RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     QWidget(parent),

@@ -399,6 +399,7 @@ ReceivableWidget::setDetailPumpSquareCellValue(float value)
     sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_SQUARE),
                              QString(buf));
+    curPumpSquareValue = value;
 }
 
 void
@@ -408,6 +409,7 @@ ReceivableWidget::setDetailPumpTimeCellValue(float value)
     sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_TIME),
                              QString(buf));
+    curPumpTimeValue = value;
 }
 
 void
@@ -415,8 +417,10 @@ ReceivableWidget::setDetailProjectAmountCellValue(float value)
 {
     char buf[64];
     sprintf(buf, "%0.2f", value);
+    ALOGD("%s, value = %f, 02value = %0.2f, buf = %s", __FUNCTION__, value, value, buf);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PROJECT_AMOUNT),
                              QString(buf));
+    curProjectAmountValue = value;
 }
 
 void
@@ -426,6 +430,7 @@ ReceivableWidget::setDetailReceiptCellValue(float value)
     sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIPT),
                              QString(buf));
+    curReceiptValue = value;
 }
 
 void
@@ -435,6 +440,7 @@ ReceivableWidget::setDetailReceivableValue(float value)
     sprintf(buf, "%0.2f", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIVABLE),
                              QString(buf));
+    curReceivableValue = value;
 }
 
 void
@@ -444,6 +450,7 @@ ReceivableWidget::setSumReceivableValue(float value)
     sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIVABLE),
                              QString(buf));
+    curReceivableSumValue = value;
 }
 
 
@@ -454,6 +461,7 @@ ReceivableWidget::setSumPumpSquareCellValue(float value)
     sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_SQUARE),
                              QString(buf));
+    curPumpSquareSumValue = value;
 }
 
 void
@@ -463,6 +471,7 @@ ReceivableWidget::setSumPumpTimeCellValue(float value)
     sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_TIME),
                              QString(buf));
+    curPumpTimeSumValue = value;
 }
 
 void
@@ -472,6 +481,7 @@ ReceivableWidget::setSumProjectAmountCellValue(float value)
     sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PROJECT_AMOUNT),
                              QString(buf));
+    curProjectAmountSumValue = value;
 }
 
 void
@@ -481,76 +491,71 @@ ReceivableWidget::setSumReceiptCellValue(float value)
     sprintf(buf, "%0.2f", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIPT),
                              QString(buf));
+    curReceiptSumValue = value;
 }
 
 void
 ReceivableWidget::detailPumpSquareCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAIL_COL_PUMP_SQUARE).data().toFloat();
-    setDetailPumpSquareCellValue(curValue+value);
+    setDetailPumpSquareCellValue(curPumpSquareValue+value);
 }
 
 void
 ReceivableWidget::detailPumpTimeCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAIL_COL_PUMP_TIME).data().toFloat();
-    setDetailPumpTimeCellValue(curValue+value);
+    setDetailPumpTimeCellValue(curPumpTimeValue+value);
 }
 
 void
 ReceivableWidget::detailProjectAmountCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAIL_COL_PROJECT_AMOUNT).data().toFloat();
-    setDetailProjectAmountCellValue(curValue+value);
+    float sum = value + curProjectAmountValue;
+    int a = 11111111 + 10211224;
+    ALOGD("%s value = %f, curValue=%f, projectAmountSum = %f, a = %d",
+          __FUNCTION__, value, curProjectAmountValue, sum, a);
+    setDetailProjectAmountCellValue(sum);
 }
 
 void
 ReceivableWidget::detailReceiptCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAIL_COL_RECEIPT).data().toFloat();
-    setDetailReceiptCellValue(curValue+value);
+    setDetailReceiptCellValue(curReceiptValue+value);
 }
 
 void
 ReceivableWidget::detailReceivableCellAddValue(float value)
 {
-    float curValue = mDetailSumModel->index(0, DETAIL_COL_RECEIVABLE).data().toFloat();
-    setDetailReceivableValue(curValue+value);
+    setDetailReceivableValue(curReceivableValue+value);
 }
 
 void
 ReceivableWidget::sumPumpSquareCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUM_COL_PUMP_SQUARE).data().toFloat();
-    setSumPumpSquareCellValue(curValue+value);
+    setSumPumpSquareCellValue(curPumpSquareSumValue+value);
 }
 
 void
 ReceivableWidget::sumPumpTimeCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUM_COL_PUMP_TIME).data().toFloat();
-    setSumPumpTimeCellValue(curValue+value);
+    setSumPumpTimeCellValue(curPumpTimeSumValue+value);
 }
 
 void
 ReceivableWidget::sumProjectAmountCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUM_COL_PROJECT_AMOUNT).data().toFloat();
-    setSumProjectAmountCellValue(curValue+value);
+    setSumProjectAmountCellValue(curProjectAmountSumValue+value);
 }
 
 void
 ReceivableWidget::sumReceiptCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUM_COL_RECEIPT).data().toFloat();
-    setSumReceiptCellValue(curValue+value);
+    setSumReceiptCellValue(curReceiptSumValue+value);
 }
 
 void
 ReceivableWidget::sumReceivableCellAddValue(float value)
 {
-    float curValue = mTotalSumModel->index(0, SUM_COL_RECEIVABLE).data().toFloat();
-    setSumReceivableValue(curValue+value);
+    setSumReceivableValue(curReceivableSumValue+value);
 }
 
 void
@@ -798,16 +803,16 @@ ReceivableWidget::getFilter()
     filter.contractNumber = ui->contractNumEt->text();
     filter.rentalDocNumber = ui->docNumEt->text();
 
-    ALOGDTRACE();
-    ALOGD("fromDate = %s", filter.fromDate.toString(DATE_FORMAT_STR).toStdString().data());
-    ALOGD("toDate = %s", filter.toDate.toString(DATE_FORMAT_STR).toStdString().data());
-    ALOGD("clientType = %d",int(filter.clientType));
-    ALOGD("pumpType = %d", int(filter.pumpType));
-    qDebug()<< "isAccountPositive = " << filter.isAccountPositive;
-    ALOGD("carNumber = %s", filter.carNumber.toStdString().data());
-    ALOGD("clientName = %s", filter.clientName.toStdString().data());
-    ALOGD("contractNumber = %s", filter.contractNumber.toStdString().data());
-    ALOGD("rentalDocNumber = %s", filter.rentalDocNumber.toStdString().data());
+//    ALOGDTRACE();
+//    ALOGD("fromDate = %s", filter.fromDate.toString(DATE_FORMAT_STR).toStdString().data());
+//    ALOGD("toDate = %s", filter.toDate.toString(DATE_FORMAT_STR).toStdString().data());
+//    ALOGD("clientType = %d",int(filter.clientType));
+//    ALOGD("pumpType = %d", int(filter.pumpType));
+//    qDebug()<< "isAccountPositive = " << filter.isAccountPositive;
+//    ALOGD("carNumber = %s", filter.carNumber.toStdString().data());
+//    ALOGD("clientName = %s", filter.clientName.toStdString().data());
+//    ALOGD("contractNumber = %s", filter.contractNumber.toStdString().data());
+//    ALOGD("rentalDocNumber = %s", filter.rentalDocNumber.toStdString().data());
 
     return filter;
 }
