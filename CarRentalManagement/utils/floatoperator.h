@@ -9,6 +9,11 @@ class FloatOperator : public QObject
 public:
     explicit FloatOperator(QObject *parent = nullptr);
 
+    float static add2(float a, float b);
+    float static minus(float subtractor, beSubtractor);
+    float static multiply2(float a, float b);
+    float static divide2(float divisor, float beDivisor);
+
 signals:
 
 public slots:
