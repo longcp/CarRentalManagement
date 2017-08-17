@@ -2543,18 +2543,15 @@ DataBase::getRentalDocumentDataInCarNumber(const QString carNumber, QList<Rental
     return SUCCESS;
 }
 
-int
-DataBase::getRentalDocInFilter(RECEIPT_FILTER filter, QList<RentalDocument> &docs)
+QString
+DataBase::rentalDocFilterToSqlStr(RECEIPT_FILTER filter)
 {
-    RentalDocument doc;
-
-    QMutexLocker locker(pmMutex);
-
     QString docNumStr, carStr, clientStr, contractNumStr;
     QString dateStr, pumpTypeStr, isAccountPositiveStr;
     QString sqlStr = "SELECT * FROM rentaldocument WHERE ";
     QString fromDateStr = filter.fromDate.toString(DATE_FORMAT_STR);
     QString toDateStr = filter.toDate.toString(DATE_FORMAT_STR);
+    bool isPreNull;
 
     if (fromDateStr != NULL && toDateStr != NULL) {
         dateStr = " date BETWEEN '" + fromDateStr + "' AND '" + toDateStr + "'";
@@ -2562,38 +2559,91 @@ DataBase::getRentalDocInFilter(RECEIPT_FILTER filter, QList<RentalDocument> &doc
         dateStr = " date >='" + fromDateStr + "'";
     else if (fromDateStr == NULL && toDateStr != NULL)
         dateStr = " date <='" + toDateStr + "'";
+    if (dateStr != NULL) {
+        sqlStr += dateStr;
+        isPreNull = false;
+    } else
+        isPreNull = true;
 
     if (filter.pumpType != PumpType::UNKNOWN_PUMPTYPE)
-        pumpTypeStr = " AND pumpType='" + (int)filter.pumpType;
+        pumpTypeStr = " pumpType='" + QString::number((int)filter.pumpType) + "'";
+    if (pumpTypeStr != NULL) {
+        if (!isPreNull)
+            sqlStr += " AND " + pumpTypeStr;
+        else
+            sqlStr += pumpTypeStr;
+        isPreNull = false;
+    }
 
     if (filter.isAccountPositive)
-        isAccountPositiveStr = " AND projectAmount-receivedAccounts > 0";
+        isAccountPositiveStr = " projectAmount-receivedAccounts > 0";
+    if (isAccountPositiveStr != NULL) {
+        if (!isPreNull)
+            sqlStr += " AND " + isAccountPositiveStr;
+        else
+            sqlStr += isAccountPositiveStr;
+        isPreNull = false;
+    }
 
     if (filter.carNumber != NULL)
-        carStr = " AND carNumber='" + filter.carNumber + "'";
+        carStr = " carNumber='" + filter.carNumber + "'";
+    if (carStr != NULL) {
+        if (!isPreNull)
+            sqlStr += " AND " + carStr;
+        else
+            sqlStr += carStr;
+        isPreNull = false;
+    }
 
     if (filter.clientName != NULL)
-        clientStr = " AND clientName='" + filter.clientName + "'";
+        clientStr = " clientName='" + filter.clientName + "'";
+    if (clientStr != NULL) {
+        if (!isPreNull)
+            sqlStr += " AND " + clientStr;
+        else
+            sqlStr += clientStr;
+        isPreNull = false;
+    }
 
     if (filter.contractNumber != NULL)
-        contractNumStr = " AND contractNumber='" + filter.contractNumber + "'";
+        contractNumStr = " contractNumber='" + filter.contractNumber + "'";
+    if (contractNumStr != NULL) {
+        if (!isPreNull)
+            sqlStr += " AND " + contractNumStr;
+        else
+            sqlStr += contractNumStr;
+        isPreNull = false;
+    }
 
     if (filter.rentalDocNumber != NULL)
-        docNumStr = " AND number='" + filter.rentalDocNumber + "'";
-
-    sqlStr += dateStr + pumpTypeStr + isAccountPositiveStr + carStr
-            + clientStr + contractNumStr + docNumStr;
+        docNumStr = " number='" + filter.rentalDocNumber + "'";
+    if (docNumStr != NULL) {
+        if (!isPreNull)
+            sqlStr += " AND " + docNumStr;
+        else
+            sqlStr += docNumStr;
+        isPreNull = false;
+    }
 
     ALOGD("%s fromStr = %s, toStr = %s", __FUNCTION__,
           fromDateStr.toStdString().data(), toDateStr.toStdString().data());
     ALOGD("%s sqlStr = %s", __FUNCTION__, sqlStr.toStdString().data());
+    return sqlStr;
+}
+
+int
+DataBase::getRentalDocInFilter(RECEIPT_FILTER filter, QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+
+    QMutexLocker locker(pmMutex);
 
     QSqlQuery *query = getDataBaseQuery();
     if (!query)
         exit GET_DATABASE_FAIL;
 
     query->finish();
-    query->prepare(sqlStr);
+    query->prepare(rentalDocFilterToSqlStr(filter));
     if (!query->exec()) {
         ALOGE("SELECT * FROM rentaldocument in filter failed!");
         return SELECT_DATABASE_FAIL;

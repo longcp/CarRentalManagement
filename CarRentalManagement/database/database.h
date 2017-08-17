@@ -122,6 +122,7 @@ public:
     int                 getRentalDocumentDataInNumber(const QString number, RentalDocument &doc);
     int                 getRentalDocInFilter(RECEIPT_FILTER filter, QList<RentalDocument> &docs);
     bool                isRentalDocumentExist(RentalDocument &doc);
+    QString             rentalDocFilterToSqlStr(RECEIPT_FILTER filter);
 
 private:
     bool                openDataBase();

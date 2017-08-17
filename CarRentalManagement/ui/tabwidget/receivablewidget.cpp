@@ -2,6 +2,7 @@
 #include "ui_receivablewidget.h"
 #include <QToolBar>
 #include <tablemodel.h>
+#include <QMessageBox>
 #include <QScrollBar>
 #include <contract.h>
 #include <rentaldocument.h>
@@ -13,6 +14,7 @@
 #include <datatype.h>
 #include <car.h>
 #include <client.h>
+#include <QDebug>
 #include <stdio.h>
 
 #define LOG_TAG                         "RECEIVABLE_WIDGET"
@@ -772,16 +774,16 @@ ReceivableWidget::getFilter()
 {
     RECEIPT_FILTER filter;
     if (ui->fromDateCb->isChecked())
-        filter.fromDate = QDate::fromString(ui->fromDateCb->text(), DATE_FORMAT_STR);
+        filter.fromDate = QDate::fromString(ui->fromDateEdit->text(), DATE_FORMAT_STR);
     if (ui->toDateCb->isChecked())
-        filter.toDate = QDate::fromString(ui->toDateCb->text(), DATE_FORMAT_STR);
+        filter.toDate = QDate::fromString(ui->toDateEdit->text(), DATE_FORMAT_STR);
 
     if (ui->contractRadioButton->isChecked())
         filter.clientType = ClientType::CONTRACT;
     else if (ui->tempRadioButton->isChecked())
         filter.clientType = ClientType::TEMPORARY;
 
-    if (ui->pumpTypeComboBox->currentIndex())
+    if (ui->pumpTypeComboBox->currentText() != NULL)
         filter.pumpType = Car::getPumpType(ui->pumpTypeComboBox->currentText());
     else
         filter.pumpType = PumpType::UNKNOWN_PUMPTYPE;
@@ -796,28 +798,59 @@ ReceivableWidget::getFilter()
     filter.contractNumber = ui->contractNumEt->text();
     filter.rentalDocNumber = ui->docNumEt->text();
 
+    ALOGDTRACE();
+    ALOGD("fromDate = %s", filter.fromDate.toString(DATE_FORMAT_STR).toStdString().data());
+    ALOGD("toDate = %s", filter.toDate.toString(DATE_FORMAT_STR).toStdString().data());
+    ALOGD("clientType = %d",int(filter.clientType));
+    ALOGD("pumpType = %d", int(filter.pumpType));
+    qDebug()<< "isAccountPositive = " << filter.isAccountPositive;
+    ALOGD("carNumber = %s", filter.carNumber.toStdString().data());
+    ALOGD("clientName = %s", filter.clientName.toStdString().data());
+    ALOGD("contractNumber = %s", filter.contractNumber.toStdString().data());
+    ALOGD("rentalDocNumber = %s", filter.rentalDocNumber.toStdString().data());
+
     return filter;
 }
 
 void
 ReceivableWidget::on_screeningBtn_clicked()
 {
+    int ret;
     Client client;
     RentalDocument doc;
     QList<RentalDocument> docs;
-    ui->screeningBtn->setStyleSheet("background-color: rgb(70, 130, 180);");
     RECEIPT_FILTER filter = getFilter();
-    int ret = mDb->getRentalDocInFilter(filter, docs);
-    if (ret)
-        return;
 
+    if (!filter.isAccountPositive &&
+            filter.fromDate.toString(DATETIME_FORMAT_STR) == NULL &&
+            filter.toDate.toString(DATETIME_FORMAT_STR) == NULL &&
+            filter.rentalDocNumber == NULL &&
+            filter.contractNumber == NULL &&
+            filter.clientName == NULL &&
+            filter.pumpType == PumpType::UNKNOWN_PUMPTYPE &&
+            filter.carNumber == NULL) {
+        ret = mDb->getAllRentalDocumentData(docs);
+    } else {
+        ret = mDb->getRentalDocInFilter(filter, docs);
+    }
+    if (ret) {
+        QMessageBox::warning(this, tr("温馨提示"),
+                                       tr("未知错误.\n"),
+                                       QMessageBox::Ok);
+        return;
+    }
+
+    ui->screeningBtn->setStyleSheet("background-color: rgb(70, 130, 180);");
     if (!ui->totalRadioButton->isChecked()) {
         int size = docs.size();
         for (int i = 0; i < size; i++) {
             doc = docs.at(i);
             if (!mDb->getClientInNumber(doc.clientNumber, client)) {
-                if (client.clienttype != filter.clientType)
+                if (client.clienttype != filter.clientType) {
                     docs.removeAt(i);
+                    size--;
+                    i--;
+                }
             }
         }
     }
@@ -829,8 +862,12 @@ ReceivableWidget::on_screeningBtn_clicked()
 void
 ReceivableWidget::on_clearBtn_clicked()
 {
+    QList<RentalDocument> docs;
     ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
     initChooseWidget();
+    mDb->getAllRentalDocumentData(docs);
+    reflashDetailTableview(docs);
+    reflashSumTableview(docs);
 }
 
 void
