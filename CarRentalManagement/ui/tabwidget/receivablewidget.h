@@ -2,6 +2,7 @@
 #define RECEIVABLEWIDGET_H
 
 #include <QWidget>
+#include <datatype.h>
 
 class QToolBar;
 class TableModel;
@@ -107,6 +108,8 @@ private:
 
     void            resetDetailSumTableData();
     void            resetTotalSumTableData();
+
+    RECEIPT_FILTER  getFilter();
 
     Ui::ReceivableWidget *ui;
     QToolBar        *mToolBar;

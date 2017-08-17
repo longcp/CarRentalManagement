@@ -4,7 +4,6 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <client.h>
-#include <datatype.h>
 #include <QMap>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -2498,6 +2497,105 @@ DataBase::getRentalDocumentDataInCarNumber(const QString carNumber, QList<Rental
     query->addBindValue(carNumber);
     if (!query->exec()) {
         ALOGE("SELECT * FROM rentaldocument!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    while (query->next()) {
+        doc.number = query->value(0).toString();
+        doc.clientName = query->value(1).toString();
+        doc.clientNumber = query->value(2).toString();
+        doc.contractNumber = query->value(3).toString();
+        doc.carNumber = query->value(4).toString();
+        doc.carPlateNumber = query->value(5).toString();
+        doc.constructPlace = query->value(6).toString();
+        doc.concreteLable = query->value(7).toString();
+        doc.principal = query->value(8).toString();
+        doc.principalTel = query->value(9).toString();
+        doc.driver1 = query->value(10).toString();
+        doc.driver2 = query->value(11).toString();
+        doc.driver3 = query->value(12).toString();
+        doc.projectName = query->value(13).toString();
+        doc.projectAddress = query->value(14).toString();
+        doc.remarks = query->value(15).toString();
+
+        doc.beginFuel = query->value(16).toFloat();
+        doc.endFuel = query->value(17).toFloat();
+        doc.projectAmount = query->value(18).toFloat();
+        doc.receivedAccounts = query->value(19).toFloat();
+        doc.pumpSquare = query->value(20).toFloat();
+        doc.squareUnitPrice = query->value(21).toFloat();
+        doc.pumpTimes = query->value(22).toFloat();
+        doc.pumpTimeUnitPrice = query->value(23).toFloat();
+        doc.workingHours = query->value(24).toFloat();
+
+        doc.date = QDate::fromString(query->value(25).toString(),
+                                               DATE_FORMAT_STR);
+        doc.arrivalDateTime = QDateTime::fromString(query->value(26).toString(),
+                                                   "yyyy-MM-dd hh:mm:ss");
+        doc.leaveDateTime = QDateTime::fromString(query->value(27).toString(),
+                                           "yyyy-MM-dd hh:mm:ss");
+        doc.state = (RentalDocState)query->value(28).toInt();
+        doc.pumpType = (PumpType)query->value(29).toInt();
+
+        docs.push_back(doc);                              //插入list
+    }
+
+    return SUCCESS;
+}
+
+int
+DataBase::getRentalDocInFilter(RECEIPT_FILTER filter, QList<RentalDocument> &docs)
+{
+    RentalDocument doc;
+
+    QMutexLocker locker(pmMutex);
+
+    QString docNumStr, carStr, clientStr, contractNumStr;
+    QString dateStr, pumpTypeStr, isAccountPositiveStr;
+    QString sqlStr = "SELECT * FROM rentaldocument WHERE ";
+    QString fromDateStr = filter.fromDate.toString(DATE_FORMAT_STR);
+    QString toDateStr = filter.toDate.toString(DATE_FORMAT_STR);
+
+    if (fromDateStr != NULL && toDateStr != NULL) {
+        dateStr = " date BETWEEN '" + fromDateStr + "' AND '" + toDateStr + "'";
+    } else if (fromDateStr != NULL && toDateStr == NULL)
+        dateStr = " date >='" + fromDateStr + "'";
+    else if (fromDateStr == NULL && toDateStr != NULL)
+        dateStr = " date <='" + toDateStr + "'";
+
+    if (filter.pumpType != PumpType::UNKNOWN_PUMPTYPE)
+        pumpTypeStr = " AND pumpType='" + (int)filter.pumpType;
+
+    if (filter.isAccountPositive)
+        isAccountPositiveStr = " AND projectAmount-receivedAccounts > 0";
+
+    if (filter.carNumber != NULL)
+        carStr = " AND carNumber='" + filter.carNumber + "'";
+
+    if (filter.clientName != NULL)
+        clientStr = " AND clientName='" + filter.clientName + "'";
+
+    if (filter.contractNumber != NULL)
+        contractNumStr = " AND contractNumber='" + filter.contractNumber + "'";
+
+    if (filter.rentalDocNumber != NULL)
+        docNumStr = " AND number='" + filter.rentalDocNumber + "'";
+
+    sqlStr += dateStr + pumpTypeStr + isAccountPositiveStr + carStr
+            + clientStr + contractNumStr + docNumStr;
+
+    ALOGD("%s fromStr = %s, toStr = %s", __FUNCTION__,
+          fromDateStr.toStdString().data(), toDateStr.toStdString().data());
+    ALOGD("%s sqlStr = %s", __FUNCTION__, sqlStr.toStdString().data());
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare(sqlStr);
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM rentaldocument in filter failed!");
         return SELECT_DATABASE_FAIL;
     }
 

@@ -10,6 +10,9 @@
 #include <contracttabledialog.h>
 #include <cartabledialog.h>
 #include <rentaldoctabledialog.h>
+#include <datatype.h>
+#include <car.h>
+#include <client.h>
 #include <stdio.h>
 
 #define LOG_TAG                         "RECEIVABLE_WIDGET"
@@ -764,10 +767,63 @@ ReceivableWidget::tabChangeToReceivableSlot(int index, QString tabText)
     reflashSumTableview(docs);
 }
 
+RECEIPT_FILTER
+ReceivableWidget::getFilter()
+{
+    RECEIPT_FILTER filter;
+    if (ui->fromDateCb->isChecked())
+        filter.fromDate = QDate::fromString(ui->fromDateCb->text(), DATE_FORMAT_STR);
+    if (ui->toDateCb->isChecked())
+        filter.toDate = QDate::fromString(ui->toDateCb->text(), DATE_FORMAT_STR);
+
+    if (ui->contractRadioButton->isChecked())
+        filter.clientType = ClientType::CONTRACT;
+    else if (ui->tempRadioButton->isChecked())
+        filter.clientType = ClientType::TEMPORARY;
+
+    if (ui->pumpTypeComboBox->currentIndex())
+        filter.pumpType = Car::getPumpType(ui->pumpTypeComboBox->currentText());
+    else
+        filter.pumpType = PumpType::UNKNOWN_PUMPTYPE;
+
+    if (ui->receivableCheckBox->isChecked())
+        filter.isAccountPositive = true;
+    else
+        filter.isAccountPositive = false;
+
+    filter.carNumber = ui->carNumEt->text();
+    filter.clientName = ui->clientNameEt->text();
+    filter.contractNumber = ui->contractNumEt->text();
+    filter.rentalDocNumber = ui->docNumEt->text();
+
+    return filter;
+}
+
 void
 ReceivableWidget::on_screeningBtn_clicked()
 {
+    Client client;
+    RentalDocument doc;
+    QList<RentalDocument> docs;
     ui->screeningBtn->setStyleSheet("background-color: rgb(70, 130, 180);");
+    RECEIPT_FILTER filter = getFilter();
+    int ret = mDb->getRentalDocInFilter(filter, docs);
+    if (ret)
+        return;
+
+    if (!ui->totalRadioButton->isChecked()) {
+        int size = docs.size();
+        for (int i = 0; i < size; i++) {
+            doc = docs.at(i);
+            if (!mDb->getClientInNumber(doc.clientNumber, client)) {
+                if (client.clienttype != filter.clientType)
+                    docs.removeAt(i);
+            }
+        }
+    }
+
+    reflashDetailTableview(docs);
+    reflashSumTableview(docs);
 }
 
 void

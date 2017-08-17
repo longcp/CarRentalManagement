@@ -120,6 +120,7 @@ public:
     int                 clearRentalDocumentTable();
     int                 deleteRentalDocumentInNumber(const QString number);
     int                 getRentalDocumentDataInNumber(const QString number, RentalDocument &doc);
+    int                 getRentalDocInFilter(RECEIPT_FILTER filter, QList<RentalDocument> &docs);
     bool                isRentalDocumentExist(RentalDocument &doc);
 
 private:
