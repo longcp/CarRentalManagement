@@ -3,6 +3,10 @@
 
 #include <QObject>
 
+/*
+ * 此类已弃用
+ */
+
 class FloatOperator : public QObject
 {
     Q_OBJECT

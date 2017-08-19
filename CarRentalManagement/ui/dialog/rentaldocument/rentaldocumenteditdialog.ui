@@ -1085,7 +1085,7 @@
            </size>
           </property>
           <property name="maximum">
-           <double>99999999.989999994635582</double>
+           <double>999999999.990000009536743</double>
           </property>
          </widget>
         </item>
@@ -1406,7 +1406,7 @@
       <item>
        <widget class="QDoubleSpinBox" name="receivedAccountsDSB">
         <property name="maximum">
-         <double>99999999.989999994635582</double>
+         <double>999999999.990000009536743</double>
         </property>
        </widget>
       </item>

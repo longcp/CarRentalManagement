@@ -6,8 +6,17 @@
 #include <tablemodel.h>
 #include <QScrollBar>
 #include <contract.h>
+#include <QMessageBox>
 #include <rentaldocument.h>
 #include <database/database.h>
+#include <cartabledialog.h>
+#include <clienttabledialog.h>
+#include <contracttabledialog.h>
+#include <rentaldoctabledialog.h>
+#include <car.h>
+#include <client.h>
+#include <QDebug>
+#include <stdio.h>
 
 #define LOG_TAG                         "RECEIPT_WIDGET"
 #include "utils/Log.h"
@@ -15,6 +24,10 @@
 ReceiptWidget::ReceiptWidget(QWidget *parent) :
     QWidget(parent),
     mDb(DataBase::getInstance()),
+    mCarDialog(new CarTableDialog()),
+    mClientDialog(new ClientTableDialog()),
+    mContractDialog(new ContractTableDialog()),
+    mRentalDocDialog(new RentalDocTableDialog()),
     ui(new Ui::ReceiptWidget)
 {
     ui->setupUi(this);
@@ -62,6 +75,46 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
             (QObject*)ui->receiptTable->horizontalScrollBar(), SLOT(setValue(int)));
     connect(ui->receiptTable->horizontalHeader(), &QHeaderView::sectionClicked,
             this, &ReceiptWidget::sectionClickedSlot);
+    /**
+     * @brief 选择car
+     */
+    connect(this, SIGNAL(openCarDialogSig()),
+            mCarDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择car
+     */
+    connect(mCarDialog, SIGNAL(selectedCar(QString)),
+            this, SLOT(getCar(QString)));
+    /**
+     * @brief 选择contract
+     */
+    connect(this, SIGNAL(openContractDialogSig()),
+            mContractDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择contract
+     */
+    connect(mContractDialog, SIGNAL(selectedContract(QString)),
+            this, SLOT(getContract(QString)));
+    /**
+     * @brief 选择client
+     */
+    connect(this, SIGNAL(openClientDialogSig()),
+            mClientDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择client
+     */
+    connect(mClientDialog, SIGNAL(selectedClientName(QString)),
+            this, SLOT(getClientName(QString)));
+    /**
+     * @brief 选择doc
+     */
+    connect(this, SIGNAL(openRentalDocDialogSig()),
+            mRentalDocDialog, SLOT(openWindow()));
+    /**
+     * @brief 选择doc
+     */
+    connect(mRentalDocDialog, SIGNAL(selectedDoc(QString)),
+            this, SLOT(getDoc(QString)));
 }
 
 ReceiptWidget::~ReceiptWidget()
@@ -94,6 +147,7 @@ ReceiptWidget::configToolBar()
 void
 ReceiptWidget::initView()
 {
+    setPumpTypeView();
     initChooseWidget();
     initReceiptTable();
     initReceiptSumTable();
@@ -118,6 +172,23 @@ ReceiptWidget::initChooseWidget()
     ui->toDateEdit->setEnabled(false);
     ui->receivableCheckBox->setChecked(true);
     ui->totalRadioButton->setChecked(true);
+    ui->pumpTypeComboBox->setCurrentIndex(0);
+    ui->carNumEt->setText("");
+    ui->docNumEt->setText("");
+    ui->contractNumEt->setText("");
+    ui->clientNameEt->setText("");
+}
+
+void
+ReceiptWidget::setPumpTypeView()
+{
+    ui->pumpTypeComboBox->insertItem(0, "");
+    ui->pumpTypeComboBox->insertItem(1, PUMP_TYPE_37M1_STR);
+    ui->pumpTypeComboBox->insertItem(2, PUMP_TYPE_48M_STR);
+    ui->pumpTypeComboBox->insertItem(3, PUMP_TYPE_52M_STR);
+    ui->pumpTypeComboBox->insertItem(4, PUMP_TYPE_56M_STR);
+    ui->pumpTypeComboBox->insertItem(5, PUMP_TYPE_60M_STR);
+    ui->pumpTypeComboBox->insertItem(6, PUMP_TYPE_CAR_PUMP_STR);
 }
 
 void
@@ -240,6 +311,7 @@ ReceiptWidget::setPumpSquareCellValue(double value)
     sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_PUMP_SQUARE),
                              QString(buf));
+    curPumpSquareValue = value;
 }
 
 void
@@ -249,6 +321,7 @@ ReceiptWidget::setPumpTimeCellValue(double value)
     sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_PUMP_TIME),
                              QString(buf));
+    curPumpTimeValue = value;
 }
 
 void
@@ -258,6 +331,7 @@ ReceiptWidget::setProjectAmountCellValue(double value)
     sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_PROJECT_AMOUNT),
                              QString(buf));
+    curProjectAmountValue = value;
 }
 
 void
@@ -267,6 +341,7 @@ ReceiptWidget::setReceiptCellValue(double value)
     sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_RECEIPT),
                              QString(buf));
+    curReceiptValue = value;
 }
 
 void
@@ -276,6 +351,7 @@ ReceiptWidget::setReceivableValue(double value)
     sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_RECEIVABLE),
                              QString(buf));
+    curReceivableValue = value;
 }
 
 void
@@ -346,71 +422,61 @@ ReceiptWidget::addTableRow(RentalDocument &doc)
 void
 ReceiptWidget::pumpSquareCellAddValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_PUMP_SQUARE).data().toDouble();
-    setPumpSquareCellValue(curValue+value);
+    setPumpSquareCellValue(curPumpSquareValue+value);
 }
 
 void
 ReceiptWidget::pumpTimeCellAddValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_PUMP_TIME).data().toDouble();
-    setPumpTimeCellValue(curValue+value);
+    setPumpTimeCellValue(curPumpTimeValue+value);
 }
 
 void
 ReceiptWidget::projectAmountCellAddValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_PROJECT_AMOUNT).data().toDouble();
-    setProjectAmountCellValue(curValue+value);
+    setProjectAmountCellValue(curProjectAmountValue+value);
 }
 
 void
 ReceiptWidget::receiptCellAddValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_RECEIPT).data().toDouble();
-    setReceiptCellValue(curValue+value);
+    setReceiptCellValue(curReceiptValue+value);
 }
 
 void
 ReceiptWidget::receivableCellAddValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_RECEIVABLE).data().toDouble();
-    setReceivableValue(curValue+value);
+    setReceivableValue(curReceivableValue+value);
 }
 
 void
 ReceiptWidget::pumpSquareCellDelValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_PUMP_SQUARE).data().toDouble();
-    setPumpSquareCellValue(curValue-value);
+    setPumpSquareCellValue(curPumpSquareValue-value);
 }
 
 void
 ReceiptWidget::pumpTimeCellDelValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_PUMP_TIME).data().toDouble();
-    setPumpTimeCellValue(curValue-value);
+    setPumpTimeCellValue(curPumpTimeValue-value);
 }
 
 void
 ReceiptWidget::projectAmountCellDelValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_PROJECT_AMOUNT).data().toDouble();
-    setProjectAmountCellValue(curValue-value);
+    setProjectAmountCellValue(curProjectAmountValue-value);
 }
 
 void
 ReceiptWidget::receiptCellDelValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_RECEIPT).data().toDouble();
-    setReceiptCellValue(curValue-value);
+    setReceiptCellValue(curReceiptValue-value);
 }
 
 void
 ReceiptWidget::receivableCellDelValue(double value)
 {
-    double curValue = mReceiptSumModel->index(0, COL_RECEIVABLE).data().toDouble();
-    setReceivableValue(curValue-value);
+    setReceivableValue(curReceivableValue-value);
 }
 
 void
@@ -495,16 +561,103 @@ ReceiptWidget::tabChangeToReceiptSlot(int index, QString tabText)
 #endif
 }
 
+RECEIPT_FILTER
+ReceiptWidget::getFilter()
+{
+    RECEIPT_FILTER filter;
+    if (ui->fromDateCb->isChecked())
+        filter.fromDate = QDate::fromString(ui->fromDateEdit->text(), DATE_FORMAT_STR);
+    if (ui->toDateCb->isChecked())
+        filter.toDate = QDate::fromString(ui->toDateEdit->text(), DATE_FORMAT_STR);
+
+    if (ui->contractRadioButton->isChecked())
+        filter.clientType = ClientType::CONTRACT;
+    else if (ui->tempRadioButton->isChecked())
+        filter.clientType = ClientType::TEMPORARY;
+
+    if (ui->pumpTypeComboBox->currentText() != NULL)
+        filter.pumpType = Car::getPumpType(ui->pumpTypeComboBox->currentText());
+    else
+        filter.pumpType = PumpType::UNKNOWN_PUMPTYPE;
+
+    if (ui->receivableCheckBox->isChecked())
+        filter.isAccountPositive = true;
+    else
+        filter.isAccountPositive = false;
+
+    filter.carNumber = ui->carNumEt->text();
+    filter.clientName = ui->clientNameEt->text();
+    filter.contractNumber = ui->contractNumEt->text();
+    filter.rentalDocNumber = ui->docNumEt->text();
+
+//    ALOGDTRACE();
+//    ALOGD("fromDate = %s", filter.fromDate.toString(DATE_FORMAT_STR).toStdString().data());
+//    ALOGD("toDate = %s", filter.toDate.toString(DATE_FORMAT_STR).toStdString().data());
+//    ALOGD("clientType = %d",int(filter.clientType));
+//    ALOGD("pumpType = %d", int(filter.pumpType));
+//    qDebug()<< "isAccountPositive = " << filter.isAccountPositive;
+//    ALOGD("carNumber = %s", filter.carNumber.toStdString().data());
+//    ALOGD("clientName = %s", filter.clientName.toStdString().data());
+//    ALOGD("contractNumber = %s", filter.contractNumber.toStdString().data());
+//    ALOGD("rentalDocNumber = %s", filter.rentalDocNumber.toStdString().data());
+
+    return filter;
+}
+
 void
 ReceiptWidget::on_screeningBtn_clicked()
 {
+    int ret;
+    Client client;
+    RentalDocument doc;
+    QList<RentalDocument> docs;
+    RECEIPT_FILTER filter = getFilter();
+
+    if (!filter.isAccountPositive &&
+            filter.fromDate.toString(DATETIME_FORMAT_STR) == NULL &&
+            filter.toDate.toString(DATETIME_FORMAT_STR) == NULL &&
+            filter.rentalDocNumber == NULL &&
+            filter.contractNumber == NULL &&
+            filter.clientName == NULL &&
+            filter.pumpType == PumpType::UNKNOWN_PUMPTYPE &&
+            filter.carNumber == NULL) {
+        ret = mDb->getAllRentalDocumentData(docs);
+    } else {
+        ret = mDb->getRentalDocInFilter(filter, docs);
+    }
+    if (ret) {
+        QMessageBox::warning(this, tr("温馨提示"),
+                                       tr("未知错误.\n"),
+                                       QMessageBox::Ok);
+        return;
+    }
+
     ui->screeningBtn->setStyleSheet("background-color: rgb(70, 130, 180);");
+    if (!ui->totalRadioButton->isChecked()) {
+        int size = docs.size();
+        for (int i = 0; i < size; i++) {
+            doc = docs.at(i);
+            if (!mDb->getClientInNumber(doc.clientNumber, client)) {
+                if (client.clienttype != filter.clientType) {
+                    docs.removeAt(i);
+                    size--;
+                    i--;
+                }
+            }
+        }
+    }
+
+    reflashView(docs);
 }
 
 void
 ReceiptWidget::on_clearBtn_clicked()
 {
+    QList<RentalDocument> docs;
     ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
+    initChooseWidget();
+    if (!mDb->getAllRentalDocumentData(docs))
+        reflashView(docs);
 }
 
 void ReceiptWidget::on_fromDateCb_toggled(bool checked)
@@ -515,4 +668,48 @@ void ReceiptWidget::on_fromDateCb_toggled(bool checked)
 void ReceiptWidget::on_toDateCb_toggled(bool checked)
 {
     ui->toDateEdit->setEnabled(checked);
+}
+
+void
+ReceiptWidget::getContract(QString number)
+{
+    ui->contractNumEt->setText(number);
+}
+
+void
+ReceiptWidget::getCar(QString number)
+{
+    ui->carNumEt->setText(number);
+}
+
+void
+ReceiptWidget::getClientName(QString name)
+{
+    ui->clientNameEt->setText(name);
+}
+
+void
+ReceiptWidget::getDoc(QString number)
+{
+    ui->docNumEt->setText(number);
+}
+
+void ReceiptWidget::on_docNumTb_clicked()
+{
+    emit openRentalDocDialogSig();
+}
+
+void ReceiptWidget::on_contractNumTb_clicked()
+{
+    emit openContractDialogSig();
+}
+
+void ReceiptWidget::on_clientNameTb_clicked()
+{
+    emit openClientDialogSig();
+}
+
+void ReceiptWidget::on_carNumTb_clicked()
+{
+    emit openCarDialogSig();
 }

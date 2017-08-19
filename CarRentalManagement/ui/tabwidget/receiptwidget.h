@@ -2,12 +2,17 @@
 #define RECEIPTWIDGET_H
 
 #include <QWidget>
+#include <datatype.h>
 
 class QToolBar;
 class ReceiptEditDialog;
 class TableModel;
 class DataBase;
 class RentalDocument;
+class CarTableDialog;
+class ContractTableDialog;
+class ClientTableDialog;
+class RentalDocTableDialog;
 
 namespace Ui {
 class ReceiptWidget;
@@ -36,23 +41,34 @@ private slots:
     void            deleteRentalDocumentSlot(QString docNum);
     void            addRentalDocumentSlot(RentalDocument &doc);
 
-    void on_screeningBtn_clicked();
+    void            getContract(QString number);
+    void            getClientName(QString name);
+    void            getCar(QString number);
+    void            getDoc(QString number);
 
-    void on_clearBtn_clicked();
-
-    void on_fromDateCb_toggled(bool checked);
-
-    void on_toDateCb_toggled(bool checked);
+    void            on_screeningBtn_clicked();
+    void            on_clearBtn_clicked();
+    void            on_fromDateCb_toggled(bool checked);
+    void            on_toDateCb_toggled(bool checked);
+    void            on_docNumTb_clicked();
+    void            on_contractNumTb_clicked();
+    void            on_clientNameTb_clicked();
+    void            on_carNumTb_clicked();
 
 signals:
     /**
      * @brief 打开收入编辑窗口
      */
     void            openReceiptEditDialogSignal();
+    void            openCarDialogSig();
+    void            openClientDialogSig();
+    void            openContractDialogSig();
+    void            openRentalDocDialogSig();
 
 private:
     void            configToolBar();
     void            initView();
+    void            setPumpTypeView();
     void            initChooseWidget();
     void            initReceiptTable();
     void            initReceiptSumTable();
@@ -82,6 +98,8 @@ private:
     void            setReceiptCellValue(double value);
     void            setReceivableValue(double value);
 
+    RECEIPT_FILTER  getFilter();
+
     Ui::ReceiptWidget *ui;
     QToolBar        *mToolBar;
 
@@ -101,6 +119,17 @@ private:
     TableModel*     mReceiptSumModel;
 
     DataBase*       mDb;
+
+    CarTableDialog*         mCarDialog;
+    ContractTableDialog*    mContractDialog;
+    ClientTableDialog*      mClientDialog;
+    RentalDocTableDialog*   mRentalDocDialog;
+
+    double          curPumpSquareValue;
+    double          curPumpTimeValue;
+    double          curProjectAmountValue;
+    double          curReceiptValue;
+    double          curReceivableValue;
 
     enum ReceiptTableColumn {
         COL_DATE,
