@@ -11,7 +11,6 @@
 #include <contracttabledialog.h>
 #include <cartabledialog.h>
 #include <rentaldoctabledialog.h>
-#include <datatype.h>
 #include <car.h>
 #include <client.h>
 #include <QDebug>
@@ -145,6 +144,12 @@ ReceivableWidget::initView()
     initDetailSumTableview();
     initTotalTableview();
     initTotalSumTableview();
+
+    QList<RentalDocument> docs;
+    if (!mDb->getAllRentalDocumentData(docs)) {
+        reflashDetailTableview(docs);
+        reflashSumTableview(docs);
+    }
 }
 
 void
@@ -764,6 +769,7 @@ void
 ReceivableWidget::tabChangeToReceivableSlot(int index, QString tabText)
 {
     ALOGDTRACE();
+#if 0
     QList<RentalDocument> docs;
 
     if (tabText != TAB_TITLE_RECEIVABLE ||
@@ -772,6 +778,7 @@ ReceivableWidget::tabChangeToReceivableSlot(int index, QString tabText)
 
     reflashDetailTableview(docs);
     reflashSumTableview(docs);
+#endif
 }
 
 RECEIPT_FILTER
@@ -870,9 +877,10 @@ ReceivableWidget::on_clearBtn_clicked()
     QList<RentalDocument> docs;
     ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
     initChooseWidget();
-    mDb->getAllRentalDocumentData(docs);
-    reflashDetailTableview(docs);
-    reflashSumTableview(docs);
+    if (!mDb->getAllRentalDocumentData(docs)) {
+        reflashDetailTableview(docs);
+        reflashSumTableview(docs);
+    }
 }
 
 void
