@@ -212,8 +212,8 @@ DataBase::getClientInNumber(QString clientNum, Client &client)
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), DATE_FORMAT_STR);
         client.monthly = query->value(12).toInt();
-        client.amount = query->value(13).toFloat();
-        client.paid = query->value(14).toFloat();
+        client.amount = query->value(13).toDouble();
+        client.paid = query->value(14).toDouble();
 
         return SUCCESS;
     }
@@ -287,8 +287,8 @@ DataBase::getClientInFilter(QList<Client> &clients, QString filter)
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), DATE_FORMAT_STR);
         client.monthly = query->value(12).toInt();
-        client.amount = query->value(13).toFloat();
-        client.paid = query->value(14).toFloat();
+        client.amount = query->value(13).toDouble();
+        client.paid = query->value(14).toDouble();
 
         clients.push_back(client);                              //插入list
     }
@@ -352,8 +352,8 @@ DataBase::getAllClientData(QList<Client> &clients)
         client.createDate = QDate::fromString(query->value(11)
                                               .toString(), DATE_FORMAT_STR);
         client.monthly = query->value(12).toInt();
-        client.amount = query->value(13).toFloat();
-        client.paid = query->value(14).toFloat();
+        client.amount = query->value(13).toDouble();
+        client.paid = query->value(14).toDouble();
 
         clients.push_back(client);                              //插入list
     }
@@ -871,17 +871,17 @@ DataBase::getAllCarData(QList<Car> &cars)
         car.createDate = QDate::fromString(query->value(23).toString(),
                                            DATE_FORMAT_STR);
 
-        car.pumpedSquare = query->value(24).toFloat();
-        car.pumpedTimes = query->value(25).toFloat();
-        car.milage = query->value(26).toFloat();
-        car.worth = query->value(27).toFloat();
-        car.enginePower = query->value(28).toFloat();
-        car.maxDeliverySizes = query->value(29).toFloat();
-        car.maxOutputPressure = query->value(30).toFloat();
-        car.boomVerticalLen = query->value(31).toFloat();
-        car.boomHorizontalLen = query->value(32).toFloat();
-        car.totalWeight = query->value(33).toFloat();
-        car.equipmentWeight = query->value(34).toFloat();
+        car.pumpedSquare = query->value(24).toDouble();
+        car.pumpedTimes = query->value(25).toDouble();
+        car.milage = query->value(26).toDouble();
+        car.worth = query->value(27).toDouble();
+        car.enginePower = query->value(28).toDouble();
+        car.maxDeliverySizes = query->value(29).toDouble();
+        car.maxOutputPressure = query->value(30).toDouble();
+        car.boomVerticalLen = query->value(31).toDouble();
+        car.boomHorizontalLen = query->value(32).toDouble();
+        car.totalWeight = query->value(33).toDouble();
+        car.equipmentWeight = query->value(34).toDouble();
 
         car.pumptype = car.getPumpType(query->value(35).toInt());
 
@@ -939,17 +939,17 @@ DataBase::getCarInNumber(QString number, Car &car)
         car.createDate = QDate::fromString(query->value(23).toString(),
                                            DATE_FORMAT_STR);
 
-        car.pumpedSquare = query->value(24).toFloat();
-        car.pumpedTimes = query->value(25).toFloat();
-        car.milage = query->value(26).toFloat();
-        car.worth = query->value(27).toFloat();
-        car.enginePower = query->value(28).toFloat();
-        car.maxDeliverySizes = query->value(29).toFloat();
-        car.maxOutputPressure = query->value(30).toFloat();
-        car.boomVerticalLen = query->value(31).toFloat();
-        car.boomHorizontalLen = query->value(32).toFloat();
-        car.totalWeight = query->value(33).toFloat();
-        car.equipmentWeight = query->value(34).toFloat();
+        car.pumpedSquare = query->value(24).toDouble();
+        car.pumpedTimes = query->value(25).toDouble();
+        car.milage = query->value(26).toDouble();
+        car.worth = query->value(27).toDouble();
+        car.enginePower = query->value(28).toDouble();
+        car.maxDeliverySizes = query->value(29).toDouble();
+        car.maxOutputPressure = query->value(30).toDouble();
+        car.boomVerticalLen = query->value(31).toDouble();
+        car.boomHorizontalLen = query->value(32).toDouble();
+        car.totalWeight = query->value(33).toDouble();
+        car.equipmentWeight = query->value(34).toDouble();
 
         car.pumptype = car.getPumpType(query->value(35).toInt());
 
@@ -1082,7 +1082,7 @@ DataBase::getAllInsuranceData(QList<INSURANCE_RECORD> &records)
         record.remarks = query->value(3).toString();
         record.date = QDate::fromString(query->value(4).toString(),
                                                DATE_FORMAT_STR);
-        record.fee = query->value(5).toFloat();
+        record.fee = query->value(5).toDouble();
 
         records.push_back(record);                              //插入list
     }
@@ -1116,7 +1116,7 @@ DataBase::getInsuranceDataInCarNumber(QString carNumber, QList<INSURANCE_RECORD>
         record.remarks = query->value(3).toString();
         record.date = QDate::fromString(query->value(4).toString(),
                                                DATE_FORMAT_STR);
-        record.fee = query->value(5).toFloat();
+        record.fee = query->value(5).toDouble();
 
         records.push_back(record);                              //插入list
     }
@@ -1198,7 +1198,7 @@ DataBase::getAllBusinessInsuranceData(QList<INSURANCE_RECORD> &records)
         record.remarks = query->value(3).toString();
         record.date = QDate::fromString(query->value(4).toString(),
                                                DATE_FORMAT_STR);
-        record.fee = query->value(5).toFloat();
+        record.fee = query->value(5).toDouble();
 
         records.push_back(record);                              //插入list
     }
@@ -1232,7 +1232,7 @@ DataBase::getBusinessInsuranceDataInCarNumber(QString carNumber, QList<INSURANCE
         record.remarks = query->value(3).toString();
         record.date = QDate::fromString(query->value(4).toString(),
                                                DATE_FORMAT_STR);
-        record.fee = query->value(5).toFloat();
+        record.fee = query->value(5).toDouble();
 
         records.push_back(record);                              //插入list
     }
@@ -1314,8 +1314,8 @@ DataBase::getAllAnnualData(QList<ANNUALFEE_RECORD> &records)
         record.remarks = query->value(2).toString();
         record.date = QDate::fromString(query->value(3).toString(),
                                                DATE_FORMAT_STR);
-        record.annualFee = query->value(4).toFloat();
-        record.travelExpenses = query->value(5).toFloat();
+        record.annualFee = query->value(4).toDouble();
+        record.travelExpenses = query->value(5).toDouble();
 
         records.push_back(record);                              //插入list
     }
@@ -1348,8 +1348,8 @@ DataBase::getAnnualDataInCarNumber(QString carNumber, QList<ANNUALFEE_RECORD> &r
         record.remarks = query->value(2).toString();
         record.date = QDate::fromString(query->value(3).toString(),
                                                DATE_FORMAT_STR);
-        record.annualFee = query->value(4).toFloat();
-        record.travelExpenses = query->value(5).toFloat();
+        record.annualFee = query->value(4).toDouble();
+        record.travelExpenses = query->value(5).toDouble();
 
         records.push_back(record);                              //插入list
     }
@@ -1453,7 +1453,7 @@ DataBase::getAllProjectData(QList<PROJECT_RECORD> &records)
         record.remarks = query->value(6).toString();
         record.date = QDate::fromString(query->value(7).toString(),
                                                DATE_FORMAT_STR);
-        record.amount = query->value(8).toFloat();
+        record.amount = query->value(8).toDouble();
 
         records.push_back(record);                              //插入list
     }
@@ -1490,7 +1490,7 @@ DataBase::getProjectDataInCarNumber(QString carNumber, QList<PROJECT_RECORD> &re
         record.remarks = query->value(6).toString();
         record.date = QDate::fromString(query->value(7).toString(),
                                                DATE_FORMAT_STR);
-        record.amount = query->value(8).toFloat();
+        record.amount = query->value(8).toDouble();
 
         records.push_back(record);                              //插入list
     }
@@ -1651,8 +1651,8 @@ DataBase::getAllContractData(QList<Contract> &contracts)
         contract.supplement = query->value(6).toString();
         contract.remarks = query->value(7).toString();
         contract.creator = query->value(8).toString();
-        contract.deliverySizes = query->value(9).toFloat();
-        contract.structureLevel = query->value(10).toFloat();
+        contract.deliverySizes = query->value(9).toDouble();
+        contract.structureLevel = query->value(10).toDouble();
         contract.taxRate = query->value(11).toInt();
 
         contract.signedDate = QDate::fromString(query->value(12).toString(),
@@ -1664,7 +1664,7 @@ DataBase::getAllContractData(QList<Contract> &contracts)
         contract.creatDate = QDate::fromString(query->value(15).toString(),
                                            DATE_FORMAT_STR);
 
-        contract.isIncludeTax = query->value(16).toFloat();
+        contract.isIncludeTax = query->value(16).toDouble();
 
         contracts.push_back(contract);                              //插入list
     }
@@ -1702,8 +1702,8 @@ DataBase::getContractInClientNumber(QString clientNumber,
         contract.supplement = query->value(6).toString();
         contract.remarks = query->value(7).toString();
         contract.creator = query->value(8).toString();
-        contract.deliverySizes = query->value(9).toFloat();
-        contract.structureLevel = query->value(10).toFloat();
+        contract.deliverySizes = query->value(9).toDouble();
+        contract.structureLevel = query->value(10).toDouble();
         contract.taxRate = query->value(11).toInt();
 
         contract.signedDate = QDate::fromString(query->value(12).toString(),
@@ -1715,7 +1715,7 @@ DataBase::getContractInClientNumber(QString clientNumber,
         contract.creatDate = QDate::fromString(query->value(15).toString(),
                                            DATE_FORMAT_STR);
 
-        contract.isIncludeTax = query->value(16).toFloat();
+        contract.isIncludeTax = query->value(16).toDouble();
 
         contracts.push_back(contract);                              //插入list
     }
@@ -1776,8 +1776,8 @@ DataBase::getContractInNumber(QString number, Contract &contract)
         contract.supplement = query->value(6).toString();
         contract.remarks = query->value(7).toString();
         contract.creator = query->value(8).toString();
-        contract.deliverySizes = query->value(9).toFloat();
-        contract.structureLevel = query->value(10).toFloat();
+        contract.deliverySizes = query->value(9).toDouble();
+        contract.structureLevel = query->value(10).toDouble();
         contract.taxRate = query->value(11).toInt();
 
         contract.signedDate = QDate::fromString(query->value(12).toString(),
@@ -1789,7 +1789,7 @@ DataBase::getContractInNumber(QString number, Contract &contract)
         contract.creatDate = QDate::fromString(query->value(15).toString(),
                                            DATE_FORMAT_STR);
 
-        contract.isIncludeTax = query->value(16).toFloat();
+        contract.isIncludeTax = query->value(16).toDouble();
 
         return SUCCESS;
     }
@@ -1893,8 +1893,8 @@ DataBase::getAllContractPriceData(const QString contractNumber,
         price.contractNumber = query->value(1).toString();
         price.remarks = query->value(2).toString();
         price.pumpType = Car::getPumpType(query->value(3).toInt());
-        price.squarePrice = query->value(4).toFloat();
-        price.standardPrice = query->value(5).toFloat();
+        price.squarePrice = query->value(4).toDouble();
+        price.standardPrice = query->value(5).toDouble();
 
         prices.push_back(price);                              //插入list
     }
@@ -2164,15 +2164,15 @@ DataBase::getAllRentalDocumentData(QList<RentalDocument> &docs)
         doc.projectAddress = query->value(14).toString();
         doc.remarks = query->value(15).toString();
 
-        doc.beginFuel = query->value(16).toFloat();
-        doc.endFuel = query->value(17).toFloat();
-        doc.projectAmount = query->value(18).toFloat();
-        doc.receivedAccounts = query->value(19).toFloat();
-        doc.pumpSquare = query->value(20).toFloat();
-        doc.squareUnitPrice = query->value(21).toFloat();
-        doc.pumpTimes = query->value(22).toFloat();
-        doc.pumpTimeUnitPrice = query->value(23).toFloat();
-        doc.workingHours = query->value(24).toFloat();
+        doc.beginFuel = query->value(16).toDouble();
+        doc.endFuel = query->value(17).toDouble();
+        doc.projectAmount = query->value(18).toDouble();
+        doc.receivedAccounts = query->value(19).toDouble();
+        doc.pumpSquare = query->value(20).toDouble();
+        doc.squareUnitPrice = query->value(21).toDouble();
+        doc.pumpTimes = query->value(22).toDouble();
+        doc.pumpTimeUnitPrice = query->value(23).toDouble();
+        doc.workingHours = query->value(24).toDouble();
 
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
@@ -2227,15 +2227,15 @@ DataBase::getRentalDocInClientNumber(const QString clientNumber,
         doc.projectAddress = query->value(14).toString();
         doc.remarks = query->value(15).toString();
 
-        doc.beginFuel = query->value(16).toFloat();
-        doc.endFuel = query->value(17).toFloat();
-        doc.projectAmount = query->value(18).toFloat();
-        doc.receivedAccounts = query->value(19).toFloat();
-        doc.pumpSquare = query->value(20).toFloat();
-        doc.squareUnitPrice = query->value(21).toFloat();
-        doc.pumpTimes = query->value(22).toFloat();
-        doc.pumpTimeUnitPrice = query->value(23).toFloat();
-        doc.workingHours = query->value(24).toFloat();
+        doc.beginFuel = query->value(16).toDouble();
+        doc.endFuel = query->value(17).toDouble();
+        doc.projectAmount = query->value(18).toDouble();
+        doc.receivedAccounts = query->value(19).toDouble();
+        doc.pumpSquare = query->value(20).toDouble();
+        doc.squareUnitPrice = query->value(21).toDouble();
+        doc.pumpTimes = query->value(22).toDouble();
+        doc.pumpTimeUnitPrice = query->value(23).toDouble();
+        doc.workingHours = query->value(24).toDouble();
 
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
@@ -2330,15 +2330,15 @@ DataBase::getRentalDocumentDataInNumber(QString number, RentalDocument &doc)
         doc.projectAddress = query->value(14).toString();
         doc.remarks = query->value(15).toString();
 
-        doc.beginFuel = query->value(16).toFloat();
-        doc.endFuel = query->value(17).toFloat();
-        doc.projectAmount = query->value(18).toFloat();
-        doc.receivedAccounts = query->value(19).toFloat();
-        doc.pumpSquare = query->value(20).toFloat();
-        doc.squareUnitPrice = query->value(21).toFloat();
-        doc.pumpTimes = query->value(22).toFloat();
-        doc.pumpTimeUnitPrice = query->value(23).toFloat();
-        doc.workingHours = query->value(24).toFloat();
+        doc.beginFuel = query->value(16).toDouble();
+        doc.endFuel = query->value(17).toDouble();
+        doc.projectAmount = query->value(18).toDouble();
+        doc.receivedAccounts = query->value(19).toDouble();
+        doc.pumpSquare = query->value(20).toDouble();
+        doc.squareUnitPrice = query->value(21).toDouble();
+        doc.pumpTimes = query->value(22).toDouble();
+        doc.pumpTimeUnitPrice = query->value(23).toDouble();
+        doc.workingHours = query->value(24).toDouble();
 
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
@@ -2393,15 +2393,15 @@ DataBase::getRentalDocInStateAndClientNum(const QString clientNumber,
         doc.projectAddress = query->value(14).toString();
         doc.remarks = query->value(15).toString();
 
-        doc.beginFuel = query->value(16).toFloat();
-        doc.endFuel = query->value(17).toFloat();
-        doc.projectAmount = query->value(18).toFloat();
-        doc.receivedAccounts = query->value(19).toFloat();
-        doc.pumpSquare = query->value(20).toFloat();
-        doc.squareUnitPrice = query->value(21).toFloat();
-        doc.pumpTimes = query->value(22).toFloat();
-        doc.pumpTimeUnitPrice = query->value(23).toFloat();
-        doc.workingHours = query->value(24).toFloat();
+        doc.beginFuel = query->value(16).toDouble();
+        doc.endFuel = query->value(17).toDouble();
+        doc.projectAmount = query->value(18).toDouble();
+        doc.receivedAccounts = query->value(19).toDouble();
+        doc.pumpSquare = query->value(20).toDouble();
+        doc.squareUnitPrice = query->value(21).toDouble();
+        doc.pumpTimes = query->value(22).toDouble();
+        doc.pumpTimeUnitPrice = query->value(23).toDouble();
+        doc.workingHours = query->value(24).toDouble();
 
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
@@ -2456,15 +2456,15 @@ DataBase::getAllRenDocInState(const RentalDocState state, QList<RentalDocument> 
         doc.projectAddress = query->value(14).toString();
         doc.remarks = query->value(15).toString();
 
-        doc.beginFuel = query->value(16).toFloat();
-        doc.endFuel = query->value(17).toFloat();
-        doc.projectAmount = query->value(18).toFloat();
-        doc.receivedAccounts = query->value(19).toFloat();
-        doc.pumpSquare = query->value(20).toFloat();
-        doc.squareUnitPrice = query->value(21).toFloat();
-        doc.pumpTimes = query->value(22).toFloat();
-        doc.pumpTimeUnitPrice = query->value(23).toFloat();
-        doc.workingHours = query->value(24).toFloat();
+        doc.beginFuel = query->value(16).toDouble();
+        doc.endFuel = query->value(17).toDouble();
+        doc.projectAmount = query->value(18).toDouble();
+        doc.receivedAccounts = query->value(19).toDouble();
+        doc.pumpSquare = query->value(20).toDouble();
+        doc.squareUnitPrice = query->value(21).toDouble();
+        doc.pumpTimes = query->value(22).toDouble();
+        doc.pumpTimeUnitPrice = query->value(23).toDouble();
+        doc.workingHours = query->value(24).toDouble();
 
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
@@ -2518,15 +2518,15 @@ DataBase::getRentalDocumentDataInCarNumber(const QString carNumber, QList<Rental
         doc.projectAddress = query->value(14).toString();
         doc.remarks = query->value(15).toString();
 
-        doc.beginFuel = query->value(16).toFloat();
-        doc.endFuel = query->value(17).toFloat();
-        doc.projectAmount = query->value(18).toFloat();
-        doc.receivedAccounts = query->value(19).toFloat();
-        doc.pumpSquare = query->value(20).toFloat();
-        doc.squareUnitPrice = query->value(21).toFloat();
-        doc.pumpTimes = query->value(22).toFloat();
-        doc.pumpTimeUnitPrice = query->value(23).toFloat();
-        doc.workingHours = query->value(24).toFloat();
+        doc.beginFuel = query->value(16).toDouble();
+        doc.endFuel = query->value(17).toDouble();
+        doc.projectAmount = query->value(18).toDouble();
+        doc.receivedAccounts = query->value(19).toDouble();
+        doc.pumpSquare = query->value(20).toDouble();
+        doc.squareUnitPrice = query->value(21).toDouble();
+        doc.pumpTimes = query->value(22).toDouble();
+        doc.pumpTimeUnitPrice = query->value(23).toDouble();
+        doc.workingHours = query->value(24).toDouble();
 
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);
@@ -2667,15 +2667,15 @@ DataBase::getRentalDocInFilter(RECEIPT_FILTER filter, QList<RentalDocument> &doc
         doc.projectAddress = query->value(14).toString();
         doc.remarks = query->value(15).toString();
 
-        doc.beginFuel = query->value(16).toFloat();
-        doc.endFuel = query->value(17).toFloat();
-        doc.projectAmount = query->value(18).toFloat();
-        doc.receivedAccounts = query->value(19).toFloat();
-        doc.pumpSquare = query->value(20).toFloat();
-        doc.squareUnitPrice = query->value(21).toFloat();
-        doc.pumpTimes = query->value(22).toFloat();
-        doc.pumpTimeUnitPrice = query->value(23).toFloat();
-        doc.workingHours = query->value(24).toFloat();
+        doc.beginFuel = query->value(16).toDouble();
+        doc.endFuel = query->value(17).toDouble();
+        doc.projectAmount = query->value(18).toDouble();
+        doc.receivedAccounts = query->value(19).toDouble();
+        doc.pumpSquare = query->value(20).toDouble();
+        doc.squareUnitPrice = query->value(21).toDouble();
+        doc.pumpTimes = query->value(22).toDouble();
+        doc.pumpTimeUnitPrice = query->value(23).toDouble();
+        doc.workingHours = query->value(24).toDouble();
 
         doc.date = QDate::fromString(query->value(25).toString(),
                                                DATE_FORMAT_STR);

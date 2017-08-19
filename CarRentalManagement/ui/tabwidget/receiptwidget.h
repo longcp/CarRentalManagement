@@ -64,23 +64,23 @@ private:
     void            delRowAndUpdateSumTable(int row, RentalDocument &doc);
     void            resetReceiptSumTableData();
 
-    void            pumpSquareCellAddValue(float value);
-    void            pumpTimeCellAddValue(float value);
-    void            projectAmountCellAddValue(float value);
-    void            receiptCellAddValue(float value);
-    void            receivableCellAddValue(float value);
+    void            pumpSquareCellAddValue(double value);
+    void            pumpTimeCellAddValue(double value);
+    void            projectAmountCellAddValue(double value);
+    void            receiptCellAddValue(double value);
+    void            receivableCellAddValue(double value);
 
-    void            pumpSquareCellDelValue(float value);
-    void            pumpTimeCellDelValue(float value);
-    void            projectAmountCellDelValue(float value);
-    void            receiptCellDelValue(float value);
-    void            receivableCellDelValue(float value);
+    void            pumpSquareCellDelValue(double value);
+    void            pumpTimeCellDelValue(double value);
+    void            projectAmountCellDelValue(double value);
+    void            receiptCellDelValue(double value);
+    void            receivableCellDelValue(double value);
 
-    void            setPumpSquareCellValue(float value);
-    void            setPumpTimeCellValue(float value);
-    void            setProjectAmountCellValue(float value);
-    void            setReceiptCellValue(float value);
-    void            setReceivableValue(float value);
+    void            setPumpSquareCellValue(double value);
+    void            setPumpTimeCellValue(double value);
+    void            setProjectAmountCellValue(double value);
+    void            setReceiptCellValue(double value);
+    void            setReceivableValue(double value);
 
     Ui::ReceiptWidget *ui;
     QToolBar        *mToolBar;

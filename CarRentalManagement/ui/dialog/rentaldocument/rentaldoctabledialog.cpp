@@ -103,19 +103,19 @@ RentalDocTableDialog::addRentalDocItem(RentalDocument &doc)
     QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpSquare);
+    sprintf(buf, "%0.2lf", doc.pumpSquare);
     QStandardItem *pumpSquare = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.squareUnitPrice);
+    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
     QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimes);
+    sprintf(buf, "%0.2lf", doc.pumpTimes);
     QStandardItem *pumpTimes = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimeUnitPrice);
+    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
     QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;

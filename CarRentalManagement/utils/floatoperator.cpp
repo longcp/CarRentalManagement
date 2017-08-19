@@ -6,6 +6,7 @@ FloatOperator::FloatOperator(QObject *parent) : QObject(parent)
 
 }
 
+float
 FloatOperator::add2(float f1, float f2)
 {
     char buf1[64], buf2[64];

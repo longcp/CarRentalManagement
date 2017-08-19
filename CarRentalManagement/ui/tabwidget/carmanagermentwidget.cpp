@@ -287,47 +287,47 @@ CarManagermentWidget::addCarItemSlot(Car &car)
     QStandardItem* remarks = new QStandardItem(car.remarks);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.pumpedSquare);
+    sprintf(buf, "%0.2lf", car.pumpedSquare);
     QStandardItem* pumpedSquare = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.pumpedTimes);
+    sprintf(buf, "%0.2lf", car.pumpedTimes);
     QStandardItem* pumpedTimes  = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.milage);
+    sprintf(buf, "%0.2lf", car.milage);
     QStandardItem* milage = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.worth);
+    sprintf(buf, "%0.2lf", car.worth);
     QStandardItem* worth = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.enginePower);
+    sprintf(buf, "%0.2lf", car.enginePower);
     QStandardItem* enginePower = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.maxDeliverySizes);
+    sprintf(buf, "%0.2lf", car.maxDeliverySizes);
     QStandardItem* maxDeliverySizes = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.maxOutputPressure);
+    sprintf(buf, "%0.2lf", car.maxOutputPressure);
     QStandardItem* maxOutputPressure = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.boomVerticalLen);
+    sprintf(buf, "%0.2lf", car.boomVerticalLen);
     QStandardItem* boomVerticalLen = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.boomHorizontalLen);
+    sprintf(buf, "%0.2lf", car.boomHorizontalLen);
     QStandardItem* boomHorizontalLen = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.totalWeight);
+    sprintf(buf, "%0.2lf", car.totalWeight);
     QStandardItem* totalWeight = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.equipmentWeight);
+    sprintf(buf, "%0.2lf", car.equipmentWeight);
     QStandardItem* equipmentWeight = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
@@ -351,15 +351,15 @@ CarManagermentWidget::updateCarItemSlot(Car &car)
     mModel->setData(mModel->index(curRow, 1), car.getPumpTypeStr(car.pumptype));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.pumpedSquare);
+    sprintf(buf, "%0.2lf", car.pumpedSquare);
     mModel->setData(mModel->index(curRow, 2), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.pumpedTimes);
+    sprintf(buf, "%0.2lf", car.pumpedTimes);
     mModel->setData(mModel->index(curRow, 3), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.milage);
+    sprintf(buf, "%0.2lf", car.milage);
     mModel->setData(mModel->index(curRow, 4), QString(buf));
 
     mModel->setData(mModel->index(curRow, 5), car.carBrand);
@@ -374,37 +374,37 @@ CarManagermentWidget::updateCarItemSlot(Car &car)
     mModel->setData(mModel->index(curRow, 13), car.engineNumber);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.worth);
+    sprintf(buf, "%0.2lf", car.worth);
     mModel->setData(mModel->index(curRow, 14), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.enginePower);
+    sprintf(buf, "%0.2lf", car.enginePower);
     mModel->setData(mModel->index(curRow, 15), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.maxDeliverySizes);
+    sprintf(buf, "%0.2lf", car.maxDeliverySizes);
     mModel->setData(mModel->index(curRow, 16), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.maxOutputPressure);
+    sprintf(buf, "%0.2lf", car.maxOutputPressure);
     mModel->setData(mModel->index(curRow, 17), QString(buf));
 
     mModel->setData(mModel->index(curRow, 18), car.dimensions);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.boomVerticalLen);
+    sprintf(buf, "%0.2lf", car.boomVerticalLen);
     mModel->setData(mModel->index(curRow, 19), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.boomHorizontalLen);
+    sprintf(buf, "%0.2lf", car.boomHorizontalLen);
     mModel->setData(mModel->index(curRow, 20), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.totalWeight);
+    sprintf(buf, "%0.2lf", car.totalWeight);
     mModel->setData(mModel->index(curRow, 21), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", car.totalWeight);
+    sprintf(buf, "%0.2lf", car.totalWeight);
     mModel->setData(mModel->index(curRow, 22), QString(buf));
 
     mModel->setData(mModel->index(curRow, 23),

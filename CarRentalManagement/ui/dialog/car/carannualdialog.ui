@@ -84,7 +84,7 @@
       <item>
        <widget class="QDoubleSpinBox" name="annualFeeDoubleSpinBox">
         <property name="maximum">
-         <double>999999999.990000009536743</double>
+         <double>999999.989999999990687</double>
         </property>
        </widget>
       </item>
@@ -101,7 +101,7 @@
       <item>
        <widget class="QDoubleSpinBox" name="travelExpensesDoubleSpinBox">
         <property name="maximum">
-         <double>999999999.990000009536743</double>
+         <double>999999.989999999990687</double>
         </property>
        </widget>
       </item>

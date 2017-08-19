@@ -218,17 +218,17 @@ public:
     QDate           drivingLicenseDate;
     QDate           createDate;
 
-    float           pumpedSquare;
-    float           pumpedTimes;
-    float           milage;
-    float           worth;
-    float           enginePower;
-    float           maxDeliverySizes;
-    float           maxOutputPressure;
-    float           boomVerticalLen;
-    float           boomHorizontalLen;
-    float           totalWeight;
-    float           equipmentWeight;
+    double          pumpedSquare;
+    double          pumpedTimes;
+    double          milage;
+    double          worth;
+    double          enginePower;
+    double          maxDeliverySizes;
+    double          maxOutputPressure;
+    double          boomVerticalLen;
+    double          boomHorizontalLen;
+    double          totalWeight;
+    double          equipmentWeight;
 
     PumpType        pumptype;
     QList<INSURANCE_RECORD> insuranceRecords;

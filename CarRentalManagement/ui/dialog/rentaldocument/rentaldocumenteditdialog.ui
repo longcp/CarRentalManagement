@@ -482,7 +482,7 @@
            </size>
           </property>
           <property name="maximum">
-           <double>999999999.990000009536743</double>
+           <double>999999.989999999990687</double>
           </property>
          </widget>
         </item>
@@ -523,7 +523,7 @@
            </size>
           </property>
           <property name="maximum">
-           <double>999999999.990000009536743</double>
+           <double>999999.989999999990687</double>
           </property>
          </widget>
         </item>
@@ -843,7 +843,7 @@
            </size>
           </property>
           <property name="maximum">
-           <double>999999999.990000009536743</double>
+           <double>999999.989999999990687</double>
           </property>
          </widget>
         </item>
@@ -1085,7 +1085,7 @@
            </size>
           </property>
           <property name="maximum">
-           <double>999999999.990000009536743</double>
+           <double>99999999.989999994635582</double>
           </property>
          </widget>
         </item>
@@ -1230,7 +1230,7 @@
            </size>
           </property>
           <property name="maximum">
-           <double>999999999.990000009536743</double>
+           <double>9999.989999999999782</double>
           </property>
          </widget>
         </item>
@@ -1259,7 +1259,7 @@
            </size>
           </property>
           <property name="maximum">
-           <double>999999999.990000009536743</double>
+           <double>9999.989999999999782</double>
           </property>
          </widget>
         </item>
@@ -1369,7 +1369,7 @@
            </size>
           </property>
           <property name="maximum">
-           <double>999999999.990000009536743</double>
+           <double>99999.990000000005239</double>
           </property>
          </widget>
         </item>
@@ -1406,7 +1406,7 @@
       <item>
        <widget class="QDoubleSpinBox" name="receivedAccountsDSB">
         <property name="maximum">
-         <double>999999999.990000009536743</double>
+         <double>99999999.989999994635582</double>
         </property>
        </widget>
       </item>

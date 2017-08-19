@@ -363,12 +363,12 @@ ContractWidget::addContractTableRow(Contract &contract)
             = new QStandardItem(contract.remarks);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", contract.deliverySizes);
+    sprintf(buf, "%0.2lf", contract.deliverySizes);
     QStandardItem* deliverySizes
             = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", contract.structureLevel);
+    sprintf(buf, "%0.2lf", contract.structureLevel);
     QStandardItem* structureLevel
             = new QStandardItem(QString(buf));
 
@@ -401,12 +401,12 @@ ContractWidget::addPriceTableRow(CONTRACT_PRICE price)
             = new QStandardItem(Car::getPumpTypeStr(price.pumpType));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", price.squarePrice);
+    sprintf(buf, "%0.2lf", price.squarePrice);
     QStandardItem *squarePrice
             = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", price.standardPrice);
+    sprintf(buf, "%0.2lf", price.standardPrice);
     QStandardItem *standardPrice
             = new QStandardItem(QString(buf));
     QStandardItem *remarks
@@ -441,11 +441,11 @@ ContractWidget::updateContractRow(Contract &contract)
                          contract.projectAddress);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", contract.deliverySizes);
+    sprintf(buf, "%0.2lf", contract.deliverySizes);
     mContractModel->setData(mContractModel->index(curRow, 4), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", contract.structureLevel);
+    sprintf(buf, "%0.2lf", contract.structureLevel);
     mContractModel->setData(mContractModel->index(curRow, 5), QString(buf));
 
     mContractModel->setData(mContractModel->index(curRow, 6),

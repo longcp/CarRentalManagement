@@ -87,8 +87,8 @@ public:
     QDate       createDate;
 
     int         monthly;                                                // 月结日
-    float       amount;                                                 // 工程款额
-    float       paid;                                                   // 已付金额
+    double      amount;                                                 // 工程款额
+    double      paid;                                                   // 已付金额
 
 signals:
 

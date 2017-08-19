@@ -235,15 +235,15 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
     QStandardItem* remarks = new QStandardItem(client.remarks);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", client.amount);
+    sprintf(buf, "%0.2lf", client.amount);
     QStandardItem* amount = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", client.paid);
+    sprintf(buf, "%0.2lf", client.paid);
     QStandardItem* paid = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", client.amount - client.paid);
+    sprintf(buf, "%0.2lf", client.amount - client.paid);
     QStandardItem* balance = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
@@ -272,17 +272,17 @@ ClientManagermentWidget::updateClientItemSlot(Client &client)
     mModel->setData(mModel->index(curRow, 12), client.remarks);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", client.amount);
+    sprintf(buf, "%0.2lf", client.amount);
     mModel->setData(mModel->index(curRow, 9),
                     QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", client.paid);
+    sprintf(buf, "%0.2lf", client.paid);
     mModel->setData(mModel->index(curRow, 10),
                     QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", client.amount - client.paid);
+    sprintf(buf, "%0.2lf", client.amount - client.paid);
     mModel->setData(mModel->index(curRow, 11),
                     QString(buf));
 }

@@ -448,8 +448,8 @@ ContractEditDialog::saveUiContent(Contract &contract)
         price.contractNumber = ui->contractNumberLabel->text();
         price.pumpType = Car::getPumpType(
                     mModel->index(i, 1).data().toString());
-        price.squarePrice = mModel->index(i, 2).data().toFloat(&ok);
-        price.standardPrice = mModel->index(i, 3).data().toFloat(&ok);
+        price.squarePrice = mModel->index(i, 2).data().toDouble(&ok);
+        price.standardPrice = mModel->index(i, 3).data().toDouble(&ok);
         price.remarks = mModel->index(i, 4).data().toString();
 
         contract.prices.push_back(price);

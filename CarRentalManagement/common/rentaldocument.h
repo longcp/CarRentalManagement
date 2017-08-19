@@ -143,15 +143,15 @@ public:
     QString projectAddress;
     QString remarks;
 
-    float beginFuel;
-    float endFuel;
-    float projectAmount;
-    float pumpSquare;
-    float squareUnitPrice;
-    float pumpTimes;
-    float pumpTimeUnitPrice;
-    float workingHours;
-    float receivedAccounts;
+    double beginFuel;
+    double endFuel;
+    double projectAmount;
+    double pumpSquare;
+    double squareUnitPrice;
+    double pumpTimes;
+    double pumpTimeUnitPrice;
+    double workingHours;
+    double receivedAccounts;
 
     QDate date;
     QDateTime arrivalDateTime;

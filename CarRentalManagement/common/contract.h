@@ -136,8 +136,8 @@ public:
     QString remarks;
     QString creator;
 
-    float   deliverySizes;
-    float   structureLevel;
+    double  deliverySizes;
+    double  structureLevel;
     int     taxRate;
 
     QDate   signedDate;

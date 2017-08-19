@@ -27,8 +27,8 @@ public:
 
     class Receivable {
         RentalDocument* rentalDoc;
-        float totalAmount;
-        float receivedAmount;
+        double totalAmount;
+        double receivedAmount;
     };
 
 private slots:
@@ -82,29 +82,29 @@ private:
     void            addSumTableRow(RentalDocument &doc);
     void            addRowAndUpdateDetailSumTable(RentalDocument &doc);
 
-    void            setDetailPumpSquareCellValue(float value);
-    void            setDetailPumpTimeCellValue(float value);
-    void            setDetailProjectAmountCellValue(float value);
-    void            setDetailReceiptCellValue(float value);
-    void            setDetailReceivableValue(float value);
+    void            setDetailPumpSquareCellValue(double value);
+    void            setDetailPumpTimeCellValue(double value);
+    void            setDetailProjectAmountCellValue(double value);
+    void            setDetailReceiptCellValue(double value);
+    void            setDetailReceivableValue(double value);
 
-    void            setSumPumpSquareCellValue(float value);
-    void            setSumPumpTimeCellValue(float value);
-    void            setSumProjectAmountCellValue(float value);
-    void            setSumReceiptCellValue(float value);
-    void            setSumReceivableValue(float value);
+    void            setSumPumpSquareCellValue(double value);
+    void            setSumPumpTimeCellValue(double value);
+    void            setSumProjectAmountCellValue(double value);
+    void            setSumReceiptCellValue(double value);
+    void            setSumReceivableValue(double value);
 
-    void            detailPumpSquareCellAddValue(float value);
-    void            detailPumpTimeCellAddValue(float value);
-    void            detailProjectAmountCellAddValue(float value);
-    void            detailReceiptCellAddValue(float value);
-    void            detailReceivableCellAddValue(float value);
+    void            detailPumpSquareCellAddValue(double value);
+    void            detailPumpTimeCellAddValue(double value);
+    void            detailProjectAmountCellAddValue(double value);
+    void            detailReceiptCellAddValue(double value);
+    void            detailReceivableCellAddValue(double value);
 
-    void            sumPumpSquareCellAddValue(float value);
-    void            sumPumpTimeCellAddValue(float value);
-    void            sumProjectAmountCellAddValue(float value);
-    void            sumReceiptCellAddValue(float value);
-    void            sumReceivableCellAddValue(float value);
+    void            sumPumpSquareCellAddValue(double value);
+    void            sumPumpTimeCellAddValue(double value);
+    void            sumProjectAmountCellAddValue(double value);
+    void            sumReceiptCellAddValue(double value);
+    void            sumReceivableCellAddValue(double value);
 
     void            resetDetailSumTableData();
     void            resetTotalSumTableData();
@@ -134,16 +134,16 @@ private:
     ClientTableDialog*      mClientDialog;
     RentalDocTableDialog*   mRentalDocDialog;
 
-    float           curPumpSquareValue;
-    float           curPumpTimeValue;
-    float           curProjectAmountValue;
-    float           curReceiptValue;
-    float           curReceivableValue;
-    float           curPumpSquareSumValue;
-    float           curPumpTimeSumValue;
-    float           curProjectAmountSumValue;
-    float           curReceiptSumValue;
-    float           curReceivableSumValue;
+    double          curPumpSquareValue;
+    double          curPumpTimeValue;
+    double          curProjectAmountValue;
+    double          curReceiptValue;
+    double          curReceivableValue;
+    double          curPumpSquareSumValue;
+    double          curPumpTimeSumValue;
+    double          curProjectAmountSumValue;
+    double          curReceiptSumValue;
+    double          curReceivableSumValue;
 
     enum DetailTableColumn {
         DETAIL_COL_DATE,

@@ -985,17 +985,17 @@ CarEditDialog::dumpCar(Car &car)
           "car.operator5 = %s\n"
           "car.remarks = %s\n"
           "car.creator = %s\n"
-          "car.pumpedSquare = %f\n"
-          "car.pumpedTimes = %f\n"
-          "car.milage = %f\n"
-          "car.worth = %f\n"
-          "car.enginePower = %f\n"
-          "car.maxDeliverySizes = %f\n"
-          "car.maxOutputPressure = %f\n"
-          "car.boomVerticalLen = %f\n"
-          "car.boomHorizontalLen = %f\n"
-          "car.totalWeight = %f\n"
-          "car.equipmentWeight = %f\n"
+          "car.pumpedSquare = %lf\n"
+          "car.pumpedTimes = %lf\n"
+          "car.milage = %lf\n"
+          "car.worth = %lf\n"
+          "car.enginePower = %lf\n"
+          "car.maxDeliverySizes = %lf\n"
+          "car.maxOutputPressure = %lf\n"
+          "car.boomVerticalLen = %lf\n"
+          "car.boomHorizontalLen = %lf\n"
+          "car.totalWeight = %lf\n"
+          "car.equipmentWeight = %lf\n"
           "car.pumptype = %d\n",
           "car.pumptype = %d\n",
           "car.pumptype = %d\n",
@@ -1100,11 +1100,11 @@ CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
     QStandardItem* remarks = new QStandardItem(record.remarks);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", record.annualFee);
+    sprintf(buf, "%0.2lf", record.annualFee);
     QStandardItem* annualFee = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", record.travelExpenses);
+    sprintf(buf, "%0.2lf", record.travelExpenses);
     QStandardItem* travelExpenses = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
@@ -1168,7 +1168,7 @@ CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
     QStandardItem* clientName = new QStandardItem(record.clientName);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", record.amount);
+    sprintf(buf, "%0.l2f", record.amount);
     QStandardItem* amount = new QStandardItem(QString(buf));
     QStandardItem* remarks = new QStandardItem(record.remarks);
     QStandardItem* rentalDocNum = new QStandardItem(record.rentalDocNum);

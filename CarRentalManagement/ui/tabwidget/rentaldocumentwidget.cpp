@@ -357,31 +357,31 @@ RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
     QStandardItem *remarks = new QStandardItem(doc.remarks);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.beginFuel);
+    sprintf(buf, "%0.2lf", doc.beginFuel);
     QStandardItem *beginFuel = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.endFuel);
+    sprintf(buf, "%0.2lf", doc.endFuel);
     QStandardItem *endFuel = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.workingHours);
+    sprintf(buf, "%0.2lf", doc.workingHours);
     QStandardItem *workingHours = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpSquare);
+    sprintf(buf, "%0.2lf", doc.pumpSquare);
     QStandardItem *pumpSquare = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.squareUnitPrice);
+    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
     QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimes);
+    sprintf(buf, "%0.2lf", doc.pumpTimes);
     QStandardItem *pumpTimes = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimeUnitPrice);
+    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
     QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
@@ -411,34 +411,34 @@ RentalDocumentWidget::updateDocItemSlot(RentalDocument &doc)
     mModel->setData(mModel->index(mCurRow, 8), doc.concreteLable);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.beginFuel);
+    sprintf(buf, "%0.2lf", doc.beginFuel);
     mModel->setData(mModel->index(mCurRow, 9), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.endFuel);
+    sprintf(buf, "%0.2lf", doc.endFuel);
     mModel->setData(mModel->index(mCurRow, 10), QString(buf));
 
     mModel->setData(mModel->index(mCurRow, 11), doc.arrivalDateTime.toString(DATETIME_FORMAT_STR));
     mModel->setData(mModel->index(mCurRow, 12), doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.workingHours);
+    sprintf(buf, "%0.2lf", doc.workingHours);
     mModel->setData(mModel->index(mCurRow, 13), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpSquare);
+    sprintf(buf, "%0.2lf", doc.pumpSquare);
     mModel->setData(mModel->index(mCurRow, 14), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.squareUnitPrice);
+    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
     mModel->setData(mModel->index(mCurRow, 15), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimes);
+    sprintf(buf, "%0.2lf", doc.pumpTimes);
     mModel->setData(mModel->index(mCurRow, 16), QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimeUnitPrice);
+    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
     mModel->setData(mModel->index(mCurRow, 17), QString(buf));
 
     mModel->setData(mModel->index(mCurRow, 18), doc.principal);

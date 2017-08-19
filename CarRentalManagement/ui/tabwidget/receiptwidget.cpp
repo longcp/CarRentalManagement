@@ -234,46 +234,46 @@ ReceiptWidget::cellDoubleClickedSlot(int a,int b)
 }
 
 void
-ReceiptWidget::setPumpSquareCellValue(float value)
+ReceiptWidget::setPumpSquareCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_PUMP_SQUARE),
                              QString(buf));
 }
 
 void
-ReceiptWidget::setPumpTimeCellValue(float value)
+ReceiptWidget::setPumpTimeCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_PUMP_TIME),
                              QString(buf));
 }
 
 void
-ReceiptWidget::setProjectAmountCellValue(float value)
+ReceiptWidget::setProjectAmountCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_PROJECT_AMOUNT),
                              QString(buf));
 }
 
 void
-ReceiptWidget::setReceiptCellValue(float value)
+ReceiptWidget::setReceiptCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_RECEIPT),
                              QString(buf));
 }
 
 void
-ReceiptWidget::setReceivableValue(float value)
+ReceiptWidget::setReceivableValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mReceiptSumModel->setData(mReceiptSumModel->index(0, COL_RECEIVABLE),
                              QString(buf));
 }
@@ -307,31 +307,31 @@ ReceiptWidget::addTableRow(RentalDocument &doc)
     QStandardItem *remarks = new QStandardItem(doc.remarks);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.squareUnitPrice);
+    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
     QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimeUnitPrice);
+    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
     QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpSquare);
+    sprintf(buf, "%0.2lf", doc.pumpSquare);
     QStandardItem *pumpSquare = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimes);
+    sprintf(buf, "%0.2lf", doc.pumpTimes);
     QStandardItem *pumpTimes = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.projectAmount);
+    sprintf(buf, "%0.2lf", doc.projectAmount);
     QStandardItem *projectAmounts =  new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.receivedAccounts);
+    sprintf(buf, "%0.2lf", doc.receivedAccounts);
     QStandardItem *receivedAccounts = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.projectAmount - doc.receivedAccounts);
+    sprintf(buf, "%0.2lf", doc.projectAmount - doc.receivedAccounts);
     QStandardItem *receivable = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
@@ -344,72 +344,72 @@ ReceiptWidget::addTableRow(RentalDocument &doc)
 }
 
 void
-ReceiptWidget::pumpSquareCellAddValue(float value)
+ReceiptWidget::pumpSquareCellAddValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_PUMP_SQUARE).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_PUMP_SQUARE).data().toDouble();
     setPumpSquareCellValue(curValue+value);
 }
 
 void
-ReceiptWidget::pumpTimeCellAddValue(float value)
+ReceiptWidget::pumpTimeCellAddValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_PUMP_TIME).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_PUMP_TIME).data().toDouble();
     setPumpTimeCellValue(curValue+value);
 }
 
 void
-ReceiptWidget::projectAmountCellAddValue(float value)
+ReceiptWidget::projectAmountCellAddValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_PROJECT_AMOUNT).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_PROJECT_AMOUNT).data().toDouble();
     setProjectAmountCellValue(curValue+value);
 }
 
 void
-ReceiptWidget::receiptCellAddValue(float value)
+ReceiptWidget::receiptCellAddValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_RECEIPT).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_RECEIPT).data().toDouble();
     setReceiptCellValue(curValue+value);
 }
 
 void
-ReceiptWidget::receivableCellAddValue(float value)
+ReceiptWidget::receivableCellAddValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_RECEIVABLE).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_RECEIVABLE).data().toDouble();
     setReceivableValue(curValue+value);
 }
 
 void
-ReceiptWidget::pumpSquareCellDelValue(float value)
+ReceiptWidget::pumpSquareCellDelValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_PUMP_SQUARE).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_PUMP_SQUARE).data().toDouble();
     setPumpSquareCellValue(curValue-value);
 }
 
 void
-ReceiptWidget::pumpTimeCellDelValue(float value)
+ReceiptWidget::pumpTimeCellDelValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_PUMP_TIME).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_PUMP_TIME).data().toDouble();
     setPumpTimeCellValue(curValue-value);
 }
 
 void
-ReceiptWidget::projectAmountCellDelValue(float value)
+ReceiptWidget::projectAmountCellDelValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_PROJECT_AMOUNT).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_PROJECT_AMOUNT).data().toDouble();
     setProjectAmountCellValue(curValue-value);
 }
 
 void
-ReceiptWidget::receiptCellDelValue(float value)
+ReceiptWidget::receiptCellDelValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_RECEIPT).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_RECEIPT).data().toDouble();
     setReceiptCellValue(curValue-value);
 }
 
 void
-ReceiptWidget::receivableCellDelValue(float value)
+ReceiptWidget::receivableCellDelValue(double value)
 {
-    float curValue = mReceiptSumModel->index(0, COL_RECEIVABLE).data().toFloat();
+    double curValue = mReceiptSumModel->index(0, COL_RECEIVABLE).data().toDouble();
     setReceivableValue(curValue-value);
 }
 

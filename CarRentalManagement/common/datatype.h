@@ -118,7 +118,7 @@ typedef struct InsuranceRecord {
     QString number;
     QString carNumber;
     QDate date;
-    float fee;
+    double fee;
     QString company;
     QString remarks;
 }INSURANCE_RECORD;
@@ -127,8 +127,8 @@ typedef struct AnnualFeeRecord {
     QString number;
     QString carNumber;
     QDate date;
-    float annualFee;
-    float travelExpenses;
+    double annualFee;
+    double travelExpenses;
     QString remarks;
 }ANNUALFEE_RECORD;
 
@@ -140,7 +140,7 @@ typedef struct ProjectRecord {
     QString contractNum;
     QString clientNum;
     QString clientName;
-    float amount;
+    double amount;
     QString remarks;
 }PROJECT_RECORD;
 
@@ -148,8 +148,8 @@ typedef struct ContractPrice {
     QString number;
     QString contractNumber;
     PumpType pumpType;
-    float squarePrice;
-    float standardPrice;
+    double squarePrice;
+    double standardPrice;
     QString remarks;
 }CONTRACT_PRICE;
 
@@ -164,12 +164,12 @@ typedef struct ReceivableDetail {
     QString principalTel;
     QString contractNumber;
 
-    float pumpSquare;
-    float squareUnitPrice;
-    float pumpTimes;
-    float pumpTimeUnitPrice;
-    float totalAmount;
-    float receivedAmount;
+    double pumpSquare;
+    double squareUnitPrice;
+    double pumpTimes;
+    double pumpTimeUnitPrice;
+    double totalAmount;
+    double receivedAmount;
 
     PumpType pumptype;
 } RECEIVABLE_DETAIL;

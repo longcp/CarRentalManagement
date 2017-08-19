@@ -393,61 +393,61 @@ ReceivableWidget::resetTotalSumTableData()
 }
 
 void
-ReceivableWidget::setDetailPumpSquareCellValue(float value)
+ReceivableWidget::setDetailPumpSquareCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_SQUARE),
                              QString(buf));
     curPumpSquareValue = value;
 }
 
 void
-ReceivableWidget::setDetailPumpTimeCellValue(float value)
+ReceivableWidget::setDetailPumpTimeCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_TIME),
                              QString(buf));
     curPumpTimeValue = value;
 }
 
 void
-ReceivableWidget::setDetailProjectAmountCellValue(float value)
+ReceivableWidget::setDetailProjectAmountCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
-    ALOGD("%s, value = %f, 02value = %0.2f, buf = %s", __FUNCTION__, value, value, buf);
+    sprintf(buf, "%0.2lf", value);
+    ALOGD("%s, value = %lf, 02value = %0.2lf, buf = %s", __FUNCTION__, value, value, buf);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PROJECT_AMOUNT),
                              QString(buf));
     curProjectAmountValue = value;
 }
 
 void
-ReceivableWidget::setDetailReceiptCellValue(float value)
+ReceivableWidget::setDetailReceiptCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIPT),
                              QString(buf));
     curReceiptValue = value;
 }
 
 void
-ReceivableWidget::setDetailReceivableValue(float value)
+ReceivableWidget::setDetailReceivableValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIVABLE),
                              QString(buf));
     curReceivableValue = value;
 }
 
 void
-ReceivableWidget::setSumReceivableValue(float value)
+ReceivableWidget::setSumReceivableValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIVABLE),
                              QString(buf));
     curReceivableSumValue = value;
@@ -455,105 +455,105 @@ ReceivableWidget::setSumReceivableValue(float value)
 
 
 void
-ReceivableWidget::setSumPumpSquareCellValue(float value)
+ReceivableWidget::setSumPumpSquareCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_SQUARE),
                              QString(buf));
     curPumpSquareSumValue = value;
 }
 
 void
-ReceivableWidget::setSumPumpTimeCellValue(float value)
+ReceivableWidget::setSumPumpTimeCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_TIME),
                              QString(buf));
     curPumpTimeSumValue = value;
 }
 
 void
-ReceivableWidget::setSumProjectAmountCellValue(float value)
+ReceivableWidget::setSumProjectAmountCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PROJECT_AMOUNT),
                              QString(buf));
     curProjectAmountSumValue = value;
 }
 
 void
-ReceivableWidget::setSumReceiptCellValue(float value)
+ReceivableWidget::setSumReceiptCellValue(double value)
 {
     char buf[64];
-    sprintf(buf, "%0.2f", value);
+    sprintf(buf, "%0.2lf", value);
     mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIPT),
                              QString(buf));
     curReceiptSumValue = value;
 }
 
 void
-ReceivableWidget::detailPumpSquareCellAddValue(float value)
+ReceivableWidget::detailPumpSquareCellAddValue(double value)
 {
     setDetailPumpSquareCellValue(curPumpSquareValue+value);
 }
 
 void
-ReceivableWidget::detailPumpTimeCellAddValue(float value)
+ReceivableWidget::detailPumpTimeCellAddValue(double value)
 {
     setDetailPumpTimeCellValue(curPumpTimeValue+value);
 }
 
 void
-ReceivableWidget::detailProjectAmountCellAddValue(float value)
+ReceivableWidget::detailProjectAmountCellAddValue(double value)
 {
-    float sum = value + curProjectAmountValue;
+    double sum = value + curProjectAmountValue;
     int a = 11111111 + 10211224;
-    ALOGD("%s value = %f, curValue=%f, projectAmountSum = %f, a = %d",
+    ALOGD("%s value = %lf, curValue=%lf, projectAmountSum = %lf, a = %d",
           __FUNCTION__, value, curProjectAmountValue, sum, a);
     setDetailProjectAmountCellValue(sum);
 }
 
 void
-ReceivableWidget::detailReceiptCellAddValue(float value)
+ReceivableWidget::detailReceiptCellAddValue(double value)
 {
     setDetailReceiptCellValue(curReceiptValue+value);
 }
 
 void
-ReceivableWidget::detailReceivableCellAddValue(float value)
+ReceivableWidget::detailReceivableCellAddValue(double value)
 {
     setDetailReceivableValue(curReceivableValue+value);
 }
 
 void
-ReceivableWidget::sumPumpSquareCellAddValue(float value)
+ReceivableWidget::sumPumpSquareCellAddValue(double value)
 {
     setSumPumpSquareCellValue(curPumpSquareSumValue+value);
 }
 
 void
-ReceivableWidget::sumPumpTimeCellAddValue(float value)
+ReceivableWidget::sumPumpTimeCellAddValue(double value)
 {
     setSumPumpTimeCellValue(curPumpTimeSumValue+value);
 }
 
 void
-ReceivableWidget::sumProjectAmountCellAddValue(float value)
+ReceivableWidget::sumProjectAmountCellAddValue(double value)
 {
     setSumProjectAmountCellValue(curProjectAmountSumValue+value);
 }
 
 void
-ReceivableWidget::sumReceiptCellAddValue(float value)
+ReceivableWidget::sumReceiptCellAddValue(double value)
 {
     setSumReceiptCellValue(curReceiptSumValue+value);
 }
 
 void
-ReceivableWidget::sumReceivableCellAddValue(float value)
+ReceivableWidget::sumReceivableCellAddValue(double value)
 {
     setSumReceivableValue(curReceivableSumValue+value);
 }
@@ -674,31 +674,31 @@ ReceivableWidget::addDetailTableRow(RentalDocument &doc)
     QStandardItem *remarks = new QStandardItem(doc.remarks);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.squareUnitPrice);
+    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
     QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimeUnitPrice);
+    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
     QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpSquare);
+    sprintf(buf, "%0.2lf", doc.pumpSquare);
     QStandardItem *pumpSquare = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimes);
+    sprintf(buf, "%0.2lf", doc.pumpTimes);
     QStandardItem *pumpTimes = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.projectAmount);
+    sprintf(buf, "%0.2lf", doc.projectAmount);
     QStandardItem *projectAmounts =  new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.receivedAccounts);
+    sprintf(buf, "%0.2lf", doc.receivedAccounts);
     QStandardItem *receivedAccounts = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.projectAmount - doc.receivedAccounts);
+    sprintf(buf, "%0.2lf", doc.projectAmount - doc.receivedAccounts);
     QStandardItem *receivable = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
@@ -719,23 +719,23 @@ ReceivableWidget::addSumTableRow(RentalDocument &doc)
     QStandardItem *clientName = new QStandardItem(doc.clientName);
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpSquare);
+    sprintf(buf, "%0.2lf", doc.pumpSquare);
     QStandardItem *pumpSquare = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.pumpTimes);
+    sprintf(buf, "%0.2lf", doc.pumpTimes);
     QStandardItem *pumpTimes = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.projectAmount);
+    sprintf(buf, "%0.2lf", doc.projectAmount);
     QStandardItem *projectAmounts =  new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.receivedAccounts);
+    sprintf(buf, "%0.2lf", doc.receivedAccounts);
     QStandardItem *receivedAccounts = new QStandardItem(QString(buf));
 
     memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", doc.projectAmount - doc.receivedAccounts);
+    sprintf(buf, "%0.2lf", doc.projectAmount - doc.receivedAccounts);
     QStandardItem *receivable = new QStandardItem(QString(buf));
 
     QList<QStandardItem*> items;
