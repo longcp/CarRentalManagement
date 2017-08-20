@@ -1903,6 +1903,35 @@ DataBase::getAllContractPriceData(const QString contractNumber,
 }
 
 int
+DataBase::getPriceInNumber(const QString number, CONTRACT_PRICE &price)
+{
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    query->finish();
+    query->prepare("SELECT * FROM contract_price WHERE number=?");
+    query->addBindValue(number);
+    if (!query->exec()) {
+        ALOGE("SELECT * FROM contract_price!");
+        return SELECT_DATABASE_FAIL;
+    }
+
+    if (query->next()) {
+        price.number = query->value(0).toString();
+        price.contractNumber = query->value(1).toString();
+        price.remarks = query->value(2).toString();
+        price.pumpType = Car::getPumpType(query->value(3).toInt());
+        price.squarePrice = query->value(4).toDouble();
+        price.standardPrice = query->value(5).toDouble();
+    }
+
+    return SUCCESS;
+}
+
+int
 DataBase::insertContractPriceTable(const CONTRACT_PRICE &price)
 {
     ALOGDTRACE();
@@ -2001,7 +2030,7 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
                    ":projectAmount, :receivedAccounts, :pumpSquare, :squareUnitPrice, "
                    ":pumpTimes, :pumpTimeUnitPrice, :workingHours, "
                    ":date, :arrivalDateTime, :leaveDateTime, "
-                   ":rentalDocState, :pumpType)");
+                   ":rentalDocState, :pumpType, :calculateType)");
     query->bindValue(":number", doc.number);
     query->bindValue(":clientName", doc.clientName);
     query->bindValue(":clientNumber", doc.clientNumber);
@@ -2037,6 +2066,7 @@ DataBase::insertRentalDocumentTable(const RentalDocument &doc)
     query->bindValue(":rentalDocState",
                      (int)doc.state);
     query->bindValue(":pumpType", (int)doc.pumpType);
+    query->bindValue(":calculateType", (int)doc.calculateType);
 
     if (!query->exec()) {
         ALOGE("%s failed!", __FUNCTION__);
@@ -2087,7 +2117,8 @@ DataBase::updateRentalDocumentData(const RentalDocument &doc)
                    "arrivalDateTime=?, "
                    "leaveDateTime=?, "
                    "rentalDocState=?, "
-                   "pumpType=? "
+                   "pumpType=?,"
+                   "calculateType=? "
                    "WHERE number=?;");
     query->addBindValue(doc.clientName);
     query->addBindValue(doc.clientNumber);
@@ -2118,6 +2149,7 @@ DataBase::updateRentalDocumentData(const RentalDocument &doc)
     query->addBindValue(doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
     query->addBindValue(doc.state);
     query->addBindValue(doc.pumpType);
+    query->addBindValue(doc.calculateType);
     query->addBindValue(doc.number);
     if (!query->exec()) {
         ALOGE("%s fail", __FUNCTION__);
@@ -2182,6 +2214,7 @@ DataBase::getAllRentalDocumentData(QList<RentalDocument> &docs)
                                                   DATETIME_FORMAT_STR);
         doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
+        doc.calculateType = (CalculateType)query->value(30).toInt();
 
         docs.push_back(doc);                              //插入list
     }
@@ -2245,6 +2278,7 @@ DataBase::getRentalDocInClientNumber(const QString clientNumber,
                                            "yyyy-MM-dd hh:mm:ss");
         doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
+        doc.calculateType = (CalculateType)query->value(30).toInt();
 
         docs.push_back(doc);                              //插入list
     }
@@ -2348,6 +2382,7 @@ DataBase::getRentalDocumentDataInNumber(QString number, RentalDocument &doc)
                                            DATETIME_FORMAT_STR);
         doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
+        doc.calculateType = (CalculateType)query->value(30).toInt();
     }
 
     return SUCCESS;
@@ -2411,6 +2446,7 @@ DataBase::getRentalDocInStateAndClientNum(const QString clientNumber,
                                            "yyyy-MM-dd hh:mm:ss");
         doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
+        doc.calculateType = (CalculateType)query->value(30).toInt();
 
         docs.push_back(doc);                              //插入list
     }
@@ -2474,6 +2510,7 @@ DataBase::getAllRenDocInState(const RentalDocState state, QList<RentalDocument> 
                                            "yyyy-MM-dd hh:mm:ss");
         doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
+        doc.calculateType = (CalculateType)query->value(30).toInt();
 
         docs.push_back(doc);                              //插入list
     }
@@ -2536,6 +2573,7 @@ DataBase::getRentalDocumentDataInCarNumber(const QString carNumber, QList<Rental
                                            "yyyy-MM-dd hh:mm:ss");
         doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
+        doc.calculateType = (CalculateType)query->value(30).toInt();
 
         docs.push_back(doc);                              //插入list
     }
@@ -2685,6 +2723,7 @@ DataBase::getRentalDocInFilter(RECEIPT_FILTER filter, QList<RentalDocument> &doc
                                            "yyyy-MM-dd hh:mm:ss");
         doc.state = (RentalDocState)query->value(28).toInt();
         doc.pumpType = (PumpType)query->value(29).toInt();
+        doc.calculateType = (CalculateType)query->value(30).toInt();
 
         docs.push_back(doc);                              //插入list
     }

@@ -47,6 +47,7 @@ public:
 
         state = r.state;
         pumpType = r.pumpType;
+        calculateType = r.calculateType;
     }
 
     RentalDocument(const RentalDocument& r) {
@@ -83,6 +84,7 @@ public:
 
         state = r.state;
         pumpType = r.pumpType;
+        calculateType = r.calculateType;
     }
 
     void copy(const RentalDocument& r) {
@@ -119,6 +121,7 @@ public:
 
         state = r.state;
         pumpType = r.pumpType;
+        calculateType = r.calculateType;
     }
 
     void    dump();
@@ -159,6 +162,7 @@ public:
 
     RentalDocState state;
     PumpType pumpType;
+    CalculateType calculateType;
 };
 
 #endif // RENTALDOCUMENT_H

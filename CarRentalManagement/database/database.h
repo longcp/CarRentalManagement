@@ -101,6 +101,7 @@ public:
     // contract_price表
     int                 getAllContractPriceData(const QString contractNumber,
                                                 QList<CONTRACT_PRICE> &prices);
+    int                 getPriceInNumber(const QString number, CONTRACT_PRICE &price);
     int                 insertContractPriceTable(const CONTRACT_PRICE &price);
     int                 delContractPriceInNumber(const QString number);
     int                 delContractPriceInContractNumber(const QString contractNumber);

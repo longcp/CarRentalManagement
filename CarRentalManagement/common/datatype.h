@@ -109,6 +109,8 @@ enum PumpType {TYPE_37M1,
                TYPE_CAR_PUMP,
                UNKNOWN_PUMPTYPE};
 
+enum CalculateType {PUMPSQUARE_CALCULATE, PUMPTIME_CALCULATE, UNKNOWN_CALCULATE};
+
 enum RentalDocState {RESERVATION_STATE,
                      CONFIRMED_STATE,
                      UNCONFIRMED_STATE,

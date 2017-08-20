@@ -10,6 +10,7 @@ class RentalDocument;
 class CarTableDialog;
 class ContractTableDialog;
 class ClientTableDialog;
+class PriceTableDialog;
 
 namespace Ui {
 class RentalDocumentEditDialog;
@@ -57,15 +58,20 @@ private slots:
      */
     void            getContract(QString number);
 
+    void            getPrice(CONTRACT_PRICE price);
+
     void            on_contractNumToolButton_clicked();
 
     void            on_carNumToolButton_clicked();
+
+    void on_pickPriceBtn_clicked();
 
 signals:
     void            addRentalDocSignal(RentalDocument &doc);
     void            updateDocItemSignal(RentalDocument &doc);
     void            openCarTableDialogSignal();
     void            openContractTableDialogSignal(QString clientNumber);
+    void            openPriceWindow(QString contractNumber);
 
 private:
     /**
@@ -105,6 +111,7 @@ private:
     bool            isSetWindowSize;
     CarTableDialog* mCarTableDialog;
     ContractTableDialog* mContractTableDialog;
+    PriceTableDialog*    mPriceTableDialog;
 
     // 工具栏动作
     QAction*        mActAdd;

@@ -42,7 +42,8 @@ RentalDocument::isValueEqual(RentalDocument &r)
         arrivalDateTime == r.arrivalDateTime &&
         leaveDateTime == r.leaveDateTime &&
         state == r.state &&
-        pumpType == r.pumpType) {
+        pumpType == r.pumpType &&
+        calculateType == r.calculateType) {
         return true;
     }
     return false;
@@ -81,6 +82,7 @@ RentalDocument::dump()
     ALOGD("leaveDateTime = %s", leaveDateTime.toString(DATETIME_FORMAT_STR).toStdString().data());
     ALOGD("state = %d", state);
     ALOGD("pumpType = %d", pumpType);
+    ALOGD("calculType = %d", calculateType);
 }
 
 const QString

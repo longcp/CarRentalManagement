@@ -14,6 +14,7 @@
 #include <client.h>
 #include <cartabledialog.h>
 #include <contracttabledialog.h>
+#include <pricetabledialog.h>
 
 #define LOG_TAG                 "RENTALDOCUMENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -25,6 +26,7 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
     mCarTableDialog(new CarTableDialog),
     mRentalDocument(new RentalDocument()),
     mContractTableDialog(new ContractTableDialog),
+    mPriceTableDialog(new PriceTableDialog()),
     ui(new Ui::RentalDocumentEditDialog)
 {
     ui->setupUi(this);
@@ -102,6 +104,16 @@ RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
      */
     connect(mContractTableDialog, SIGNAL(selectedContract(QString)),
             this, SLOT(getContract(QString)));
+    /**
+     * @brief 选择价格
+     */
+    connect(this, SIGNAL(openPriceWindow(QString)),
+            mPriceTableDialog, SLOT(openWindow(QString)));
+    /**
+     * @brief 获取价格
+     */
+    connect(mPriceTableDialog, SIGNAL(selectedPrice(CONTRACT_PRICE)),
+            this, SLOT(getPrice(CONTRACT_PRICE)));
 }
 
 RentalDocumentEditDialog::~RentalDocumentEditDialog()
@@ -325,6 +337,9 @@ RentalDocumentEditDialog::setMode(bool mode)
     ui->remarksTE->setEnabled(mode);
     ui->contractNumToolButton->setEnabled(mode);
     ui->carNumToolButton->setEnabled(mode);
+    ui->pickPriceBtn->setEnabled(mode);
+    ui->pumpSquareRb->setEnabled(mode);
+    ui->pumpTimeRb->setEnabled(mode);
 }
 
 void
@@ -389,6 +404,14 @@ RentalDocumentEditDialog::setView(RentalDocument &doc)
         ui->unconfirmedRB->setChecked(false);
         ui->confirmedRB->setChecked(false);
         break;
+    }
+
+    if (doc.calculateType == CalculateType::PUMPSQUARE_CALCULATE) {
+        ui->pumpSquareRb->setChecked(true);
+        ui->pumpTimeRb->setChecked(false);
+    } else {
+        ui->pumpSquareRb->setChecked(false);
+        ui->pumpTimeRb->setChecked(true);
     }
 }
 
@@ -594,6 +617,11 @@ RentalDocumentEditDialog::saveUiContent(RentalDocument &doc)
         doc.state = RentalDocState::CONFIRMED_STATE;
     else
         doc.state = RentalDocState::UNCONFIRMED_STATE;
+
+    if (ui->pumpSquareRb->isChecked())
+        doc.calculateType = CalculateType::PUMPSQUARE_CALCULATE;
+    else
+        doc.calculateType = CalculateType::PUMPTIME_CALCULATE;
 }
 
 void
@@ -650,6 +678,8 @@ RentalDocumentEditDialog::cleanContent()
     ui->reservationRB->setChecked(true);
     ui->confirmedRB->setChecked(false);
     ui->unconfirmedRB->setChecked(false);
+    ui->pumpSquareRb->setChecked(true);
+    ui->pumpTimeRb->setChecked(false);
     ui->remarksTE->setText("");
 }
 
@@ -663,4 +693,22 @@ void
 RentalDocumentEditDialog::on_carNumToolButton_clicked()
 {
     emit openCarTableDialogSignal();
+}
+
+void
+RentalDocumentEditDialog::getPrice(CONTRACT_PRICE price)
+{
+    ui->squareUnitPriceDSB->setValue(price.squarePrice);
+    ui->pumpTimeUnitPriceDSB->setValue(price.standardPrice);
+}
+
+void
+RentalDocumentEditDialog::on_pickPriceBtn_clicked()
+{
+    if (ui->contractNumberLabel->text() == "") {
+        QMessageBox::warning(this, tr("温馨提示"),
+                             tr("请先选择合同!"));
+        return;
+    }
+    emit openPriceWindow(ui->contractNumberLabel->text());
 }
