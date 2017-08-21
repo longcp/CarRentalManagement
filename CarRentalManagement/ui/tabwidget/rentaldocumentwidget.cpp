@@ -9,6 +9,7 @@
 #include <client.h>
 #include <QMessageBox>
 #include <QDebug>
+#include <util.h>
 
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
@@ -334,8 +335,6 @@ RentalDocumentWidget::clearRentalDocTable()
 void
 RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
 {
-    char buf[64];
-
     QStandardItem *docNum = new QStandardItem(doc.number);
     QStandardItem *clientName = new QStandardItem(doc.clientName);
     QStandardItem *projectName = new QStandardItem(doc.projectName);
@@ -355,34 +354,13 @@ RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
     QStandardItem *driver2 = new QStandardItem(doc.driver2);
     QStandardItem *driver3 = new QStandardItem(doc.driver3);
     QStandardItem *remarks = new QStandardItem(doc.remarks);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.beginFuel);
-    QStandardItem *beginFuel = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.endFuel);
-    QStandardItem *endFuel = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.workingHours);
-    QStandardItem *workingHours = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpSquare);
-    QStandardItem *pumpSquare = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
-    QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimes);
-    QStandardItem *pumpTimes = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
-    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
+    QStandardItem *beginFuel = new QStandardItem(Util::doubleToDecimal2String(doc.beginFuel));
+    QStandardItem *endFuel = new QStandardItem(Util::doubleToDecimal2String(doc.endFuel));
+    QStandardItem *workingHours = new QStandardItem(Util::doubleToDecimal2String(doc.workingHours));
+    QStandardItem *pumpSquare = new QStandardItem(Util::doubleToDecimal2String(doc.pumpSquare));
+    QStandardItem *squareUnitPrice = new QStandardItem(Util::doubleToDecimal2String(doc.squareUnitPrice));
+    QStandardItem *pumpTimes = new QStandardItem(Util::doubleToDecimal2String(doc.pumpTimes));
+    QStandardItem *pumpTimeUnitPrice = new QStandardItem(Util::doubleToDecimal2String(doc.pumpTimeUnitPrice));
 
     QList<QStandardItem*> items;
     items << docNum << clientName << projectName << projectAddr << date
@@ -397,7 +375,6 @@ RentalDocumentWidget::addRentalDocTableRow(RentalDocument &doc)
 void
 RentalDocumentWidget::updateDocItemSlot(RentalDocument &doc)
 {
-    char buf[64];
     ALOGDTRACE();
 
     mModel->setData(mModel->index(mCurRow, 0), doc.number);
@@ -409,38 +386,15 @@ RentalDocumentWidget::updateDocItemSlot(RentalDocument &doc)
     mModel->setData(mModel->index(mCurRow, 6), QString("%1").arg(doc.pumpType));
     mModel->setData(mModel->index(mCurRow, 7), doc.constructPlace);
     mModel->setData(mModel->index(mCurRow, 8), doc.concreteLable);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.beginFuel);
-    mModel->setData(mModel->index(mCurRow, 9), QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.endFuel);
-    mModel->setData(mModel->index(mCurRow, 10), QString(buf));
-
+    mModel->setData(mModel->index(mCurRow, 9), Util::doubleToDecimal2String(doc.beginFuel));
+    mModel->setData(mModel->index(mCurRow, 10), Util::doubleToDecimal2String(doc.endFuel));
     mModel->setData(mModel->index(mCurRow, 11), doc.arrivalDateTime.toString(DATETIME_FORMAT_STR));
     mModel->setData(mModel->index(mCurRow, 12), doc.leaveDateTime.toString(DATETIME_FORMAT_STR));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.workingHours);
-    mModel->setData(mModel->index(mCurRow, 13), QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpSquare);
-    mModel->setData(mModel->index(mCurRow, 14), QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
-    mModel->setData(mModel->index(mCurRow, 15), QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimes);
-    mModel->setData(mModel->index(mCurRow, 16), QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
-    mModel->setData(mModel->index(mCurRow, 17), QString(buf));
-
+    mModel->setData(mModel->index(mCurRow, 13), Util::doubleToDecimal2String(doc.workingHours));
+    mModel->setData(mModel->index(mCurRow, 14), Util::doubleToDecimal2String(doc.pumpSquare));
+    mModel->setData(mModel->index(mCurRow, 15), Util::doubleToDecimal2String(doc.squareUnitPrice));
+    mModel->setData(mModel->index(mCurRow, 16), Util::doubleToDecimal2String(doc.pumpTimes));
+    mModel->setData(mModel->index(mCurRow, 17), Util::doubleToDecimal2String(doc.pumpTimeUnitPrice));
     mModel->setData(mModel->index(mCurRow, 18), doc.principal);
     mModel->setData(mModel->index(mCurRow, 19), doc.principalTel);
     mModel->setData(mModel->index(mCurRow, 20), doc.driver1);

@@ -57,7 +57,8 @@ SOURCES += main.cpp\
     ui/dialog/car/cartabledialog.cpp \
     ui/dialog/rentaldocument/rentaldoctabledialog.cpp \
     utils/floatoperator.cpp \
-    ui/dialog/contract/pricetabledialog.cpp
+    ui/dialog/contract/pricetabledialog.cpp \
+    utils/util.cpp
 
 HEADERS  += ui\mainwindow.h \
     ui/tabwidget/clientmanagermentwidget.h \
@@ -94,7 +95,8 @@ HEADERS  += ui\mainwindow.h \
     ui/dialog/car/cartabledialog.h \
     ui/dialog/rentaldocument/rentaldoctabledialog.h \
     utils/floatoperator.h \
-    ui/dialog/contract/pricetabledialog.h
+    ui/dialog/contract/pricetabledialog.h \
+    utils/util.h
 
 FORMS    += ui\mainwindow.ui \
     ui/tabwidget/clientmanagermentwidget.ui \

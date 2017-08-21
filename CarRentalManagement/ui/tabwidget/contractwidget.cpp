@@ -9,6 +9,7 @@
 #include <client.h>
 #include <car.h>
 #include <QModelIndex>
+#include <util.h>
 
 #define LOG_TAG                 "CONTRACT_WIDGET_DIALOG"
 #include "utils/Log.h"
@@ -332,45 +333,20 @@ void
 ContractWidget::addContractTableRow(Contract &contract)
 {
     ALOGDTRACE();
-    char buf[64];
-
-    QStandardItem *num
-            = new QStandardItem(contract.number);
-    QStandardItem *clientName
-            = new QStandardItem(contract.clientName);
-    QStandardItem *projectName
-            = new QStandardItem(contract.projectName);
-    QStandardItem *projectAddr
-            = new QStandardItem(contract.projectAddress);
-    QStandardItem* beginDate
-            = new QStandardItem(contract
-                                .beginDate.toString(DATE_FORMAT_STR));
-    QStandardItem* endDate
-            = new QStandardItem(contract
-                                .endDate.toString(DATE_FORMAT_STR));
-    QStandardItem* signedDate
-            = new QStandardItem(contract
-                                .signedDate.toString(DATE_FORMAT_STR));
-    QStandardItem* taxRate
-            = new QStandardItem(QString("%1").arg(contract.taxRate));
-    QStandardItem* isIncludeTax
-            = new QStandardItem(contract.isIncludeTax ? "是" : "否");
-    QStandardItem *requirement
-            = new QStandardItem(contract.requirement);
-    QStandardItem *supplement
-            = new QStandardItem(contract.supplement);
-    QStandardItem *remarks
-            = new QStandardItem(contract.remarks);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", contract.deliverySizes);
-    QStandardItem* deliverySizes
-            = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", contract.structureLevel);
-    QStandardItem* structureLevel
-            = new QStandardItem(QString(buf));
+    QStandardItem *num = new QStandardItem(contract.number);
+    QStandardItem *clientName = new QStandardItem(contract.clientName);
+    QStandardItem *projectName = new QStandardItem(contract.projectName);
+    QStandardItem *projectAddr = new QStandardItem(contract.projectAddress);
+    QStandardItem* beginDate = new QStandardItem(contract.beginDate.toString(DATE_FORMAT_STR));
+    QStandardItem* endDate = new QStandardItem(contract.endDate.toString(DATE_FORMAT_STR));
+    QStandardItem* signedDate = new QStandardItem(contract.signedDate.toString(DATE_FORMAT_STR));
+    QStandardItem* taxRate = new QStandardItem(QString("%1").arg(contract.taxRate));
+    QStandardItem* isIncludeTax = new QStandardItem(contract.isIncludeTax ? "是" : "否");
+    QStandardItem *requirement = new QStandardItem(contract.requirement);
+    QStandardItem *supplement = new QStandardItem(contract.supplement);
+    QStandardItem *remarks = new QStandardItem(contract.remarks);
+    QStandardItem* deliverySizes = new QStandardItem(Util::doubleToDecimal2String(contract.deliverySizes));
+    QStandardItem* structureLevel = new QStandardItem(Util::doubleToDecimal2String(contract.structureLevel));
 
     QList<QStandardItem*> items;
     items << num << clientName << projectName << projectAddr
@@ -394,23 +370,11 @@ void
 ContractWidget::addPriceTableRow(CONTRACT_PRICE price)
 {
     ALOGDTRACE();
-    char buf[64];
-    QStandardItem *num
-            = new QStandardItem(price.number);
-    QStandardItem *pumyType
-            = new QStandardItem(Car::getPumpTypeStr(price.pumpType));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", price.squarePrice);
-    QStandardItem *squarePrice
-            = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", price.standardPrice);
-    QStandardItem *standardPrice
-            = new QStandardItem(QString(buf));
-    QStandardItem *remarks
-            = new QStandardItem(price.remarks);
+    QStandardItem *num = new QStandardItem(price.number);
+    QStandardItem *pumyType = new QStandardItem(Car::getPumpTypeStr(price.pumpType));
+    QStandardItem *squarePrice = new QStandardItem(Util::doubleToDecimal2String(price.squarePrice));
+    QStandardItem *standardPrice = new QStandardItem(Util::doubleToDecimal2String(price.standardPrice));
+    QStandardItem *remarks = new QStandardItem(price.remarks);
 
     QList<QStandardItem*> items;
     items << num << pumyType << squarePrice << standardPrice << remarks;
@@ -429,41 +393,20 @@ void
 ContractWidget::updateContractRow(Contract &contract)
 {
     ALOGDTRACE();
-    char buf[64];
-
-    mContractModel->setData(mContractModel->index(curRow, 0),
-                         contract.number);
-    mContractModel->setData(mContractModel->index(curRow, 1),
-                         contract.clientName);
-    mContractModel->setData(mContractModel->index(curRow, 2),
-                         contract.projectName);
-    mContractModel->setData(mContractModel->index(curRow, 3),
-                         contract.projectAddress);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", contract.deliverySizes);
-    mContractModel->setData(mContractModel->index(curRow, 4), QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", contract.structureLevel);
-    mContractModel->setData(mContractModel->index(curRow, 5), QString(buf));
-
-    mContractModel->setData(mContractModel->index(curRow, 6),
-                         contract.beginDate.toString(DATE_FORMAT_STR));
-    mContractModel->setData(mContractModel->index(curRow, 7),
-                         contract.endDate.toString(DATE_FORMAT_STR));
-    mContractModel->setData(mContractModel->index(curRow, 8),
-                         contract.signedDate.toString(DATE_FORMAT_STR));
-    mContractModel->setData(mContractModel->index(curRow, 9),
-                         QString("%1").arg(contract.taxRate));
-    mContractModel->setData(mContractModel->index(curRow, 10),
-                         contract.isIncludeTax ? "是" : "否");
-    mContractModel->setData(mContractModel->index(curRow, 11),
-                         contract.requirement);
-    mContractModel->setData(mContractModel->index(curRow, 12),
-                         contract.supplement);
-    mContractModel->setData(mContractModel->index(curRow, 13),
-                         contract.remarks);
+    mContractModel->setData(mContractModel->index(curRow, 0), contract.number);
+    mContractModel->setData(mContractModel->index(curRow, 1), contract.clientName);
+    mContractModel->setData(mContractModel->index(curRow, 2), contract.projectName);
+    mContractModel->setData(mContractModel->index(curRow, 3), contract.projectAddress);
+    mContractModel->setData(mContractModel->index(curRow, 4), Util::doubleToDecimal2String(contract.deliverySizes));
+    mContractModel->setData(mContractModel->index(curRow, 5), Util::doubleToDecimal2String(contract.structureLevel));
+    mContractModel->setData(mContractModel->index(curRow, 6), contract.beginDate.toString(DATE_FORMAT_STR));
+    mContractModel->setData(mContractModel->index(curRow, 7), contract.endDate.toString(DATE_FORMAT_STR));
+    mContractModel->setData(mContractModel->index(curRow, 8), contract.signedDate.toString(DATE_FORMAT_STR));
+    mContractModel->setData(mContractModel->index(curRow, 9), QString("%1").arg(contract.taxRate));
+    mContractModel->setData(mContractModel->index(curRow, 10), contract.isIncludeTax ? "是" : "否");
+    mContractModel->setData(mContractModel->index(curRow, 11), contract.requirement);
+    mContractModel->setData(mContractModel->index(curRow, 12), contract.supplement);
+    mContractModel->setData(mContractModel->index(curRow, 13), contract.remarks);
 }
 
 void

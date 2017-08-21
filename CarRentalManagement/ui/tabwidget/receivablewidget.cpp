@@ -15,6 +15,7 @@
 #include <client.h>
 #include <QDebug>
 #include <stdio.h>
+#include <util.h>
 
 #define LOG_TAG                         "RECEIVABLE_WIDGET"
 #include "utils/Log.h"
@@ -400,61 +401,42 @@ ReceivableWidget::resetTotalSumTableData()
 void
 ReceivableWidget::setDetailPumpSquareCellValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_SQUARE),
-                             QString(buf));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_SQUARE), Util::doubleToDecimal2String(value));
     curPumpSquareValue = value;
 }
 
 void
 ReceivableWidget::setDetailPumpTimeCellValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_TIME),
-                             QString(buf));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PUMP_TIME), Util::doubleToDecimal2String(value));
     curPumpTimeValue = value;
 }
 
 void
 ReceivableWidget::setDetailProjectAmountCellValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    ALOGD("%s, value = %lf, 02value = %0.2lf, buf = %s", __FUNCTION__, value, value, buf);
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PROJECT_AMOUNT),
-                             QString(buf));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_PROJECT_AMOUNT), Util::doubleToDecimal2String(value));
     curProjectAmountValue = value;
 }
 
 void
 ReceivableWidget::setDetailReceiptCellValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIPT),
-                             QString(buf));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIPT), Util::doubleToDecimal2String(value));
     curReceiptValue = value;
 }
 
 void
 ReceivableWidget::setDetailReceivableValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIVABLE),
-                             QString(buf));
+    mDetailSumModel->setData(mDetailSumModel->index(0, DETAIL_COL_RECEIVABLE), Util::doubleToDecimal2String(value));
     curReceivableValue = value;
 }
 
 void
 ReceivableWidget::setSumReceivableValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIVABLE),
-                             QString(buf));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIVABLE), Util::doubleToDecimal2String(value));
     curReceivableSumValue = value;
 }
 
@@ -462,40 +444,28 @@ ReceivableWidget::setSumReceivableValue(double value)
 void
 ReceivableWidget::setSumPumpSquareCellValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_SQUARE),
-                             QString(buf));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_SQUARE), Util::doubleToDecimal2String(value));
     curPumpSquareSumValue = value;
 }
 
 void
 ReceivableWidget::setSumPumpTimeCellValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_TIME),
-                             QString(buf));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PUMP_TIME), Util::doubleToDecimal2String(value));
     curPumpTimeSumValue = value;
 }
 
 void
 ReceivableWidget::setSumProjectAmountCellValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PROJECT_AMOUNT),
-                             QString(buf));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_PROJECT_AMOUNT), Util::doubleToDecimal2String(value));
     curProjectAmountSumValue = value;
 }
 
 void
 ReceivableWidget::setSumReceiptCellValue(double value)
 {
-    char buf[64];
-    sprintf(buf, "%0.2lf", value);
-    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIPT),
-                             QString(buf));
+    mTotalSumModel->setData(mTotalSumModel->index(0, SUM_COL_RECEIPT), Util::doubleToDecimal2String(value));
     curReceiptSumValue = value;
 }
 
@@ -661,7 +631,6 @@ ReceivableWidget::addSumTableRows(QList<RentalDocument> &docs)
 void
 ReceivableWidget::addDetailTableRow(RentalDocument &doc)
 {
-    char buf[64];
     ALOGDTRACE();
 
     QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
@@ -677,34 +646,13 @@ ReceivableWidget::addDetailTableRow(RentalDocument &doc)
     QStandardItem *principal = new QStandardItem(doc.principal);
     QStandardItem *principalTel = new QStandardItem(doc.principalTel);
     QStandardItem *remarks = new QStandardItem(doc.remarks);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
-    QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
-    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpSquare);
-    QStandardItem *pumpSquare = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimes);
-    QStandardItem *pumpTimes = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.projectAmount);
-    QStandardItem *projectAmounts =  new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.receivedAccounts);
-    QStandardItem *receivedAccounts = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.projectAmount - doc.receivedAccounts);
-    QStandardItem *receivable = new QStandardItem(QString(buf));
+    QStandardItem *squareUnitPrice = new QStandardItem(Util::doubleToDecimal2String(doc.squareUnitPrice));
+    QStandardItem *pumpTimeUnitPrice = new QStandardItem(Util::doubleToDecimal2String(doc.pumpTimeUnitPrice));
+    QStandardItem *pumpSquare = new QStandardItem(Util::doubleToDecimal2String(doc.pumpSquare));
+    QStandardItem *pumpTimes = new QStandardItem(Util::doubleToDecimal2String(doc.pumpTimes));
+    QStandardItem *projectAmounts =  new QStandardItem(Util::doubleToDecimal2String(doc.projectAmount));
+    QStandardItem *receivedAccounts = new QStandardItem(Util::doubleToDecimal2String(doc.receivedAccounts));
+    QStandardItem *receivable = new QStandardItem(Util::doubleToDecimal2String(doc.projectAmount - doc.receivedAccounts));
 
     QList<QStandardItem*> items;
     items << date << docNum << contractNumber << clientName << carPlateNumber
@@ -718,30 +666,13 @@ ReceivableWidget::addDetailTableRow(RentalDocument &doc)
 void
 ReceivableWidget::addSumTableRow(RentalDocument &doc)
 {
-    char buf[64];
-
     QStandardItem *contractNumber = new QStandardItem(doc.contractNumber);
     QStandardItem *clientName = new QStandardItem(doc.clientName);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpSquare);
-    QStandardItem *pumpSquare = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimes);
-    QStandardItem *pumpTimes = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.projectAmount);
-    QStandardItem *projectAmounts =  new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.receivedAccounts);
-    QStandardItem *receivedAccounts = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.projectAmount - doc.receivedAccounts);
-    QStandardItem *receivable = new QStandardItem(QString(buf));
+    QStandardItem *pumpSquare = new QStandardItem(Util::doubleToDecimal2String(doc.pumpSquare));
+    QStandardItem *pumpTimes = new QStandardItem(Util::doubleToDecimal2String(doc.pumpTimes));
+    QStandardItem *projectAmounts =  new QStandardItem(Util::doubleToDecimal2String(doc.projectAmount));
+    QStandardItem *receivedAccounts = new QStandardItem(Util::doubleToDecimal2String(doc.receivedAccounts));
+    QStandardItem *receivable = new QStandardItem(Util::doubleToDecimal2String(doc.projectAmount - doc.receivedAccounts));
 
     QList<QStandardItem*> items;
     items << contractNumber << clientName << pumpSquare << pumpTimes

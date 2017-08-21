@@ -4,6 +4,7 @@
 #include <database/database.h>
 #include <rentaldocument.h>
 #include <tablemodel.h>
+#include <util.h>
 
 #define LOG_TAG                 "RENTALDOC_TABLE_DIALOG"
 #include "utils/Log.h"
@@ -96,27 +97,13 @@ RentalDocTableDialog::initTableView()
 void
 RentalDocTableDialog::addRentalDocItem(RentalDocument &doc)
 {
-    char buf[64];
-
     QStandardItem *docNum = new QStandardItem(doc.number);
     QStandardItem *projectName = new QStandardItem(doc.projectName);
     QStandardItem *date = new QStandardItem(doc.date.toString(DATE_FORMAT_STR));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpSquare);
-    QStandardItem *pumpSquare = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.squareUnitPrice);
-    QStandardItem *squareUnitPrice = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimes);
-    QStandardItem *pumpTimes = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", doc.pumpTimeUnitPrice);
-    QStandardItem *pumpTimeUnitPrice = new QStandardItem(QString(buf));
+    QStandardItem *pumpSquare = new QStandardItem(Util::doubleToDecimal2String(doc.pumpSquare));
+    QStandardItem *squareUnitPrice = new QStandardItem(Util::doubleToDecimal2String(doc.squareUnitPrice));
+    QStandardItem *pumpTimes = new QStandardItem(Util::doubleToDecimal2String(doc.pumpTimes));
+    QStandardItem *pumpTimeUnitPrice = new QStandardItem(Util::doubleToDecimal2String(doc.pumpTimeUnitPrice));
 
     QList<QStandardItem*> items;
     items << docNum  << projectName  << date << pumpSquare

@@ -9,6 +9,7 @@
 #include <database/database.h>
 #include <QMenu>
 #include <QAction>
+#include <util.h>
 
 #define LOG_TAG                 "CAR_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -1093,19 +1094,11 @@ CarEditDialog::resetView()
 void
 CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
 {
-    char buf[64];
-
     QStandardItem* num = new QStandardItem(record.number);
     QStandardItem* date = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* remarks = new QStandardItem(record.remarks);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", record.annualFee);
-    QStandardItem* annualFee = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", record.travelExpenses);
-    QStandardItem* travelExpenses = new QStandardItem(QString(buf));
+    QStandardItem* annualFee = new QStandardItem(Util::doubleToDecimal2String(record.annualFee));
+    QStandardItem* travelExpenses = new QStandardItem(Util::doubleToDecimal2String(record.travelExpenses));
 
     QList<QStandardItem*> items;
     items << num << date << annualFee << travelExpenses << remarks;
@@ -1117,16 +1110,11 @@ CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
 void
 CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
 {
-    char buf[64];
-
     QStandardItem* num = new QStandardItem(record.number);
     QStandardItem* date = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* remarks = new QStandardItem(record.remarks);
     QStandardItem* company = new QStandardItem(record.company);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", record.fee);
-    QStandardItem* fee = new QStandardItem(QString(buf));
+    QStandardItem* fee = new QStandardItem(Util::doubleToDecimal2String(record.fee));
 
     QList<QStandardItem*> items;
     items << num << date << fee << company << remarks;
@@ -1138,16 +1126,11 @@ CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
 void
 CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
 {
-    char buf[64];
-
     QStandardItem* num = new QStandardItem(record.number);
     QStandardItem* date = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* company = new QStandardItem(record.company);
     QStandardItem* remarks = new QStandardItem(record.remarks);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2f", record.fee);
-    QStandardItem* fee = new QStandardItem(QString(buf));
+    QStandardItem* fee = new QStandardItem(Util::doubleToDecimal2String(record.fee));
 
     QList<QStandardItem*> items;
     items << num << date << fee << company << remarks;
@@ -1159,17 +1142,12 @@ CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
 void
 CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
 {
-    char buf[64];
-
     QStandardItem* num = new QStandardItem(QString::number(record.number));
     QStandardItem* date = new QStandardItem(record.date.toString(DATE_FORMAT_STR));
     QStandardItem* contractNum = new QStandardItem(record.contractNum);
     QStandardItem* clientNum = new QStandardItem(record.clientNum);
     QStandardItem* clientName = new QStandardItem(record.clientName);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.l2f", record.amount);
-    QStandardItem* amount = new QStandardItem(QString(buf));
+    QStandardItem* amount = new QStandardItem(Util::doubleToDecimal2String(record.amount));
     QStandardItem* remarks = new QStandardItem(record.remarks);
     QStandardItem* rentalDocNum = new QStandardItem(record.rentalDocNum);
 

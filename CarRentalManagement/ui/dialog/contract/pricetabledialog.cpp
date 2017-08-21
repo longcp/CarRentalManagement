@@ -3,6 +3,7 @@
 #include <tablemodel.h>
 #include <car.h>
 #include <database/database.h>
+#include <util.h>
 
 #define LOG_TAG                 "PRICE_TABLE_DIALOG"
 #include "utils/Log.h"
@@ -96,24 +97,14 @@ void
 PriceTableDialog::addPriceItem(CONTRACT_PRICE price)
 {
     ALOGDTRACE();
-    char buf[64];
-
     QStandardItem* num
             = new QStandardItem(price.number);
     QStandardItem* contractNum
             = new QStandardItem(mContractNumber);
     QStandardItem* PumpType
             = new QStandardItem(Car::getPumpTypeStr(price.pumpType));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", price.squarePrice);
-    QStandardItem *squarePrice
-            = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", price.standardPrice);
-    QStandardItem *standardPrice
-            = new QStandardItem(QString(buf));
+    QStandardItem *squarePrice = new QStandardItem(Util::doubleToDecimal2String(price.squarePrice));
+    QStandardItem *standardPrice = new QStandardItem(Util::doubleToDecimal2String(price.standardPrice));
 
     QList<QStandardItem*> items;
     items << num << contractNum << PumpType << standardPrice;

@@ -10,6 +10,7 @@
 #include <tablemodel.h>
 #include <QMessageBox>
 #include <QDebug>
+#include <util.h>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -219,7 +220,6 @@ ClientManagermentWidget::addClientSlot()
 void
 ClientManagermentWidget::addClientItemSlot(Client &client)
 {
-    char buf[64];
     QStandardItem* num = new QStandardItem(client.number);
     QStandardItem* clientype
             = new QStandardItem(client.getClientTypeStr(client.clienttype));
@@ -233,18 +233,9 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
     QStandardItem* monthly
             = new QStandardItem(QString::number(client.monthly));
     QStandardItem* remarks = new QStandardItem(client.remarks);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", client.amount);
-    QStandardItem* amount = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", client.paid);
-    QStandardItem* paid = new QStandardItem(QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", client.amount - client.paid);
-    QStandardItem* balance = new QStandardItem(QString(buf));
+    QStandardItem* amount = new QStandardItem(Util::doubleToDecimal2String(client.amount));
+    QStandardItem* paid = new QStandardItem(Util::doubleToDecimal2String(client.paid));
+    QStandardItem* balance = new QStandardItem(Util::doubleToDecimal2String(client.amount - client.paid));
 
     QList<QStandardItem*> items;
     items << num << clientype << name << addr << telephone
@@ -256,35 +247,19 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
 void
 ClientManagermentWidget::updateClientItemSlot(Client &client)
 {
-    char buf[64];
     mModel->setData(mModel->index(curRow, 0), client.number);
-    mModel->setData(mModel->index(curRow, 1),
-                    client.getClientTypeStr(client.clienttype));
+    mModel->setData(mModel->index(curRow, 1),client.getClientTypeStr(client.clienttype));
     mModel->setData(mModel->index(curRow, 2), client.name);
     mModel->setData(mModel->index(curRow, 3), client.address);
     mModel->setData(mModel->index(curRow, 4), client.telephone);
     mModel->setData(mModel->index(curRow, 5), client.fax);
     mModel->setData(mModel->index(curRow, 6), client.contract);
-    mModel->setData(mModel->index(curRow, 7),
-                    client.getPayTypeStr(client.paytype));
-    mModel->setData(mModel->index(curRow, 8),
-                    QString::number(client.monthly));
+    mModel->setData(mModel->index(curRow, 7),client.getPayTypeStr(client.paytype));
+    mModel->setData(mModel->index(curRow, 8),QString::number(client.monthly));
     mModel->setData(mModel->index(curRow, 12), client.remarks);
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", client.amount);
-    mModel->setData(mModel->index(curRow, 9),
-                    QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", client.paid);
-    mModel->setData(mModel->index(curRow, 10),
-                    QString(buf));
-
-    memset(buf, 0, sizeof(buf));
-    sprintf(buf, "%0.2lf", client.amount - client.paid);
-    mModel->setData(mModel->index(curRow, 11),
-                    QString(buf));
+    mModel->setData(mModel->index(curRow, 9), Util::doubleToDecimal2String(client.amount));
+    mModel->setData(mModel->index(curRow, 10), Util::doubleToDecimal2String(client.paid));
+    mModel->setData(mModel->index(curRow, 11), Util::doubleToDecimal2String(client.amount - client.paid));
 }
 
 void
