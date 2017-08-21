@@ -1,5 +1,6 @@
 #include "contract.h"
 #include <math.h>
+#include <util.h>
 
 #define LOG_TAG                 "CONTRACT"
 #include "utils/Log.h"
@@ -29,7 +30,7 @@ Contract::dump()
           "beginDate = %s\n"
           "endDate = %s\n"
           "creatDate = %s\n"
-          "isIncludeTax = %s\n",
+          "isIncludeTax = %d\n",
           number.toStdString().data(),
           clientName.toStdString().data(),
           clientNumber.toStdString().data(),
@@ -46,7 +47,7 @@ Contract::dump()
           beginDate.toString(DATE_FORMAT_STR).toStdString().data(),
           endDate.toString(DATE_FORMAT_STR).toStdString().data(),
           creatDate.toString(DATE_FORMAT_STR).toStdString().data(),
-          QString::number(isIncludeTax));
+          isIncludeTax);
 }
 
 bool
@@ -61,8 +62,8 @@ Contract::isValueEqual(Contract &c)
         supplement != c.supplement ||
         remarks != c.remarks ||
         creator != c.creator ||
-        deliverySizes != c.deliverySizes ||
-        structureLevel != c.structureLevel ||
+        !Util::isDoubleEqual(this->deliverySizes, c.deliverySizes) ||
+        !Util::isDoubleEqual(this->structureLevel, c.structureLevel) ||
         taxRate != c.taxRate ||
         signedDate != c.signedDate ||
         beginDate != c.beginDate ||
@@ -79,8 +80,8 @@ Contract::isValueEqual(Contract &c)
         if (prices.at(i).number != c.prices.at(i).number ||
                 prices.at(i).contractNumber != c.prices.at(i).contractNumber ||
                 prices.at(i).pumpType != c.prices.at(i).pumpType ||
-                prices.at(i).squarePrice != c.prices.at(i).squarePrice ||
-                prices.at(i).standardPrice != c.prices.at(i).standardPrice ||
+                !Util::isDoubleEqual(prices.at(i).squarePrice, c.prices.at(i).squarePrice) ||
+                !Util::isDoubleEqual(prices.at(i).standardPrice, c.prices.at(i).standardPrice) ||
                 prices.at(i).remarks != c.prices.at(i).remarks) {
             return false;
         }

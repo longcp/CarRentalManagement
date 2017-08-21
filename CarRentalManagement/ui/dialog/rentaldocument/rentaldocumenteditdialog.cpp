@@ -569,6 +569,9 @@ RentalDocumentEditDialog::isModified()
 {
     RentalDocument tmp;
     saveUiContent(tmp);
+    tmp.dump();
+    ALOGD("-----------------------");
+    mRentalDocument->dump();
     if (mRentalDocument->isValueEqual(tmp)) {
         return false;
     }

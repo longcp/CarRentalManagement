@@ -1,4 +1,8 @@
 #include "client.h"
+#include <util.h>
+
+#define LOG_TAG                 "CLIENT"
+#include "utils/Log.h"
 
 Client::Client(QObject *parent) : QObject(parent)
 {
@@ -81,9 +85,29 @@ Client::isValueEqual(Client &c)
         paytype == c.paytype &&
         createDate == c.createDate &&
         monthly == c.monthly &&
-        amount == c.amount &&
-        paid == c.paid)
+        Util::isDoubleEqual(this->amount, c.amount) &&
+        Util::isDoubleEqual(this->paid, c.paid))
         return true;
 
     return false;
+}
+
+void
+Client::dump()
+{
+    ALOGD("name = %s", name.toStdString().data());
+    ALOGD("number = %s", number.toStdString().data());
+    ALOGD("telephone = %s", telephone.toStdString().data());
+    ALOGD("address = %s", address.toStdString().data());
+    ALOGD("email = %s", email.toStdString().data());
+    ALOGD("fax = %s", fax.toStdString().data());
+    ALOGD("contract = %s", contract.toStdString().data());
+    ALOGD("remarks = %s", remarks.toStdString().data());
+    ALOGD("creator = %s", creator.toStdString().data());
+    ALOGD("clienttype = %d", (int)clienttype);
+    ALOGD("paytype = %d", (int)paytype);
+    ALOGD("createDate = %s", createDate.toString(DATE_FORMAT_STR).toStdString().data());
+    ALOGD("monthly = %d", monthly);
+    ALOGD("amount = %lf", amount);
+    ALOGD("paid = %lf", paid);
 }

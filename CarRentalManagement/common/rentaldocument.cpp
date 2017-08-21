@@ -1,5 +1,6 @@
 #include "rentaldocument.h"
 #include "datatype.h"
+#include <util.h>
 
 #define LOG_TAG                         "RENTALDOCUMENT"
 #include "utils/Log.h"
@@ -29,16 +30,16 @@ RentalDocument::isValueEqual(RentalDocument &r)
         projectName == r.projectName &&
         projectAddress == r.projectAddress &&
         remarks == r.remarks &&
-        beginFuel == r.beginFuel &&
-        endFuel == r.endFuel &&
-        projectAmount == r.projectAmount &&
-        pumpSquare == r.pumpSquare &&
-        squareUnitPrice == r.squareUnitPrice &&
-        pumpTimes == r.pumpTimes &&
-        pumpTimeUnitPrice == r.pumpTimeUnitPrice &&
-        receivedAccounts == r.receivedAccounts &&
+        Util::isDoubleEqual(this->beginFuel, r.beginFuel) &&
+        Util::isDoubleEqual(this->endFuel, r.endFuel) &&
+        Util::isDoubleEqual(this->projectAmount, r.projectAmount) &&
+        Util::isDoubleEqual(this->pumpSquare, r.pumpSquare) &&
+        Util::isDoubleEqual(this->squareUnitPrice, r.squareUnitPrice) &&
+        Util::isDoubleEqual(this->pumpTimes, r.pumpTimes) &&
+        Util::isDoubleEqual(this->pumpTimeUnitPrice, r.pumpTimeUnitPrice) &&
+        Util::isDoubleEqual(this->receivedAccounts, r.receivedAccounts) &&
+        Util::isDoubleEqual(this->workingHours, r.workingHours) &&
         date == r.date &&
-        workingHours == r.workingHours &&
         arrivalDateTime == r.arrivalDateTime &&
         leaveDateTime == r.leaveDateTime &&
         state == r.state &&

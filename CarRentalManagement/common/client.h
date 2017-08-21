@@ -72,6 +72,7 @@ public:
 
     bool        isValueEqual(Client &c);
 
+    void        dump();
 
     QString     name;
     QString     number;
