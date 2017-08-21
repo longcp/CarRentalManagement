@@ -15,6 +15,7 @@
 #include <cartabledialog.h>
 #include <contracttabledialog.h>
 #include <pricetabledialog.h>
+#include <QMutex>
 
 #define LOG_TAG                 "RENTALDOCUMENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -22,6 +23,7 @@
 RentalDocumentEditDialog::RentalDocumentEditDialog(QWidget *parent) :
     QDialog(parent),
     mDb(DataBase::getInstance()),
+    mMutex(new QMutex(QMutex::Recursive)),
     isSetWindowSize(false),
     mCarTableDialog(new CarTableDialog),
     mRentalDocument(new RentalDocument()),
@@ -711,4 +713,71 @@ RentalDocumentEditDialog::on_pickPriceBtn_clicked()
         return;
     }
     emit openPriceWindow(ui->contractNumberLabel->text());
+}
+
+void
+RentalDocumentEditDialog::updateProjectAmountValue(double value)
+{
+    QMutexLocker locker(mMutex);
+    ui->projectAmountDSB->setValue(value);
+}
+
+void
+RentalDocumentEditDialog::on_squareUnitPriceDSB_valueChanged(double value)
+{
+    double num;
+    if (ui->pumpTimeRb->isChecked()) {
+        return;
+    }
+
+    num = ui->pumpSquareDSB->value();
+    updateProjectAmountValue(num * value);
+}
+
+void
+RentalDocumentEditDialog::on_pumpTimeUnitPriceDSB_valueChanged(double value)
+{
+    double num;
+    if (ui->pumpSquareRb->isChecked()) {
+        return;
+    }
+
+    num = ui->pumpTimesDSB->value();
+    updateProjectAmountValue(num * value);
+}
+
+void
+RentalDocumentEditDialog::on_pumpSquareDSB_valueChanged(double value)
+{
+    if (ui->pumpTimeRb->isChecked())
+        return;
+
+    updateProjectAmountValue(value * ui->squareUnitPriceDSB->value());
+}
+
+void
+RentalDocumentEditDialog::on_pumpTimesDSB_valueChanged(double value)
+{
+    if (ui->pumpSquareRb->isChecked())
+        return;
+
+    updateProjectAmountValue(value * ui->pumpTimeUnitPriceDSB->value());
+}
+
+void
+RentalDocumentEditDialog::on_pumpSquareRb_toggled(bool checked)
+{
+    if (!checked)
+        return;
+
+    updateProjectAmountValue(ui->pumpSquareDSB->value() * ui->squareUnitPriceDSB->value());
+}
+
+void
+RentalDocumentEditDialog::on_pumpTimeRb_toggled(bool checked)
+{
+    if (!checked)
+        return;
+
+    updateProjectAmountValue(ui->pumpTimesDSB->value() * ui->pumpTimeUnitPriceDSB->value());
 }

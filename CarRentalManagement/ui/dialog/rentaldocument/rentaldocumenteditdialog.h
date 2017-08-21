@@ -11,6 +11,7 @@ class CarTableDialog;
 class ContractTableDialog;
 class ClientTableDialog;
 class PriceTableDialog;
+class QMutex;
 
 namespace Ui {
 class RentalDocumentEditDialog;
@@ -66,6 +67,18 @@ private slots:
 
     void on_pickPriceBtn_clicked();
 
+    void on_squareUnitPriceDSB_valueChanged(double value);
+
+    void on_pumpTimeUnitPriceDSB_valueChanged(double value);
+
+    void on_pumpSquareDSB_valueChanged(double value);
+
+    void on_pumpTimesDSB_valueChanged(double value);
+
+    void on_pumpSquareRb_toggled(bool checked);
+
+    void on_pumpTimeRb_toggled(bool checked);
+
 signals:
     void            addRentalDocSignal(RentalDocument &doc);
     void            updateDocItemSignal(RentalDocument &doc);
@@ -99,12 +112,14 @@ private:
     void            clean();
     void            cleanContent();
     void            setWindowSize();
+    void            updateProjectAmountValue(double value);
 
     Ui::RentalDocumentEditDialog *ui;
     // 工具栏
     QToolBar*       mToolBar;
     OpenType        mOpenType;
     DataBase*       mDb;
+    QMutex*         mMutex;
     RentalDocument* mRentalDocument;
     QString         mCarNumber;
     QString         mClientNumber;
