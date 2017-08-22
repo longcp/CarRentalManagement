@@ -113,6 +113,17 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
      */
     connect(mInsuranceDialog, SIGNAL(addBusinessInsuranceItemSignal(INSURANCE_RECORD &)),
             mCarEditDialog, SLOT(addBusinessInsuranceItemSlot(INSURANCE_RECORD &)));
+
+    /**
+     * @brief 同步调整列宽
+     */
+    connect(ui->carTableView->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &CarManagermentWidget::updateSumTabSectionWidth);
+    /**
+     * @brief 根据进度条值同步列表位置
+     */
+    connect((QObject*)ui->sumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->carTableView->horizontalScrollBar(), SLOT(setValue(int)));
 }
 
 CarManagermentWidget::~CarManagermentWidget()
@@ -122,6 +133,14 @@ CarManagermentWidget::~CarManagermentWidget()
 
 void
 CarManagermentWidget::initView()
+{
+    initCarTableView();
+    initSumTableView();
+    initCarTableViewData();
+}
+
+void
+CarManagermentWidget::initCarTableView()
 {
     //设置首行标题
     QStringList headerList;
@@ -155,21 +174,83 @@ CarManagermentWidget::initView()
     ui->carTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");  //设置间隔行颜色变化
+
+    //隐藏滚动条
+    ui->carTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->carTableView->setSortingEnabled(true);
 
-    ui->carTableView->setColumnWidth(15, 200);
-    ui->carTableView->setColumnWidth(16, 200);
-    ui->carTableView->setColumnWidth(17, 200);
-    ui->carTableView->setColumnWidth(19, 200);
-    ui->carTableView->setColumnWidth(20, 200);
-    ui->carTableView->setColumnWidth(21, 200);
-    ui->carTableView->setColumnWidth(22, 200);
-
-    initTableView();
+    ui->carTableView->setColumnWidth(CAR_COL_ENGINEPOWER, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_MAXDELIVERYSIZES, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_MAXOUTPUTPRESSURE, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_BOOMVERTICALLEN, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_BOOMHORIZONTALLEN, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_TOTALWEIGHT, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_EQUIPMENTWEIGHT, 200);
 }
 
 void
-CarManagermentWidget::initTableView()
+CarManagermentWidget::initSumTableView()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "车号" << "泵式" << "已泵送方量数" << "已泵送台班数"
+               << "已行驶公里数" << "产品品牌" << "底盘品牌"
+               << "行驶证发证日期" << "专用油卡号" << "车架号"
+               << "车辆识别号" << "产品型号" << "保险卡号"
+               << "发动机号" << "车身价" << "发动机额定功率(KW)"
+               << "最大理论输送量(m3/h)" << "最大理论输出压力(MPA)" << "外形尺寸"
+               << "臂架垂直长度(M)" << "臂架水平长度(M)"
+               << "整车总质量(KG)" << "整车装备质量(KG)"
+               << "生产日期" << "出厂编码"
+               << "操作员(1)" << "操作员(2)" << "操作员(3)"
+               << "操作员(4)" << "操作员(5)" << "备注";
+
+    mSumModel = new TableModel(0, headerList.size());
+    ui->sumTableView->setModel(mSumModel);
+    mSumModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->sumTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->sumTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->sumTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    ui->sumTableView->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->sumTableView->horizontalHeader()->setVisible(false);   //隐藏列表头
+    ui->sumTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");             //表头颜色
+
+    ui->sumTableView->verticalHeader()->setDefaultSectionSize(20);
+    ui->sumTableView->setAlternatingRowColors(true);
+    ui->sumTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}"); //设置间隔行颜色变化
+    ui->carTableView->setColumnWidth(CAR_COL_ENGINEPOWER, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_MAXDELIVERYSIZES, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_MAXOUTPUTPRESSURE, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_BOOMVERTICALLEN, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_BOOMHORIZONTALLEN, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_TOTALWEIGHT, 200);
+    ui->carTableView->setColumnWidth(CAR_COL_EQUIPMENTWEIGHT, 200);
+
+    QStandardItem* sumStrItem = new QStandardItem("合计");
+    QList<QStandardItem*> items;
+    items << sumStrItem;
+    mSumModel->appendRow(items);
+    clearSumTableData();
+}
+
+void
+CarManagermentWidget::clearSumTableData()
+{
+    setSumPumpedSquareCellValue(0);
+    setSumPumpedTimeCellValue(0);
+    setSumMilageCellValue(0);
+    sumUpdateRowCount();
+}
+
+void
+CarManagermentWidget::initCarTableViewData()
 {
     int size;
 
@@ -207,6 +288,79 @@ CarManagermentWidget::configToolBar()
     mToolBar->setContextMenuPolicy(Qt::DefaultContextMenu);
     mToolBar->setInputMethodHints(Qt::ImhNone);
     mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+}
+
+void
+CarManagermentWidget::updateSumTabSectionWidth(int logicalIndex, int, int newSize)
+{
+    ui->sumTableView->setColumnWidth(logicalIndex, newSize);
+}
+
+void
+CarManagermentWidget::setSumPumpedSquareCellValue(double value)
+{
+    mSumModel->setData(mSumModel->index(0, CAR_COL_PUMPEDSQUARE), Util::doubleToDecimal2String(value));
+    mCurSumPumpedSquareValue = value;
+}
+
+void
+CarManagermentWidget::setSumPumpedTimeCellValue(double value)
+{
+    mSumModel->setData(mSumModel->index(0, CAR_COL_PUMPEDTIMES), Util::doubleToDecimal2String(value));
+    mCurSumPumpedTimeValue = value;
+}
+
+void
+CarManagermentWidget::setSumMilageCellValue(double value)
+{
+    mSumModel->setData(mSumModel->index(0, CAR_COL_MILAGE), Util::doubleToDecimal2String(value));
+    mCurSumMilageValue = value;
+}
+
+void
+CarManagermentWidget::sumPumpedSquareCellAddValue(double value)
+{
+    setSumPumpedSquareCellValue(mCurSumPumpedSquareValue+value);
+}
+
+void
+CarManagermentWidget::sumPumpedTimeCellAddValue(double value)
+{
+    setSumPumpedTimeCellValue(mCurSumPumpedTimeValue+value);
+}
+
+void
+CarManagermentWidget::sumMilageCellAddValue(double value)
+{
+    setSumMilageCellValue(mCurSumMilageValue+value);
+}
+
+void
+CarManagermentWidget::sumPumpedSquareCellDelValue(double value)
+{
+    setSumPumpedSquareCellValue(mCurSumPumpedSquareValue-value);
+}
+
+void
+CarManagermentWidget::sumPumpedTimeCellDelValue(double value)
+{
+    setSumPumpedTimeCellValue(mCurSumPumpedTimeValue-value);
+}
+
+void
+CarManagermentWidget::sumMilageCellDelValue(double value)
+{
+    setSumMilageCellValue(mCurSumMilageValue-value);
+}
+
+void
+CarManagermentWidget::sumUpdateRowCount()
+{
+    int rows = 0;
+    if (mModel->rowCount() > 0)
+        rows = mModel->rowCount();
+
+    mSumModel->setData(mSumModel->index(0, 1), QString::number(rows));
 }
 
 void
@@ -306,45 +460,59 @@ CarManagermentWidget::addCarItemSlot(Car &car)
           << operator1 << operator2 << operator3 << operator4
           << operator5 << remarks;
     mModel->appendRow(items);
+
+    //更新合计
+    sumPumpedSquareCellAddValue(car.pumpedSquare);
+    sumPumpedTimeCellAddValue(car.pumpedTimes);
+    sumMilageCellAddValue(car.milage);
+    sumUpdateRowCount();
 }
 
 void
 CarManagermentWidget::updateCarItemSlot(Car &car)
 {
-    mModel->setData(mModel->index(curRow, 0), car.number);
-    mModel->setData(mModel->index(curRow, 1), car.getPumpTypeStr(car.pumptype));
-    mModel->setData(mModel->index(curRow, 2), Util::doubleToDecimal2String(car.pumpedSquare));
-    mModel->setData(mModel->index(curRow, 3), Util::doubleToDecimal2String(car.pumpedTimes));
-    mModel->setData(mModel->index(curRow, 4), Util::doubleToDecimal2String(car.milage));
+    //更新合计
+    double squares = mModel->index(curRow, CAR_COL_PUMPEDSQUARE).data().toDouble();
+    double times = mModel->index(curRow, CAR_COL_PUMPEDTIMES).data().toDouble();
+    double milage = mModel->index(curRow, CAR_COL_MILAGE).data().toDouble();
+    sumPumpedSquareCellAddValue(car.pumpedSquare - squares);
+    sumPumpedTimeCellAddValue(car.pumpedTimes - times);
+    sumMilageCellAddValue(car.milage - milage);
 
-    mModel->setData(mModel->index(curRow, 5), car.carBrand);
-    mModel->setData(mModel->index(curRow, 6), car.chassisBrand);
-    mModel->setData(mModel->index(curRow, 7),
+    mModel->setData(mModel->index(curRow, CAR_COL_NUM), car.number);
+    mModel->setData(mModel->index(curRow, CAR_COL_PUMPTYPE), car.getPumpTypeStr(car.pumptype));
+    mModel->setData(mModel->index(curRow, CAR_COL_PUMPEDSQUARE), Util::doubleToDecimal2String(car.pumpedSquare));
+    mModel->setData(mModel->index(curRow, CAR_COL_PUMPEDTIMES), Util::doubleToDecimal2String(car.pumpedTimes));
+    mModel->setData(mModel->index(curRow, CAR_COL_MILAGE), Util::doubleToDecimal2String(car.milage));
+
+    mModel->setData(mModel->index(curRow, CAR_COL_CARBRAND), car.carBrand);
+    mModel->setData(mModel->index(curRow, CAR_COL_CHASSISBRAND), car.chassisBrand);
+    mModel->setData(mModel->index(curRow, CAR_COL_DRIVINGLICENSEDATE),
                     car.drivingLicenseDate.toString(DATE_FORMAT_STR));
-    mModel->setData(mModel->index(curRow, 8), car.fuelCarNumber);
-    mModel->setData(mModel->index(curRow, 9), car.frameNumber);
-    mModel->setData(mModel->index(curRow, 10), car.identificationNumber);
-    mModel->setData(mModel->index(curRow, 11), car.productNumber);
-    mModel->setData(mModel->index(curRow, 12), car.insuranceCardNumber);
-    mModel->setData(mModel->index(curRow, 13), car.engineNumber);
-    mModel->setData(mModel->index(curRow, 14), Util::doubleToDecimal2String(car.worth));
-    mModel->setData(mModel->index(curRow, 15), Util::doubleToDecimal2String(car.enginePower));
-    mModel->setData(mModel->index(curRow, 16), Util::doubleToDecimal2String(car.maxDeliverySizes));
-    mModel->setData(mModel->index(curRow, 17), Util::doubleToDecimal2String(car.maxOutputPressure));
-    mModel->setData(mModel->index(curRow, 18), car.dimensions);
-    mModel->setData(mModel->index(curRow, 19), Util::doubleToDecimal2String(car.boomVerticalLen));
-    mModel->setData(mModel->index(curRow, 20), Util::doubleToDecimal2String(car.boomHorizontalLen));
-    mModel->setData(mModel->index(curRow, 21), Util::doubleToDecimal2String(car.totalWeight));
-    mModel->setData(mModel->index(curRow, 22), Util::doubleToDecimal2String(car.equipmentWeight));
-    mModel->setData(mModel->index(curRow, 23),
+    mModel->setData(mModel->index(curRow, CAR_COL_FUELCARNUMBER), car.fuelCarNumber);
+    mModel->setData(mModel->index(curRow, CAR_COL_FRAMENUMBER), car.frameNumber);
+    mModel->setData(mModel->index(curRow, CAR_COL_IDENTIFICATIONNUMBER), car.identificationNumber);
+    mModel->setData(mModel->index(curRow, CAR_COL_PRODUCTNUMBER), car.productNumber);
+    mModel->setData(mModel->index(curRow, CAR_COL_INSURANCECARDNUMBER), car.insuranceCardNumber);
+    mModel->setData(mModel->index(curRow, CAR_COL_ENGINENUMBER), car.engineNumber);
+    mModel->setData(mModel->index(curRow, CAR_COL_WORTH), Util::doubleToDecimal2String(car.worth));
+    mModel->setData(mModel->index(curRow, CAR_COL_ENGINEPOWER), Util::doubleToDecimal2String(car.enginePower));
+    mModel->setData(mModel->index(curRow, CAR_COL_MAXDELIVERYSIZES), Util::doubleToDecimal2String(car.maxDeliverySizes));
+    mModel->setData(mModel->index(curRow, CAR_COL_MAXOUTPUTPRESSURE), Util::doubleToDecimal2String(car.maxOutputPressure));
+    mModel->setData(mModel->index(curRow, CAR_COL_DIMENSIONS), car.dimensions);
+    mModel->setData(mModel->index(curRow, CAR_COL_BOOMVERTICALLEN), Util::doubleToDecimal2String(car.boomVerticalLen));
+    mModel->setData(mModel->index(curRow, CAR_COL_BOOMHORIZONTALLEN), Util::doubleToDecimal2String(car.boomHorizontalLen));
+    mModel->setData(mModel->index(curRow, CAR_COL_TOTALWEIGHT), Util::doubleToDecimal2String(car.totalWeight));
+    mModel->setData(mModel->index(curRow, CAR_COL_EQUIPMENTWEIGHT), Util::doubleToDecimal2String(car.equipmentWeight));
+    mModel->setData(mModel->index(curRow, CAR_COL_PRODUCTIONDATE),
                     car.productionDate.toString(DATE_FORMAT_STR));
-    mModel->setData(mModel->index(curRow, 24), car.factoryCode);
-    mModel->setData(mModel->index(curRow, 25), car.operator1);
-    mModel->setData(mModel->index(curRow, 26), car.operator2);
-    mModel->setData(mModel->index(curRow, 27), car.operator3);
-    mModel->setData(mModel->index(curRow, 28), car.operator4);
-    mModel->setData(mModel->index(curRow, 29), car.operator5);
-    mModel->setData(mModel->index(curRow, 30), car.remarks);
+    mModel->setData(mModel->index(curRow, CAR_COL_FACTORYCODE), car.factoryCode);
+    mModel->setData(mModel->index(curRow, CAR_COL_OPERATOR1), car.operator1);
+    mModel->setData(mModel->index(curRow, CAR_COL_OPERATOR2), car.operator2);
+    mModel->setData(mModel->index(curRow, CAR_COL_OPERATOR3), car.operator3);
+    mModel->setData(mModel->index(curRow, CAR_COL_OPERATOR4), car.operator4);
+    mModel->setData(mModel->index(curRow, CAR_COL_OPERATOR5), car.operator5);
+    mModel->setData(mModel->index(curRow, CAR_COL_REMARKS), car.remarks);
 }
 
 void
@@ -369,9 +537,17 @@ CarManagermentWidget::deleteCarItemSlot()
         return;
 
     QString number = "";
-    number = mModel->index(curRow, 0).data().toString();
+    number = mModel->index(curRow, CAR_COL_NUM).data().toString();
+    double squares = mModel->index(curRow, CAR_COL_PUMPEDSQUARE).data().toDouble();
+    double times = mModel->index(curRow, CAR_COL_PUMPEDTIMES).data().toDouble();
+    double milage = mModel->index(curRow, CAR_COL_MILAGE).data().toDouble();
     if (!mDb->deleteCarDataInNumber(number)) {
         ALOGD("%s, delete ok", __FUNCTION__);
         mModel->removeRow(curRow);
+        //更新合计
+        sumPumpedSquareCellDelValue(squares);
+        sumPumpedTimeCellDelValue(times);
+        sumMilageCellDelValue(milage);
+        sumUpdateRowCount();
     }
 }

@@ -55,6 +55,8 @@ private slots:
 signals:
     void            openCarEditDialogSignal(OpenType type,
                                             Car &car);
+private slots:
+    void            updateSumTabSectionWidth(int logicalIndex, int, int newSize);
 
 private:
     /**
@@ -66,13 +68,39 @@ private:
      */
     void            initView();
     /**
+     * @brief initCarTableView
+     */
+    void            initCarTableView();
+    /**
+     * @brief initSumTableView
+     */
+    void            initSumTableView();
+    /**
+     * @brief clearSumTableData
+     */
+    void            clearSumTableData();
+    /**
      * @brief 编辑条目
      */
     void            editRowEvent(int row);
     /**
      * @brief 初始化数据到表中
      */
-    void            initTableView();
+    void            initCarTableViewData();
+
+    void            setSumPumpedSquareCellValue(double value);
+    void            setSumPumpedTimeCellValue(double value);
+    void            setSumMilageCellValue(double value);
+
+    void            sumPumpedSquareCellAddValue(double value);
+    void            sumPumpedTimeCellAddValue(double value);
+    void            sumMilageCellAddValue(double value);
+
+    void            sumPumpedSquareCellDelValue(double value);
+    void            sumPumpedTimeCellDelValue(double value);
+    void            sumMilageCellDelValue(double value);
+
+    void            sumUpdateRowCount();
 
     Ui::CarManagermentWidget *ui;
     QToolBar        *mToolBar;
@@ -81,6 +109,10 @@ private:
     CarEditDialog    *mCarEditDialog;
     InsuranceDialog  *mInsuranceDialog;
     CarAnnualDialog  *mCarAnnualDialog;
+
+    double          mCurSumPumpedSquareValue;
+    double          mCurSumPumpedTimeValue;
+    double          mCurSumMilageValue;
 
     // 工具栏动作
     QAction         *mActAdd;
@@ -93,9 +125,44 @@ private:
     QAction         *mActAnnual;
 
     TableModel*     mModel;
+    TableModel*     mSumModel;
     DataBase*       mDb;
 
     int             curRow;
+
+    enum CarTableCol {
+        CAR_COL_NUM,
+        CAR_COL_PUMPTYPE,
+        CAR_COL_PUMPEDSQUARE,
+        CAR_COL_PUMPEDTIMES,
+        CAR_COL_MILAGE,
+        CAR_COL_CARBRAND,
+        CAR_COL_CHASSISBRAND,
+        CAR_COL_DRIVINGLICENSEDATE,
+        CAR_COL_FUELCARNUMBER,
+        CAR_COL_FRAMENUMBER,
+        CAR_COL_IDENTIFICATIONNUMBER,
+        CAR_COL_PRODUCTNUMBER,
+        CAR_COL_INSURANCECARDNUMBER,
+        CAR_COL_ENGINENUMBER,
+        CAR_COL_WORTH,
+        CAR_COL_ENGINEPOWER,
+        CAR_COL_MAXDELIVERYSIZES,
+        CAR_COL_MAXOUTPUTPRESSURE,
+        CAR_COL_DIMENSIONS,
+        CAR_COL_BOOMVERTICALLEN,
+        CAR_COL_BOOMHORIZONTALLEN,
+        CAR_COL_TOTALWEIGHT,
+        CAR_COL_EQUIPMENTWEIGHT,
+        CAR_COL_PRODUCTIONDATE,
+        CAR_COL_FACTORYCODE,
+        CAR_COL_OPERATOR1,
+        CAR_COL_OPERATOR2,
+        CAR_COL_OPERATOR3,
+        CAR_COL_OPERATOR4,
+        CAR_COL_OPERATOR5,
+        CAR_COL_REMARKS
+    };
 };
 
 #endif // CARMANAGERMENT_H

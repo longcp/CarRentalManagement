@@ -367,7 +367,6 @@ ClientManagermentWidget::deleteClientItemSlot()
     Client client;
     number = mModel->index(curRow, CLIENT_COL_NUM).data().toString();
     ret = mDb->getClientInNumber(number, client);
-    ALOGD("ret = %d", ret);
     if (ret)
         return;
 
