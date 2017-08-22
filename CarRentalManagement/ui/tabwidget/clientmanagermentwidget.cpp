@@ -82,13 +82,23 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
      * @brief 删除条目
      */
     connect(mActDelete, SIGNAL(triggered()),
-            this, SLOT(deleteClientItemSlog()));
+            this, SLOT(deleteClientItemSlot()));
     /**
      * @brief 编辑条目
      */
     connect(mActEdit, SIGNAL(triggered()),
             this, SLOT(editClientItemSlot()));
 
+    /**
+     * @brief 同步调整列宽
+     */
+    connect(ui->clientTableView->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &ClientManagermentWidget::updateSumTabSectionWidth);
+    /**
+     * @brief 根据进度条值同步列表位置
+     */
+    connect((QObject*)ui->sumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->clientTableView->horizontalScrollBar(), SLOT(setValue(int)));
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
@@ -99,10 +109,22 @@ ClientManagermentWidget::~ClientManagermentWidget()
 void
 ClientManagermentWidget::initView()
 {
-    this->setWindowTitle(TAB_TITLE_CLIENTMANAGERMENT);
+    initClientTableView();
+    initSumTableView();
+    setWindowTitle(TAB_TITLE_CLIENTMANAGERMENT);
+    ui->typeWidget->setStyleSheet("background-color: "
+                                  "rgb(234,234,234);color:rgb(0,0,0);");
+    mCurPayTypeFilter = PayTypeFilter::PAYTYPE_TOTAL;
+    mCurClientTypeFilter = ClientTypeFilter::CLIENTTYPE_TOTAL;
+    ui->paytypeTotalRadioButton->setChecked(true);
+    ui->clientTypeTotalRadioButton->setChecked(true);
+}
 
+void
+ClientManagermentWidget::initClientTableView()
+{
     //设置首行标题
-    QStringList          headerList;
+    QStringList headerList;
     headerList << "客户编号" << "客户类型" << "客户名称" << "地址"
                << "联系电话" << "传真" << "联系人"
                << "结账方式" << "月结日" << "工程款额"
@@ -119,9 +141,6 @@ ClientManagermentWidget::initView()
     ui->clientTableView->horizontalHeader()
             ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
 
-    ui->typeWidget->setStyleSheet("background-color: "
-                                  "rgb(234,234,234);color:rgb(0,0,0);");
-
     ui->clientTableView->verticalHeader()->setVisible(false);           //隐藏行表头
     ui->clientTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
@@ -131,16 +150,53 @@ ClientManagermentWidget::initView()
     ui->clientTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    //隐藏滚动条
+    ui->clientTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->clientTableView->setSortingEnabled(true);
-
-    mCurPayTypeFilter = PayTypeFilter::PAYTYPE_TOTAL;
-    mCurClientTypeFilter = ClientTypeFilter::CLIENTTYPE_TOTAL;
-    ui->paytypeTotalRadioButton->setChecked(true);
-    ui->clientTypeTotalRadioButton->setChecked(true);
 }
 
 void
-ClientManagermentWidget::initTableView()
+ClientManagermentWidget::initSumTableView()
+{
+    //设置首行标题
+    QStringList          headerList;
+    headerList << "客户编号" << "客户类型" << "客户名称" << "地址"
+               << "联系电话" << "传真" << "联系人"
+               << "结账方式" << "月结日" << "工程款额"
+               << "已付款额" << "余额" << "备注";
+
+    mSumModel = new TableModel(0, headerList.size());
+    ui->sumTableView->setModel(mSumModel);
+    mSumModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->sumTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->sumTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->sumTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->sumTableView->horizontalHeader()
+            ->setSectionResizeMode(headerList.size()-1, QHeaderView::Stretch);
+
+    ui->sumTableView->verticalHeader()->setVisible(false);              //隐藏行表头
+    ui->sumTableView->horizontalHeader()->setVisible(false);   //隐藏列表头
+    ui->sumTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");                //表头颜色
+
+    ui->sumTableView->verticalHeader()->setDefaultSectionSize(20);
+    ui->sumTableView->setAlternatingRowColors(true);
+    ui->sumTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    QStandardItem* sumStrItem = new QStandardItem("合计");
+    QList<QStandardItem*> items;
+    items << sumStrItem;
+    mSumModel->appendRow(items);
+    clearSumTableData();
+}
+
+void
+ClientManagermentWidget::initTableViewData()
 {
     int i, ret, size;
     QList<Client>clients;
@@ -242,28 +298,42 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
           << fax << contract << paytype << monthly
           << amount << paid << balance << remarks;
     mModel->appendRow(items);
+
+    // 更新合计
+    sumAmountCellAddValue(client.amount);
+    sumPaidCellAddValue(client.paid);
+    sumBalanceCellAddValue(client.amount - client.paid);
 }
 
 void
 ClientManagermentWidget::updateClientItemSlot(Client &client)
 {
-    mModel->setData(mModel->index(curRow, 0), client.number);
-    mModel->setData(mModel->index(curRow, 1),client.getClientTypeStr(client.clienttype));
-    mModel->setData(mModel->index(curRow, 2), client.name);
-    mModel->setData(mModel->index(curRow, 3), client.address);
-    mModel->setData(mModel->index(curRow, 4), client.telephone);
-    mModel->setData(mModel->index(curRow, 5), client.fax);
-    mModel->setData(mModel->index(curRow, 6), client.contract);
-    mModel->setData(mModel->index(curRow, 7),client.getPayTypeStr(client.paytype));
-    mModel->setData(mModel->index(curRow, 8),QString::number(client.monthly));
-    mModel->setData(mModel->index(curRow, 12), client.remarks);
-    mModel->setData(mModel->index(curRow, 9), Util::doubleToDecimal2String(client.amount));
-    mModel->setData(mModel->index(curRow, 10), Util::doubleToDecimal2String(client.paid));
-    mModel->setData(mModel->index(curRow, 11), Util::doubleToDecimal2String(client.amount - client.paid));
+    //更新合计表
+    double oldAmount = mModel->index(curRow, CLIENT_COL_AMOUNT).data().toDouble();
+    double oldPaid = mModel->index(curRow, CLIENT_COL_PAID).data().toDouble();
+    double oldBalance = mModel->index(curRow, CLIENT_COL_BALANCE).data().toDouble();
+    sumAmountCellAddValue(client.amount - oldAmount);
+    sumPaidCellAddValue(client.paid - oldPaid);
+    sumBalanceCellAddValue((client.amount - client.paid) - oldBalance);
+
+    //更新数据表
+    mModel->setData(mModel->index(curRow, CLIENT_COL_NUM), client.number);
+    mModel->setData(mModel->index(curRow, CLIENT_COL_TYPE),client.getClientTypeStr(client.clienttype));
+    mModel->setData(mModel->index(curRow, CLIENT_COL_NAME), client.name);
+    mModel->setData(mModel->index(curRow, CLIENT_COL_ADDRESS), client.address);
+    mModel->setData(mModel->index(curRow, CLIENT_COL_TEL), client.telephone);
+    mModel->setData(mModel->index(curRow, CLIENT_COL_FAX), client.fax);
+    mModel->setData(mModel->index(curRow, CLIENT_COL_CONTRACT), client.contract);
+    mModel->setData(mModel->index(curRow, CLIENT_COL_PAYTYPE),client.getPayTypeStr(client.paytype));
+    mModel->setData(mModel->index(curRow, CLIENT_COL_MONTHLY),QString::number(client.monthly));
+    mModel->setData(mModel->index(curRow, CLIENT_COL_AMOUNT), Util::doubleToDecimal2String(client.amount));
+    mModel->setData(mModel->index(curRow, CLIENT_COL_PAID), Util::doubleToDecimal2String(client.paid));
+    mModel->setData(mModel->index(curRow, CLIENT_COL_BALANCE), Util::doubleToDecimal2String(client.amount - client.paid));
+    mModel->setData(mModel->index(curRow, CLIENT_COL_REMARKS), client.remarks);
 }
 
 void
-ClientManagermentWidget::deleteClientItemSlog()
+ClientManagermentWidget::deleteClientItemSlot()
 {
     if (curRow < 0) {
         QMessageBox::warning(this,
@@ -276,17 +346,27 @@ ClientManagermentWidget::deleteClientItemSlog()
 
     int ret = QMessageBox::warning(this,
                                    tr("温馨提示"),
-                                   tr("确定要删除该条目吗？.\n"),
+                                   tr("确定要删除该条目吗？\n"),
                                    QMessageBox::Yes | QMessageBox::No,
                                    QMessageBox::No);
     if (ret == QMessageBox::No)
         return;
 
     QString number = "";
-    number = mModel->index(curRow, 0).data().toString();
+    Client client;
+    number = mModel->index(curRow, CLIENT_COL_NUM).data().toString();
+    ret = mDb->getClientInNumber(number, client);
+    ALOGD("ret = %d", ret);
+    if (ret)
+        return;
+
     if (!mDb->deleteClientInNumber(number)) {
         ALOGD("%s, delete ok", __FUNCTION__);
         mModel->removeRow(curRow);
+        // 更新合计
+        sumAmountCellDelValue(client.amount);
+        sumPaidCellDelValue(client.paid);
+        sumBalanceCellDelValue(client.amount - client.paid);
     }
 }
 
@@ -326,6 +406,14 @@ void
 ClientManagermentWidget::enableFilterView()
 {
     setFilterViewState(true);
+}
+
+void
+ClientManagermentWidget::removeAllRows()
+{
+    if (mModel->rowCount() > 0)
+        mModel->removeRows(0, mModel->rowCount());
+    clearSumTableData();
 }
 
 void
@@ -374,9 +462,7 @@ ClientManagermentWidget::updateTableView()
         filter = whereStr + payTypeFilter + clientTypeFilter;
 
     if(!mDb->getClientInFilter(clients, filter)) {
-        if (mModel->rowCount() > 0)
-            mModel->removeRows(0, mModel->rowCount());
-
+        removeAllRows();
         size = clients.size();
         for (int i = 0; i < size; i++) {
             client = clients.at(i);
@@ -385,6 +471,77 @@ ClientManagermentWidget::updateTableView()
     }
     
     enableFilterView();
+}
+
+void
+ClientManagermentWidget::updateSumTabSectionWidth(int logicalIndex, int, int newSize)
+{
+    ui->sumTableView->setColumnWidth(logicalIndex, newSize);
+}
+
+void
+ClientManagermentWidget::clearSumTableData()
+{
+    setSumAmountCellValue(0);
+    setSumPaidCellValue(0);
+    setSumBalanceCellValue(0);
+}
+
+void
+ClientManagermentWidget::setSumAmountCellValue(double value)
+{
+    mSumModel->setData(mSumModel->index(0, CLIENT_COL_AMOUNT), Util::doubleToDecimal2String(value));
+    mCurSumAmountValue = value;
+}
+
+void
+ClientManagermentWidget::setSumPaidCellValue(double value)
+{
+    mSumModel->setData(mSumModel->index(0, CLIENT_COL_PAID), Util::doubleToDecimal2String(value));
+    mCurSumPaidValue = value;
+}
+
+void
+ClientManagermentWidget::setSumBalanceCellValue(double value)
+{
+    mSumModel->setData(mSumModel->index(0, CLIENT_COL_BALANCE), Util::doubleToDecimal2String(value));
+    mCurSumBalanceValue = value;
+}
+
+void
+ClientManagermentWidget::sumAmountCellAddValue(double value)
+{
+    setSumAmountCellValue(mCurSumAmountValue+value);
+}
+
+void
+ClientManagermentWidget::sumPaidCellAddValue(double value)
+{
+    setSumPaidCellValue(mCurSumPaidValue+value);
+}
+
+void
+ClientManagermentWidget::sumBalanceCellAddValue(double value)
+{
+    setSumBalanceCellValue(mCurSumBalanceValue+value);
+}
+
+void
+ClientManagermentWidget::sumAmountCellDelValue(double value)
+{
+    setSumAmountCellValue(mCurSumAmountValue-value);
+}
+
+void
+ClientManagermentWidget::sumPaidCellDelValue(double value)
+{
+    setSumPaidCellValue(mCurSumPaidValue-value);
+}
+
+void
+ClientManagermentWidget::sumBalanceCellDelValue(double value)
+{
+    setSumBalanceCellValue(mCurSumBalanceValue-value);
 }
 
 void 
@@ -439,7 +596,6 @@ void
 ClientManagermentWidget::on_temporaryRadioButton_toggled(bool checked)
 {
     ALOGDTRACE();
-    qDebug() << checked;
     if (!checked)
         return;
 
@@ -451,7 +607,6 @@ void
 ClientManagermentWidget::on_clientTypeTotalRadioButton_toggled(bool checked)
 {
     ALOGDTRACE();
-    qDebug() << checked;
     if (!checked)
         return;
 

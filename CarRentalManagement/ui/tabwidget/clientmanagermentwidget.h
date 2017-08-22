@@ -29,20 +29,17 @@ private slots:
     void            addClientSlot();
     void            addClientItemSlot(Client &client);
     void            updateClientItemSlot(Client &client);
-    void            deleteClientItemSlog();
+    void            deleteClientItemSlot();
     void            editClientItemSlot();
 
-    void on_cashRadioButton_toggled(bool checked);
+    void            on_cashRadioButton_toggled(bool checked);
+    void            on_monthlyRadioButton_toggled(bool checked);
+    void            on_paytypeTotalRadioButton_toggled(bool checked);
+    void            on_contractRadioButton_toggled(bool checked);
+    void            on_temporaryRadioButton_toggled(bool checked);
+    void            on_clientTypeTotalRadioButton_toggled(bool checked);
 
-    void on_monthlyRadioButton_toggled(bool checked);
-
-    void on_paytypeTotalRadioButton_toggled(bool checked);
-
-    void on_contractRadioButton_toggled(bool checked);
-
-    void on_temporaryRadioButton_toggled(bool checked);
-
-    void on_clientTypeTotalRadioButton_toggled(bool checked);
+    void            updateSumTabSectionWidth(int logicalIndex, int /*oldSize*/, int newSize);
 
 signals:
     void            openClientEditDialogSignal(OpenType type,
@@ -58,9 +55,21 @@ private:
      */
     void            initView();
     /**
+     * @brief initClientTableView
+     */
+    void            initClientTableView();
+    /**
+     * @brief intSumTableView
+     */
+    void            initSumTableView();
+    /**
      * @brief 初始化表，插入已有数据
      */
-    void            initTableView();
+    void            initTableViewData();
+    /**
+     * @brief removeAllRows
+     */
+    void            removeAllRows();
     /**
      * @brief 更新表格
      */
@@ -73,6 +82,20 @@ private:
     void            disableFilterView();
     void            enableFilterView();
     void            setFilterViewState(bool state);
+    void            clearSumTableData();
+
+    void            setSumAmountCellValue(double value);
+    void            setSumPaidCellValue(double value);
+    void            setSumBalanceCellValue(double value);
+
+    void            sumAmountCellAddValue(double value);
+    void            sumPaidCellAddValue(double value);
+    void            sumBalanceCellAddValue(double value);
+
+    void            sumAmountCellDelValue(double value);
+    void            sumPaidCellDelValue(double value);
+    void            sumBalanceCellDelValue(double value);
+
 
     Ui::ClientManagermentWidget *ui;
     QToolBar        *mToolBar;
@@ -93,12 +116,30 @@ private:
     QAction         *mActImport;
     DataBase        *mDb;
     TableModel      *mModel;
+    TableModel      *mSumModel;
     int             curRow;
     int             lastShowRow;
+    double          mCurSumAmountValue;
+    double          mCurSumPaidValue;
+    double          mCurSumBalanceValue;
     PayTypeFilter   mCurPayTypeFilter;
     ClientTypeFilter mCurClientTypeFilter;
 
-    const static int      mColumnCount = 9;
+    enum ClientTableCol {
+        CLIENT_COL_NUM,
+        CLIENT_COL_TYPE,
+        CLIENT_COL_NAME,
+        CLIENT_COL_ADDRESS,
+        CLIENT_COL_TEL,
+        CLIENT_COL_FAX,
+        CLIENT_COL_CONTRACT,
+        CLIENT_COL_PAYTYPE,
+        CLIENT_COL_MONTHLY,
+        CLIENT_COL_AMOUNT,
+        CLIENT_COL_PAID,
+        CLIENT_COL_BALANCE,
+        CLIENT_COL_REMARKS
+    };
 };
 
 #endif // CLIENTMANAGERMENTWIDGET_H
