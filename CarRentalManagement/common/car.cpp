@@ -197,17 +197,17 @@ Car::isValueEqual(Car &c, bool isWithoutRecords)
         productionDate != c.productionDate ||
         drivingLicenseDate != c.drivingLicenseDate ||
         createDate != c.createDate ||
-        Util::isDoubleEqual(this->pumpedSquare, c.pumpedSquare) ||
-        Util::isDoubleEqual(this->pumpedTimes, c.pumpedTimes) ||
-        Util::isDoubleEqual(this->milage, c.milage) ||
-        Util::isDoubleEqual(this->worth, c.worth) ||
-        Util::isDoubleEqual(this->enginePower, c.enginePower) ||
-        Util::isDoubleEqual(this->maxDeliverySizes, c.maxDeliverySizes) ||
-        Util::isDoubleEqual(this->maxOutputPressure, c.maxOutputPressure) ||
-        Util::isDoubleEqual(this->boomVerticalLen, c.boomVerticalLen) ||
-        Util::isDoubleEqual(this->boomHorizontalLen, c.boomHorizontalLen) ||
-        Util::isDoubleEqual(this->totalWeight, c.totalWeight) ||
-        Util::isDoubleEqual(this->equipmentWeight, c.equipmentWeight) ||
+        !Util::isDoubleEqual(this->pumpedSquare, c.pumpedSquare) ||
+        !Util::isDoubleEqual(this->pumpedTimes, c.pumpedTimes) ||
+        !Util::isDoubleEqual(this->milage, c.milage) ||
+        !Util::isDoubleEqual(this->worth, c.worth) ||
+        !Util::isDoubleEqual(this->enginePower, c.enginePower) ||
+        !Util::isDoubleEqual(this->maxDeliverySizes, c.maxDeliverySizes) ||
+        !Util::isDoubleEqual(this->maxOutputPressure, c.maxOutputPressure) ||
+        !Util::isDoubleEqual(this->boomVerticalLen, c.boomVerticalLen) ||
+        !Util::isDoubleEqual(this->boomHorizontalLen, c.boomHorizontalLen) ||
+        !Util::isDoubleEqual(this->totalWeight, c.totalWeight) ||
+        !Util::isDoubleEqual(this->equipmentWeight, c.equipmentWeight) ||
         pumptype != c.pumptype) {
         return false;
     }
