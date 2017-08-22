@@ -45,7 +45,7 @@ RentalDocTableDialog::initView()
     ui->rentablDocTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    ui->rentablDocTableView->verticalHeader()->setVisible(false);              //隐藏行表头
+    ui->rentablDocTableView->verticalHeader()->setVisible(false);       //隐藏行表头
     ui->rentablDocTableView->horizontalHeader()->setStyleSheet(
                 "QHeaderView::section{"
                 "background-color:rgb(234, 234, 234)}");                //表头颜色
@@ -54,7 +54,7 @@ RentalDocTableDialog::initView()
     ui->rentablDocTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
-    ui->rentablDocTableView->setSortingEnabled(true);                          //点击表头排序
+    ui->rentablDocTableView->setSortingEnabled(true);                   //点击表头排序
 
 //    ui->rentablDocTableView->horizontalHeader()
 //            ->setSectionResizeMode(QHeaderView::ResizeToContents);

@@ -484,11 +484,7 @@ ReceivableWidget::detailPumpTimeCellAddValue(double value)
 void
 ReceivableWidget::detailProjectAmountCellAddValue(double value)
 {
-    double sum = value + curProjectAmountValue;
-    int a = 11111111 + 10211224;
-    ALOGD("%s value = %lf, curValue=%lf, projectAmountSum = %lf, a = %d",
-          __FUNCTION__, value, curProjectAmountValue, sum, a);
-    setDetailProjectAmountCellValue(sum);
+    setDetailProjectAmountCellValue(curProjectAmountValue + value);
 }
 
 void

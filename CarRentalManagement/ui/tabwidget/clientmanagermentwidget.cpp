@@ -109,8 +109,8 @@ ClientManagermentWidget::~ClientManagermentWidget()
 void
 ClientManagermentWidget::initView()
 {
-    initClientTableView();
     initSumTableView();
+    initClientTableView();
     setWindowTitle(TAB_TITLE_CLIENTMANAGERMENT);
     ui->typeWidget->setStyleSheet("background-color: "
                                   "rgb(234,234,234);color:rgb(0,0,0);");
@@ -150,6 +150,18 @@ ClientManagermentWidget::initClientTableView()
     ui->clientTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    //列宽随内容自适应
+//    ui->clientTableView->horizontalHeader()
+//            ->setSectionResizeMode(QHeaderView::ResizeToContents);    //整个表格随内容自适应，如果设了这个，
+                                                                        //合计表格宽度无法与之同步，所以使用单列自适应
+    ui->clientTableView->horizontalHeader()
+            ->setSectionResizeMode(CLIENT_COL_NUM, QHeaderView::ResizeToContents);
+    ui->clientTableView->horizontalHeader()
+            ->setSectionResizeMode(CLIENT_COL_NAME, QHeaderView::ResizeToContents);
+    ui->clientTableView->horizontalHeader()
+            ->setSectionResizeMode(CLIENT_COL_ADDRESS, QHeaderView::ResizeToContents);
+    ui->clientTableView->horizontalHeader()
+            ->setSectionResizeMode(CLIENT_COL_REMARKS, QHeaderView::Stretch);
     //隐藏滚动条
     ui->clientTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->clientTableView->setSortingEnabled(true);
@@ -187,7 +199,6 @@ ClientManagermentWidget::initSumTableView()
     ui->sumTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
-
     QStandardItem* sumStrItem = new QStandardItem("合计");
     QList<QStandardItem*> items;
     items << sumStrItem;
