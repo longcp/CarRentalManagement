@@ -85,6 +85,16 @@ ContractWidget::ContractWidget(QWidget *parent) :
             SIGNAL(currentRowChanged(const QModelIndex&,const QModelIndex&)),
             this,
             SLOT(contractCurrentRowChangedSlot(const QModelIndex&,const QModelIndex&)));
+    /**
+     * @brief 同步调整列宽
+     */
+    connect(ui->contractTableView->horizontalHeader(),&QHeaderView::sectionResized,
+            this, &ContractWidget::updateSumTabSectionWidth);
+    /**
+     * @brief 根据进度条值同步列表位置
+     */
+    connect((QObject*)ui->sumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            (QObject*)ui->contractTableView->horizontalScrollBar(), SLOT(setValue(int)));
 }
 
 ContractWidget::~ContractWidget()
@@ -118,6 +128,7 @@ void
 ContractWidget::initView()
 {
     initContractTableview();
+    initSumTableView();
     initPriceTableview();
     initClientTreeWidget();
 }
@@ -150,12 +161,80 @@ ContractWidget::initContractTableview()
     ui->contractTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+    //隐藏滚动条
+    ui->contractTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->contractTableView->setSortingEnabled(true);
 
     ui->contractTableView->setColumnWidth(0, 200);
     ui->contractTableView->setColumnWidth(1, 200);
     ui->contractTableView->setColumnWidth(2, 200);
     ui->contractTableView->setColumnWidth(3, 200);
+}
+
+void
+ContractWidget::initSumTableView()
+{
+    //设置首行标题
+    QStringList headerList;
+    headerList << "合同号" << "客户名称" << "工程名" << "工程地址"
+               << "运距(KM)" << "结构/层数" << "计划工期开始日"
+               << "计划工期结束日" << "签订日期" << "税率%"
+               << "是否含税" << "租赁要求" << "补充协议" << "备注";
+
+
+    mSumModel = new TableModel(0, headerList.size());
+    ui->sumTableView->setModel(mSumModel);
+    mSumModel->setHorizontalHeaderLabels(headerList);
+
+    //设置单元格不可编辑,单击选中一行且只能选中一行
+    ui->sumTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->sumTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->sumTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    ui->sumTableView->verticalHeader()->setVisible(false);           //隐藏行表头
+    ui->sumTableView->horizontalHeader()->setVisible(false);   //隐藏列表头
+    ui->sumTableView->horizontalHeader()->setStyleSheet(
+                "QHeaderView::section{"
+                "background-color:rgb(234, 234, 234)}");             //表头颜色
+
+    ui->sumTableView->verticalHeader()->setDefaultSectionSize(20);
+    ui->sumTableView->setAlternatingRowColors(true);
+    ui->sumTableView->setStyleSheet(
+                "QTableWidget{background-color:rgb(250, 250, 250);"
+                "alternate-background-color:rgb(255, 255, 224);}"); //设置间隔行颜色变化
+
+    ui->sumTableView->setColumnWidth(0, 200);
+    ui->sumTableView->setColumnWidth(1, 200);
+    ui->sumTableView->setColumnWidth(2, 200);
+    ui->sumTableView->setColumnWidth(3, 200);
+
+    QStandardItem* sumStrItem = new QStandardItem("合计");
+    QList<QStandardItem*> items;
+    items << sumStrItem;
+    mSumModel->appendRow(items);
+    clearSumTableData();
+}
+
+void
+ContractWidget::clearSumTableData()
+{
+    sumUpdateRowCount();
+}
+
+void
+ContractWidget::sumUpdateRowCount()
+{
+    int rows = 0;
+    if (mContractModel->rowCount() > 0)
+        rows = mContractModel->rowCount();
+
+    mSumModel->setData(mSumModel->index(0, 1), QString::number(rows));
+}
+
+void
+ContractWidget::updateSumTabSectionWidth(int logicalIndex, int, int newSize)
+{
+    ui->sumTableView->setColumnWidth(logicalIndex, newSize);
 }
 
 void
@@ -354,6 +433,9 @@ ContractWidget::addContractTableRow(Contract &contract)
           << endDate << signedDate << taxRate << isIncludeTax
           << requirement << supplement << remarks;
     mContractModel->appendRow(items);
+
+    //更新合计
+    sumUpdateRowCount();
 }
 
 void
@@ -448,6 +530,8 @@ ContractWidget::deleteContractItemSlot()
     if (!mDb->deleteContractDataInNumber(number)) {
         ALOGD("%s, delete ok", __FUNCTION__);
         mContractModel->removeRow(curRow);
+        //更新合计
+        sumUpdateRowCount();
     }
 }
 

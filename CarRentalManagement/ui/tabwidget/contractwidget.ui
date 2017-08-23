@@ -108,7 +108,7 @@
       </item>
       <item>
        <widget class="QWidget" name="contractWidget" native="true">
-        <layout class="QVBoxLayout" name="contractVerticalLayout" stretch="1,1">
+        <layout class="QVBoxLayout" name="contractVerticalLayout" stretch="5,0,3">
          <property name="spacing">
           <number>0</number>
          </property>
@@ -126,6 +126,16 @@
          </property>
          <item>
           <widget class="QTableView" name="contractTableView"/>
+         </item>
+         <item>
+          <widget class="QTableView" name="sumTableView">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>40</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QTableView" name="priceTableView"/>

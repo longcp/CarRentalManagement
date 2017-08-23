@@ -57,11 +57,13 @@ private slots:
     void            deleteContractItemSlot();
     void            contractCurrentRowChangedSlot(const QModelIndex &current, const QModelIndex &prev);
 
-    void on_contractTableView_clicked(const QModelIndex &index);
+    void            on_contractTableView_clicked(const QModelIndex &index);
 
-    void on_contractTableView_doubleClicked(const QModelIndex &index);
+    void            on_contractTableView_doubleClicked(const QModelIndex &index);
 
-    void on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
+    void            on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
+
+    void            updateSumTabSectionWidth(int logicalIndex, int, int newSize);
 
 private:
     /**
@@ -76,6 +78,18 @@ private:
      * @brief 初始化合同表格式
      */
     void            initContractTableview();
+    /**
+     * @brief initSumTableView
+     */
+    void            initSumTableView();
+    /**
+     * @brief sumUpdateRowCount
+     */
+    void            sumUpdateRowCount();
+    /**
+     * @brief clearSumTableData
+     */
+    void            clearSumTableData();
     /**
      * @brief 初始化价格表格式
      */
@@ -140,6 +154,7 @@ private:
 
     QTreeWidgetItem*    mRootItem;
     TableModel*     mContractModel;
+    TableModel*     mSumModel;
     TableModel*     mPriceModel;
     DataBase*       mDb;
     int             curRow;
