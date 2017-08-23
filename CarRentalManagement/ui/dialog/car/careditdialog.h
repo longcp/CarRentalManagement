@@ -134,6 +134,39 @@ private:
      * @brief initProjectSumTableview
      */
     void            initProjectSumTableview();
+
+    /* 清除各合计表数据 */
+    void            clearAnnualSumTabData();
+    void            clearBusSumTabData();
+    void            clearPaySumTabData();
+    void            clearProSumTabData();
+
+    /* 设置各合计表格数值 */
+    void            setAnnSumAnnFeeCellVal(double value);
+    void            setAnnSumTraFeeCellVal(double value);
+    void            setBusSumFeeCellVal(double value);
+    void            setPaySumFeeCellVal(double value);
+    void            setProSumAmountCellVal(double value);
+
+    /* 各合计表格添加数值 */
+    void            annSumAnnFeeCellAddVal(double value);
+    void            annSumTraFeeCellAddVal(double value);
+    void            busSumFeeCellAddVal(double value);
+    void            paySumFeeCellAddVal(double value);
+    void            proSumAmountCellAddVal(double value);
+
+    /* 各合计表格减去数值 */
+    void            annSumAnnFeeCellDelVal(double value);
+    void            annSumTraFeeCellDelVal(double value);
+    void            busSumFeeCellDelVal(double value);
+    void            paySumFeeCellDelVal(double value);
+    void            proSumAmountCellDelVal(double value);
+
+    /* 更新各合计表格的条目数 */
+    void            annSumUpdateRowCount();
+    void            busSumUpdateRowCount();
+    void            paySumUpdateRowCount();
+    void            proSumUpdateRowCount();
     /**
      * @brief 设置编辑模式
      */
@@ -193,9 +226,10 @@ private:
      */
     void            updateAllTableView();
     void            updateAnnualTableView();
-    void            updateInsuranceTableView();
     void            updateBusinessInsuanceTableView();
+    void            updateInsuranceTableView();
     void            updateProjectTableView();
+
     PROJECT_RECORD  getProjectFromRentaldoc(const RentalDocument &doc);
 
     Ui::CarEditDialog *ui;
@@ -221,6 +255,12 @@ private:
     TableModel*     mPaymentModel;
     TableModel*     mPaymentSumModel;
 
+    double          mCurAnnSumAnnFee;
+    double          mCurAnnSumTraFee;
+    double          mCurBusSumFee;
+    double          mCurPaySumFee;
+    double          mCurProSumAmount;
+
     OpenType        mOpenType;
     Car*            mOriginCar;
     QString         mCarNumber;
@@ -233,6 +273,33 @@ private:
     QAction*        mPaymentDelAct;
     int             mCurRow;
     bool            mIsModifing;
+
+    enum AnnualRecordTableCol {
+        ANN_REC_COL_NUM,
+        ANN_REC_COL_DATE,
+        ANN_REC_COL_ANNFEE,
+        ANN_REC_COL_TRAVELFEE,
+        ANN_REC_COL_REMARKS
+    };
+
+    enum InsuranceRecordTableCol {
+        INSURANCE_REC_COL_NUM,
+        INSURANCE_REC_COL_DATE,
+        INSURANCE_REC_COL_FEE,
+        INSURANCE_REC_COL_COMPANY,
+        INSURANCE_REC_COL_REMARKS
+    };
+
+    enum ProjectRecordTableCol {
+        PRO_REC_COL_NUM,
+        PRO_REC_COL_DATE,
+        PRO_REC_COL_CONTRACT_NUM,
+        PRO_REC_COL_CLIENT_NUM,
+        PRO_REC_COL_CLIENT_NAME,
+        PRO_REC_COL_AMOUNT,
+        PRO_REC_COL_REMARKS,
+        PRO_REC_COL_DOC_NUM
+    };
 };
 
 #endif // CAREDITDIALOG_H

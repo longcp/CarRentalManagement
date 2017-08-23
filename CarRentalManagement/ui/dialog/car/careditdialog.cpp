@@ -237,9 +237,13 @@ CarEditDialog::initView()
     this->setFixedSize(1000, 700);
     setPumpTypeView();
     initProjectTableview();
+    initProjectSumTableview();
     initAnnualTableview();
+    initAnnualSumTableview();
     initBusinessTableview();
+    initBusinessSumTableview();
     initPaymentTableview();
+    initPaymentSumTableview();
 }
 
 void
@@ -279,25 +283,7 @@ CarEditDialog::initProjectTableview()
     ui->projectTableView->setSelectionMode(
                 QAbstractItemView::SingleSelection);
 
-    //列表头不可拖动，最后一列自适应剩余空间
-#ifdef BAN_SECTION
-    ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(0, QHeaderView::Fixed);
-    ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(1, QHeaderView::Fixed);
-    ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(2, QHeaderView::Fixed);
-    ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(3, QHeaderView::Fixed);
-    ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(4, QHeaderView::Fixed);
-    ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(5, QHeaderView::Fixed);
-    ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(6, QHeaderView::Fixed);
-    ui->projectTableView->horizontalHeader()
-            ->setSectionResizeMode(7, QHeaderView::Fixed);
-#endif
+    //最后一列自适应剩余空间
     ui->projectTableView->horizontalHeader()
             ->setSectionResizeMode(7, QHeaderView::Stretch);
 
@@ -314,7 +300,7 @@ CarEditDialog::initProjectTableview()
     ui->projectTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); //隐藏滚动条
     ui->projectTableView->setSortingEnabled(true);
 
-    initProjectSumTableview();
+    ui->projectTableView->setColumnWidth(PRO_REC_COL_CONTRACT_NUM, 200);
 }
 
 void
@@ -347,10 +333,14 @@ CarEditDialog::initProjectSumTableview()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
 
+    ui->projectSumTableView->setColumnWidth(PRO_REC_COL_CONTRACT_NUM, 200);
+
     QStandardItem* sumStr = new QStandardItem("合计");
     QList<QStandardItem*> items;
     items << sumStr;
     mProjectSumModel->appendRow(items);
+
+    clearProSumTabData();
 }
 
 void
@@ -399,8 +389,6 @@ CarEditDialog::initAnnualTableview()
     //隐藏滚动条
     ui->annualTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->annualTableview->setSortingEnabled(true);
-
-    initAnnualSumTableview();
 }
 
 void
@@ -435,6 +423,8 @@ CarEditDialog::initAnnualSumTableview()
     QList<QStandardItem*> items;
     items << sum;
     mAnnualSumModel->appendRow(items);
+
+    clearAnnualSumTabData();
 }
 
 void
@@ -484,8 +474,6 @@ CarEditDialog::initBusinessTableview()
     //隐藏滚动条
     ui->businessTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->businessTableView->setSortingEnabled(true);
-
-    initBusinessSumTableview();
 }
 
 void
@@ -521,6 +509,8 @@ CarEditDialog::initBusinessSumTableview()
     QList<QStandardItem*> items;
     items << sum;
     mBusinessSumModel->appendRow(items);
+
+    clearBusSumTabData();
 }
 
 void
@@ -570,8 +560,6 @@ CarEditDialog::initPaymentTableview()
     //隐藏滚动条
     ui->paymentTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->paymentTableView->setSortingEnabled(true);
-
-    initPaymentSumTableview();
 }
 
 void
@@ -610,6 +598,177 @@ CarEditDialog::initPaymentSumTableview()
     QList<QStandardItem*> items;
     items << sum;
     mPaymentSumModel->appendRow(items);
+
+    clearPaySumTabData();
+}
+
+void
+CarEditDialog::clearAnnualSumTabData()
+{
+    setAnnSumAnnFeeCellVal(0);
+    setAnnSumTraFeeCellVal(0);
+    annSumUpdateRowCount();
+}
+
+void
+CarEditDialog::clearBusSumTabData()
+{
+    setBusSumFeeCellVal(0);
+    busSumUpdateRowCount();
+}
+
+void
+CarEditDialog::clearPaySumTabData()
+{
+    setPaySumFeeCellVal(0);
+    paySumUpdateRowCount();
+}
+
+void
+CarEditDialog::clearProSumTabData()
+{
+    setProSumAmountCellVal(0);
+    proSumUpdateRowCount();
+}
+
+void
+CarEditDialog::annSumUpdateRowCount()
+{
+    int rows = 0;
+    if (mAnnualModel->rowCount() > 0)
+        rows = mAnnualModel->rowCount();
+
+    mAnnualSumModel->setData(mAnnualSumModel->index(0, 1), QString::number(rows));
+}
+
+void
+CarEditDialog::paySumUpdateRowCount()
+{
+    int rows = 0;
+    if (mPaymentModel->rowCount() > 0)
+        rows = mPaymentModel->rowCount();
+
+    mPaymentSumModel->setData(mPaymentSumModel->index(0, 1), QString::number(rows));
+}
+
+void
+CarEditDialog::busSumUpdateRowCount()
+{
+    int rows = 0;
+    if (mBusinessModel->rowCount() > 0)
+        rows = mBusinessModel->rowCount();
+
+    mBusinessSumModel->setData(mBusinessSumModel->index(0, 1), QString::number(rows));
+}
+
+void
+CarEditDialog::proSumUpdateRowCount()
+{
+    int rows = 0;
+    if (mProjectModel->rowCount() > 0)
+        rows = mProjectModel->rowCount();
+
+    mProjectSumModel->setData(mProjectSumModel->index(0, 1), QString::number(rows));
+}
+
+void
+CarEditDialog::setAnnSumAnnFeeCellVal(double value)
+{
+    mAnnualSumModel->setData(mAnnualSumModel->index(0, ANN_REC_COL_ANNFEE),
+                             Util::doubleToDecimal2String(value));
+    mCurAnnSumAnnFee = value;
+}
+
+void
+CarEditDialog::setAnnSumTraFeeCellVal(double value)
+{
+    mAnnualSumModel->setData(mAnnualSumModel->index(0, ANN_REC_COL_TRAVELFEE),
+                             Util::doubleToDecimal2String(value));
+    mCurAnnSumTraFee = value;
+}
+
+void
+CarEditDialog::setPaySumFeeCellVal(double value)
+{
+    mPaymentSumModel->setData(mPaymentSumModel->index(0, INSURANCE_REC_COL_FEE),
+                              Util::doubleToDecimal2String(value));
+    mCurPaySumFee = value;
+}
+
+void
+CarEditDialog::setBusSumFeeCellVal(double value)
+{
+    mBusinessSumModel->setData(mBusinessSumModel->index(0, INSURANCE_REC_COL_FEE),
+                               Util::doubleToDecimal2String(value));
+    mCurBusSumFee = value;
+}
+
+void
+CarEditDialog::setProSumAmountCellVal(double value)
+{
+    mProjectSumModel->setData(mProjectSumModel->index(0, PRO_REC_COL_AMOUNT),
+                              Util::doubleToDecimal2String(value));
+    mCurProSumAmount = value;
+}
+
+void
+CarEditDialog::annSumAnnFeeCellAddVal(double value)
+{
+    setAnnSumAnnFeeCellVal(mCurAnnSumAnnFee+value);
+}
+
+void
+CarEditDialog::annSumTraFeeCellAddVal(double value)
+{
+    setAnnSumTraFeeCellVal(mCurAnnSumTraFee+value);
+}
+
+void
+CarEditDialog::paySumFeeCellAddVal(double value)
+{
+    setPaySumFeeCellVal(mCurPaySumFee+value);
+}
+
+void
+CarEditDialog::busSumFeeCellAddVal(double value)
+{
+    setBusSumFeeCellVal(mCurBusSumFee+value);
+}
+
+void
+CarEditDialog::proSumAmountCellAddVal(double value)
+{
+    setProSumAmountCellVal(mCurProSumAmount+value);
+}
+
+void
+CarEditDialog::annSumAnnFeeCellDelVal(double value)
+{
+    setAnnSumAnnFeeCellVal(mCurAnnSumAnnFee-value);
+}
+
+void
+CarEditDialog::annSumTraFeeCellDelVal(double value)
+{
+    setAnnSumTraFeeCellVal(mCurAnnSumTraFee-value);
+}
+
+void
+CarEditDialog::paySumFeeCellDelVal(double value)
+{
+    setPaySumFeeCellVal(mCurPaySumFee-value);
+}
+
+void
+CarEditDialog::busSumFeeCellDelVal(double value)
+{
+    setBusSumFeeCellVal(mCurBusSumFee-value);
+}
+
+void
+CarEditDialog::proSumAmountCellDelVal(double value)
+{
+    setProSumAmountCellVal(mCurProSumAmount-value);
 }
 
 void
@@ -1104,7 +1263,10 @@ CarEditDialog::addAnnualItemSlot(ANNUALFEE_RECORD &record)
     items << num << date << annualFee << travelExpenses << remarks;
     mAnnualModel->appendRow(items);
 
-    //update sum tableview
+    // 更新合计表
+    annSumAnnFeeCellAddVal(record.annualFee);
+    annSumTraFeeCellAddVal(record.travelExpenses);
+    annSumUpdateRowCount();
 }
 
 void
@@ -1120,7 +1282,9 @@ CarEditDialog::addInsuranceItemSlot(INSURANCE_RECORD &record)
     items << num << date << fee << company << remarks;
     mPaymentModel->appendRow(items);
 
-    //update sum tableview
+    // 更新合计表
+    paySumFeeCellAddVal(record.fee);
+    paySumUpdateRowCount();
 }
 
 void
@@ -1136,7 +1300,9 @@ CarEditDialog::addBusinessInsuranceItemSlot(INSURANCE_RECORD &record)
     items << num << date << fee << company << remarks;
     mBusinessModel->appendRow(items);
 
-    //update sum tableview
+    // 更新合计表
+    busSumFeeCellAddVal(record.fee);
+    busSumUpdateRowCount();
 }
 
 void
@@ -1155,8 +1321,9 @@ CarEditDialog::addProjectItemSlot(PROJECT_RECORD &record)
     items << num << date << contractNum << clientNum << clientName
           << amount << remarks << rentalDocNum;
     mProjectModel->appendRow(items);
-
-    //update sum tableview
+    // 更新合计表
+    proSumAmountCellAddVal(record.amount);
+    proSumUpdateRowCount();
 }
 
 void
@@ -1178,6 +1345,7 @@ CarEditDialog::updateAnnualTableView()
 
     if (mAnnualModel->rowCount() > 0) {
         mAnnualModel->removeRows(0, mAnnualModel->rowCount());
+        clearAnnualSumTabData();
     }
 
     if (!mDb->getAnnualDataInCarNumber(mCarNumber, records)) {
@@ -1201,6 +1369,7 @@ CarEditDialog::updateInsuranceTableView()
 
     if (mPaymentModel->rowCount() > 0) {
         mPaymentModel->removeRows(0, mPaymentModel->rowCount());
+        clearPaySumTabData();
     }
 
     if (!mDb->getInsuranceDataInCarNumber(mCarNumber, records)) {
@@ -1225,6 +1394,7 @@ CarEditDialog::updateBusinessInsuanceTableView()
     if (mBusinessModel->rowCount() > 0) {
         //删除所有行
         mBusinessModel->removeRows(0, mBusinessModel->rowCount());
+        clearBusSumTabData();
     }
 
     if (!mDb->getBusinessInsuranceDataInCarNumber(mCarNumber, records)) {
@@ -1246,9 +1416,10 @@ CarEditDialog::updateProjectTableView()
     QList<RentalDocument> docs;
     int count = 0;
 
-    if (mBusinessModel->rowCount() > 0) {
+    if (mProjectModel->rowCount() > 0) {
         //删除所有行
         mProjectModel->removeRows(0, mProjectModel->rowCount());
+        clearProSumTabData();
     }
 
     if (!mDb->getRentalDocumentDataInCarNumber(mCarNumber, docs)) {
@@ -1290,10 +1461,15 @@ CarEditDialog::delAnnualTableItem()
         return;
 
     QString number = mAnnualModel->index(mCurRow, 0).data().toString();
+    double annFee = mAnnualModel->index(mCurRow, ANN_REC_COL_ANNFEE).data().toDouble();
+    double traFee = mAnnualModel->index(mCurRow, ANN_REC_COL_TRAVELFEE).data().toDouble();
     if (!mDb->delAnnualDataInNumber(number)) {
         ALOGD("%s, delete (%s)", __FUNCTION__, number.toStdString().data());
         mAnnualModel->removeRow(mCurRow);
-        // FIXME:同步更新合计表
+        // 更新合计表
+        annSumAnnFeeCellDelVal(annFee);
+        annSumTraFeeCellDelVal(traFee);
+        annSumUpdateRowCount();
     }
 }
 
@@ -1309,9 +1485,13 @@ CarEditDialog::delBusinessTableItem()
         return;
 
     QString number = mBusinessModel->index(mCurRow, 0).data().toString();
+    double fee = mBusinessModel->index(mCurRow, INSURANCE_REC_COL_FEE).data().toDouble();
     if (!mDb->delBusinessInsuranceDataInNumber(number)) {
         ALOGD("%s, delete (%s)", __FUNCTION__, number.toStdString().data());
         mBusinessModel->removeRow(mCurRow);
+        // 更新合计表
+        busSumFeeCellDelVal(fee);
+        busSumUpdateRowCount();
     }
 }
 
@@ -1327,9 +1507,13 @@ CarEditDialog::delPaymentTableItem()
         return;
 
     QString number = mPaymentModel->index(mCurRow, 0).data().toString();
+    double fee = mPaymentModel->index(mCurRow, INSURANCE_REC_COL_FEE).data().toDouble();
     if (!mDb->delInsuranceDataInNumber(number)) {
         ALOGD("%s, delete (%s)", __FUNCTION__, number.toStdString().data());
         mPaymentModel->removeRow(mCurRow);
+        // 更新合计表
+        paySumFeeCellDelVal(fee);
+        paySumUpdateRowCount();
     }
 }
 
