@@ -10,29 +10,25 @@ ModifyPasswardDialog::ModifyPasswardDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("修改密码");
-    this->setWindowFlags(Qt::CustomizeWindowHint
-                         | Qt::WindowCloseButtonHint);                  //只留关闭按钮
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);  //只留关闭按钮
     this->setFixedSize(350, 330);                                       //禁止窗口伸缩
 
     //密码，数字或英文，不超过12位
     QRegExp passwardRegx("[a-zA-Z0-9]+$");
     ui->oldPasswardLEdit->setEchoMode(QLineEdit::Password);
-    ui->oldPasswardLEdit->setValidator(
-                new QRegExpValidator(passwardRegx,
-                                     ui->oldPasswardLEdit));
+    ui->oldPasswardLEdit->setValidator(new QRegExpValidator(passwardRegx,
+                                       ui->oldPasswardLEdit));
     ui->oldPasswardLEdit->setMaxLength(12);
     ui->oldPasswardLEdit->setFocus();
 
     ui->newPasswardLEdit->setEchoMode(QLineEdit::Password);
-    ui->newPasswardLEdit->setValidator(
-                new QRegExpValidator(passwardRegx,
-                                     ui->newPasswardLEdit));
+    ui->newPasswardLEdit->setValidator(new QRegExpValidator(passwardRegx,
+                                       ui->newPasswardLEdit));
     ui->newPasswardLEdit->setMaxLength(12);
 
     ui->ensurePasswardLEdit->setEchoMode(QLineEdit::Password);
-    ui->ensurePasswardLEdit->setValidator(
-                new QRegExpValidator(passwardRegx,
-                                     ui->ensurePasswardLEdit));
+    ui->ensurePasswardLEdit->setValidator(new QRegExpValidator(passwardRegx,
+                                          ui->ensurePasswardLEdit));
     ui->ensurePasswardLEdit->setMaxLength(12);
     ui->oldPasswardLEdit->setFocus();
 

@@ -23,15 +23,12 @@ LoginDialog::LoginDialog(QWidget *parent) :
     this->setWindowTitle("用户登陆");
     this->setWindowOpacity(1);
 
-    this->setWindowFlags(Qt::FramelessWindowHint|
-                         Qt::WindowSystemMenuHint); //无边框
+    this->setWindowFlags(Qt::FramelessWindowHint| Qt::WindowSystemMenuHint); //无边框
     mDb = DataBase::getInstance();
 
     //最大最小化图标
-    QPixmap minPix  = style()->standardPixmap(QStyle
-                                              ::SP_TitleBarMinButton);
-    QPixmap closePix = style()->standardPixmap(QStyle
-                                               ::SP_TitleBarCloseButton);
+    QPixmap minPix = style()->standardPixmap(QStyle::SP_TitleBarMinButton);
+    QPixmap closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
     ui->minimumBtn->setIcon(minPix);
     ui->closeBtn->setIcon(closePix);
     //提示信息
@@ -42,9 +39,8 @@ LoginDialog::LoginDialog(QWidget *parent) :
     //密码，数字或英文，不超过12位
     QRegExp passwardRegx("[a-zA-Z0-9]+$");
     ui->passwardLEdit->setEchoMode(QLineEdit::Password);
-    ui->passwardLEdit->setValidator(
-                new QRegExpValidator(passwardRegx,
-                                     ui->passwardLEdit));
+    ui->passwardLEdit->setValidator(new QRegExpValidator(passwardRegx,
+                                    ui->passwardLEdit));
     ui->passwardLEdit->setMaxLength(12);
     ui->userNameLEdit->setFocus();
 }

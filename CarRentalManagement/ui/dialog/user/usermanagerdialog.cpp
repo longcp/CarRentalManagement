@@ -23,11 +23,10 @@ UserManagerDialog::UserManagerDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("用户信息管理");
-    this->setWindowFlags(Qt::CustomizeWindowHint
-                         | Qt::WindowCloseButtonHint);                  //只留关闭按钮
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);  //只留关闭按钮
     this->setFixedSize(500, 220);                                       //禁止窗口伸缩
 
-    mDb       = DataBase::getInstance();
+    mDb = DataBase::getInstance();
     mAddUserDialog = new AddUserDialog();
     mModifyPasswardDialog = new ModifyPasswardDialog();
 
@@ -48,7 +47,7 @@ UserManagerDialog::UserManagerDialog(QWidget *parent) :
     /**
      * 访问网管板超时，弹出提示窗口
      */
-    connect(this,    SIGNAL(openAddUserWindowSignal()),
+    connect(this, SIGNAL(openAddUserWindowSignal()),
             mAddUserDialog, SLOT(openWindow()));
     /**
      * 添加用户成功，列表更新
@@ -58,12 +57,12 @@ UserManagerDialog::UserManagerDialog(QWidget *parent) :
     /**
      * 打开修改密码窗口
      */
-    connect(this,    SIGNAL(openMdifyPasswardWindowSignal(QString)),
+    connect(this, SIGNAL(openMdifyPasswardWindowSignal(QString)),
             mModifyPasswardDialog, SLOT(openWindow(QString)));
     /**
      * 用户修改密码成功，列表更新
      */
-    connect(mModifyPasswardDialog,    SIGNAL(updateTableContentSignal(User &)),
+    connect(mModifyPasswardDialog, SIGNAL(updateTableContentSignal(User &)),
             this, SLOT(updateTableContent(User &)));
 }
 
@@ -87,10 +86,8 @@ UserManagerDialog::setWindow(QString userName)
         return;
 
     ALOGD("%s, name = %s, passwd = %s, right = %d",
-          __FUNCTION__,
-          user.name.toStdString().data(),
-          user.passward.toStdString().data(),
-          user.right);
+          __FUNCTION__, user.name.toStdString().data(),
+          user.passward.toStdString().data(), user.right);
     mCurUserRight = user.right;
     mCurUserName  = user.name;
     initView();                                                     //初始化用户信息管理表
@@ -159,8 +156,7 @@ UserManagerDialog::on_delUserBtn_clicked()
     msgBox.setButtonText(QMessageBox::Yes, "确定");
     msgBox.setButtonText(QMessageBox::Cancel, "取消");
 
-    QModelIndexList modelList
-            = ui->userInfoTableview->selectionModel()->selectedRows();
+    QModelIndexList modelList = ui->userInfoTableview->selectionModel()->selectedRows();
     if (modelList.size() != 0) {
         ret = msgBox.exec();
         if (ret == QMessageBox::Cancel) {
@@ -208,8 +204,7 @@ UserManagerDialog::on_modifyBtn_clicked()
     QString uName;
     QModelIndex modelIndex;
 
-    QModelIndexList modelList
-            = ui->userInfoTableview->selectionModel()->selectedRows();
+    QModelIndexList modelList = ui->userInfoTableview->selectionModel()->selectedRows();
     if (modelList.size() != 0) {
         modelIndex  = modelList[0];
         mCurrentRow = modelList[0].row();
@@ -242,8 +237,7 @@ void
 UserManagerDialog::updateTableContent(User &user)
 {
     QStandardItem *nameItem     = new QStandardItem(user.name);
-    QStandardItem *rightItem    = new QStandardItem(user
-                                                    .getUserRightStr(user.right));
+    QStandardItem *rightItem    = new QStandardItem(user.getUserRightStr(user.right));
     mModel->setItem(mCurrentRow, USER_NAME_COLUMN, nameItem);
     mModel->setItem(mCurrentRow, USER_RIGHT_COLUMN, rightItem);
 }

@@ -11,21 +11,18 @@ AddUserDialog::AddUserDialog(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle("添加用户");
-    this->setWindowFlags(Qt::CustomizeWindowHint
-                         | Qt::WindowCloseButtonHint);                  //只留关闭按钮
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);                  //只留关闭按钮
     this->setFixedSize(350, 300);                                       //禁止窗口伸缩
 
     //密码，数字或英文，不超过12位
     QRegExp passwardRegx("[a-zA-Z0-9]+$");
     ui->passwardLEdit->setEchoMode(QLineEdit::Password);
-    ui->passwardLEdit->setValidator(
-                new QRegExpValidator(passwardRegx,
-                                     ui->passwardLEdit));
+    ui->passwardLEdit->setValidator(new QRegExpValidator(passwardRegx,
+                                    ui->passwardLEdit));
     ui->passwardLEdit->setMaxLength(12);
     ui->ensurePasswardLEdit->setEchoMode(QLineEdit::Password);
-    ui->ensurePasswardLEdit->setValidator(
-                new QRegExpValidator(passwardRegx,
-                                     ui->ensurePasswardLEdit));
+    ui->ensurePasswardLEdit->setValidator(new QRegExpValidator(passwardRegx,
+                                          ui->ensurePasswardLEdit));
     ui->ensurePasswardLEdit->setMaxLength(12);
     ui->uNameLEdit->setFocus();
 
@@ -56,8 +53,7 @@ void AddUserDialog::on_ensureBtn_clicked()
     errInfoMsgBox.setWindowTitle("添加失败");
     errInfoMsgBox.setText("输入不能为空");
     errInfoMsgBox.setStandardButtons(QMessageBox::Ok);
-    errInfoMsgBox.setButtonText(QMessageBox::Ok,
-                                QString("确 定"));
+    errInfoMsgBox.setButtonText(QMessageBox::Ok, QString("确 定"));
 
     uName = ui->uNameLEdit->text();
     firPassward = ui->passwardLEdit->text();
