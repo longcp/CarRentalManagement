@@ -226,6 +226,7 @@ void
 ContractEditDialog::setEditMode()
 {
     ALOGDTRACE();
+    mIsViewMode = false;
     ui->projectNameLE->setFocus();
     if (mCurUserIsRoot) {
         mActEdit->setDisabled(true);
@@ -243,6 +244,7 @@ void
 ContractEditDialog::setViewMode()
 {
     ALOGDTRACE();
+    mIsViewMode = true;
     if (mCurUserIsRoot) {
         mActCancel->setDisabled(true);
         mActEdit->setEnabled(true);
@@ -676,10 +678,12 @@ ContractEditDialog::on_deleteBtn_clicked()
 void ContractEditDialog::on_isIncludeTexCB_stateChanged(int state)
 {
     ALOGDTRACE();
-    if (state == Qt::Checked)
-        ui->taxRateSB->setEnabled(true);
-    else
+    if (state == Qt::Checked) {
+        if (!mIsViewMode)
+            ui->taxRateSB->setEnabled(true);
+    } else {
         ui->taxRateSB->setDisabled(true);
+    }
 }
 
 void

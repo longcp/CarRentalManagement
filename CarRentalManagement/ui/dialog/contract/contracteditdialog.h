@@ -164,6 +164,7 @@ private:
     Contract*       mOriginContract;
     ClientTableDialog*      mClientTableDialog;
     ContractPriceDialog*    mContractPriceDialog;                               //是否内部关闭
+    bool            mIsViewMode;
     bool            mCurUserIsRoot;
 };
 
