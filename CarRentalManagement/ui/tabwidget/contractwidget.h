@@ -11,6 +11,7 @@ class Contract;
 class DataBase;
 class QTreeWidgetItem;
 class QStandardItem;
+class User;
 
 namespace Ui {
 class ContractWidget;
@@ -29,6 +30,7 @@ signals:
                                                  Contract&,
                                                  QString,
                                                  QString);
+    void            initViewWithUserSig(User &user);
 
 private slots:
     /**
@@ -56,14 +58,12 @@ private slots:
      */
     void            deleteContractItemSlot();
     void            contractCurrentRowChangedSlot(const QModelIndex &current, const QModelIndex &prev);
-
     void            on_contractTableView_clicked(const QModelIndex &index);
-
     void            on_contractTableView_doubleClicked(const QModelIndex &index);
-
     void            on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
-
     void            updateSumTabSectionWidth(int logicalIndex, int, int newSize);
+
+    void            initViewWithUser(User &user);
 
 private:
     /**

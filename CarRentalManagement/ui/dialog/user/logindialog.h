@@ -41,10 +41,10 @@ signals:
     void                close_mainWindow_signal();
 
     /**
-     * @brief current_userInfo_signal
+     * @brief userLoginedSignal
      * @param uName
      */
-    void                userLoginSignal(QString curUserName);
+    void                userLoginedSignal(User &user);
 
     /**
      * @brief add_operate_record_signal:添加操作记录

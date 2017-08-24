@@ -108,7 +108,7 @@ LoginDialog::on_loginBtn_clicked()
             } else {
                 //成功登陆
                 this->hide();
-                emit userLoginSignal(user.name);
+                emit userLoginedSignal(user);
             }
         }
     }

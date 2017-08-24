@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QAction>
 #include <util.h>
+#include <user.h>
 
 #define LOG_TAG                 "CAR_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -162,6 +163,20 @@ CarEditDialog::~CarEditDialog()
 }
 
 void
+CarEditDialog::initViewWithUser(User &user)
+{
+    if (!user.isRoot()) {
+        mActSaveExit->setEnabled(false);
+        mActSave->setEnabled(false);
+        mActEdit->setEnabled(false);
+        mActCancel->setEnabled(false);
+        mCurUserIsRoot = false;
+    } else {
+        mCurUserIsRoot = true;
+    }
+}
+
+void
 CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
 {
     Car tmp;
@@ -182,7 +197,8 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
     } else {
         //已查看内容方式打开
         mCarNumber = car.number;
-        mActSave->setEnabled(true);
+        if (mCurUserIsRoot)
+            mActSave->setEnabled(true);
         ui->numLE->setDisabled(true);
         setViewMode();
         setOriginCar(car);
@@ -779,9 +795,11 @@ CarEditDialog::setEditMode()
     else
         ui->carNumberLE->setFocus();
 
-    mActEdit->setDisabled(true);
-    mActCancel->setEnabled(true);
-    mActSave->setEnabled(true);
+    if (mCurUserIsRoot) {
+        mActEdit->setDisabled(true);
+        mActCancel->setEnabled(true);
+        mActSave->setEnabled(true);
+    }
     setMode(true);
 }
 
@@ -789,9 +807,11 @@ CarEditDialog::setEditMode()
 void
 CarEditDialog::setViewMode()
 {
-    mActCancel->setDisabled(true);
-    mActEdit->setEnabled(true);
-    mActSave->setDisabled(true);
+    if (mCurUserIsRoot) {
+        mActCancel->setDisabled(true);
+        mActEdit->setEnabled(true);
+        mActSave->setDisabled(true);
+    }
     setMode(false);
 }
 

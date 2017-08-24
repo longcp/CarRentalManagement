@@ -10,6 +10,7 @@ class ClientEditDialog;
 class Client;
 class DataBase;
 class TableModel;
+class User;
 
 namespace Ui {
 class ClientManagermentWidget;
@@ -40,10 +41,11 @@ private slots:
     void            on_clientTypeTotalRadioButton_toggled(bool checked);
 
     void            updateSumTabSectionWidth(int logicalIndex, int /*oldSize*/, int newSize);
+    void            initViewWithUser(User &user);
 
 signals:
-    void            openClientEditDialogSignal(OpenType type,
-                                               Client &client);
+    void            openClientEditDialogSignal(OpenType type, Client &client);
+    void            initViewWithUserSig(User &user);
 
 private:
     /**

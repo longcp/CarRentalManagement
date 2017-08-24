@@ -12,6 +12,7 @@ class ContractTableDialog;
 class ClientTableDialog;
 class PriceTableDialog;
 class QMutex;
+class User;
 
 namespace Ui {
 class RentalDocumentEditDialog;
@@ -65,19 +66,21 @@ private slots:
 
     void            on_carNumToolButton_clicked();
 
-    void on_pickPriceBtn_clicked();
+    void            on_pickPriceBtn_clicked();
 
-    void on_squareUnitPriceDSB_valueChanged(double value);
+    void            on_squareUnitPriceDSB_valueChanged(double value);
 
-    void on_pumpTimeUnitPriceDSB_valueChanged(double value);
+    void            on_pumpTimeUnitPriceDSB_valueChanged(double value);
 
-    void on_pumpSquareDSB_valueChanged(double value);
+    void            on_pumpSquareDSB_valueChanged(double value);
 
-    void on_pumpTimesDSB_valueChanged(double value);
+    void            on_pumpTimesDSB_valueChanged(double value);
 
-    void on_pumpSquareRb_toggled(bool checked);
+    void            on_pumpSquareRb_toggled(bool checked);
 
-    void on_pumpTimeRb_toggled(bool checked);
+    void            on_pumpTimeRb_toggled(bool checked);
+
+    void            initViewWithUser(User &user);
 
 signals:
     void            addRentalDocSignal(RentalDocument &doc);
@@ -127,6 +130,7 @@ private:
     CarTableDialog* mCarTableDialog;
     ContractTableDialog* mContractTableDialog;
     PriceTableDialog*    mPriceTableDialog;
+    bool            mCurUserIsRoot;
 
     // 工具栏动作
     QAction*        mActAdd;

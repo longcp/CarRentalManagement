@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <util.h>
+#include <user.h>
 
 #define LOG_TAG                 "RENTAL_DOC_WIDGET"
 #include "utils/Log.h"
@@ -92,6 +93,9 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
      */
     connect(mRentalDocEditDialog, SIGNAL(updateDocItemSignal(RentalDocument&)),
             this, SLOT(updateDocItemSlot(RentalDocument&)));
+
+    connect(this, SIGNAL(initViewWithUserSig(User &)),
+            mRentalDocEditDialog, SLOT(initViewWithUser(User &)));
 }
 
 RentalDocumentWidget::~RentalDocumentWidget()
@@ -136,6 +140,17 @@ RentalDocumentWidget::initView()
     initClientTreeWidget();
     ui->totalRadio->setChecked(true);
     mCurDocState = RentalDocState::UNKNOWN_STATE;
+}
+
+void
+RentalDocumentWidget::initViewWithUser(User &user)
+{
+    if (!user.isRoot()) {
+        mActAdd->setEnabled(false);
+        mActEdit->setEnabled(false);
+        mActDelete->setEnabled(false);
+    }
+    emit initViewWithUserSig(user);
 }
 
 void

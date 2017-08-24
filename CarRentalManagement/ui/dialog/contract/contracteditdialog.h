@@ -11,6 +11,7 @@ class ContractPriceDialog;
 class Contract;
 class QTableView;
 class ClientTableDialog;
+class User;
 
 namespace Ui {
 class ContractEditDialog;
@@ -59,12 +60,11 @@ private slots:
     void            on_deleteBtn_clicked();
 
     void            addPriceItemSlot(CONTRACT_PRICE &price);
-
     void            on_isIncludeTexCB_stateChanged(int state);
-
     void            on_priceTableView_clicked(const QModelIndex &index);
-
     void            getSelectedClient(QString number);
+
+    void            initViewWithUser(User &user);
 
 signals:
     void            openContractPriceWindowSignal(OpenType, QString);
@@ -163,7 +163,8 @@ private:
     TableModel*     mModel;
     Contract*       mOriginContract;
     ClientTableDialog*      mClientTableDialog;
-    ContractPriceDialog*    mContractPriceDialog;
+    ContractPriceDialog*    mContractPriceDialog;                               //是否内部关闭
+    bool            mCurUserIsRoot;
 };
 
 #endif // CONTRACTEDITDIALOG_H

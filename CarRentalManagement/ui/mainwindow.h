@@ -13,6 +13,7 @@ class QWidget;
 class LoginDialog;
 class UserManagerDialog;
 class VersionDialog;
+class User;
 
 namespace Ui {
 class MainWindow;
@@ -72,6 +73,7 @@ private slots:
      * @brief 用户登录
      */
     void        userLoginSlot(QString curUserName);
+    void        userLoginedSlot(User &user);
     void        on_mainTabWidget_currentChanged(int index);
 
     void on_mainTabWidget_tabBarClicked(int index);

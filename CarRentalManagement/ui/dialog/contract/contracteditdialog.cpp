@@ -11,6 +11,7 @@
 #include <QTableView>
 #include <clienttabledialog.h>
 #include <client.h>
+#include <user.h>
 
 #define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -140,6 +141,20 @@ ContractEditDialog::configToolBar()
 }
 
 void
+ContractEditDialog::initViewWithUser(User &user)
+{
+    if (!user.isRoot()) {
+        mActSaveExit->setEnabled(false);
+        mActSave->setEnabled(false);
+        mActEdit->setEnabled(false);
+        mActCancel->setEnabled(false);
+        mCurUserIsRoot = false;
+    } else {
+        mCurUserIsRoot = true;
+    }
+}
+
+void
 ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
                                                Contract &contract,
                                                QString clientName,
@@ -155,8 +170,6 @@ ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
     if (opentype == OpenType::CREATEITEM) {
         //以创建条目方式打开
         mActEdit->setDisabled(true);
-        mActPrev->setDisabled(true);
-        mActNext->setDisabled(true);
         ui->signedDateDE->setDate(QDate::currentDate());
         ui->startDateDE->setDate(QDate::currentDate());
         ui->endDateDE->setDate(QDate::currentDate());
@@ -171,9 +184,8 @@ ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
         ui->contractNumberLabel->setText(Contract::makeNewestContractNumber(count));
     } else {
         //以查看内容方式打开
-        mActSave->setEnabled(true);
-        mActPrev->setEnabled(true);
-        mActNext->setEnabled(true);
+        if (mCurUserIsRoot)
+            mActSave->setEnabled(true);
         setViewMode();
         setOriginContract(contract);
         setView(contract);
@@ -215,9 +227,11 @@ ContractEditDialog::setEditMode()
 {
     ALOGDTRACE();
     ui->projectNameLE->setFocus();
-    mActEdit->setDisabled(true);
-    mActCancel->setEnabled(true);
-    mActSave->setEnabled(true);
+    if (mCurUserIsRoot) {
+        mActEdit->setDisabled(true);
+        mActCancel->setEnabled(true);
+        mActSave->setEnabled(true);
+    }
     setMode(true);
     if (ui->isIncludeTexCB->isChecked())
         ui->taxRateSB->setEnabled(true);
@@ -229,9 +243,11 @@ void
 ContractEditDialog::setViewMode()
 {
     ALOGDTRACE();
-    mActCancel->setDisabled(true);
-    mActEdit->setEnabled(true);
-    mActSave->setDisabled(true);
+    if (mCurUserIsRoot) {
+        mActCancel->setDisabled(true);
+        mActEdit->setEnabled(true);
+        mActSave->setDisabled(true);
+    }
     setMode(false);
 }
 

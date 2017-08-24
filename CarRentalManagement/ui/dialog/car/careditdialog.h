@@ -11,6 +11,7 @@ class DataBase;
 class RentalDocument;
 class QMenu;
 class QAction;
+class User;
 
 namespace Ui {
 class CarEditDialog;
@@ -69,6 +70,10 @@ private slots:
      */
     void            cancelEvent();
     /**
+     * @brief initViewWithUser
+     */
+    void            initViewWithUser(User &user);
+    /**
      * @brief 添加年费条目
      */
     void            addAnnualItemSlot(ANNUALFEE_RECORD &record);
@@ -81,15 +86,10 @@ private slots:
     void            delPaymentTableItem();
 
     void            on_annualTableview_clicked(const QModelIndex &index);
-
     void            on_businessTableView_clicked(const QModelIndex &index);
-
     void            on_paymentTableView_clicked(const QModelIndex &index);
-
     void            on_annualTableview_customContextMenuRequested(const QPoint &pos);
-
     void            on_businessTableView_customContextMenuRequested(const QPoint &pos);
-
     void            on_paymentTableView_customContextMenuRequested(const QPoint &pos);
 
 signals:
@@ -273,6 +273,8 @@ private:
     QAction*        mPaymentDelAct;
     int             mCurRow;
     bool            mIsModifing;
+
+    bool            mCurUserIsRoot;
 
     enum AnnualRecordTableCol {
         ANN_REC_COL_NUM,

@@ -12,6 +12,7 @@ class CarAnnualDialog;
 class TableModel;
 class Car;
 class DataBase;
+class User;
 
 namespace Ui {
 class CarManagermentWidget;
@@ -53,10 +54,11 @@ private slots:
     void            deleteCarItemSlot();
 
 signals:
-    void            openCarEditDialogSignal(OpenType type,
-                                            Car &car);
+    void            openCarEditDialogSignal(OpenType type, Car &car);
+    void            initViewWithUserSig(User &user);
 private slots:
     void            updateSumTabSectionWidth(int logicalIndex, int, int newSize);
+    void            initViewWithUser(User &user);
 
 private:
     /**

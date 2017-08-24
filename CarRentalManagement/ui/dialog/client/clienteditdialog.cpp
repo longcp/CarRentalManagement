@@ -6,6 +6,7 @@
 #include <client.h>
 #include <datatype.h>
 #include <QDebug>
+#include <user.h>
 #include "database/database.h"
 
 #define LOG_TAG                 "CLIENT_EDIT_DIALOG"
@@ -126,6 +127,20 @@ ClientEditDialog::initView()
 }
 
 void
+ClientEditDialog::initViewWithUser(User &user)
+{
+    if (!user.isRoot()) {
+        mActSaveExit->setEnabled(false);
+        mActSave->setEnabled(false);
+        mActEdit->setEnabled(false);
+        mActCancel->setEnabled(false);
+        mCurUserIsRoot = false;
+    } else {
+        mCurUserIsRoot = true;
+    }
+}
+
+void
 ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
                                            Client & client)
 {
@@ -146,15 +161,13 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
         setOriginClient(tmp);
     } else {
         //以查看内容方式打开
-        mActSave->setEnabled(true);
-        mActPrev->setEnabled(true);
-        mActNext->setEnabled(true);
+        if (mCurUserIsRoot)
+            mActSave->setEnabled(true);
         ui->clientNumLineEdit->setDisabled(true);
         setViewMode();                                                  //默认为查看模式
         setOriginClient(client);
         setView(client);
     }
-
     this->exec();
 }
 
@@ -468,18 +481,22 @@ ClientEditDialog::setEditMode()
     else
         ui->clientNameLineEdit->setFocus();
 
-    mActEdit->setDisabled(true);
-    mActCancel->setEnabled(true);
-    mActSave->setEnabled(true);
+    if (mCurUserIsRoot) {
+        mActEdit->setDisabled(true);
+        mActCancel->setEnabled(true);
+        mActSave->setEnabled(true);
+    }
     setMode(true);
 }
 
 void
 ClientEditDialog::setViewMode()
 {
-    mActCancel->setDisabled(true);
-    mActEdit->setEnabled(true);
-    mActSave->setDisabled(true);
+    if (mCurUserIsRoot) {
+        mActCancel->setDisabled(true);
+        mActEdit->setEnabled(true);
+        mActSave->setDisabled(true);
+    }
     setMode(false);
 }
 

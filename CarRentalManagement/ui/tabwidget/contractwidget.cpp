@@ -10,6 +10,7 @@
 #include <car.h>
 #include <QModelIndex>
 #include <util.h>
+#include <user.h>
 
 #define LOG_TAG                 "CONTRACT_WIDGET_DIALOG"
 #include "utils/Log.h"
@@ -95,6 +96,9 @@ ContractWidget::ContractWidget(QWidget *parent) :
      */
     connect((QObject*)ui->sumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
             (QObject*)ui->contractTableView->horizontalScrollBar(), SLOT(setValue(int)));
+
+    connect(this, SIGNAL(initViewWithUserSig(User &)),
+            mContractEditDialog, SLOT(initViewWithUser(User &)));
 }
 
 ContractWidget::~ContractWidget()
@@ -131,6 +135,17 @@ ContractWidget::initView()
     initSumTableView();
     initPriceTableview();
     initClientTreeWidget();
+}
+
+void
+ContractWidget::initViewWithUser(User &user)
+{
+    if (!user.isRoot()) {
+        mActAdd->setEnabled(false);
+        mActEdit->setEnabled(false);
+        mActDelete->setEnabled(false);
+    }
+    emit initViewWithUserSig(user);
 }
 
 void

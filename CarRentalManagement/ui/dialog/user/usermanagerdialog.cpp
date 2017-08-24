@@ -78,16 +78,8 @@ UserManagerDialog::openWindow()
 }
 
 void
-UserManagerDialog::setWindow(QString userName)
+UserManagerDialog::setWindow(User &user)
 {
-    User user;
-
-    if (mDb->getUserTableData(user, userName))
-        return;
-
-    ALOGD("%s, name = %s, passwd = %s, right = %d",
-          __FUNCTION__, user.name.toStdString().data(),
-          user.passward.toStdString().data(), user.right);
     mCurUserRight = user.right;
     mCurUserName  = user.name;
     initView();                                                     //初始化用户信息管理表
@@ -97,6 +89,7 @@ UserManagerDialog::setWindow(QString userName)
     } else {
         ui->addUserBtn->setEnabled(false);
         ui->delUserBtn->setEnabled(false);
+        ui->modifyBtn->setEnabled(false);
     }
 }
 

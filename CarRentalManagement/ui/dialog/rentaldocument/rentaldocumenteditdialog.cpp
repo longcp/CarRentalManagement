@@ -16,6 +16,7 @@
 #include <contracttabledialog.h>
 #include <pricetabledialog.h>
 #include <QMutex>
+#include <user.h>
 
 #define LOG_TAG                 "RENTALDOCUMENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -208,6 +209,20 @@ RentalDocumentEditDialog::setWindowSize()
 }
 
 void
+RentalDocumentEditDialog::initViewWithUser(User &user)
+{
+    if (!user.isRoot()) {
+        mActSaveExit->setEnabled(false);
+        mActSave->setEnabled(false);
+        mActEdit->setEnabled(false);
+        mActCancel->setEnabled(false);
+        mCurUserIsRoot = false;
+    } else {
+        mCurUserIsRoot = true;
+    }
+}
+
+void
 RentalDocumentEditDialog::openWindow(OpenType type,
                                      RentalDocument &doc,
                                      QString clientName,
@@ -218,8 +233,6 @@ RentalDocumentEditDialog::openWindow(OpenType type,
     if (type == OpenType::CREATEITEM) {
         //已创建条目方式打开
         mActEdit->setDisabled(true);
-        mActPrev->setDisabled(true);
-        mActNext->setDisabled(true);
         setEditMode();
         mActSave->setDisabled(true);
         mActCancel->setDisabled(true);
@@ -234,9 +247,9 @@ RentalDocumentEditDialog::openWindow(OpenType type,
         setOriginRentalDocument(tmp);
     } else {
         //以查看方式打开
-        mActSave->setEnabled(true);
-        mActPrev->setEnabled(true);
-        mActNext->setEnabled(true);
+        if (mCurUserIsRoot)
+            mActSave->setEnabled(true);
+
         setViewMode();
         setOriginRentalDocument(doc);
         setView(doc);
@@ -272,9 +285,11 @@ void
 RentalDocumentEditDialog::setEditModePre()
 {
 //    ui->clientNameCB->setFocus();
-    mActEdit->setDisabled(true);
-    mActCancel->setEnabled(true);
-    mActSave->setEnabled(true);
+    if (mCurUserIsRoot) {
+        mActEdit->setDisabled(true);
+        mActCancel->setEnabled(true);
+        mActSave->setEnabled(true);
+    }
 }
 
 void
@@ -294,9 +309,11 @@ RentalDocumentEditDialog::setViewMode()
 void
 RentalDocumentEditDialog::setViewModePre()
 {
-    mActCancel->setDisabled(true);
-    mActEdit->setEnabled(true);
-    mActSave->setDisabled(true);
+    if (mCurUserIsRoot) {
+        mActCancel->setDisabled(true);
+        mActEdit->setEnabled(true);
+        mActSave->setDisabled(true);
+    }
 }
 
 void

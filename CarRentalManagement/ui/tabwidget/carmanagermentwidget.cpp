@@ -10,6 +10,7 @@
 #include <datatype.h>
 #include <database/database.h>
 #include <QMessageBox>
+#include <user.h>
 #include "util.h"
 
 #define LOG_TAG                 "CAR_MANAGERMENT_WIDGET"
@@ -48,9 +49,9 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
     mToolBar->addAction(mActDelete);
     mToolBar->addAction(mActEdit);
 //    mToolBar->addAction(mActSearch);
-    mToolBar->addAction(mActExport);
     mToolBar->addAction(mActInsurance);
     mToolBar->addAction(mActAnnual);
+    mToolBar->addAction(mActExport);
     ui->toolBarHorizontalLayout->addWidget(mToolBar);
 
     initView();
@@ -124,6 +125,9 @@ CarManagermentWidget::CarManagermentWidget(QWidget *parent) :
      */
     connect((QObject*)ui->sumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
             (QObject*)ui->carTableView->horizontalScrollBar(), SLOT(setValue(int)));
+
+    connect(this, SIGNAL(initViewWithUserSig(User &)),
+            mCarEditDialog, SLOT(initViewWithUser(User &)));
 }
 
 CarManagermentWidget::~CarManagermentWidget()
@@ -137,6 +141,19 @@ CarManagermentWidget::initView()
     initCarTableView();
     initSumTableView();
     initCarTableViewData();
+}
+
+void
+CarManagermentWidget::initViewWithUser(User &user)
+{
+    if (!user.isRoot()) {
+        mActAdd->setEnabled(false);
+        mActEdit->setEnabled(false);
+        mActDelete->setEnabled(false);
+        mActAnnual->setEnabled(false);
+        mActInsurance->setEnabled(false);
+    }
+    emit initViewWithUserSig(user);
 }
 
 void

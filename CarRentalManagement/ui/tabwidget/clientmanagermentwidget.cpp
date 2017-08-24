@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <util.h>
+#include <user.h>
 
 #define LOG_TAG                 "CLIENT_MANAGERMENT_WIDGET"
 #include "utils/Log.h"
@@ -99,6 +100,9 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
      */
     connect((QObject*)ui->sumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
             (QObject*)ui->clientTableView->horizontalScrollBar(), SLOT(setValue(int)));
+
+    connect(this, SIGNAL(initViewWithUserSig(User &)),
+            mClientEditDialog, SLOT(initViewWithUser(User &)));
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
@@ -118,6 +122,17 @@ ClientManagermentWidget::initView()
     mCurClientTypeFilter = ClientTypeFilter::CLIENTTYPE_TOTAL;
     ui->paytypeTotalRadioButton->setChecked(true);
     ui->clientTypeTotalRadioButton->setChecked(true);
+}
+
+void
+ClientManagermentWidget::initViewWithUser(User &user)
+{
+    if (!user.isRoot()) {
+        mActAdd->setEnabled(false);
+        mActEdit->setEnabled(false);
+        mActDelete->setEnabled(false);
+    }
+    emit initViewWithUserSig(user);
 }
 
 void

@@ -11,6 +11,7 @@ class TableModel;
 class RentalDocument;
 class QTreeWidgetItem;
 class DataBase;
+class User;
 
 namespace Ui {
 class RentalDocumentWidget;
@@ -32,21 +33,21 @@ private slots:
     void            on_docTableview_clicked(const QModelIndex &index);
     void            editRentalDocItemSlot();
     void            deleteRentalDocItemSlot();
+
     void            on_clientTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
+    void            on_reservationRadio_toggled(bool checked);
+    void            on_unconfirmedRadio_toggled(bool checked);
+    void            on_confirmedRadio_toggled(bool checked);
+    void            on_totalRadio_toggled(bool checked);
 
-    void on_reservationRadio_toggled(bool checked);
-
-    void on_unconfirmedRadio_toggled(bool checked);
-
-    void on_confirmedRadio_toggled(bool checked);
-
-    void on_totalRadio_toggled(bool checked);
+    void            initViewWithUser(User &user);
 
 signals:
     void            openRentalEditDialogSignal(OpenType, RentalDocument &,
                                                QString clientName, QString clientNumber);
     void            deleteRentalDocumentSignal(QString  docNum);
     void            addRentalDocumentSignal(RentalDocument &doc);
+    void            initViewWithUserSig(User &user);
 
 private:
     /**

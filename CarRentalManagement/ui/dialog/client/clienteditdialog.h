@@ -7,6 +7,7 @@
 class QToolBar;
 class Client;
 class DataBase;
+class User;
 
 namespace Ui {
 class ClientEditDialog;
@@ -54,6 +55,11 @@ private slots:
      * @brief 取消事件
      */
     void            cancelEvent();
+    /**
+     * @brief initViewWithUser
+     * @param user
+     */
+    void            initViewWithUser(User &user);
 
 private:
     /**
@@ -135,6 +141,7 @@ private:
     DataBase*       mDb;
     OpenType        mOpenType;                                          //是否已添加客户模式打开
     bool            mIsInternalClose;                                   //是否内部关闭
+    bool            mCurUserIsRoot;
 };
 
 #endif // CLIENTEDITDIALOG_H

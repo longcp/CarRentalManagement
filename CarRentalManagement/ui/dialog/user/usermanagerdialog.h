@@ -62,7 +62,7 @@ private slots:
      */
     void                 updateTableContent(User &user);
 
-    void                 setWindow(QString userName);
+    void                 setWindow(User &user);
 
 signals:
 

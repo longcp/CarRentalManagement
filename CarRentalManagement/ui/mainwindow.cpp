@@ -15,6 +15,7 @@
 #include <usermanagerdialog.h>
 #include <versiondialog.h>
 #include <datatype.h>
+#include <user.h>
 //#include <Tlhelp32.h>
 
 #define LOG_TAG                         "MAIN_WINDOW"
@@ -39,13 +40,21 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * @brief 用户登陆
      */
-    connect(mLoginDialog, SIGNAL(userLoginSignal(QString)),
-            this, SLOT(userLoginSlot(QString)));
+    connect(mLoginDialog, SIGNAL(userLoginedSignal(User &)),
+            this, SLOT(userLoginedSlot(User &)));
     /**
      * @brief 根据用户权限初始化窗口
      */
-    connect(mLoginDialog, SIGNAL(userLoginSignal(QString)),
-            mUserManagerDialog, SLOT(setWindow(QString)));
+    connect(mLoginDialog, SIGNAL(userLoginedSignal(User &)),
+            mUserManagerDialog, SLOT(setWindow(User &)));
+    connect(mLoginDialog, SIGNAL(userLoginedSignal(User&)),
+            mCarWidget, SLOT(initViewWithUser(User &)));
+    connect(mLoginDialog, SIGNAL(userLoginedSignal(User&)),
+            mClientWidget, SLOT(initViewWithUser(User &)));
+    connect(mLoginDialog, SIGNAL(userLoginedSignal(User&)),
+            mContractWidget, SLOT(initViewWithUser(User &)));
+    connect(mLoginDialog, SIGNAL(userLoginedSignal(User&)),
+            mRentalDocWidget, SLOT(initViewWithUser(User &)));
 
     mLoginDialog->exec();
 
@@ -379,6 +388,15 @@ MainWindow::userLoginSlot(QString curUserName)
 {
     // do something according to current user
     ALOGDTRACE();
+}
+
+void
+MainWindow::userLoginedSlot(User &user)
+{
+    ALOGD("name = %s, passwd = %s, right = %d",
+          user.name.toStdString().data(),
+          user.passward.toStdString().data(),
+          user.right);
 }
 
 void
