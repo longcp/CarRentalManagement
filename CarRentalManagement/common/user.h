@@ -50,6 +50,10 @@ public:
             return UNKNOWN_RIGHT;
     }
 
+    bool isRoot() {
+        return right == RIGHT_ROOT ? true : false;
+    }
+
     QString name;
     QString passward;
     UserRight right;

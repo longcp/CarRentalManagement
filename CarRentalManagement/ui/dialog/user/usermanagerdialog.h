@@ -97,6 +97,7 @@ private:
     TableModel          *mModel;
 
     UserRight           mCurUserRight;
+    QString             mCurUserName;
 
     Ui::UserManagerDialog     *ui;
 };

@@ -92,9 +92,10 @@ UserManagerDialog::setWindow(QString userName)
           user.passward.toStdString().data(),
           user.right);
     mCurUserRight = user.right;
+    mCurUserName  = user.name;
     initView();                                                     //初始化用户信息管理表
 
-    if (user.right == UserRight::RIGHT_ROOT) {
+    if (user.isRoot()) {
         return;
     } else {
         ui->addUserBtn->setEnabled(false);
@@ -170,6 +171,13 @@ UserManagerDialog::on_delUserBtn_clicked()
         if (uName == ADMIN_USER_NAME) {
             //admin用户无法删除
             msgBox.setText("admin用户无法删除");
+            msgBox.setStandardButtons(QMessageBox::Yes);
+            msgBox.setButtonText(QMessageBox::Yes, "确定");
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.exec();
+        } else if (uName == mCurUserName) {
+            //admin用户无法删除
+            msgBox.setText("用户[" + mCurUserName + "]正在登陆，无法删除!");
             msgBox.setStandardButtons(QMessageBox::Yes);
             msgBox.setButtonText(QMessageBox::Yes, "确定");
             msgBox.setIcon(QMessageBox::Information);

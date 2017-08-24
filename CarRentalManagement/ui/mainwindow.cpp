@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mLoginDialog, SIGNAL(userLoginSignal(QString)),
             mUserManagerDialog, SLOT(setWindow(QString)));
 
-//    mLoginDialog->exec();
+    mLoginDialog->exec();
 
     // 插入首页，首页一直存在
     mOpenTabList.insert(0, ui->homePageTab);
