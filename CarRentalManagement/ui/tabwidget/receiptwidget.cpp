@@ -25,6 +25,8 @@
 ReceiptWidget::ReceiptWidget(QWidget *parent) :
     QWidget(parent),
     mDb(DataBase::getInstance()),
+    mCurSortCol(0),
+    mIsSortAscending(true),
     mCarDialog(new CarTableDialog()),
     mClientDialog(new ClientTableDialog()),
     mContractDialog(new ContractTableDialog()),
@@ -116,6 +118,9 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
      */
     connect(mRentalDocDialog, SIGNAL(selectedDoc(QString)),
             this, SLOT(getDoc(QString)));
+
+    connect(ui->receiptTable->horizontalHeader(), SIGNAL(sectionClicked(int)),
+            this, SLOT(onHeaderClicked(int)));
 }
 
 ReceiptWidget::~ReceiptWidget()
@@ -152,10 +157,6 @@ ReceiptWidget::initView()
     initChooseWidget();
     initReceiptTable();
     initReceiptSumTable();
-
-    QList<RentalDocument> docs;
-    if (!mDb->getAllRentalDocumentData(docs))
-        reflashView(docs);
 }
 
 void
@@ -227,7 +228,6 @@ ReceiptWidget::initReceiptTable()
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
     //隐藏滚动条
     ui->receiptTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->receiptTable->setSortingEnabled(true);                          //点击表头排序
 
     ui->receiptTable->setColumnWidth(COL_DOC_NUMBER, 200);
     ui->receiptTable->setColumnWidth(COL_CONTRACT_NUMBER, 200);
@@ -445,6 +445,7 @@ ReceiptWidget::receivableCellDelValue(double value)
 void
 ReceiptWidget::deleteRentalDocumentSlot(QString docNum)
 {
+    return;
     ALOGDTRACE();
     RentalDocument doc;
     for (int i = 0; i < mReceiptModel->rowCount(); i++) {
@@ -469,7 +470,7 @@ ReceiptWidget::delRowAndUpdateSumTable(int row, RentalDocument &doc)
 void
 ReceiptWidget::addRentalDocumentSlot(RentalDocument &doc)
 {
-    addRowAndUpdateSumTable(doc);
+//    addRowAndUpdateSumTable(doc);
 }
 
 void
@@ -507,13 +508,30 @@ ReceiptWidget::reflashView(QList<RentalDocument> docs)
 {
     clearTableview();
     addTableRows(docs);
+    ui->receiptTable->sortByColumn(mCurSortCol, mIsSortAscending ?
+                                          Qt::AscendingOrder : Qt::DescendingOrder);
+}
+
+void
+ReceiptWidget::onHeaderClicked(int column)
+{
+    ALOGDTRACE();
+    if (mCurSortCol == column && mIsSortAscending) {
+        ui->receiptTable->sortByColumn(column, Qt::DescendingOrder);
+        mIsSortAscending = false;
+    } else {
+        ui->receiptTable->sortByColumn(column, Qt::AscendingOrder);
+        mIsSortAscending = true;
+    }
+
+    mCurSortCol = column;
 }
 
 void
 ReceiptWidget::tabChangeToReceiptSlot(int index, QString tabText)
 {
     ALOGDTRACE();
-#if 0
+
     QList<RentalDocument> docs;
 
     if (tabText != TAB_TITLE_RECEIPT ||
@@ -521,7 +539,6 @@ ReceiptWidget::tabChangeToReceiptSlot(int index, QString tabText)
         return;
 
     reflashView(docs);
-#endif
 }
 
 RECEIPT_FILTER

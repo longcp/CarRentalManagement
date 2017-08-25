@@ -55,6 +55,8 @@ private slots:
     void            on_clientNameTb_clicked();
     void            on_carNumTb_clicked();
 
+    void            onHeaderClicked(int column);
+
 signals:
     /**
      * @brief 打开收入编辑窗口
@@ -130,6 +132,9 @@ private:
     double          curProjectAmountValue;
     double          curReceiptValue;
     double          curReceivableValue;
+
+    int             mCurSortCol;
+    bool            mIsSortAscending;
 
     enum ReceiptTableColumn {
         COL_DATE,
