@@ -125,6 +125,9 @@ public:
     bool                isRentalDocumentExist(RentalDocument &doc);
     QString             rentalDocFilterToSqlStr(RECEIPT_FILTER filter);
 
+    QString             getMaxNumber(QString table, QString field);
+    QString             getTableName(DataBaseTable table);
+
 private:
     bool                openDataBase();
     bool                closeDataBase();

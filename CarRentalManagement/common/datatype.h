@@ -116,6 +116,17 @@ enum RentalDocState {RESERVATION_STATE,
                      UNCONFIRMED_STATE,
                      UNKNOWN_STATE};
 
+enum DataBaseTable {CAR_TABLE,
+                    CLIENT_TABLE,
+                    CONTRACT_TABLE,
+                    RENTALDOCUMENT_TABLE,
+                    USER_TABLE,
+                    ANNUAL_FEE_RECORD_TABLE,
+                    BUSINESS_INSURANCE_RECORD_TABLE,
+                    CONTRACT_PRICE_TABLE,
+                    PROJECT_RECORD_TABLE,
+                    INSURANCE_RECORD_TABLE};
+
 typedef struct InsuranceRecord {
     QString number;
     QString carNumber;

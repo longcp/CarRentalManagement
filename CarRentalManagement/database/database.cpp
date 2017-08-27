@@ -147,13 +147,13 @@ DataBase::insertClientTable(Client &client)
 
     query->finish();
     query->prepare("INSERT INTO client "
-                   "VALUES(:name, :number, :telephone, "
+                   "VALUES(:number, :name, :telephone, "
                    ":address, :email, :fax, :contract, "
                    ":remarks, :creator, :paytype, "
                    ":clienttype, :createDate, :monthly, "
                    ":amount, :paid)");
-    query->bindValue(":name", client.name);
     query->bindValue(":number", client.number);
+    query->bindValue(":name", client.name);
     query->bindValue(":telephone", client.telephone);
     query->bindValue(":address", client.address);
     query->bindValue(":email", client.email);
@@ -196,8 +196,8 @@ DataBase::getClientInNumber(QString clientNum, Client &client)
     }
 
     if (query->next()) {
-        client.name = query->value(0).toString();
-        client.number = query->value(1).toString();
+        client.number = query->value(0).toString();
+        client.name = query->value(1).toString();
         client.telephone = query->value(2).toString();
         client.address = query->value(3).toString();
         client.email = query->value(4).toString();
@@ -241,7 +241,7 @@ DataBase::getAllClientsNumber(QList<QString> &numbers)
     }
 
     while (query->next()) {
-        number = query->value(1).toString();
+        number = query->value(0).toString();
         numbers.push_back(number);                              //插入list
     }
 
@@ -271,8 +271,8 @@ DataBase::getClientInFilter(QList<Client> &clients, QString filter)
     }
 
     while (query->next()) {
-        client.name = query->value(0).toString();
-        client.number = query->value(1).toString();
+        client.number = query->value(0).toString();
+        client.name = query->value(1).toString();
         client.telephone = query->value(2).toString();
         client.address = query->value(3).toString();
         client.email = query->value(4).toString();
@@ -336,8 +336,8 @@ DataBase::getAllClientData(QList<Client> &clients)
     }
 
     while (query->next()) {
-        client.name = query->value(0).toString();
-        client.number = query->value(1).toString();
+        client.number = query->value(0).toString();
+        client.name = query->value(1).toString();
         client.telephone = query->value(2).toString();
         client.address = query->value(3).toString();
         client.email = query->value(4).toString();
@@ -2755,4 +2755,73 @@ DataBase::isRentalDocumentExist(RentalDocument &doc)
         return false;
 
     return true;
+}
+
+QString
+DataBase::getMaxNumber(QString table, QString field)
+{
+
+    QMutexLocker locker(pmMutex);
+
+    QSqlQuery *query = getDataBaseQuery();
+    if (!query)
+        exit GET_DATABASE_FAIL;
+
+    QString sqlStr = "select * from " + table +
+            " where " + field + "=(select max(" + field + ") from " + table + ")";
+
+    query->finish();
+    query->prepare(sqlStr);
+    if (!query->exec()) {
+        ALOGE("exec %s failed!", sqlStr.toStdString().data());
+        errorno = SELECT_DATABASE_FAIL;
+        return false;
+    }
+
+    if (query->next()) {
+        return query->value(0).toString();
+    }
+
+    return "";
+}
+
+QString
+DataBase::getTableName(DataBaseTable table)
+{
+    switch (table) {
+    case CAR_TABLE:
+        return "car";
+
+    case CLIENT_TABLE:
+        return "client";
+
+    case CONTRACT_TABLE:
+        return "contract";
+
+    case RENTALDOCUMENT_TABLE:
+        return "rentaldocument";
+
+    case USER_TABLE:
+        return "user";
+
+    case ANNUAL_FEE_RECORD_TABLE:
+        return "annual_fee_record";
+
+    case BUSINESS_INSURANCE_RECORD_TABLE:
+        return "business_insurance_record";
+
+    case CONTRACT_PRICE_TABLE:
+        return "contract_price";
+
+    case PROJECT_RECORD_TABLE:
+        return "project_record";
+
+    case INSURANCE_RECORD_TABLE:
+        return "insurance_record";
+
+    default:
+        break;
+    }
+
+    return "";
 }

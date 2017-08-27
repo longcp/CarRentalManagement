@@ -216,10 +216,7 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
 void
 CarEditDialog::updateAnnualTableviewScrollBar(int to)
 {
-    qDebug() << "to = " << to;
-    //    ui->annualTableview->move(to, 0);
-    //    ui->annualTableview->horizontalScrollbarValueChanged(to);
-    //    QAbstractSlider::setValue(to);
+
 }
 
 void
