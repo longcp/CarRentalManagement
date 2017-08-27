@@ -24,6 +24,11 @@
 
 ReceivableWidget::ReceivableWidget(QWidget *parent) :
     QWidget(parent),
+    mCurDetailSortCol(0),
+    mCurTotalSortCol(0),
+    mIsDetailSortAscending(true),
+    mIsTotalSortAscending(true),
+    mIsScreening(false),
     mDb(DataBase::getInstance()),
     mCarDialog(new CarTableDialog()),
     mClientDialog(new ClientTableDialog()),
@@ -107,6 +112,12 @@ ReceivableWidget::ReceivableWidget(QWidget *parent) :
      */
     connect(mRentalDocDialog, SIGNAL(selectedDoc(QString)),
             this, SLOT(getDoc(QString)));
+
+    connect(ui->detailTableview->horizontalHeader(), SIGNAL(sectionClicked(int)),
+            this, SLOT(onDetailTabHeaderClicked(int)));
+
+    connect(ui->totalTableview->horizontalHeader(), SIGNAL(sectionClicked(int)),
+            this, SLOT(onTotalTabHeaderClicked(int)));
 }
 
 ReceivableWidget::~ReceivableWidget()
@@ -145,12 +156,6 @@ ReceivableWidget::initView()
     initDetailSumTableview();
     initTotalTableview();
     initTotalSumTableview();
-
-    QList<RentalDocument> docs;
-    if (!mDb->getAllRentalDocumentData(docs)) {
-        reflashDetailTableview(docs);
-        reflashSumTableview(docs);
-    }
 }
 
 void
@@ -229,7 +234,6 @@ ReceivableWidget::initDetailTableview()
     ui->detailTableview->setColumnWidth(DETAIL_COL_CONTRACT_NUMBER, 200);
     ui->detailTableview->setColumnWidth(DETAIL_COL_CLIENT_NAME, 200);
     ui->detailTableview->setColumnWidth(DETAIL_COL_CAR_PLATE_NUMBER, 200);
-    ui->detailTableview->setSortingEnabled(true);
 }
 
 void
@@ -325,7 +329,6 @@ ReceivableWidget::initTotalTableview()
 
     //隐藏滚动条
     ui->totalTableview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->totalTableview->setSortingEnabled(true);                        //点击表头排序
 }
 
 void
@@ -564,6 +567,8 @@ ReceivableWidget::reflashDetailTableview(QList<RentalDocument> &docs)
 {
     clearDetailTableview();
     addDetailTableRows(docs);
+    ui->detailTableview->sortByColumn(mCurDetailSortCol, mIsDetailSortAscending ?
+                                          Qt::AscendingOrder : Qt::DescendingOrder);
 }
 
 void
@@ -571,8 +576,40 @@ ReceivableWidget::reflashSumTableview(QList<RentalDocument> &docs)
 {
     clearSumTableview();
     addSumTableRows(docs);
+    addDetailTableRows(docs);
+    ui->totalTableview->sortByColumn(mCurTotalSortCol, mIsTotalSortAscending ?
+                                          Qt::AscendingOrder : Qt::DescendingOrder);
 }
 
+void
+ReceivableWidget::onDetailTabHeaderClicked(int column)
+{
+    ALOGDTRACE();
+    if (mCurDetailSortCol == column && mIsDetailSortAscending) {
+        ui->detailTableview->sortByColumn(column, Qt::DescendingOrder);
+        mIsDetailSortAscending = false;
+    } else {
+        ui->detailTableview->sortByColumn(column, Qt::AscendingOrder);
+        mIsDetailSortAscending = true;
+    }
+
+    mCurDetailSortCol = column;
+}
+
+void
+ReceivableWidget::onTotalTabHeaderClicked(int column)
+{
+    ALOGDTRACE();
+    if (mCurTotalSortCol == column && mIsTotalSortAscending) {
+        ui->totalTableview->sortByColumn(column, Qt::DescendingOrder);
+        mIsTotalSortAscending = false;
+    } else {
+        ui->totalTableview->sortByColumn(column, Qt::AscendingOrder);
+        mIsTotalSortAscending = true;
+    }
+
+    mCurTotalSortCol = column;
+}
 
 void
 ReceivableWidget::addDetailTableRows(QList<RentalDocument> &docs)
@@ -696,16 +733,18 @@ void
 ReceivableWidget::tabChangeToReceivableSlot(int index, QString tabText)
 {
     ALOGDTRACE();
-#if 0
     QList<RentalDocument> docs;
 
-    if (tabText != TAB_TITLE_RECEIVABLE ||
-            mDb->getAllRentalDocumentData(docs))
+    if (tabText != TAB_TITLE_RECEIVABLE)
         return;
 
-    reflashDetailTableview(docs);
-    reflashSumTableview(docs);
-#endif
+    if (mIsScreening) {
+        //是否正在筛选
+        on_screeningBtn_clicked();
+    } else if (!mDb->getAllRentalDocumentData(docs)){
+        reflashDetailTableview(docs);
+        reflashSumTableview(docs);
+    }
 }
 
 RECEIPT_FILTER
@@ -736,17 +775,6 @@ ReceivableWidget::getFilter()
     filter.clientName = ui->clientNameEt->text();
     filter.contractNumber = ui->contractNumEt->text();
     filter.rentalDocNumber = ui->docNumEt->text();
-
-//    ALOGDTRACE();
-//    ALOGD("fromDate = %s", filter.fromDate.toString(DATE_FORMAT_STR).toStdString().data());
-//    ALOGD("toDate = %s", filter.toDate.toString(DATE_FORMAT_STR).toStdString().data());
-//    ALOGD("clientType = %d",int(filter.clientType));
-//    ALOGD("pumpType = %d", int(filter.pumpType));
-//    qDebug()<< "isAccountPositive = " << filter.isAccountPositive;
-//    ALOGD("carNumber = %s", filter.carNumber.toStdString().data());
-//    ALOGD("clientName = %s", filter.clientName.toStdString().data());
-//    ALOGD("contractNumber = %s", filter.contractNumber.toStdString().data());
-//    ALOGD("rentalDocNumber = %s", filter.rentalDocNumber.toStdString().data());
 
     return filter;
 }
@@ -780,6 +808,7 @@ ReceivableWidget::on_screeningBtn_clicked()
     }
 
     ui->screeningBtn->setStyleSheet("background-color: rgb(70, 130, 180);");
+    mIsScreening = true;
     if (!ui->totalRadioButton->isChecked()) {
         int size = docs.size();
         for (int i = 0; i < size; i++) {
@@ -803,6 +832,7 @@ ReceivableWidget::on_clearBtn_clicked()
 {
     QList<RentalDocument> docs;
     ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
+    mIsScreening = false;
     initChooseWidget();
     if (!mDb->getAllRentalDocumentData(docs)) {
         reflashDetailTableview(docs);

@@ -135,6 +135,7 @@ private:
 
     int             mCurSortCol;
     bool            mIsSortAscending;
+    bool            mIsScreening;
 
     enum ReceiptTableColumn {
         COL_DATE,

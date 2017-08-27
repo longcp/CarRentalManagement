@@ -54,6 +54,9 @@ private slots:
     void            on_clientNameTb_clicked();
     void            on_carNumTb_clicked();
 
+    void            onDetailTabHeaderClicked(int column);
+    void            onTotalTabHeaderClicked(int column);
+
 signals:
     void            openCarDialogSig();
     void            openClientDialogSig();
@@ -144,6 +147,12 @@ private:
     double          curProjectAmountSumValue;
     double          curReceiptSumValue;
     double          curReceivableSumValue;
+
+    int             mCurDetailSortCol;
+    int             mCurTotalSortCol;
+    bool            mIsDetailSortAscending;
+    bool            mIsTotalSortAscending;
+    bool            mIsScreening;
 
     enum DetailTableColumn {
         DETAIL_COL_DATE,

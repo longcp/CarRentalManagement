@@ -27,6 +27,7 @@ ReceiptWidget::ReceiptWidget(QWidget *parent) :
     mDb(DataBase::getInstance()),
     mCurSortCol(0),
     mIsSortAscending(true),
+    mIsScreening(false),
     mCarDialog(new CarTableDialog()),
     mClientDialog(new ClientTableDialog()),
     mContractDialog(new ContractTableDialog()),
@@ -534,11 +535,13 @@ ReceiptWidget::tabChangeToReceiptSlot(int index, QString tabText)
 
     QList<RentalDocument> docs;
 
-    if (tabText != TAB_TITLE_RECEIPT ||
-            mDb->getAllRentalDocumentData(docs))
+    if (tabText != TAB_TITLE_RECEIPT)
         return;
 
-    reflashView(docs);
+    if (mIsScreening)
+        on_screeningBtn_clicked();
+    else if (!mDb->getAllRentalDocumentData(docs))
+        reflashView(docs);
 }
 
 RECEIPT_FILTER
@@ -569,17 +572,6 @@ ReceiptWidget::getFilter()
     filter.clientName = ui->clientNameEt->text();
     filter.contractNumber = ui->contractNumEt->text();
     filter.rentalDocNumber = ui->docNumEt->text();
-
-//    ALOGDTRACE();
-//    ALOGD("fromDate = %s", filter.fromDate.toString(DATE_FORMAT_STR).toStdString().data());
-//    ALOGD("toDate = %s", filter.toDate.toString(DATE_FORMAT_STR).toStdString().data());
-//    ALOGD("clientType = %d",int(filter.clientType));
-//    ALOGD("pumpType = %d", int(filter.pumpType));
-//    qDebug()<< "isAccountPositive = " << filter.isAccountPositive;
-//    ALOGD("carNumber = %s", filter.carNumber.toStdString().data());
-//    ALOGD("clientName = %s", filter.clientName.toStdString().data());
-//    ALOGD("contractNumber = %s", filter.contractNumber.toStdString().data());
-//    ALOGD("rentalDocNumber = %s", filter.rentalDocNumber.toStdString().data());
 
     return filter;
 }
@@ -613,6 +605,7 @@ ReceiptWidget::on_screeningBtn_clicked()
     }
 
     ui->screeningBtn->setStyleSheet("background-color: rgb(70, 130, 180);");
+    mIsScreening = true;
     if (!ui->totalRadioButton->isChecked()) {
         int size = docs.size();
         for (int i = 0; i < size; i++) {
@@ -635,6 +628,7 @@ ReceiptWidget::on_clearBtn_clicked()
 {
     QList<RentalDocument> docs;
     ui->screeningBtn->setStyleSheet("background-color: rgb(234, 234, 234);");
+    mIsScreening = false;
     initChooseWidget();
     if (!mDb->getAllRentalDocumentData(docs))
         reflashView(docs);

@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mMenuRentalManagement   = ui->menuBar->addMenu(tr(MENU_TEXT_LEASING_MANAGERMENT));
     mMenuCarManagement  = ui->menuBar->addMenu(tr(MENU_TEXT_CAR_MANAGERMENT));
     mMenuFinanceManagement  = ui->menuBar->addMenu(tr(MENU_TEXT_FINANCIAL_STATISTICS));
-    mMenuUploadPicture  = ui->menuBar->addMenu(tr(MENU_TEXT_UPLOAD_IMAGE));
+//    mMenuUploadPicture  = ui->menuBar->addMenu(tr(MENU_TEXT_UPLOAD_IMAGE));
     mMenuUserManagerment= ui->menuBar->addMenu(tr(MENU_TEXT_USER_MANAGERMENT));
     mMenuAbout = ui->menuBar->addMenu(tr(MENU_TEXT_HELP));
     mActExitSystem = mMenuSystemSetting->addAction(
