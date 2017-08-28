@@ -180,7 +180,6 @@ ContractWidget::initContractTableview()
     ui->contractTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->contractTableView->setSortingEnabled(true);
 
-    ui->contractTableView->setColumnWidth(0, 200);
     ui->contractTableView->setColumnWidth(1, 200);
     ui->contractTableView->setColumnWidth(2, 200);
     ui->contractTableView->setColumnWidth(3, 200);
@@ -218,7 +217,6 @@ ContractWidget::initSumTableView()
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}"); //设置间隔行颜色变化
 
-    ui->sumTableView->setColumnWidth(0, 200);
     ui->sumTableView->setColumnWidth(1, 200);
     ui->sumTableView->setColumnWidth(2, 200);
     ui->sumTableView->setColumnWidth(3, 200);

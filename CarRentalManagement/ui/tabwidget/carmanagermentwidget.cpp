@@ -141,6 +141,7 @@ CarManagermentWidget::initView()
     initCarTableView();
     initSumTableView();
     initCarTableViewData();
+    ui->carTableView->sortByColumn(0, Qt::AscendingOrder);
 }
 
 void

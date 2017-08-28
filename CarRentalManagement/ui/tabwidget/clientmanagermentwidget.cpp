@@ -19,6 +19,8 @@
 ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
     QWidget(parent),
     curRow(-1),
+    mCurSortCol(0),
+    mIsSortAscending(true),
     ui(new Ui::ClientManagermentWidget)
 {
     ui->setupUi(this);
@@ -103,6 +105,9 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
 
     connect(this, SIGNAL(initViewWithUserSig(User &)),
             mClientEditDialog, SLOT(initViewWithUser(User &)));
+
+    connect(ui->clientTableView->horizontalHeader(), SIGNAL(sectionClicked(int)),
+            this, SLOT(onHeaderClicked(int)));
 }
 
 ClientManagermentWidget::~ClientManagermentWidget()
@@ -133,6 +138,21 @@ ClientManagermentWidget::initViewWithUser(User &user)
         mActDelete->setEnabled(false);
     }
     emit initViewWithUserSig(user);
+}
+
+void
+ClientManagermentWidget::onHeaderClicked(int column)
+{
+    ALOGDTRACE();
+    if (mCurSortCol == column && mIsSortAscending) {
+        ui->clientTableView->sortByColumn(column, Qt::DescendingOrder);
+        mIsSortAscending = false;
+    } else {
+        ui->clientTableView->sortByColumn(column, Qt::AscendingOrder);
+        mIsSortAscending = true;
+    }
+
+    mCurSortCol = column;
 }
 
 void
@@ -169,17 +189,10 @@ ClientManagermentWidget::initClientTableView()
 //    ui->clientTableView->horizontalHeader()
 //            ->setSectionResizeMode(QHeaderView::ResizeToContents);    //整个表格随内容自适应，如果设了这个，
                                                                         //合计表格宽度无法与之同步，所以使用单列自适应
-    ui->clientTableView->horizontalHeader()
-            ->setSectionResizeMode(CLIENT_COL_NUM, QHeaderView::ResizeToContents);
-    ui->clientTableView->horizontalHeader()
-            ->setSectionResizeMode(CLIENT_COL_NAME, QHeaderView::ResizeToContents);
-    ui->clientTableView->horizontalHeader()
-            ->setSectionResizeMode(CLIENT_COL_ADDRESS, QHeaderView::ResizeToContents);
-    ui->clientTableView->horizontalHeader()
-            ->setSectionResizeMode(CLIENT_COL_REMARKS, QHeaderView::Stretch);
+    ui->clientTableView->setColumnWidth(CLIENT_COL_NAME, 200);
+    ui->clientTableView->setColumnWidth(CLIENT_COL_ADDRESS, 200);
     //隐藏滚动条
     ui->clientTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->clientTableView->setSortingEnabled(true);
 }
 
 void
@@ -214,6 +227,10 @@ ClientManagermentWidget::initSumTableView()
     ui->sumTableView->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
+
+    ui->sumTableView->setColumnWidth(CLIENT_COL_NAME, 200);
+    ui->sumTableView->setColumnWidth(CLIENT_COL_ADDRESS, 200);
+
     QStandardItem* sumStrItem = new QStandardItem("合计");
     QList<QStandardItem*> items;
     items << sumStrItem;
@@ -494,7 +511,10 @@ ClientManagermentWidget::updateTableView()
             addClientItemSlot(client);
         }
     }
-    
+
+
+    ui->clientTableView->sortByColumn(mCurSortCol, mIsSortAscending ?
+                                          Qt::AscendingOrder : Qt::DescendingOrder);
     enableFilterView();
 }
 

@@ -42,6 +42,7 @@ private slots:
 
     void            updateSumTabSectionWidth(int logicalIndex, int /*oldSize*/, int newSize);
     void            initViewWithUser(User &user);
+    void            onHeaderClicked(int column);
 
 signals:
     void            openClientEditDialogSignal(OpenType type, Client &client);
@@ -121,6 +122,8 @@ private:
     TableModel      *mSumModel;
     int             curRow;
     int             lastShowRow;
+    int             mCurSortCol;
+    bool            mIsSortAscending;
     double          mCurSumAmountValue;
     double          mCurSumPaidValue;
     double          mCurSumBalanceValue;

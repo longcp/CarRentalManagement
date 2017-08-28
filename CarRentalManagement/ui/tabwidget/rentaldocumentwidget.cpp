@@ -23,6 +23,8 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
     mCurClientNumber(""),
     mDb(DataBase::getInstance()),
     mCurRow(-1),
+    mCurSortCol(0),
+    mIsSortAscending(true),
     ui(new Ui::RentalDocumentWidget)
 {
     ui->setupUi(this);
@@ -96,6 +98,9 @@ RentalDocumentWidget::RentalDocumentWidget(QWidget *parent) :
 
     connect(this, SIGNAL(initViewWithUserSig(User &)),
             mRentalDocEditDialog, SLOT(initViewWithUser(User &)));
+
+    connect(ui->docTableview->horizontalHeader(), SIGNAL(sectionClicked(int)),
+            this, SLOT(onHeaderClicked(int)));
 }
 
 RentalDocumentWidget::~RentalDocumentWidget()
@@ -154,6 +159,21 @@ RentalDocumentWidget::initViewWithUser(User &user)
 }
 
 void
+RentalDocumentWidget::onHeaderClicked(int column)
+{
+    ALOGDTRACE();
+    if (mCurSortCol == column && mIsSortAscending) {
+        ui->docTableview->sortByColumn(column, Qt::DescendingOrder);
+        mIsSortAscending = false;
+    } else {
+        ui->docTableview->sortByColumn(column, Qt::AscendingOrder);
+        mIsSortAscending = true;
+    }
+
+    mCurSortCol = column;
+}
+
+void
 RentalDocumentWidget::initRentalDocTableView()
 {
     //设置首行标题
@@ -187,7 +207,6 @@ RentalDocumentWidget::initRentalDocTableView()
     ui->docTableview->setStyleSheet(
                 "QTableWidget{background-color:rgb(250, 250, 250);"
                 "alternate-background-color:rgb(255, 255, 224);}");     //设置间隔行颜色变化
-    ui->docTableview->setSortingEnabled(true);                          //点击表头排序
 
     ui->docTableview->setColumnWidth(0, 200);
     ui->docTableview->setColumnWidth(1, 200);
@@ -470,6 +489,8 @@ RentalDocumentWidget::updateTableView()
     }
 
     addRentalDocRows(docs);
+    ui->docTableview->sortByColumn(mCurSortCol, mIsSortAscending ?
+                                       Qt::AscendingOrder : Qt::DescendingOrder);
 }
 
 void

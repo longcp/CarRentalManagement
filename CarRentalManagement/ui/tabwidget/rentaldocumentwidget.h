@@ -41,6 +41,7 @@ private slots:
     void            on_totalRadio_toggled(bool checked);
 
     void            initViewWithUser(User &user);
+    void            onHeaderClicked(int column);
 
 signals:
     void            openRentalEditDialogSignal(OpenType, RentalDocument &,
@@ -83,10 +84,12 @@ private:
 
     DataBase*       mDb;
     int             mCurRow;
+    int             mCurSortCol;
+    bool            mIsSortAscending;
+    bool            mCurItemIsParentItem;
     TableModel*     mModel;
     QTreeWidgetItem*    mRootItem;
     QString         mCurClientNumber;
-    bool            mCurItemIsParentItem;
     const static int mClientNameColumn = 0;
     const static int mClientNumberColumn = 1;
 };
