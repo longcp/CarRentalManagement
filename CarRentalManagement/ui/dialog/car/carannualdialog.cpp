@@ -6,6 +6,7 @@
 #include <datatype.h>
 #include <QMessageBox>
 #include <qdatetime.h>
+#include <util.h>
 
 #define LOG_TAG                 "ANNUAL_DIALOG"
 #include "utils/Log.h"
@@ -44,8 +45,7 @@ CarAnnualDialog::openWindow()
         ui->carNumComboBox->insertItem(i, car.number);
     }
 
-    QString number = QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR);
-    ui->numberLabel->setText(number);
+    ui->numberLabel->setText(Util::makeNumber(DataBaseTable::ANNUAL_FEE_RECORD_TABLE));
     ui->dateDateEdit->setDate(QDate::currentDate());
 
     this->exec();

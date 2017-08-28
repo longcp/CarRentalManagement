@@ -12,6 +12,7 @@
 #include <clienttabledialog.h>
 #include <client.h>
 #include <user.h>
+#include <util.h>
 
 #define LOG_TAG                 "CONTRACT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -181,7 +182,7 @@ ContractEditDialog::openContractEditDialogSlot(OpenType opentype,
         setOriginContract(tmp);
         if (!mDb->getAllContractData(contracts))
             count = contracts.size();
-        ui->contractNumberLabel->setText(Contract::makeNewestContractNumber(count));
+        ui->contractNumberLabel->setText(Util::makeNumber(DataBaseTable::CONTRACT_TABLE));
     } else {
         //以查看内容方式打开
         if (mCurUserIsRoot)

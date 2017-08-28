@@ -17,6 +17,7 @@
 #include <pricetabledialog.h>
 #include <QMutex>
 #include <user.h>
+#include <util.h>
 
 #define LOG_TAG                 "RENTALDOCUMENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -240,7 +241,7 @@ RentalDocumentEditDialog::openWindow(OpenType type,
         ui->dateDE->setDate(QDate::currentDate());
         ui->arrivalTimeDTE->setDateTime(QDateTime::currentDateTime());
         ui->leaveTimeDTE->setDateTime(QDateTime::currentDateTime());
-        ui->numberLabel->setText(makeRentalDocNumber());
+        ui->numberLabel->setText(Util::makeNumber(DataBaseTable::RENTALDOCUMENT_TABLE));
         mClientNumber = clientNumber;
         ui->clientNameLabel->setText(clientName);
         saveUiContent(tmp);

@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <car.h>
 #include <QDateTime>
+#include <util.h>
 
 #define LOG_TAG                 "INSURANCE_DIALOG"
 #include "utils/Log.h"
@@ -43,8 +44,7 @@ InsuranceDialog::openWindow()
         ui->carNumComboBox->insertItem(i, car.number);
     }
 
-    QString number = QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR);
-    ui->numberLabel->setText(number);
+    ui->numberLabel->setText(Util::makeNumber(DataBaseTable::INSURANCE_RECORD_TABLE));
     ui->dateDateEdit->setDate(QDate::currentDate());
     ui->insuranceRadioBtn->setChecked(true);
     ui->businessInsuranceRadioBtn->setChecked(false);
@@ -118,4 +118,22 @@ InsuranceDialog::clean()
     ui->feeDoubleSpinBox->setValue(0);
     ui->textEdit->setText("");
     ui->carNumComboBox->clear();
+}
+
+void
+InsuranceDialog::on_insuranceRadioBtn_toggled(bool checked)
+{
+    if (!checked)
+        return;
+
+    ui->numberLabel->setText(Util::makeNumber(DataBaseTable::INSURANCE_RECORD_TABLE));
+}
+
+void
+InsuranceDialog::on_businessInsuranceRadioBtn_toggled(bool checked)
+{
+    if (!checked)
+        return;
+
+    ui->numberLabel->setText(Util::makeNumber(DataBaseTable::BUSINESS_INSURANCE_RECORD_TABLE));
 }

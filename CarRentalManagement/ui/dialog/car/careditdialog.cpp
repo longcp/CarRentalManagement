@@ -187,6 +187,7 @@ CarEditDialog::openCarEditDialogSlot(OpenType type, Car&car)
     mOpenType = type;
     if (type == OpenType::CREATEITEM) {
         mActEdit->setDisabled(true);
+        ui->numLE->setText(Util::makeNumber(DataBaseTable::CAR_TABLE));
         ui->pumpTypeCbBox->setCurrentIndex(0);
         ui->createDateDE->setDate(QDate::currentDate());
         ui->drivingLicenseDateDE->setDate(QDate::currentDate());

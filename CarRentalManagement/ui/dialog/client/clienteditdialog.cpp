@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <user.h>
 #include "database/database.h"
+#include <util.h>
 
 #define LOG_TAG                 "CLIENT_EDIT_DIALOG"
 #include "utils/Log.h"
@@ -151,6 +152,7 @@ ClientEditDialog::openClientEditDialogSlot(OpenType opentype,
         mActEdit->setDisabled(true);
         mActPrev->setDisabled(true);
         mActNext->setDisabled(true);
+        ui->clientNumLineEdit->setText(Util::makeNumber(DataBaseTable::CLIENT_TABLE));
         ui->monthlyRadioButton->setChecked(true);
         ui->temporaryRadioButton->setChecked(true);
         ui->createDateEdit->setDate(QDate::currentDate());

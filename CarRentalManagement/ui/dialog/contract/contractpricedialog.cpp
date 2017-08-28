@@ -4,6 +4,7 @@
 #include "datatype.h"
 #include "car.h"
 #include <QMessageBox>
+#include <util.h>
 
 #define LOG_TAG                 "CONTRACT_PRICE_DIALOG"
 #include "utils/Log.h"
@@ -30,8 +31,7 @@ ContractPriceDialog::openWindow(OpenType type, QString contractNumber)
           contractNumber.toStdString().data());
     mContractNumber = contractNumber;
     mOpenType = type;
-    QString number = QDateTime::currentDateTime().toString(DATETIME_FORMAT_STR);
-    ui->numberLabel->setText(number);
+    ui->numberLabel->setText(Util::makeNumber(DataBaseTable::CONTRACT_PRICE_TABLE));
     ui->pumpTypeCB->setCurrentIndex(0);
     this->exec();
 }

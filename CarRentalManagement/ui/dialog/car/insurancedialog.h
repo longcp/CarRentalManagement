@@ -25,6 +25,10 @@ private slots:
 
     void on_cancelBtn_clicked();
 
+    void on_insuranceRadioBtn_toggled(bool checked);
+
+    void on_businessInsuranceRadioBtn_toggled(bool checked);
+
 signals:
     void        addInsuranceItemSignal(INSURANCE_RECORD &record);
     void        addBusinessInsuranceItemSignal(INSURANCE_RECORD &record);
