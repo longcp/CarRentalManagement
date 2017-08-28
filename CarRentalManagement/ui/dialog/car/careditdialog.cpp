@@ -123,6 +123,10 @@ CarEditDialog::CarEditDialog(QWidget *parent) :
 
     //    connect((QDialog*)ui->annualSumTableView->horizontalScrollBar(), SIGNAL(valueChanged(int)),
     //            this, SLOT(updateAnnualTableviewScrollBar(int)));
+    QString num = Util::makeNumber(DataBaseTable::CAR_TABLE);
+    QString num1 = Util::makeNumber(DataBaseTable::RENTALDOCUMENT_TABLE);
+    ALOGD("num = %s", num.toStdString().data());
+    ALOGD("num1 = %s", num1.toStdString().data());
 }
 
 void

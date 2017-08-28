@@ -14,16 +14,10 @@ public:
     const static QString makeNumber(DataBaseTable table);
     
 private:
-    QString makeCarMaxNum();
-    QString makeClientMaxNum();
-//    QString makeUserMaxNum();
-    QString makeContractMaxNum();
-    QString makeRentalDocMaxNum();
-    QString makeAnnualFeeMaxNum();
-    QString makeBusInsuranceMaxNum();
-    QString makeContractPriceMaxNum();
-    QString makeProRecordMaxNum();
-    QString makeInsuranceMaxNum();
+    const static QString makeRentalDocMaxNum();
+    const static QString makeSerialNumber(DataBaseTable table);
+
+    const static int mSerialNumLen = 8;
 };
 
 #endif // UTIL_H

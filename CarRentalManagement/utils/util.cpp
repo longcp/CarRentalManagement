@@ -1,6 +1,9 @@
 #include "util.h"
 #include <database/database.h>
 
+#define DATABASE_NUMBER_FIELD_STR       "number"
+#define RENTAL_DOC_NUM_PREFIX           "NO:"
+
 #define LOG_TAG                         "UTIL"
 #include "utils/Log.h"
 
@@ -31,31 +34,31 @@ Util::makeNumber(DataBaseTable table)
 
     switch (table) {
     case CAR_TABLE:
-        return makeCarMaxNum();
+        return makeSerialNumber(CAR_TABLE);
 
     case CLIENT_TABLE:
-        return makeClientMaxNum();
+        return makeSerialNumber(CLIENT_TABLE);
 
     case CONTRACT_TABLE:
-        return makeContractMaxNum();
+        return makeSerialNumber(CONTRACT_TABLE);
 
     case RENTALDOCUMENT_TABLE:
         return makeRentalDocMaxNum();
 
     case ANNUAL_FEE_RECORD_TABLE:
-        return makeAnnualFeeMaxNum();
+        return makeSerialNumber(ANNUAL_FEE_RECORD_TABLE);
 
     case BUSINESS_INSURANCE_RECORD_TABLE:
-        return makeBusInsuranceMaxNum();
+        return makeSerialNumber(BUSINESS_INSURANCE_RECORD_TABLE);
 
     case CONTRACT_PRICE_TABLE:
-        return makeContractPriceMaxNum();
+        return makeSerialNumber(CONTRACT_PRICE_TABLE);
 
     case PROJECT_RECORD_TABLE:
-        return makeProRecordMaxNum();
+        return makeSerialNumber(PROJECT_RECORD_TABLE);
 
     case INSURANCE_RECORD_TABLE:
-        return makeInsuranceMaxNum();
+        return makeSerialNumber(INSURANCE_RECORD_TABLE);
 
     case USER_TABLE:;
     default:
@@ -63,4 +66,36 @@ Util::makeNumber(DataBaseTable table)
     }
 
     return "";
+}
+
+const QString
+Util::makeRentalDocMaxNum()
+{
+    return RENTAL_DOC_NUM_PREFIX+makeSerialNumber(RENTALDOCUMENT_TABLE);
+}
+
+const QString
+Util::makeSerialNumber(DataBaseTable table)
+{
+    int num;
+    int maxVal = pow(10, mSerialNumLen);
+    QString tableName = DataBase::getInstance()->getTableName(table);
+    QString number = DataBase::getInstance()->getMaxNumber(tableName, DATABASE_NUMBER_FIELD_STR);
+
+    if (number == "")
+        num = 0;
+    else
+        num = number.right(mSerialNumLen).toInt();
+
+    if (num >= maxVal)
+        num %= (maxVal-1);
+
+    QString tailSuffix = QString("%1").arg(num+1);
+    QString tailPrefix = "";
+    for (int i = 0; i < (mSerialNumLen-tailSuffix.length()); i++) {
+        //不满SERIAL_NUM_LEN位数，补0
+        tailPrefix.append("0");
+    }
+
+    return tailPrefix.append(tailSuffix);
 }
