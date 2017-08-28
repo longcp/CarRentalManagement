@@ -29,6 +29,7 @@ private slots:
     void            cellClickedSlot(const QModelIndex &index);
     void            addClientSlot();
     void            addClientItemSlot(Client &client);
+    void            transmitAddClientSlot(Client &client);
     void            updateClientItemSlot(Client &client);
     void            deleteClientItemSlot();
     void            editClientItemSlot();
@@ -47,6 +48,7 @@ private slots:
 signals:
     void            openClientEditDialogSignal(OpenType type, Client &client);
     void            initViewWithUserSig(User &user);
+    void            addClientSignal(Client &client);
 
 private:
     /**

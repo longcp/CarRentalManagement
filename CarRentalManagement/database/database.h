@@ -92,6 +92,7 @@ public:
     int                 getContractInClientNumber(QString clientNumber,
                                                   QList<Contract> &contracts);
     bool                isClientHasContract(QString clientNumber);
+    bool                isClientHasRentalDoc(QString clientNumber);
     int                 getContractInNumber(QString number,
                                             Contract &contract);
     int                 clearContractTable();

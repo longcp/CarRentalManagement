@@ -12,6 +12,7 @@ class DataBase;
 class QTreeWidgetItem;
 class QStandardItem;
 class User;
+class Client;
 
 namespace Ui {
 class ContractWidget;
@@ -64,6 +65,7 @@ private slots:
     void            updateSumTabSectionWidth(int logicalIndex, int, int newSize);
 
     void            initViewWithUser(User &user);
+    void            addClientSlot(Client &client);
 
 private:
     /**
@@ -98,6 +100,10 @@ private:
      * @brief 初始化客户树
      */
     void            initClientTreeWidget();
+    /**
+     * @brief 添加一个节点
+     */
+    void            addClientItem(Client &client);
     /**
      * @brief 添加所有节点
      */

@@ -207,6 +207,13 @@ MainWindow::MainWindow(QWidget *parent) :
             mReceiptWidget, SLOT(addRentalDocumentSlot(RentalDocument &)));
     connect(mRentalDocWidget, SIGNAL(addRentalDocumentSignal(RentalDocument &)),
             mReceivableWidget, SLOT(addRentalDocumentSlot(RentalDocument &)));
+    /**
+     * @brief 添加客户
+     */
+    connect(mClientWidget, SIGNAL(addClientSignal(Client&)),
+            mContractWidget, SLOT(addClientSlot(Client&)));
+    connect(mClientWidget, SIGNAL(addClientSignal(Client&)),
+            mRentalDocWidget, SLOT(addClientSlot(Client&)));
 }
 
 MainWindow::~MainWindow()

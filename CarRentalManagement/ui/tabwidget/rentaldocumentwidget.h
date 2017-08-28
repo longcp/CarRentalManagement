@@ -12,6 +12,7 @@ class RentalDocument;
 class QTreeWidgetItem;
 class DataBase;
 class User;
+class Client;
 
 namespace Ui {
 class RentalDocumentWidget;
@@ -42,6 +43,7 @@ private slots:
 
     void            initViewWithUser(User &user);
     void            onHeaderClicked(int column);
+    void            addClientSlot(Client &client);
 
 signals:
     void            openRentalEditDialogSignal(OpenType, RentalDocument &,
@@ -62,6 +64,7 @@ private:
     void            initRentalDocTableView();
     void            initClientTreeWidget();
     void            updateTableView();
+    void            addClientItem(Client &client);
     void            addAllClientItem();
     void            addRentalDocRows(QList<RentalDocument> &docs);
     void            addRentalDocTableRow(RentalDocument &doc);

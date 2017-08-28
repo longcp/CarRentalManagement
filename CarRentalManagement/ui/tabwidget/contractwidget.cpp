@@ -297,22 +297,37 @@ ContractWidget::initClientTreeWidget()
 }
 
 void
+ContractWidget::addClientSlot(Client &client)
+{
+    ALOGDTRACE();
+    addClientItem(client);
+}
+
+void
+ContractWidget::addClientItem(Client &client)
+{
+    QStringList itemList;
+    itemList << client.name << client.number;
+    QTreeWidgetItem *newItem =
+            new QTreeWidgetItem(mRootItem, itemList);
+    if (mDb->isClientHasContract(client.number))
+        newItem->setIcon(0, QIcon(":/menu/icon/contract_64.ico"));
+    else
+        newItem->setIcon(0, QIcon(":/menu/icon/empty_64.ico"));
+    mRootItem->addChild(newItem);
+}
+
+void
 ContractWidget::addAllClientItem()
 {
     int size;
     QList<Client> clients;
+    Client c;
     if (!mDb->getAllClientData(clients)) {
         size = clients.size();
         for (int i = 0; i < size; i++) {
-            QStringList itemList;
-            itemList << clients.at(i).name << clients.at(i).number;
-            QTreeWidgetItem *newItem =
-                    new QTreeWidgetItem(mRootItem, itemList);
-            if (mDb->isClientHasContract(clients.at(i).number))
-                newItem->setIcon(0, QIcon(":/menu/icon/contract_64.ico"));
-            else
-                newItem->setIcon(0, QIcon(":/menu/icon/empty_64.ico"));
-            mRootItem->addChild(newItem);
+            c = clients.at(i);
+            addClientItem(c);
         }
     }
 }

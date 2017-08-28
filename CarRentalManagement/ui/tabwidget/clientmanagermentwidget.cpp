@@ -76,6 +76,8 @@ ClientManagermentWidget::ClientManagermentWidget(QWidget *parent) :
      */
     connect(mClientEditDialog, SIGNAL(addClientItemSignal(Client &)),
             this, SLOT(addClientItemSlot(Client&)));
+    connect(mClientEditDialog, SIGNAL(addClientItemSignal(Client &)),
+            this, SLOT(transmitAddClientSlot(Client&)));
     /**
      * @brief 更新条目
      */
@@ -346,6 +348,12 @@ ClientManagermentWidget::addClientItemSlot(Client &client)
     sumAmountCellAddValue(client.amount);
     sumPaidCellAddValue(client.paid);
     sumBalanceCellAddValue(client.amount - client.paid);
+}
+
+void
+ClientManagermentWidget::transmitAddClientSlot(Client &client)
+{
+    emit addClientSignal(client);
 }
 
 void
