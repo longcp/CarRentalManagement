@@ -63,6 +63,7 @@ private:
     void            initView();
     void            initRentalDocTableView();
     void            initClientTreeWidget();
+    void            updateClientTreeWidget(RentalDocument &doc);
     void            updateTableView();
     void            addClientItem(Client &client);
     void            addAllClientItem();

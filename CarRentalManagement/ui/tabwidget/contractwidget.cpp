@@ -297,6 +297,24 @@ ContractWidget::initClientTreeWidget()
 }
 
 void
+ContractWidget::updateClientTreeWidget(Contract &contract)
+{
+    QTreeWidgetItem *item;
+    int count = mRootItem->childCount();
+
+    for (int i = 0; i < count; i++) {
+        item = mRootItem->child(i);
+        ALOGD("name = %s, num = %s", item->text(mClientNameColumn).toStdString().data(), item->text(mClientNumberColumn).toStdString().data());
+        if (contract.clientNumber == item->text(mClientNumberColumn)) {
+            if (mDb->isClientHasContract(contract.clientNumber))
+                item->setIcon(0, QIcon(":/menu/icon/contract_64.ico"));
+            else
+                item->setIcon(0, QIcon(":/menu/icon/empty_64.ico"));
+        }
+    }
+}
+
+void
 ContractWidget::addClientSlot(Client &client)
 {
     ALOGDTRACE();
@@ -424,6 +442,7 @@ ContractWidget::addContractItemSlot(Contract &contract)
     ui->contractTableView->selectRow(mContractModel->rowCount()-1);
     clearPriceTable();
     addPriceTableRows(contract.prices);
+    updateClientTreeWidget(contract);
 }
 
 void
@@ -554,10 +573,14 @@ ContractWidget::deleteContractItemSlot()
         return;
 
     QString number = "";
+    Contract c;
     number = mContractModel->index(curRow, 0).data().toString();
     if (!mDb->deleteContractDataInNumber(number)) {
         ALOGD("%s, delete ok", __FUNCTION__);
         mContractModel->removeRow(curRow);
+        if (!mDb->getContractInNumber(number, c)) {
+            updateClientTreeWidget(c);
+        }
         //更新合计
         sumUpdateRowCount();
     }

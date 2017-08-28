@@ -101,6 +101,10 @@ private:
      */
     void            initClientTreeWidget();
     /**
+     * @brief 更新客户树
+     */
+    void            updateClientTreeWidget(Contract &contract);
+    /**
      * @brief 添加一个节点
      */
     void            addClientItem(Client &client);

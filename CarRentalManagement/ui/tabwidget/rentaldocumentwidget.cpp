@@ -226,6 +226,24 @@ RentalDocumentWidget::initClientTreeWidget()
 }
 
 void
+RentalDocumentWidget::updateClientTreeWidget(RentalDocument &doc)
+{
+    QTreeWidgetItem *item;
+    int count = mRootItem->childCount();
+
+    for (int i = 0; i < count; i++) {
+        item = mRootItem->child(i);
+        ALOGD("name = %s, num = %s", item->text(mClientNameColumn).toStdString().data(), item->text(mClientNumberColumn).toStdString().data());
+        if (doc.clientNumber == item->text(mClientNumberColumn)) {
+            if (mDb->isClientHasRentalDoc(doc.clientNumber))
+                item->setIcon(0, QIcon(":/menu/icon/contract_64.ico"));
+            else
+                item->setIcon(0, QIcon(":/menu/icon/empty_64.ico"));
+        }
+    }
+}
+
+void
 RentalDocumentWidget::addClientSlot(Client &client)
 {
     ALOGDTRACE();
@@ -297,6 +315,7 @@ RentalDocumentWidget::addRentalDoc(RentalDocument &doc)
         return;
 
     addRentalDocTableRow(doc);
+    updateClientTreeWidget(doc);
     emit addRentalDocumentSignal(doc);
     ui->docTableview->selectRow(mModel->rowCount() - 1);
 }
@@ -366,10 +385,15 @@ RentalDocumentWidget::deleteRentalDocItemSlot()
                                    QMessageBox::No);
     if (ret == QMessageBox::No)
         return;
+
+    RentalDocument doc;
     QString num = mModel->index(mCurRow, 0).data().toString();
     if (!mDb->deleteRentalDocumentInNumber(num)) {
         ALOGD("%s, delete ok", __FUNCTION__);
         mModel->removeRow(mCurRow);
+        if (!mDb->getRentalDocumentDataInNumber(num, doc)) {
+            updateClientTreeWidget(doc);
+        }
         emit deleteRentalDocumentSignal(num);
     }
 }
