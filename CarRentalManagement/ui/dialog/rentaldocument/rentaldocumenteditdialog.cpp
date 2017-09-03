@@ -549,6 +549,13 @@ RentalDocumentEditDialog::cancelEvent()
 void
 RentalDocumentEditDialog::editEvent()
 {
+    if (mOpenType != OpenType::CREATEITEM &&
+            mRentalDocument->state == RentalDocState::CONFIRMED_STATE) {
+        QMessageBox::warning(this, tr("温馨提示"),
+                             tr("已确认的合同无法再编辑!"));
+        return;
+    }
+
     setEditMode();
 }
 
@@ -587,9 +594,6 @@ RentalDocumentEditDialog::isModified()
 {
     RentalDocument tmp;
     saveUiContent(tmp);
-    tmp.dump();
-    ALOGD("-----------------------");
-    mRentalDocument->dump();
     if (mRentalDocument->isValueEqual(tmp)) {
         return false;
     }

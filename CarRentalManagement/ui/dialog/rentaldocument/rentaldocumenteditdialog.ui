@@ -1084,6 +1084,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
           <property name="maximum">
            <double>999999999.990000009536743</double>
           </property>
