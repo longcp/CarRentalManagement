@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
             .append("log_")
             .append(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"))
             .append(".txt");
-//    qInstallMessageHandler(localLog);
+    qInstallMessageHandler(localLog);
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("gbk"));     //设置gbd编码
 
